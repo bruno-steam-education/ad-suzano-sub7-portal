@@ -16,6 +16,7 @@ import {
   SunMedium,
   Thermometer,
   Trophy,
+  Youtube,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import packageInfo from '../package.json';
@@ -46,6 +47,7 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 });
 
 const appVersion = packageInfo.version;
+const supporterPlaylistUrl = 'https://youtube.com/playlist?list=PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM&si=nvwTyHLvLWB9V88c';
 
 function App() {
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
@@ -965,6 +967,12 @@ function Hero({ category, record, nextMatch, hasData, weather, weatherError }) {
           Portal de leitura competitiva para acompanhar forma, próximos jogos,
           relações entre adversários e evolução coletiva da categoria.
         </p>
+        <div className="hero-actions">
+          <a className="supporter-chant-button" href={supporterPlaylistUrl} target="_blank" rel="noreferrer">
+            <Youtube size={20} />
+            Grito da torcida
+          </a>
+        </div>
         {nextMatch && (
           <div className="next-pill">
             <CalendarDays size={18} />

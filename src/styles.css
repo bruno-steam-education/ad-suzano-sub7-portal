@@ -135,6 +135,34 @@ input {
   color: #d9e5f3;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -8px 0 18px;
+}
+
+.supporter-chant-button {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 15px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--red);
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow: 0 16px 30px rgba(3, 12, 30, 0.2);
+}
+
+.supporter-chant-button:hover {
+  background: var(--red);
+  color: #fff;
+}
+
 .crest-stage {
   display: grid;
   place-items: center;
