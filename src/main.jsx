@@ -55,6 +55,7 @@ function App() {
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
   const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
   const hasFullSub7View = activeCategory.id === 'sub7';
+  const activeCategoryNextMatch = hasFullSub7View ? nextSuzano[0] : activeFpfs?.upcomingGames?.[0];
 
   React.useEffect(() => {
     let active = true;
@@ -76,7 +77,7 @@ function App() {
       <Hero
         category={activeCategory}
         record={hasFullSub7View ? record : activeFpfs?.record}
-        nextMatch={hasFullSub7View ? nextSuzano[0] : null}
+        nextMatch={activeCategoryNextMatch}
         hasData={hasFullSub7View || hasFpfsCategoryData}
         weather={weather}
         weatherError={weatherError}
@@ -105,7 +106,7 @@ function App() {
           </section>
         </>
       ) : (
-        <CategoryDashboard category={activeCategory} fpfsData={activeFpfs} />
+        <CompleteCategoryDashboard category={activeCategory} fpfsData={activeFpfs} />
       )}
     </main>
   );
@@ -229,7 +230,328 @@ function CategoryDashboard({ category, fpfsData }) {
   );
 }
 
-function CategoryGamesPanel({ title, games, emptyText }) {
+function CompleteCategoryDashboard({ category, fpfsData }) {
+  const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
+  const record = fpfsData?.record;
+
+  return (
+    <>
+      <section className="category-overview">
+        <section className="panel category-intro">
+          <div className="section-title">
+            <div>
+              <span>{category.competition}</span>
+              <h2>{category.title}</h2>
+            </div>
+            <Shield size={22} />
+          </div>
+          <p>
+            {hasSuzanoGames
+              ? `Dados carregados da Sumula Online da FPFS para ${category.label}, temporada 2026, Paulista A2.`
+              : `${category.description} A FPFS foi consultada, mas ainda nao localizamos jogos do AD Suzano nesta categoria.`}
+          </p>
+          <div className="category-readiness">
+            <div>
+              <strong>{record?.points ?? 0} pontos</strong>
+              <span>{record?.played ?? 0} jogos localizados na Sumula Online.</span>
+            </div>
+            <div>
+              <strong>{record?.goalsFor ?? 0} gols feitos</strong>
+              <span>Saldo {record?.goalDifference && record.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 0} na base FPFS.</span>
+            </div>
+            <div>
+              <strong>{fpfsData?.upcomingGames?.length ?? 0} proximos jogos</strong>
+              <span>Atualizacao automatica via eventos.admfutsal.com.br.</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section className="content-grid category-complete-grid">
+        <div className="main-flow">
+          <CategoryNewsPlaceholder category={category} />
+          <CategoryNextGames category={category} games={fpfsData?.upcomingGames ?? []} />
+          <CategoryTitleProjection category={category} record={record} hasSuzanoGames={hasSuzanoGames} />
+          <CategoryWeeklyDesk category={category} />
+          <CategoryGamesPanel
+            title="Ultimos resultados"
+            games={fpfsData?.recentGames ?? []}
+            emptyText="Nenhum resultado do AD Suzano encontrado nesta categoria pela Sumula Online."
+            showRoutes
+          />
+          <CategoryCampaign category={category} fpfsData={fpfsData} />
+        </div>
+
+        <aside className="side-flow">
+          <CategorySchedulePlaceholder category={category} games={fpfsData?.upcomingGames ?? []} />
+          <CategoryYouTubePanel category={category} fpfsData={fpfsData} />
+          <CategoryDataPanel category={category} fpfsData={fpfsData} hasSuzanoGames={hasSuzanoGames} />
+        </aside>
+      </section>
+    </>
+  );
+}
+
+function CategoryNewsPlaceholder({ category }) {
+  return (
+    <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
+      <div className="news-heading">
+        <div>
+          <span>Ultimas noticias</span>
+          <h2 id={`news-${category.id}`}>Radar {category.label}</h2>
+        </div>
+        <strong>Espaco reservado para noticias confirmadas da categoria</strong>
+      </div>
+      <div className="category-empty-news">
+        <div className="news-tag">{category.label}</div>
+        <h3>Aguardando noticia especifica do AD Suzano {category.label}</h3>
+        <p>
+          O bloco fica pronto para receber manchete, resumo, impacto e fonte quando houver
+          publicacao confirmada sobre esta categoria.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function CategoryNextGames({ category, games }) {
+  return (
+    <section className="panel">
+      <div className="section-title">
+        <div>
+          <span>Analise pre-jogo</span>
+          <h2>Proximos confrontos</h2>
+        </div>
+        <Sparkles size={22} />
+      </div>
+
+      {games.length ? (
+        <div className="match-list">
+          {games.map((game) => (
+            <article className="match-card category-match-card" key={`${category.id}-${game.date}-${game.home}-${game.away}`}>
+              <div className="match-date">
+                <strong>{fmtDate.format(new Date(`${game.date}T12:00:00`))}</strong>
+                <span>{game.time || 'A confirmar'}</span>
+              </div>
+              <div className="match-body">
+                <div className="teams-line">
+                  <span>{game.home}</span>
+                  <b>x</b>
+                  <span>{game.away}</span>
+                </div>
+                <p><MapPin size={15} /> {game.venue}</p>
+                <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
+              </div>
+              <div className="chance pending-chance">
+                <span>Chance AD Suzano</span>
+                <strong>--</strong>
+                <small>Aguardando historico do adversario</small>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="empty-copy">Nenhum proximo jogo do AD Suzano encontrado nesta categoria pela Sumula Online.</p>
+      )}
+    </section>
+  );
+}
+
+function CategoryTitleProjection({ category, record, hasSuzanoGames }) {
+  const efficiency = record?.played ? Math.round((record.points / Math.max(1, record.played * 3)) * 100) : null;
+
+  return (
+    <section className="panel title-panel pending-title-panel">
+      <div className="title-odds">
+        <div>
+          <span>Projecao estatistica</span>
+          <h2>Chance de ser campeao</h2>
+          <p>
+            {hasSuzanoGames
+              ? `Base oficial localizada para o ${category.label}: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
+              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projecao.'}
+          </p>
+        </div>
+        <div className="odds-ring pending-ring" style={{ '--odds': '0%' }}>
+          <strong>--</strong>
+          <span>Titulo</span>
+        </div>
+      </div>
+      <div className="odds-reasons">
+        <div><ChevronRight size={18} />A classificacao completa da chave ainda nao foi incorporada ao modelo.</div>
+        <div><ChevronRight size={18} />Aproveitamento atual: {efficiency === null ? 'aguardando dados' : `${efficiency}%`}.</div>
+        <div><ChevronRight size={18} />Forca dos adversarios sera preenchida somente com resultados confirmados.</div>
+        <div><ChevronRight size={18} />Sem inventar percentual: campo mantido em aberto ate haver base suficiente.</div>
+      </div>
+    </section>
+  );
+}
+
+function CategoryWeeklyDesk({ category }) {
+  return (
+    <section className="panel weekly-panel">
+      <div className="section-title">
+        <div>
+          <span>Segunda-feira</span>
+          <h2>Mesa de analise semanal</h2>
+        </div>
+        <CalendarDays size={22} />
+      </div>
+      <div className="weekly-copy muted-weekly-copy">
+        <strong>Aguardando analise manual do {category.label}</strong>
+        <p>
+          Este espaco replica a area do Sub-7 para registrar foco tatico,
+          leitura emocional, pontos de treino e recados da semana quando houver
+          informacao confirmada.
+        </p>
+      </div>
+      <div className="focus-grid">
+        {['Foco tatico', 'Ponto de atencao', 'Meta da semana'].map((item) => (
+          <div className="focus-item placeholder-focus" key={item}>
+            <ChevronRight size={18} />
+            {item}: aguardando dados
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CategoryCampaign({ category, fpfsData }) {
+  const games = [...(fpfsData?.recentGames ?? []), ...(fpfsData?.upcomingGames ?? [])]
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+
+  return (
+    <section className="panel">
+      <div className="section-title">
+        <div>
+          <span>Ritmo da campanha</span>
+          <h2>Jogos do AD Suzano {category.label}</h2>
+        </div>
+        <Trophy size={22} />
+      </div>
+      {games.length ? (
+        <div className="timeline">
+          {games.map((game) => {
+            const playedGame = Number.isFinite(game.homeGoals);
+            const isHome = game.home.includes('SUZANO');
+            const goalsFor = playedGame ? (isHome ? game.homeGoals : game.awayGoals) : null;
+            const goalsAgainst = playedGame ? (isHome ? game.awayGoals : game.homeGoals) : null;
+            const status = !playedGame ? 'proximo' : goalsFor > goalsAgainst ? 'vitoria' : goalsFor === goalsAgainst ? 'empate' : 'derrota';
+
+            return (
+              <div className={`timeline-row ${status}`} key={`${category.id}-${game.date}-${game.home}-${game.away}`}>
+                <span>{fmtDate.format(new Date(`${game.date}T12:00:00`))}</span>
+                <strong>{game.home} {playedGame ? `${game.homeGoals} x ${game.awayGoals}` : 'x'} {game.away}</strong>
+                <em>{status}</em>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="empty-copy">Campanha aguardando jogos oficiais localizados na FPFS.</p>
+      )}
+    </section>
+  );
+}
+
+function CategorySchedulePlaceholder({ category, games }) {
+  return (
+    <section className="panel schedule-panel compact">
+      <div className="section-title">
+        <div>
+          <span>Agenda da semana</span>
+          <h2>{category.label}</h2>
+        </div>
+        <CalendarDays size={22} />
+      </div>
+      <div className="schedule-grid">
+        <article className="schedule-day">
+          <div className="schedule-date">
+            <strong>Treinos</strong>
+            <span>Aguardando</span>
+          </div>
+          <div className="schedule-items">
+            <div className="schedule-item ice">
+              <div className="schedule-type"><Activity size={16} /> Agenda</div>
+              <h3>Treinos da categoria</h3>
+              <p><Clock size={15} /> Horario aguardando confirmacao</p>
+              <p><MapPin size={15} /> Local aguardando confirmacao</p>
+            </div>
+          </div>
+        </article>
+        {games.slice(0, 2).map((game) => (
+          <article className="schedule-day" key={`${category.id}-agenda-${game.date}-${game.time}`}>
+            <div className="schedule-date">
+              <strong>Jogo</strong>
+              <span>{formatShortDate(game.date)}</span>
+            </div>
+            <div className="schedule-items">
+              <div className="schedule-item match">
+                <div className="schedule-type">{iconForSchedule('Jogo oficial')} Jogo oficial</div>
+                <h3>{game.home} x {game.away}</h3>
+                <p><Clock size={15} /> {game.time || 'Horario a confirmar'}</p>
+                <p><MapPin size={15} /> {game.venue}</p>
+                <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CategoryYouTubePanel({ category, fpfsData }) {
+  return (
+    <section className="panel empty-panel">
+      <div className="section-title">
+        <div>
+          <span>YouTube</span>
+          <h2>Busca de videos da categoria</h2>
+        </div>
+        <Sparkles size={22} />
+      </div>
+      <p>
+        O portal deixa pronta a busca por videos publicos relacionados ao AD Suzano,
+        futsal, 2026 e {category.label}. Metadados individuais ficam reservados para a
+        etapa de analise dos atletas.
+      </p>
+      <a className="youtube-link" href={fpfsData?.youtubeSearchUrl} target="_blank" rel="noreferrer">
+        Buscar videos no YouTube
+      </a>
+    </section>
+  );
+}
+
+function CategoryDataPanel({ category, fpfsData, hasSuzanoGames }) {
+  return (
+    <section className="panel data-panel">
+      <div className="section-title">
+        <div>
+          <span>Fonte primaria</span>
+          <h2>FPFS</h2>
+        </div>
+        <Sparkles size={22} />
+      </div>
+      <p>
+        Temporada 2026, Campeonato Paulista, Divisao A2, categoria {category.label}.
+        {hasSuzanoGames
+          ? ' Dados carregados da tabela e dos jogos oficiais da Sumula Online.'
+          : ' A FPFS foi consultada, mas nao retornou jogos do AD Suzano para esta categoria nesta divisao.'}
+        {' '}Campos sem fonte confirmada ficam em aberto.
+      </p>
+      {fpfsData && (
+        <>
+          <a href={fpfsData.gamesUrl} target="_blank" rel="noreferrer">Jogos na Sumula Online</a>
+          <a href={fpfsData.url} target="_blank" rel="noreferrer">Classificacao na FPFS</a>
+        </>
+      )}
+    </section>
+  );
+}
+
+function CategoryGamesPanel({ title, games, emptyText, showRoutes = false }) {
   return (
     <section className="panel category-games-panel">
       <div className="section-title">
@@ -247,6 +569,9 @@ function CategoryGamesPanel({ title, games, emptyText }) {
                 <strong>{formatShortDate(game.date)} · {game.time || 'horário a confirmar'}</strong>
                 <span>{game.home} {Number.isFinite(game.homeGoals) ? `${game.homeGoals} x ${game.awayGoals}` : 'x'} {game.away}</span>
                 <small>{game.venue}</small>
+                {showRoutes && (
+                  <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
+                )}
               </div>
               {game.summaryUrl && (
                 <a href={game.summaryUrl} target="_blank" rel="noreferrer">Súmula</a>
