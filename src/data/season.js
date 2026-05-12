@@ -9,16 +9,16 @@ export const sourceLinks = [
 ];
 
 export const matches = [
-  { date: '2026-03-14', time: '15:00', venue: 'Ginasio do SESC - Suzano', home: 'A.D. SUZANO', away: 'MX7 DIADEMA', homeGoals: 4, awayGoals: 1 },
-  { date: '2026-03-21', time: '08:30', venue: 'Ginasio 1 da A.D.C. Mercedes Benz', home: 'ADC MERCEDES BENZ', away: 'A.D. SUZANO', homeGoals: 4, awayGoals: 3 },
-  { date: '2026-03-28', time: '15:00', venue: 'Ginasio do SESC - Suzano', home: 'A.D. SUZANO', away: 'SPORT BENFICA DE MOGI DAS CRUZES', homeGoals: 4, awayGoals: 4 },
-  { date: '2026-04-11', time: '09:00', venue: 'Ginasio Sindicato dos Metalurgicos de Jundiai', home: 'METALURGICOS DE JUNDIAI', away: 'A.D. SUZANO', homeGoals: 3, awayGoals: 2 },
-  { date: '2026-04-18', time: '15:00', venue: 'Ginasio do SESC - Suzano', home: 'A.D. SUZANO', away: 'ASSOCIACAO ESPORTIVA FUTMAX', homeGoals: 3, awayGoals: 1 },
-  { date: '2026-04-26', time: '14:30', venue: 'Ginasio Academicos da Cidade Dutra', home: 'AE FRIBURGO', away: 'A.D. SUZANO', homeGoals: 2, awayGoals: 5 },
-  { date: '2026-05-02', time: '15:00', venue: 'Ginasio do SESC - Suzano', home: 'A.D. SUZANO', away: 'A. UNIAO MAUA', homeGoals: 3, awayGoals: 0 },
-  { date: '2026-05-10', time: '14:30', venue: 'Ginasio Poliesportivo Sacadura', home: 'ASSOCIACAO DESPORTIVA SANTO ANDRE FUTSAL', away: 'A.D. SUZANO', homeGoals: 3, awayGoals: 7 },
-  { date: '2026-05-16', time: '15:00', venue: 'Ginasio do SESC - Suzano', home: 'A.D. SUZANO', away: 'OCIAN PRAIA CLUBE' },
-  { date: '2026-05-24', time: '14:30', venue: 'Ginasio Arena Chute Parada Inglesa', home: 'CHUTE FUTSAL', away: 'A.D. SUZANO' },
+  { date: '2026-03-14', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'MX7 DIADEMA', homeGoals: 4, awayGoals: 1 },
+  { date: '2026-03-21', time: '08:30', venue: 'Ginásio 1 da A.D.C. Mercedes Benz', home: 'ADC MERCEDES BENZ', away: 'A.D. SUZANO', homeGoals: 4, awayGoals: 3 },
+  { date: '2026-03-28', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'SPORT BENFICA DE MOGI DAS CRUZES', homeGoals: 4, awayGoals: 4 },
+  { date: '2026-04-11', time: '09:00', venue: 'Ginásio Sindicato dos Metalúrgicos de Jundiaí', home: 'METALÚRGICOS DE JUNDIAÍ', away: 'A.D. SUZANO', homeGoals: 3, awayGoals: 2 },
+  { date: '2026-04-18', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'ASSOCIAÇÃO ESPORTIVA FUTMAX', homeGoals: 3, awayGoals: 1 },
+  { date: '2026-04-26', time: '14:30', venue: 'Ginásio Acadêmicos da Cidade Dutra', home: 'AE FRIBURGO', away: 'A.D. SUZANO', homeGoals: 2, awayGoals: 5 },
+  { date: '2026-05-02', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'A. UNIÃO MAUÁ', homeGoals: 3, awayGoals: 0 },
+  { date: '2026-05-10', time: '14:30', venue: 'Ginásio Poliesportivo Sacadura', home: 'ASSOCIAÇÃO DESPORTIVA SANTO ANDRÉ FUTSAL', away: 'A.D. SUZANO', homeGoals: 3, awayGoals: 7 },
+  { date: '2026-05-16', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'OCIAN PRAIA CLUBE' },
+  { date: '2026-05-24', time: '14:30', venue: 'Ginásio Arena Chute Parada Inglesa', home: 'CHUTE FUTSAL', away: 'A.D. SUZANO' },
 ];
 
 export const contextualResults = [
@@ -49,7 +49,7 @@ export const weeklyNotes = [
   {
     weekOf: '2026-05-11',
     title: 'Virada de confianca depois do 7 x 3',
-    body: 'A vitoria fora contra a Associacao Desportiva Santo Andre Futsal mudou o tom da campanha: o ataque produziu sete gols, sustentou vantagem no placar e chega ao jogo contra o Ocian com uma sequencia de quatro vitorias.',
-    focus: ['Marcar saida curta do Ocian', 'Evitar trocas defensivas longas', 'Atacar segundo pau cedo'],
+    body: 'A vitória fora contra a Associação Desportiva Santo André Futsal mudou o tom da campanha: o ataque produziu sete gols, sustentou vantagem no placar e chega ao jogo contra o Ocian com uma sequência de quatro vitórias.',
+    focus: ['Marcar saída curta do Ocian', 'Evitar trocas defensivas longas', 'Atacar segundo pau cedo'],
   },
 ];

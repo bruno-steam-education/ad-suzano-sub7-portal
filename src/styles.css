@@ -567,6 +567,20 @@ input {
   gap: 12px;
 }
 
+.schedule-panel.compact .section-title h2 {
+  font-size: 28px;
+}
+
+.schedule-panel.compact .schedule-day {
+  grid-template-columns: 1fr;
+}
+
+.schedule-panel.compact .schedule-date {
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0 0 10px;
+}
+
 .schedule-day {
   display: grid;
   grid-template-columns: 150px minmax(0, 1fr);

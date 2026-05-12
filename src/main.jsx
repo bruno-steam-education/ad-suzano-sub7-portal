@@ -6,7 +6,6 @@ import {
   Brain,
   CalendarDays,
   ChevronRight,
-  CirclePlay,
   Clock,
   Goal,
   MapPin,
@@ -15,12 +14,10 @@ import {
   SunMedium,
   Thermometer,
   Trophy,
-  Users,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { newsItems, newsWeek } from './data/news';
-import { players } from './data/players';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { sourceLinks, teamName, weeklyNotes } from './data/season';
 import { fetchSuzanoWeather } from './services/weather';
@@ -41,13 +38,11 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 });
 
 function App() {
-  const [selectedPlayer, setSelectedPlayer] = useState(players[0].id);
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
   const record = useMemo(() => suzanoRecord(), []);
   const upcoming = useMemo(() => nextMatches(new Date()), []);
   const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
-  const highlightedPlayer = players.find((player) => player.id === selectedPlayer) ?? players[0];
 
   React.useEffect(() => {
     let active = true;
@@ -72,17 +67,13 @@ function App() {
       <section className="content-grid">
         <div className="main-flow">
           <NextGames matches={nextSuzano} />
-          <WeeklySchedule />
           <TitleProjection />
           <WeeklyDesk />
           <Campaign matches={suzanoMatches()} />
         </div>
 
         <aside className="side-flow">
-          <SquadPanel
-            selectedPlayer={highlightedPlayer}
-            onSelect={setSelectedPlayer}
-          />
+          <WeeklySchedule compact />
           <DataPanel />
         </aside>
       </section>
@@ -99,10 +90,10 @@ function NewsBanner() {
     <section className="news-band" aria-labelledby="news-title">
       <div className="news-heading">
         <div>
-          <span>Ultimas noticias</span>
+          <span>Últimas notícias</span>
           <h2 id="news-title">Radar semanal AD Suzano</h2>
         </div>
-        <strong>{newsItems.length} noticias na semana de {formatShortDate(newsWeek)}</strong>
+        <strong>{newsItems.length} notícias na semana de {formatShortDate(newsWeek)}</strong>
       </div>
 
       <div className="news-layout">
@@ -179,15 +170,15 @@ function Hero({ record, nextMatch, weather, weatherError }) {
           </div>
           <TodayWeather weather={weather} weatherError={weatherError} />
         </div>
-        <h1>AD Suzano Inteligencia de Jogo</h1>
+        <h1>AD Suzano Inteligência de Jogo</h1>
         <p>
-          Portal de leitura competitiva para acompanhar forma, proximos jogos,
-          relacoes entre adversarios e evolucao individual dos atletas.
+          Portal de leitura competitiva para acompanhar forma, próximos jogos,
+          relações entre adversários e evolução coletiva do Sub-7.
         </p>
         {nextMatch && (
           <div className="next-pill">
             <CalendarDays size={18} />
-            Proximo: {fmtDate.format(new Date(`${nextMatch.date}T12:00:00`))} as {nextMatch.time}, {nextMatch.home} x {nextMatch.away}
+            Próximo: {fmtDate.format(new Date(`${nextMatch.date}T12:00:00`))} às {nextMatch.time}, {nextMatch.home} x {nextMatch.away}
           </div>
         )}
       </div>
@@ -222,13 +213,13 @@ function TodayWeather({ weather, weatherError }) {
         {weather
           ? `${weather.temperature}°C em Suzano`
           : weatherError
-            ? 'Clima indisponivel'
+            ? 'Clima indisponível'
             : 'Atualizando clima...'}
       </strong>
       {weather && (
         <em>
           <Thermometer size={15} />
-          Sensacao {weather.apparent}°C · {weather.label}
+          Sensação {weather.apparent}°C · {weather.label}
         </em>
       )}
     </div>
@@ -251,7 +242,7 @@ function Metric({ icon: Icon, label, value }) {
   );
 }
 
-function WeeklySchedule() {
+function WeeklySchedule({ compact = false }) {
   const grouped = weeklySchedule.reduce((acc, item) => {
     acc[item.date] = acc[item.date] ?? [];
     acc[item.date].push(item);
@@ -259,7 +250,7 @@ function WeeklySchedule() {
   }, {});
 
   return (
-    <section className="panel schedule-panel">
+    <section className={`panel schedule-panel ${compact ? 'compact' : ''}`}>
       <div className="section-title">
         <div>
           <span>Agenda da semana</span>
@@ -306,11 +297,11 @@ function TitleProjection() {
     <section className="panel title-panel">
       <div className="title-odds">
         <div>
-          <span>Projecao estatistica</span>
-          <h2>Chance de ser campeao</h2>
+          <span>Projeção estatística</span>
+          <h2>Chance de ser campeão</h2>
           <p>
-            Estimativa semanal baseada em aproveitamento, saldo, media de gols,
-            fase recente e dificuldade dos proximos confrontos cadastrados.
+            Estimativa semanal baseada em aproveitamento, saldo, média de gols,
+            fase recente e dificuldade dos próximos confrontos cadastrados.
           </p>
         </div>
         <div className="odds-ring" style={{ '--odds': `${projection.chance}%` }}>
@@ -335,8 +326,8 @@ function NextGames({ matches }) {
     <section className="panel">
       <div className="section-title">
         <div>
-          <span>Analise pre-jogo</span>
-          <h2>Proximos confrontos</h2>
+          <span>Análise pré-jogo</span>
+          <h2>Próximos confrontos</h2>
         </div>
         <Sparkles size={22} />
       </div>
@@ -389,7 +380,7 @@ function WeeklyDesk() {
       <div className="section-title">
         <div>
           <span>Segunda-feira</span>
-          <h2>Mesa de analise semanal</h2>
+          <h2>Mesa de análise semanal</h2>
         </div>
         <CalendarDays size={22} />
       </div>
@@ -440,88 +431,18 @@ function Campaign({ matches }) {
   );
 }
 
-function SquadPanel({ selectedPlayer, onSelect }) {
-  return (
-    <section className="panel squad-panel">
-      <div className="section-title">
-        <div>
-          <span>Atletas</span>
-          <h2>Analise individual</h2>
-        </div>
-        <Users size={22} />
-      </div>
-
-      <div className="player-tabs">
-        {players.map((player) => (
-          <button
-            className={player.id === selectedPlayer.id ? 'active' : ''}
-            key={player.id}
-            onClick={() => onSelect(player.id)}
-            type="button"
-          >
-            {player.shirt}
-          </button>
-        ))}
-      </div>
-
-      <article className="player-card">
-        <div className="player-head">
-          <div>
-            <span>Camisa {selectedPlayer.shirt}</span>
-            <h3>{selectedPlayer.name}</h3>
-          </div>
-          <strong>{selectedPlayer.role}</strong>
-        </div>
-        <p>{selectedPlayer.profile}</p>
-
-        <div className="radar-list">
-          {Object.entries(selectedPlayer.indicators).map(([key, value]) => (
-            <div className="radar-row" key={key}>
-              <span>{labelIndicator(key)}</span>
-              <div><i style={{ width: `${value}%` }} /></div>
-              <b>{value}</b>
-            </div>
-          ))}
-        </div>
-
-        <div className="video-box">
-          <CirclePlay size={20} />
-          {selectedPlayer.youtube.length
-            ? 'Metadados do YouTube serao carregados para os videos cadastrados.'
-            : 'Sem video cadastrado. Adicione URLs do YouTube em src/data/players.js.'}
-        </div>
-
-        <ul className="note-list">
-          {selectedPlayer.notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-      </article>
-    </section>
-  );
-}
-
-function labelIndicator(key) {
-  return {
-    impact: 'Impacto',
-    evolution: 'Evolucao',
-    confidence: 'Confianca',
-    discipline: 'Disciplina',
-  }[key] ?? key;
-}
-
 function DataPanel() {
   return (
     <section className="panel data-panel">
       <div className="section-title">
         <div>
           <span>Dados</span>
-          <h2>Conexao</h2>
+          <h2>Conexão</h2>
         </div>
         <BarChart3 size={22} />
       </div>
       <p>
-        Base inicial montada com a tabela publica da FPFS. Para manter o GitHub
+        Base inicial montada com a tabela pública da FPFS. Para manter o GitHub
         Pages simples, os dados ficam em arquivos versionados e podem ser
         atualizados antes de cada rodada.
       </p>

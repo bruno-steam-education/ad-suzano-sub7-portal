@@ -33,72 +33,72 @@ export const newsItems = [
   },
   {
     "id": "auto-2026-05-12-4",
-    "title": "Iniciação do Palmeiras vence todas contra AD Indaiatuba na estreia do Paulista de Futsal - SE Palmeiras",
-    "category": "Campeonato",
-    "date": "2026-04-03",
-    "source": "SE Palmeiras",
-    "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQUGd2cDJPVnNkT2lxZmV3ZjFncDh4WTYwQ2JsNDZrMjNWZzBNY2dSVnZ4Q1JlQ0UtN2ZhbHd2emhqUUtWTGZKQlNjQ3p1ZzRxaXExU3JKeWlmMTJha01pVVBsX0V5UDJxWDdVTVlNdEpYLVNiV3NPQkc0Rk81WnR4MjdDM3gwQ2pINHg5ZW1uZ3VyaFFsN0JISzV0dmxDZHk0dTVFUnY5eUttalJHXzRmSHZUQlJSVUo4RFFRWjAzWncyN1VIb3c?oc=5",
-    "summary": "Iniciação do Palmeiras vence todas contra AD Indaiatuba na estreia do Paulista de Futsal SE Palmeiras",
-    "impact": "Ajuda a entender o contexto competitivo do Paulista A2."
+    "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
+    "category": "AD Suzano",
+    "date": "2026-03-12",
+    "source": "Notícias de Mogi",
+    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNS2k5TjFaR3JCeVpkVW40TGZSNTdFWjBIMzVDT01VOVdTbGRDUi1BSFQ0TFpTUzFhRjdWd1dPcUtmWS1XZ1g4XzEyWU1UMHd6V201NnB3ek5GMW9OLVVhamFid1hZWEhDSWVSci1Ld01jRW9GejU2bHBjZ0VwS2VWMkZvMzlaemtzMEREX1lvWXZJNGhkcnNEbGx5ZFZDZnZkSS1MckU0QTlJeUpSTW1qRG05Zw?oc=5",
+    "summary": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo Notícias de Mogi",
+    "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
     "id": "auto-2026-05-12-5",
-    "title": "Neymar no Corinthians? Xará do craque do Santos brilha em final do Paulista Sub-7 de futsal - ge",
-    "category": "Campeonato",
-    "date": "2025-10-18",
-    "source": "ge",
-    "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxQeFZ5VXIxQTVTSi1TR0NIYmdjS2Q3cVJXRWJ6UHFzN2xlYWJVYy1yUDFBQTM1Mm1pcm5pbHdXZC1rLTlKc243ZkxaMDdJemRQbWhwRlFzR3VfM0szSzBSMTNrcVZWZG1ndjgzcnZXQU15OUgzbDNrWHNncGdtbkJFN1BtWjZZZWdqVVdGRUZlajRaSDJCREFOUDVnTzI1amJ5b1Z5MDlrYl95anVtSjJGSi1tdGc5RGJLMzI1MkZZdmg0WThOY2R6QkU1WExSTDZxdVJnNC1xQWx4RVZyRFhISFhtSU85YmtUOExHeWdSNDBSUlNvUUZNWWJuSnJXMnpCdlhmSmhLNNIBlgJBVV95cUxNTDNIX2gzaGlmTWp6cHBUQmY2QU9UV1djRGVMS1QwU0ZyOTlDUjJyVGFyX1hkbWdaY3g1d1JCenRxLU9XU2ZucjZLM0xsTmlsd0lFNkF4ME5ITjNyV1JqT1hzWUltb3ZxYlQ5OWs5dVE2NTNQcTYtMTdCVnlVc3dubHJweEFuVGpRLUNOYlp2UkRfdWpTNi1jRi1pVzZXa1VEanBGOUhjR0I4WkMwbTRvV3RHVU5DUDhvOXMzU2FPS3FJbDRJNFFsTjhCa2VpUTRIZEdDSVNxb1V5VHU4Y1dyUEpyM2NvNmJUeEp5MW5yX2RZRWxZdlVibld3VG5wTVlFYTBFQzFpdV9HLUsxZ21CM0otQ3BhZw?oc=5",
-    "summary": "Neymar no Corinthians? Xará do craque do Santos brilha em final do Paulista Sub-7 de futsal ge",
-    "impact": "Ajuda a entender o contexto competitivo do Paulista A2."
-  },
-  {
-    "id": "auto-2026-05-12-6",
-    "title": "Neymar faz quatro gols e dá título paulista ao Corinthians; entenda - CNN Brasil",
-    "category": "Campeonato",
-    "date": "2025-10-18",
-    "source": "CNN Brasil",
-    "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPWnFwQ0VVWjVpSzFnanJJQXBlMm01NXlvc3MtdGw4SGV5V2M3aHV4ZE91QnhpNnowWkVwWVRKVVJaY0xNaUdnQ0JFdVhEakp6R0NVdjBscl9WZS03MXNyUmEzbjZCM2xSLTMyUjJwek9BMVNpWER6U2pac0d5Z085MXNwME02dFRub3MxZVRqaC05aEk1OTZxd0VGdUdxOGo2MFJ0NHhaXzhoakV1R2hpNV9XOHVCZk0zZW5tWlVIQ1Zla0E?oc=5",
-    "summary": "Neymar faz quatro gols e dá título paulista ao Corinthians; entenda CNN Brasil",
-    "impact": "Ajuda a entender o contexto competitivo do Paulista A2."
-  },
-  {
-    "id": "auto-2026-05-12-7",
-    "title": "Ferraz realizará seletiva para disputar a Federação Paulista de Futsal - Portal News",
-    "category": "FPFS",
-    "date": "2026-02-25",
-    "source": "Portal News",
-    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPMUg2SzQ1cVVaSmt5ZjZYeG9mdGI3TWc2V2tDMWhFR3JraUdtaU40R1hxMUlEMEFPUlBNOE92Z1gyMHc0elIwUXF6Y1hqdnZsWU9yUV8wdDVkUWZFa2lIYXFKZllrN2dKdUY2Y0JNdlNacGw3dElvU1FIQ2F6SnZLLS1SbWt0UXNnSEhXWDBHTUhEalNNbWlPSzR5ekREZDRCVEdtNkl1V3JNcXVERWowUlRXZw?oc=5",
-    "summary": "Ferraz realizará seletiva para disputar a Federação Paulista de Futsal Portal News",
-    "impact": "Fonte util para conferencia de rodada, regulamento e calendario."
-  },
-  {
-    "id": "auto-2026-05-12-8",
-    "title": "Futsal de base estreia neste sábado no Campeonato Paulista contra o CE Penha - Município de Praia Grande",
-    "category": "Suzano",
-    "date": "2026-03-20",
-    "source": "Município de Praia Grande",
-    "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPT2lRTnJvakIxVjRsY1duUnVidFVibUpuT0M3aE9fNVdGVmQzOE9wczhUMHotNDdibnBkMG9XaUdnMWNnMkxXVTExQWRLcncxaDY1LXU0aVptT01EMjVIdV9Fbk1ZX1BuWVFiN3p2WUd4LXE5bHNYbXYzWENzNkNZdVNwX0lsejFxemNvOGdzdUJFYzMyTU4yajhNSER2SC15RTRpRlhoeGF4R1kwdThFeWZfZWpWWEUwNlRz?oc=5",
-    "summary": "Futsal de base estreia neste sábado no Campeonato Paulista contra o CE Penha Município de Praia Grande",
-    "impact": "Reforca o contexto regional em torno do clube e da cidade."
-  },
-  {
-    "id": "auto-2026-05-12-9",
-    "title": "IAC estreia com goleadas nos Paulistas de base, e times de Suzano vencem no Sub-17 - ge",
-    "category": "Suzano",
-    "date": "2026-04-27",
-    "source": "ge",
-    "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOc1Z6amFmSTB6WFdQMllQWVV3RTA4d2ZIc2RTWklTMGZiMUg1UUdXcWtqbnVUMnVnTzUxRXRtZkdnSEFyRXkxVC1UM0wxV3R6aEVpWUI2dHhfejIzdkxpVmRyaGdvbzJQa3dCUmcxUEk1MTJlX1lrWHVDaHNyaE51MFR2NURYMHdZZHNQMlFqRGoxZWZWdHZQNTFBQW9CMWFQQmRDMmZ3VTYtekxmSEJQUWlZZlhZVm9vZzRmV0FaZ0JINFJ1OFVmWS1TWXZwN1pIYnFwWExySmx6NHVaWk03NVNRQUZER2VYU1Rzb3dZX2RESXfSAYICQVVfeXFMTTFaandZNGxOYmt6ZXhpRElBbEpVTmpBQVFYdHRCYWc3eW5La1Z3bWt0eHZDME5sbWl2aTZORkpiTlctN3ZzR3dCeWp5aER2YnQ0REtvNDRJRmp2OG0xckxFSC03ZTRIMGFxYjZHS2Zra1ZDYTJDUFRoTEh0QU5JTFE3QThBcTJjMkpfMXhpaVE5STVwQ3ByZnJRM2tTMWt4VnhTYnBPUEMyc2ViTm1TZmlkTUh6WDk1S183dmNQdE8ya3c2Z0R2ZmhCdHB3empvMVJvTkZQeXczb1FPb1c2ZVFUNmNvWEF5R1VFNlZ3Mzd3bXhOZ0ZfdW93ZTdBVUtJNnRR?oc=5",
-    "summary": "IAC estreia com goleadas nos Paulistas de base, e times de Suzano vencem no Sub-17 ge",
-    "impact": "Reforca o contexto regional em torno do clube e da cidade."
-  },
-  {
-    "id": "auto-2026-05-12-10",
     "title": "AD Suzano segue com foco no Paulista A2 Sub-7",
     "category": "Boletim",
     "source": "Boletim do portal",
     "url": null,
-    "summary": "A rotina da semana combina leitura de tabela, desempenho recente e preparacao para os proximos confrontos do Sub-7.",
-    "impact": "Mantem a comissao com um resumo objetivo mesmo quando ha pouca cobertura externa.",
+    "summary": "A rotina da semana combina leitura de tabela, desempenho recente e preparação para os próximos confrontos do Sub-7.",
+    "impact": "Mantém a comissão com um resumo objetivo mesmo quando há pouca cobertura externa.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-6",
+    "title": "AD Suzano prepara semana com três treinos e jogo oficial",
+    "category": "Agenda",
+    "source": "Boletim do portal",
+    "url": null,
+    "summary": "A semana tem treino normal, trabalho específico para goleiros, acompanhamento psicológico e confronto contra o Ocian Praia Clube.",
+    "impact": "Ajuda famílias e comissão a visualizarem a rotina completa do Sub-7.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-7",
+    "title": "Vitória sobre o Santo André fortalece a confiança do grupo",
+    "category": "Campanha",
+    "source": "Boletim do portal",
+    "url": null,
+    "summary": "O 7 x 3 fora de casa segue como referência positiva para a preparação da equipe antes da próxima rodada.",
+    "impact": "Reforça a leitura de evolução ofensiva e confiança coletiva.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-8",
+    "title": "Confronto com o Ocian exige atenção à saída de bola",
+    "category": "Pré-jogo",
+    "source": "Tabela FPFS",
+    "url": "https://eventos.admfutsal.com.br/evento/900/jogos",
+    "summary": "O próximo jogo oficial será no Ginásio do SESC - Suzano, contra o Ocian Praia Clube, no sábado, às 15h.",
+    "impact": "O mando de quadra favorece rotina, apoio e organização pré-jogo.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-9",
+    "title": "AD Suzano mantém bom volume ofensivo no Sub-7",
+    "category": "Análise",
+    "source": "Boletim do portal",
+    "url": null,
+    "summary": "A equipe soma 31 gols nos jogos cadastrados, indicador importante para medir repertório e agressividade ofensiva.",
+    "impact": "O ataque é um dos pilares da projeção semanal do portal.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-10",
+    "title": "Saldo positivo sustenta projeção competitiva do AD Suzano",
+    "category": "Análise",
+    "source": "Boletim do portal",
+    "url": null,
+    "summary": "O saldo de gols e a sequência recente ajudam a estimar a força do time dentro da campanha.",
+    "impact": "A projeção de título será revisada conforme novos resultados entrarem.",
     "date": "2026-05-12"
   }
 ];

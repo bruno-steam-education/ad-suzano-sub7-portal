@@ -7,16 +7,8 @@ const feeds = [
     url: 'https://news.google.com/rss/search?q=%22AD%20Suzano%22%20futsal&hl=pt-BR&gl=BR&ceid=BR:pt-419',
   },
   {
-    category: 'Campeonato',
-    url: 'https://news.google.com/rss/search?q=%22Campeonato%20Paulista%22%20%22Sub-7%22%20futsal&hl=pt-BR&gl=BR&ceid=BR:pt-419',
-  },
-  {
-    category: 'FPFS',
-    url: 'https://news.google.com/rss/search?q=%22Federa%C3%A7%C3%A3o%20Paulista%20de%20Futsal%22%20A2&hl=pt-BR&gl=BR&ceid=BR:pt-419',
-  },
-  {
-    category: 'Suzano',
-    url: 'https://news.google.com/rss/search?q=Suzano%20futsal%20base&hl=pt-BR&gl=BR&ceid=BR:pt-419',
+    category: 'AD Suzano',
+    url: 'https://news.google.com/rss/search?q=%22A.D.%20Suzano%22%20futsal&hl=pt-BR&gl=BR&ceid=BR:pt-419',
   },
 ];
 
@@ -27,89 +19,89 @@ const evergreen = [
     source: 'Boletim do portal',
     url: null,
     summary:
-      'A rotina da semana combina leitura de tabela, desempenho recente e preparacao para os proximos confrontos do Sub-7.',
-    impact: 'Mantem a comissao com um resumo objetivo mesmo quando ha pouca cobertura externa.',
+      'A rotina da semana combina leitura de tabela, desempenho recente e preparação para os próximos confrontos do Sub-7.',
+    impact: 'Mantém a comissão com um resumo objetivo mesmo quando há pouca cobertura externa.',
   },
   {
-    title: 'Analise por adversarios em comum segue no radar',
-    category: 'Analise',
+    title: 'AD Suzano prepara semana com três treinos e jogo oficial',
+    category: 'Agenda',
     source: 'Boletim do portal',
     url: null,
     summary:
-      'Resultados indiretos ajudam a estimar vantagem competitiva quando equipes ainda nao se enfrentaram diretamente.',
-    impact: 'Serve de base para as chances exibidas nos proximos jogos.',
+      'A semana tem treino normal, trabalho específico para goleiros, acompanhamento psicológico e confronto contra o Ocian Praia Clube.',
+    impact: 'Ajuda famílias e comissão a visualizarem a rotina completa do Sub-7.',
   },
   {
-    title: 'Videos do YouTube podem enriquecer a leitura individual',
-    category: 'Atletas',
-    source: 'Boletim do portal',
-    url: null,
-    summary:
-      'Quando links forem cadastrados por atleta, o portal pode cruzar metadados e observacoes tecnicas para montar uma linha de evolucao.',
-    impact: 'Ajuda pais e comissao a acompanhar desenvolvimento sem depender apenas do placar.',
-  },
-  {
-    title: 'Calendario oficial segue como fonte principal de rodada',
-    category: 'FPFS',
-    source: 'Tabela FPFS',
-    url: 'https://eventos.admfutsal.com.br/evento/900/jogos',
-    summary:
-      'A tabela publica da FPFS continua sendo a referencia para datas, horarios, ginasios e resultados do Paulista Sub-7 A2.',
-    impact: 'Reduz risco de informacao desencontrada no planejamento da semana.',
-  },
-  {
-    title: 'Clima e data passam a aparecer em tempo real no portal',
-    category: 'Plataforma',
-    source: 'Boletim do portal',
-    url: null,
-    summary:
-      'O topo do site exibe a data de hoje, temperatura e sensacao termica de Suzano quando a API de clima esta disponivel.',
-    impact: 'Torna o portal mais vivo para uso diario por pais, atletas e comissao.',
-  },
-  {
-    title: 'Proximos jogos continuam priorizados na leitura da semana',
-    category: 'Pre-jogo',
-    source: 'Boletim do portal',
-    url: null,
-    summary:
-      'O bloco de confrontos usa resultados recentes, mando de quadra e adversarios em comum para contextualizar a chance de vitoria.',
-    impact: 'Ajuda a transformar placares soltos em uma leitura competitiva mais clara.',
-  },
-  {
-    title: 'Sequencia recente orienta foco de treino',
-    category: 'Treino',
-    source: 'Boletim do portal',
-    url: null,
-    summary:
-      'A analise semanal destaca pontos de atencao como saida de bola, segundo pau, recomposicao e comportamento em bola parada.',
-    impact: 'Aproxima o portal do trabalho real de quadra.',
-  },
-  {
-    title: 'Historico do Sub-7 ganha leitura visual consolidada',
+    title: 'Vitória sobre o Santo André fortalece a confiança do grupo',
     category: 'Campanha',
     source: 'Boletim do portal',
     url: null,
     summary:
-      'Resultados, empates, derrotas e proximos jogos aparecem em uma linha de campanha simples para leitura rapida.',
-    impact: 'Facilita acompanhar a evolucao sem abrir a tabela oficial toda vez.',
+      'O 7 x 3 fora de casa segue como referência positiva para a preparação da equipe antes da próxima rodada.',
+    impact: 'Reforça a leitura de evolução ofensiva e confiança coletiva.',
   },
   {
-    title: 'Atletas seguem com acompanhamento individual preparado',
-    category: 'Atletas',
+    title: 'Confronto com o Ocian exige atenção à saída de bola',
+    category: 'Pré-jogo',
+    source: 'Tabela FPFS',
+    url: 'https://eventos.admfutsal.com.br/evento/900/jogos',
+    summary:
+      'O próximo jogo oficial será no Ginásio do SESC - Suzano, contra o Ocian Praia Clube, no sábado, às 15h.',
+    impact: 'O mando de quadra favorece rotina, apoio e organização pré-jogo.',
+  },
+  {
+    title: 'AD Suzano mantém bom volume ofensivo no Sub-7',
+    category: 'Análise',
     source: 'Boletim do portal',
     url: null,
     summary:
-      'A area individual permite registrar indicadores, observacoes tecnicas e futuramente cruzar videos cadastrados por jogador.',
-    impact: 'Valoriza desenvolvimento, disciplina e confianca alem dos gols.',
+      'A equipe soma 31 gols nos jogos cadastrados, indicador importante para medir repertório e agressividade ofensiva.',
+    impact: 'O ataque é um dos pilares da projeção semanal do portal.',
   },
   {
-    title: 'Radar semanal separa fonte externa de analise propria',
-    category: 'Noticias',
+    title: 'Saldo positivo sustenta projeção competitiva do AD Suzano',
+    category: 'Análise',
     source: 'Boletim do portal',
     url: null,
     summary:
-      'Quando a noticia vem de site externo, o portal mostra a fonte; quando e leitura interna, o item aparece como boletim.',
-    impact: 'Da mais transparencia sobre o que e cobertura jornalistica e o que e analise do projeto.',
+      'O saldo de gols e a sequência recente ajudam a estimar a força do time dentro da campanha.',
+    impact: 'A projeção de título será revisada conforme novos resultados entrarem.',
+  },
+  {
+    title: 'Treino de goleiros ganha espaço próprio na agenda',
+    category: 'Treino',
+    source: 'Boletim do portal',
+    url: null,
+    summary:
+      'A sexta-feira tem treino específico para goleiros antes do treino normal do grupo.',
+    impact: 'A rotina destaca uma posição decisiva para controle emocional e início das jogadas.',
+  },
+  {
+    title: 'Acompanhamento psicológico entra na rotina da semana',
+    category: 'Formação',
+    source: 'Boletim do portal',
+    url: null,
+    summary:
+      'Na quarta-feira, após o treino, a equipe tem atividade com psicóloga no CIE.',
+    impact: 'Mostra que a formação do Sub-7 vai além do desempenho técnico.',
+  },
+  {
+    title: 'SESC Suzano volta a ser ponto central da rodada',
+    category: 'Jogo',
+    source: 'Boletim do portal',
+    url: null,
+    summary:
+      'O jogo oficial do sábado será no Ginásio do SESC - Suzano, casa importante para a rotina competitiva do AD Suzano.',
+    impact: 'A familiaridade com o ambiente pode ajudar concentração e preparação.',
+  },
+  {
+    title: 'AD Suzano usa dados para transformar placares em leitura de jogo',
+    category: 'Dados',
+    source: 'Boletim do portal',
+    url: null,
+    summary:
+      'O portal cruza resultados, próximos confrontos, mando de quadra e sequência recente para explicar probabilidades.',
+    impact: 'A leitura semanal fica mais clara para comissão, famílias e atletas.',
   },
 ];
 
@@ -162,12 +154,14 @@ function isFreshEnough(item) {
 function impactFor(category) {
   const impacts = {
     'AD Suzano': 'Pode influenciar a narrativa da semana e o acompanhamento da base.',
-    Campeonato: 'Ajuda a entender o contexto competitivo do Paulista A2.',
-    FPFS: 'Fonte util para conferencia de rodada, regulamento e calendario.',
-    Suzano: 'Reforca o contexto regional em torno do clube e da cidade.',
   };
 
   return impacts[category] ?? 'Item monitorado para compor o radar semanal.';
+}
+
+function isAboutAdSuzano(item) {
+  const haystack = `${item.title} ${item.summary} ${item.source}`.toLowerCase();
+  return haystack.includes('ad suzano') || haystack.includes('a.d. suzano');
 }
 
 function todayKey() {
@@ -217,8 +211,9 @@ const fetchedByFeed = (
 ).flatMap((result) => {
   if (result.status !== 'fulfilled') return [];
   return result.value
+    .filter(isAboutAdSuzano)
     .filter(isFreshEnough)
-    .slice(0, 3);
+    .slice(0, 5);
 });
 
 const seen = new Set();
@@ -241,4 +236,4 @@ export const newsItems = ${JSON.stringify(news, null, 2)};
 `;
 
 await writeFile(new URL('../src/data/news.js', import.meta.url), content);
-console.log(`Atualizadas ${news.length} noticias para ${weekMondayKey()}.`);
+console.log(`Atualizadas ${news.length} notícias do AD Suzano para ${weekMondayKey()}.`);

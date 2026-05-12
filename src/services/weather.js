@@ -23,7 +23,7 @@ const weatherLabels = {
 export async function fetchSuzanoWeather() {
   const response = await fetch(SUZANO_WEATHER_URL);
   if (!response.ok) {
-    throw new Error('Clima indisponivel');
+    throw new Error('Clima indisponível');
   }
 
   const data = await response.json();

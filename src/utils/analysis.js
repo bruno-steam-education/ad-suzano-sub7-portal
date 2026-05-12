@@ -121,9 +121,9 @@ export function championshipProjection() {
     projectedPoints: Number(projectedPoints.toFixed(1)),
     reasons: [
       `${record.points} pontos em ${record.played} jogos, com ${Math.round(currentEfficiency * 100)}% de aproveitamento.`,
-      `Sequencia recente com ${recentWins} vitorias nos ultimos 4 jogos mapeados.`,
-      `Saldo de ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} e media de ${record.attackRate.toFixed(1)} gols por jogo.`,
-      `Projecao estatistica de ${Number(projectedPoints.toFixed(1))} pontos apos os proximos jogos cadastrados.`,
+      `Sequência recente com ${recentWins} vitórias nos últimos 4 jogos mapeados.`,
+      `Saldo de ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} e média de ${record.attackRate.toFixed(1)} gols por jogo.`,
+      `Projeção estatística de ${Number(projectedPoints.toFixed(1))} pontos após os próximos jogos cadastrados.`,
     ],
   };
 }
@@ -159,7 +159,7 @@ function buildReasons(opponent, suzano, rival, match) {
   }
 
   if (rival.played) {
-    reasons.push(`${opponent} tem media de ${rival.attackRate.toFixed(1)} gols feitos e ${rival.defenseRate.toFixed(1)} sofridos nos dados mapeados.`);
+    reasons.push(`${opponent} tem média de ${rival.attackRate.toFixed(1)} gols feitos e ${rival.defenseRate.toFixed(1)} sofridos nos dados mapeados.`);
   }
 
   return reasons.slice(0, 4);
