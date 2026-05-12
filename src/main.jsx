@@ -12,6 +12,8 @@ import {
   Trophy,
   Users,
 } from 'lucide-react';
+import suzanoLogo from './assets/ad-suzano-logo.png';
+import { newsItems, newsWeek } from './data/news';
 import { players } from './data/players';
 import { sourceLinks, teamName, weeklyNotes } from './data/season';
 import {
@@ -39,6 +41,7 @@ function App() {
   return (
     <main className="app-shell">
       <Hero record={record} nextMatch={nextSuzano[0]} />
+      <NewsBanner />
 
       <section className="content-grid">
         <div className="main-flow">
@@ -57,6 +60,73 @@ function App() {
       </section>
     </main>
   );
+}
+
+function NewsBanner() {
+  const [lead, ...rest] = newsItems;
+  const featureItems = rest.slice(0, 3);
+  const tickerItems = rest.slice(3);
+
+  return (
+    <section className="news-band" aria-labelledby="news-title">
+      <div className="news-heading">
+        <div>
+          <span>Ultimas noticias</span>
+          <h2 id="news-title">Radar semanal AD Suzano</h2>
+        </div>
+        <strong>{newsItems.length} noticias na semana de {formatShortDate(newsWeek)}</strong>
+      </div>
+
+      <div className="news-layout">
+        <article className="lead-news">
+          <div className="news-tag">{lead.category}</div>
+          <h3>{lead.title}</h3>
+          <p>{lead.summary}</p>
+          <div className="news-impact">{lead.impact}</div>
+          <NewsLink item={lead} />
+        </article>
+
+        <div className="news-stack">
+          {featureItems.map((item) => (
+            <article className="mini-news" key={item.id}>
+              <div>
+                <span>{item.category}</span>
+                <h3>{item.title}</h3>
+              </div>
+              <p>{item.summary}</p>
+              <NewsLink item={item} />
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="news-rail">
+        {tickerItems.map((item) => (
+          <article className="rail-news" key={item.id}>
+            <span>{item.category}</span>
+            <strong>{item.title}</strong>
+            <small>{item.source}</small>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function NewsLink({ item }) {
+  if (!item.url) {
+    return <span className="source-chip">{item.source}</span>;
+  }
+
+  return (
+    <a className="source-chip" href={item.url} target="_blank" rel="noreferrer">
+      {item.source}
+    </a>
+  );
+}
+
+function formatShortDate(value) {
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 }
 
 function Hero({ record, nextMatch }) {
@@ -81,7 +151,7 @@ function Hero({ record, nextMatch }) {
       </div>
 
       <div className="crest-stage" aria-label="Escudo AD Suzano">
-        <img className="crest-image" src="./ad-suzano-logo.png" alt="Escudo AD Suzano" />
+        <img className="crest-image" src={suzanoLogo} alt="Escudo AD Suzano" />
       </div>
 
       <div className="stat-strip">

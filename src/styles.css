@@ -137,10 +137,194 @@ input {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
   gap: 24px;
   max-width: 1440px;
-  margin: -44px auto 0;
+  margin: 24px auto 0;
   padding: 0 clamp(16px, 4vw, 48px) 56px;
   position: relative;
   z-index: 3;
+}
+
+.news-band {
+  max-width: 1440px;
+  margin: -58px auto 0;
+  padding: 24px clamp(16px, 4vw, 48px) 0;
+  position: relative;
+  z-index: 4;
+}
+
+.news-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--red), #7f1d1d 46%, var(--blue) 46.4%);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 16px 40px rgba(8, 23, 52, 0.14);
+}
+
+.news-heading span,
+.mini-news span,
+.rail-news span {
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.news-heading h2 {
+  margin: 4px 0 0;
+  font-size: clamp(30px, 4vw, 54px);
+  line-height: 0.95;
+}
+
+.news-heading strong {
+  max-width: 260px;
+  text-align: right;
+  font-size: 15px;
+  color: #e5edf7;
+}
+
+.news-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 14px;
+  padding: 14px;
+  background: #071a3d;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 16px 40px rgba(8, 23, 52, 0.14);
+}
+
+.lead-news,
+.mini-news,
+.rail-news {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+}
+
+.lead-news {
+  min-height: 360px;
+  display: grid;
+  align-content: end;
+  gap: 14px;
+  padding: clamp(22px, 4vw, 42px);
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(9, 39, 92, 0.3), rgba(9, 39, 92, 0.94)),
+    linear-gradient(120deg, rgba(217, 35, 50, 0.96) 0 18%, transparent 18.4%),
+    url("./assets/ad-suzano-logo.png") right 8% center / min(44%, 330px) no-repeat,
+    #0b1d43;
+}
+
+.news-tag {
+  width: fit-content;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.lead-news h3 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(34px, 5vw, 70px);
+  line-height: 0.92;
+}
+
+.lead-news p {
+  max-width: 760px;
+  margin: 0;
+  color: #d9e5f3;
+  font-size: 18px;
+}
+
+.news-impact {
+  max-width: 760px;
+  padding: 13px 15px;
+  border-left: 5px solid #fff;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 850;
+}
+
+.news-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.mini-news {
+  display: grid;
+  gap: 10px;
+  min-height: 110px;
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.mini-news span {
+  color: var(--red);
+}
+
+.mini-news h3 {
+  margin: 3px 0 0;
+  font-size: 19px;
+  line-height: 1.08;
+}
+
+.mini-news p {
+  margin: 0;
+  color: #475569;
+}
+
+.source-chip {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.mini-news .source-chip {
+  background: #e2e8f0;
+}
+
+.news-rail {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(210px, 1fr));
+  gap: 10px;
+  overflow-x: auto;
+  padding: 12px 0 2px;
+  scrollbar-color: var(--blue) #dbe7f4;
+}
+
+.rail-news {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 128px;
+  padding: 14px;
+  background: #fff;
+}
+
+.rail-news span {
+  color: var(--red);
+}
+
+.rail-news strong {
+  line-height: 1.12;
+}
+
+.rail-news small {
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .main-flow,
@@ -440,7 +624,8 @@ input {
 
 @media (max-width: 980px) {
   .hero,
-  .content-grid {
+  .content-grid,
+  .news-layout {
     grid-template-columns: 1fr;
   }
 
@@ -481,5 +666,25 @@ input {
 
   .timeline-row em {
     text-align: left;
+  }
+
+  .news-band {
+    margin-top: -28px;
+  }
+
+  .news-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .news-heading strong {
+    text-align: left;
+  }
+
+  .lead-news {
+    background:
+      linear-gradient(135deg, rgba(9, 39, 92, 0.62), rgba(9, 39, 92, 0.96)),
+      url("./assets/ad-suzano-logo.png") right -24px top 18px / 170px no-repeat,
+      #0b1d43;
   }
 }
