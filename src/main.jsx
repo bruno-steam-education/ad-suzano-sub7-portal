@@ -319,6 +319,19 @@ function CategoryNewsPanel({ category }) {
   );
   const leadNews = categoryNews[0];
   const extraNews = categoryNews.slice(1, 3);
+  const fallbackTitle = latest
+    ? `${category.label}: AD Suzano fecha último compromisso contra ${latest.home === teamName ? latest.away : latest.home}`
+    : next
+      ? `${category.label}: AD Suzano tem próximo jogo definido no Paulista A2`
+      : `AD Suzano ${category.label}: categoria segue sem nova notícia externa localizada`;
+  const fallbackSummary = latest
+    ? `Pela Súmula Online da FPFS, o jogo mais recente localizado terminou ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}.`
+    : next
+      ? `A tabela da FPFS aponta ${next.home} x ${next.away} em ${formatShortDate(next.date)}, às ${next.time || 'horário a confirmar'}, no local ${next.venue}.`
+      : 'A busca pública não encontrou notícia externa específica desta categoria. O painel mantém somente dados confirmados da FPFS.';
+  const fallbackImpact = record?.played
+    ? `Campanha localizada: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
+    : 'Assim que a FPFS publicar jogos ou resultados da categoria, o radar passa a destacar a rodada.';
 
   return (
     <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
@@ -329,8 +342,8 @@ function CategoryNewsPanel({ category }) {
         </div>
         <strong>
           {categoryNews.length
-            ? `${categoryNews.length} itens monitorados para ${category.label}`
-            : 'Boletim pesquisado na Súmula Online da FPFS'}
+            ? `${categoryNews.length} notícias para ${category.label}`
+            : 'Atualizado pela Súmula Online da FPFS'}
         </strong>
       </div>
       <div className="category-empty-news">
@@ -338,23 +351,13 @@ function CategoryNewsPanel({ category }) {
         <h3>
           {leadNews
             ? leadNews.title
-            : latest
-              ? `${category.label}: último jogo oficial foi ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}`
-              : next
-                ? `${category.label}: próximo jogo oficial será ${next.home} x ${next.away}`
-                : `AD Suzano ${category.label}: sem nova publicação específica localizada`}
+            : fallbackTitle}
         </h3>
         <p>
-          {leadNews?.summary ??
-            (record?.played
-              ? `Campanha localizada na FPFS: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
-              : 'A pesquisa pública não encontrou jogos oficiais do AD Suzano nesta categoria no A2 2026.')}
+          {leadNews?.summary ?? fallbackSummary}
         </p>
         <div className="news-impact">
-          {leadNews?.impact ??
-            (next
-              ? `Próximo compromisso: ${formatShortDate(next.date)} às ${next.time || 'horário a confirmar'}, em ${next.venue}.`
-              : 'Sem compromisso futuro localizado para destacar nesta categoria.')}
+          {leadNews?.impact ?? fallbackImpact}
         </div>
         {extraNews.length > 0 && (
           <div className="category-news-list">

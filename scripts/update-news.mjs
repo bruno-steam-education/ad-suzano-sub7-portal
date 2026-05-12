@@ -132,6 +132,7 @@ const evergreen = [
   },
 ];
 
+/*
 const categoryEvergreen = CATEGORY_ORDER.flatMap((category) => [
   {
     title: `AD Suzano ${category}: monitoramento diário da categoria`,
@@ -154,6 +155,7 @@ const categoryEvergreen = CATEGORY_ORDER.flatMap((category) => [
     impact: 'Ajuda a separar o que é notícia pública, o que vem da FPFS e o que ainda precisa de confirmação.',
   },
 ]);
+*/
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -300,7 +302,6 @@ const collected = [
   { ...normalizeStaticItem(priorityLead), date: todayKey() },
   ...fetchedByFeed,
   ...evergreen.map((item) => ({ ...normalizeStaticItem(item), date: todayKey() })),
-  ...categoryEvergreen.map((item) => ({ ...normalizeStaticItem(item), date: todayKey() })),
 ]
   .filter((item) => {
     const key = `${item.title}-${item.url ?? ''}`.toLowerCase();
