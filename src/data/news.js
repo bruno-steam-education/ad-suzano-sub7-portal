@@ -5,6 +5,7 @@ export const newsItems = [
     "id": "auto-2026-05-12-1",
     "title": "AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães",
     "category": "Sub-7",
+    "scope": "AD Suzano Sub-7",
     "source": "Boletim do portal",
     "url": null,
     "summary": "No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.",

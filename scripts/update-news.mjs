@@ -15,6 +15,7 @@ const feeds = [
 const priorityLead = {
   title: 'AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães',
   category: 'Sub-7',
+  scope: 'AD Suzano Sub-7',
   source: 'Boletim do portal',
   url: null,
   summary:

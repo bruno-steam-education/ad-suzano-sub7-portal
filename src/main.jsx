@@ -82,9 +82,10 @@ function App() {
 }
 
 function NewsBanner() {
-  const [lead, ...rest] = newsItems;
-  const featureItems = rest.slice(0, 3);
-  const tickerItems = rest.slice(3);
+  const lead = newsItems.find((item) => item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7') ?? newsItems[0];
+  const orderedNews = [lead, ...newsItems.filter((item) => item.id !== lead.id)];
+  const featureItems = orderedNews.slice(1, 4);
+  const tickerItems = orderedNews.slice(4);
 
   return (
     <section className="news-band" aria-labelledby="news-title">
