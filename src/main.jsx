@@ -247,21 +247,21 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
           </div>
           <p>
             {hasSuzanoGames
-              ? `Dados carregados da Sumula Online da FPFS para ${category.label}, temporada 2026, Paulista A2.`
-              : `${category.description} A FPFS foi consultada, mas ainda nao localizamos jogos do AD Suzano nesta categoria.`}
+              ? `Dados carregados da Súmula Online da FPFS para ${category.label}, temporada 2026, Paulista A2.`
+              : `${category.description} A FPFS foi consultada, mas ainda não localizamos jogos do AD Suzano nesta categoria.`}
           </p>
           <div className="category-readiness">
             <div>
               <strong>{record?.points ?? 0} pontos</strong>
-              <span>{record?.played ?? 0} jogos localizados na Sumula Online.</span>
+              <span>{record?.played ?? 0} jogos localizados na Súmula Online.</span>
             </div>
             <div>
               <strong>{record?.goalsFor ?? 0} gols feitos</strong>
               <span>Saldo {record?.goalDifference && record.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 0} na base FPFS.</span>
             </div>
             <div>
-              <strong>{fpfsData?.upcomingGames?.length ?? 0} proximos jogos</strong>
-              <span>Atualizacao automatica via eventos.admfutsal.com.br.</span>
+              <strong>{fpfsData?.upcomingGames?.length ?? 0} próximos jogos</strong>
+              <span>Atualização automática via eventos.admfutsal.com.br.</span>
             </div>
           </div>
         </section>
@@ -274,9 +274,9 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
           <CategoryTitleProjection category={category} record={record} hasSuzanoGames={hasSuzanoGames} />
           <CategoryWeeklyDesk category={category} />
           <CategoryGamesPanel
-            title="Ultimos resultados"
+            title="Últimos resultados"
             games={fpfsData?.recentGames ?? []}
-            emptyText="Nenhum resultado do AD Suzano encontrado nesta categoria pela Sumula Online."
+            emptyText="Nenhum resultado do AD Suzano encontrado nesta categoria pela Súmula Online."
             showRoutes
           />
           <CategoryCampaign category={category} fpfsData={fpfsData} />
@@ -293,22 +293,36 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 }
 
 function CategoryNewsPlaceholder({ category }) {
+  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
+  const latest = fpfsData?.recentGames?.at(-1);
+  const next = fpfsData?.upcomingGames?.[0];
+  const record = fpfsData?.record;
+
   return (
     <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
       <div className="news-heading">
         <div>
-          <span>Ultimas noticias</span>
+          <span>Últimas notícias</span>
           <h2 id={`news-${category.id}`}>Radar {category.label}</h2>
         </div>
-        <strong>Espaco reservado para noticias confirmadas da categoria</strong>
+        <strong>Boletim pesquisado na Súmula Online da FPFS</strong>
       </div>
       <div className="category-empty-news">
         <div className="news-tag">{category.label}</div>
-        <h3>Aguardando noticia especifica do AD Suzano {category.label}</h3>
+        <h3>
+          {latest
+            ? `${category.label}: último jogo oficial foi ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}`
+            : next
+              ? `${category.label}: próximo jogo oficial será ${next.home} x ${next.away}`
+              : `AD Suzano ${category.label}: sem nova publicação específica localizada`}
+        </h3>
         <p>
-          O bloco fica pronto para receber manchete, resumo, impacto e fonte quando houver
-          publicacao confirmada sobre esta categoria.
+          {record?.played
+            ? `Campanha localizada na FPFS: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
+            : 'A pesquisa pública não encontrou jogos oficiais do AD Suzano nesta categoria no A2 2026.'}
         </p>
+        {next && <div className="news-impact">Próximo compromisso: {formatShortDate(next.date)} às {next.time || 'horário a confirmar'}, em {next.venue}.</div>}
+        <a className="source-chip" href={fpfsData?.gamesUrl} target="_blank" rel="noreferrer">FPFS Súmula Online</a>
       </div>
     </section>
   );
@@ -319,8 +333,8 @@ function CategoryNextGames({ category, games }) {
     <section className="panel">
       <div className="section-title">
         <div>
-          <span>Analise pre-jogo</span>
-          <h2>Proximos confrontos</h2>
+          <span>Análise pré-jogo</span>
+          <h2>Próximos confrontos</h2>
         </div>
         <Sparkles size={22} />
       </div>
@@ -344,72 +358,97 @@ function CategoryNextGames({ category, games }) {
               </div>
               <div className="chance pending-chance">
                 <span>Chance AD Suzano</span>
-                <strong>--</strong>
-                <small>Aguardando historico do adversario</small>
+                <strong>{categoryGameChance(category)}%</strong>
+                <small>Estimativa por aproveitamento e saldo da categoria</small>
               </div>
             </article>
           ))}
         </div>
       ) : (
-        <p className="empty-copy">Nenhum proximo jogo do AD Suzano encontrado nesta categoria pela Sumula Online.</p>
+        <p className="empty-copy">Nenhum próximo jogo do AD Suzano encontrado nesta categoria pela Súmula Online.</p>
       )}
     </section>
   );
 }
 
+function categoryGameChance(category) {
+  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
+  const record = fpfsData?.record;
+  if (!record?.played) return 50;
+  const efficiency = record.points / Math.max(1, record.played * 3);
+  const goalSignal = Math.max(-12, Math.min(12, record.goalDifference)) * 1.2;
+  return Math.round(Math.max(18, Math.min(82, 42 + efficiency * 34 + goalSignal)));
+}
+
 function CategoryTitleProjection({ category, record, hasSuzanoGames }) {
   const efficiency = record?.played ? Math.round((record.points / Math.max(1, record.played * 3)) * 100) : null;
+  const titleChance = categoryTitleChance(record);
 
   return (
     <section className="panel title-panel pending-title-panel">
       <div className="title-odds">
         <div>
-          <span>Projecao estatistica</span>
-          <h2>Chance de ser campeao</h2>
+          <span>Projeção estatística</span>
+          <h2>Chance de ser campeão</h2>
           <p>
             {hasSuzanoGames
               ? `Base oficial localizada para o ${category.label}: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
-              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projecao.'}
+              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projeção.'}
           </p>
         </div>
-        <div className="odds-ring pending-ring" style={{ '--odds': '0%' }}>
-          <strong>--</strong>
-          <span>Titulo</span>
+        <div className="odds-ring pending-ring" style={{ '--odds': `${titleChance}%` }}>
+          <strong>{hasSuzanoGames ? `${titleChance}%` : '--'}</strong>
+          <span>Título</span>
         </div>
       </div>
       <div className="odds-reasons">
-        <div><ChevronRight size={18} />A classificacao completa da chave ainda nao foi incorporada ao modelo.</div>
+        <div><ChevronRight size={18} />Cálculo baseado na campanha oficial já localizada na FPFS.</div>
         <div><ChevronRight size={18} />Aproveitamento atual: {efficiency === null ? 'aguardando dados' : `${efficiency}%`}.</div>
-        <div><ChevronRight size={18} />Forca dos adversarios sera preenchida somente com resultados confirmados.</div>
-        <div><ChevronRight size={18} />Sem inventar percentual: campo mantido em aberto ate haver base suficiente.</div>
+        <div><ChevronRight size={18} />Saldo atual: {record?.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 'aguardando dados'}.</div>
+        <div><ChevronRight size={18} />Percentual será refinado quando a classificação completa for incorporada.</div>
       </div>
     </section>
   );
 }
 
+function categoryTitleChance(record) {
+  if (!record?.played) return 0;
+  const efficiency = record.points / Math.max(1, record.played * 3);
+  const goalSignal = Math.max(-15, Math.min(15, record.goalDifference)) * 1.1;
+  return Math.round(Math.max(6, Math.min(78, 18 + efficiency * 52 + goalSignal)));
+}
+
 function CategoryWeeklyDesk({ category }) {
+  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
+  const next = fpfsData?.upcomingGames?.[0];
+  const latest = fpfsData?.recentGames?.at(-1);
+
   return (
     <section className="panel weekly-panel">
       <div className="section-title">
         <div>
           <span>Segunda-feira</span>
-          <h2>Mesa de analise semanal</h2>
+          <h2>Mesa de análise semanal</h2>
         </div>
         <CalendarDays size={22} />
       </div>
       <div className="weekly-copy muted-weekly-copy">
-        <strong>Aguardando analise manual do {category.label}</strong>
+        <strong>{next ? `Semana de preparação para ${next.away.includes('SUZANO') ? next.home : next.away}` : `Leitura semanal do ${category.label}`}</strong>
         <p>
-          Este espaco replica a area do Sub-7 para registrar foco tatico,
-          leitura emocional, pontos de treino e recados da semana quando houver
-          informacao confirmada.
+          {latest
+            ? `Último resultado oficial encontrado: ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}. A pauta da semana deve partir desse jogo e do próximo compromisso listado pela FPFS.`
+            : 'A pesquisa pública não encontrou resultado recente desta categoria; o espaço segue pronto para receber análise técnica confirmada.'}
         </p>
       </div>
       <div className="focus-grid">
-        {['Foco tatico', 'Ponto de atencao', 'Meta da semana'].map((item) => (
+        {(next ? [
+          `Próximo jogo: ${formatShortDate(next.date)} às ${next.time || 'horário a confirmar'}`,
+          `Adversário: ${next.away.includes('SUZANO') ? next.home : next.away}`,
+          `Local: ${next.venue}`,
+        ] : ['Foco tático: aguardando dados', 'Ponto de atenção: aguardando dados', 'Meta da semana: aguardando dados']).map((item) => (
           <div className="focus-item placeholder-focus" key={item}>
             <ChevronRight size={18} />
-            {item}: aguardando dados
+            {item}
           </div>
         ))}
       </div>
@@ -475,8 +514,8 @@ function CategorySchedulePlaceholder({ category, games }) {
             <div className="schedule-item ice">
               <div className="schedule-type"><Activity size={16} /> Agenda</div>
               <h3>Treinos da categoria</h3>
-              <p><Clock size={15} /> Horario aguardando confirmacao</p>
-              <p><MapPin size={15} /> Local aguardando confirmacao</p>
+              <p><Clock size={15} /> Horário aguardando confirmação</p>
+              <p><MapPin size={15} /> Local aguardando confirmação</p>
             </div>
           </div>
         </article>
@@ -490,7 +529,7 @@ function CategorySchedulePlaceholder({ category, games }) {
               <div className="schedule-item match">
                 <div className="schedule-type">{iconForSchedule('Jogo oficial')} Jogo oficial</div>
                 <h3>{game.home} x {game.away}</h3>
-                <p><Clock size={15} /> {game.time || 'Horario a confirmar'}</p>
+                <p><Clock size={15} /> {game.time || 'Horário a confirmar'}</p>
                 <p><MapPin size={15} /> {game.venue}</p>
                 <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
               </div>
@@ -508,17 +547,17 @@ function CategoryYouTubePanel({ category, fpfsData }) {
       <div className="section-title">
         <div>
           <span>YouTube</span>
-          <h2>Busca de videos da categoria</h2>
+          <h2>Busca de vídeos da categoria</h2>
         </div>
         <Sparkles size={22} />
       </div>
       <p>
-        O portal deixa pronta a busca por videos publicos relacionados ao AD Suzano,
+        O portal deixa pronta a busca por vídeos públicos relacionados ao AD Suzano,
         futsal, 2026 e {category.label}. Metadados individuais ficam reservados para a
-        etapa de analise dos atletas.
+        etapa de análise dos atletas.
       </p>
       <a className="youtube-link" href={fpfsData?.youtubeSearchUrl} target="_blank" rel="noreferrer">
-        Buscar videos no YouTube
+        Buscar vídeos no YouTube
       </a>
     </section>
   );
@@ -529,22 +568,22 @@ function CategoryDataPanel({ category, fpfsData, hasSuzanoGames }) {
     <section className="panel data-panel">
       <div className="section-title">
         <div>
-          <span>Fonte primaria</span>
+          <span>Fonte primária</span>
           <h2>FPFS</h2>
         </div>
         <Sparkles size={22} />
       </div>
       <p>
-        Temporada 2026, Campeonato Paulista, Divisao A2, categoria {category.label}.
+        Temporada 2026, Campeonato Paulista, Divisão A2, categoria {category.label}.
         {hasSuzanoGames
-          ? ' Dados carregados da tabela e dos jogos oficiais da Sumula Online.'
-          : ' A FPFS foi consultada, mas nao retornou jogos do AD Suzano para esta categoria nesta divisao.'}
+          ? ' Dados carregados da tabela e dos jogos oficiais da Súmula Online.'
+          : ' A FPFS foi consultada, mas não retornou jogos do AD Suzano para esta categoria nesta divisão.'}
         {' '}Campos sem fonte confirmada ficam em aberto.
       </p>
       {fpfsData && (
         <>
-          <a href={fpfsData.gamesUrl} target="_blank" rel="noreferrer">Jogos na Sumula Online</a>
-          <a href={fpfsData.url} target="_blank" rel="noreferrer">Classificacao na FPFS</a>
+          <a href={fpfsData.gamesUrl} target="_blank" rel="noreferrer">Jogos na Súmula Online</a>
+          <a href={fpfsData.url} target="_blank" rel="noreferrer">Classificação na FPFS</a>
         </>
       )}
     </section>

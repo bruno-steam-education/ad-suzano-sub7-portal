@@ -463,6 +463,22 @@ input {
   padding-left: 16px;
 }
 
+.match-reasons {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.match-reasons span {
+  padding: 10px;
+  border-radius: 8px;
+  background: #eef4fb;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .install-card {
   position: fixed;
   left: 14px;

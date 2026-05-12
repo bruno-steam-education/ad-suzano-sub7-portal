@@ -13,7 +13,7 @@ export const venueAddresses = {
     address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
     query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
   },
-  'GinÃ¡sio do SESC - Suzano': {
+  'Ginásio do SESC - Suzano': {
     address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
     query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
   },
@@ -25,7 +25,7 @@ export const venueAddresses = {
     address: 'Arena Chute Parada Inglesa, São Paulo - SP',
     query: 'Arena Chute Parada Inglesa, São Paulo, SP',
   },
-  'GinÃ¡sio Arena Chute Parada Inglesa': {
+  'Ginásio Arena Chute Parada Inglesa': {
     address: 'Arena Chute Parada Inglesa, São Paulo - SP',
     query: 'Arena Chute Parada Inglesa, São Paulo, SP',
   },
