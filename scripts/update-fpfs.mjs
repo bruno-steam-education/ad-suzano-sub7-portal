@@ -12,7 +12,13 @@ function cleanText(value = '') {
 }
 
 function normalizeTeam(value = '') {
-  return cleanText(value).replace(/\s+\|.+$/, '').toUpperCase();
+  const text = cleanText(value).toUpperCase();
+  const parts = text.split('|').map((part) => cleanText(part));
+  return parts.find((part) => part.includes('SUZANO')) ?? text;
+}
+
+function isSuzanoTeam(value = '') {
+  return normalizeTeam(value).includes('SUZANO');
 }
 
 function parseScore(value = '') {
@@ -74,7 +80,7 @@ async function scrapeGames(event) {
     if (teams.length < 2) return;
     const home = normalizeTeam(teams[0]);
     const away = normalizeTeam(teams[1]);
-    if (!home.includes('SUZANO') && !away.includes('SUZANO')) return;
+    if (!isSuzanoTeam(home) && !isSuzanoTeam(away)) return;
 
     const [day, month] = dateText.split('/');
     const score = parseScore(result);
@@ -96,7 +102,7 @@ function recordFor(games) {
   return games.reduce(
     (record, game) => {
       if (!Number.isFinite(game.homeGoals) || !Number.isFinite(game.awayGoals)) return record;
-      const home = game.home.includes('SUZANO');
+      const home = isSuzanoTeam(game.home);
       const goalsFor = home ? game.homeGoals : game.awayGoals;
       const goalsAgainst = home ? game.awayGoals : game.homeGoals;
       const result = goalsFor > goalsAgainst ? 'wins' : goalsFor === goalsAgainst ? 'draws' : 'losses';

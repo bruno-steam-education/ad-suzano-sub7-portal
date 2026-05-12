@@ -90,7 +90,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-7%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:27.441Z"
+    "checkedAt": "2026-05-12T16:45:39.254Z"
   },
   {
     "id": 901,
@@ -181,7 +181,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-8%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:27.758Z"
+    "checkedAt": "2026-05-12T16:45:39.563Z"
   },
   {
     "id": 902,
@@ -272,7 +272,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-9%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:28.055Z"
+    "checkedAt": "2026-05-12T16:45:39.887Z"
   },
   {
     "id": 903,
@@ -363,7 +363,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-10%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:28.372Z"
+    "checkedAt": "2026-05-12T16:45:40.216Z"
   },
   {
     "id": 899,
@@ -373,20 +373,120 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/899",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/899/jogos",
     "record": {
-      "played": 0,
-      "wins": 0,
-      "draws": 0,
-      "losses": 0,
-      "goalsFor": 0,
-      "goalsAgainst": 0,
-      "points": 0,
-      "goalDifference": 0
+      "played": 7,
+      "wins": 2,
+      "draws": 1,
+      "losses": 4,
+      "goalsFor": 22,
+      "goalsAgainst": 20,
+      "points": 7,
+      "goalDifference": 2
     },
-    "upcomingGames": [],
-    "recentGames": [],
+    "upcomingGames": [
+      {
+        "date": "2026-05-23",
+        "time": "12h15",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "AA WIMPRO GUARULHOS",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-05-30",
+        "time": "09h45",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-06",
+        "time": "12h15",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-13",
+        "time": "12h15",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-20",
+        "time": "12h15",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-07-04",
+        "time": "18h15",
+        "venue": "A DEFINIR",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      }
+    ],
+    "recentGames": [
+      {
+        "date": "2026-04-11",
+        "time": "18h15",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139076"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "12h15",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 6,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139171"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "18h15",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "A.D. SUZANO",
+        "homeGoals": 4,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139114"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "12h15",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "STADIUM FUTSAL",
+        "homeGoals": 4,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139133"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "12h15",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139038"
+      }
+    ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-12%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:28.760Z"
+    "checkedAt": "2026-05-12T16:45:40.534Z"
   },
   {
     "id": 897,
@@ -396,20 +496,120 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/897",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/897/jogos",
     "record": {
-      "played": 0,
-      "wins": 0,
-      "draws": 0,
-      "losses": 0,
-      "goalsFor": 0,
-      "goalsAgainst": 0,
-      "points": 0,
-      "goalDifference": 0
+      "played": 7,
+      "wins": 1,
+      "draws": 1,
+      "losses": 5,
+      "goalsFor": 7,
+      "goalsAgainst": 23,
+      "points": 4,
+      "goalDifference": -16
     },
-    "upcomingGames": [],
-    "recentGames": [],
+    "upcomingGames": [
+      {
+        "date": "2026-05-23",
+        "time": "09h45",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "AA WIMPRO GUARULHOS",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-05-30",
+        "time": "11h00",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-06",
+        "time": "09h45",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-13",
+        "time": "09h45",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-20",
+        "time": "09h45",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-07-04",
+        "time": "15h45",
+        "venue": "A DEFINIR",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      }
+    ],
+    "recentGames": [
+      {
+        "date": "2026-04-11",
+        "time": "15h45",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "A.D. SUZANO",
+        "homeGoals": 7,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138696"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "09h45",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 1,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138791"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "15h45",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138734"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "09h45",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "STADIUM FUTSAL",
+        "homeGoals": 0,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138753"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "09h45",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 1,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138658"
+      }
+    ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-14%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:29.150Z"
+    "checkedAt": "2026-05-12T16:45:40.934Z"
   },
   {
     "id": 898,
@@ -419,20 +619,120 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/898",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/898/jogos",
     "record": {
-      "played": 0,
-      "wins": 0,
+      "played": 7,
+      "wins": 3,
       "draws": 0,
-      "losses": 0,
-      "goalsFor": 0,
-      "goalsAgainst": 0,
-      "points": 0,
-      "goalDifference": 0
+      "losses": 4,
+      "goalsFor": 21,
+      "goalsAgainst": 30,
+      "points": 9,
+      "goalDifference": -9
     },
-    "upcomingGames": [],
-    "recentGames": [],
+    "upcomingGames": [
+      {
+        "date": "2026-05-23",
+        "time": "11h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "AA WIMPRO GUARULHOS",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-05-30",
+        "time": "08h30",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-06",
+        "time": "11h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-13",
+        "time": "11h00",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-20",
+        "time": "11h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-07-04",
+        "time": "17h00",
+        "venue": "A DEFINIR",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      }
+    ],
+    "recentGames": [
+      {
+        "date": "2026-04-11",
+        "time": "17h00",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "A.D. SUZANO",
+        "homeGoals": 1,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138886"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "11h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 7,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138981"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "17h00",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "A.D. SUZANO",
+        "homeGoals": 8,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138924"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "11h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "STADIUM FUTSAL",
+        "homeGoals": 5,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138943"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "11h00",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138848"
+      }
+    ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-16%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:29.536Z"
+    "checkedAt": "2026-05-12T16:45:41.319Z"
   },
   {
     "id": 896,
@@ -442,19 +742,119 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/896",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/896/jogos",
     "record": {
-      "played": 0,
-      "wins": 0,
+      "played": 7,
+      "wins": 1,
       "draws": 0,
-      "losses": 0,
-      "goalsFor": 0,
-      "goalsAgainst": 0,
-      "points": 0,
-      "goalDifference": 0
+      "losses": 6,
+      "goalsFor": 10,
+      "goalsAgainst": 28,
+      "points": 3,
+      "goalDifference": -18
     },
-    "upcomingGames": [],
-    "recentGames": [],
+    "upcomingGames": [
+      {
+        "date": "2026-05-23",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "AA WIMPRO GUARULHOS",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-05-30",
+        "time": "12h15",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-06",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-13",
+        "time": "08h30",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-06-20",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "summaryUrl": null
+      },
+      {
+        "date": "2026-07-04",
+        "time": "14h30",
+        "venue": "A DEFINIR",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "A.D. SUZANO",
+        "summaryUrl": null
+      }
+    ],
+    "recentGames": [
+      {
+        "date": "2026-04-11",
+        "time": "14h30",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138506"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 1,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138601"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "14h30",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "A.D. SUZANO",
+        "homeGoals": 6,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138544"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "STADIUM FUTSAL",
+        "homeGoals": 1,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138563"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "08h30",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 1,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138468"
+      }
+    ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-18%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:21:29.926Z"
+    "checkedAt": "2026-05-12T16:45:41.678Z"
   }
 ];
