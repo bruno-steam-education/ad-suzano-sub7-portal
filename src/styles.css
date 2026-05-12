@@ -106,8 +106,12 @@ input {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 28px;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(7, 26, 61, 0.18);
+  backdrop-filter: blur(10px);
 }
 
 .metric {
@@ -116,20 +120,64 @@ input {
   gap: 8px 10px;
   align-items: center;
   min-height: 96px;
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    #071a3d;
+  color: #fff;
+  box-shadow: 0 18px 34px rgba(3, 12, 30, 0.24);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 5px solid var(--red);
+  pointer-events: none;
+}
+
+.metric:nth-child(2) {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 40%),
+    #0e3c86;
+}
+
+.metric:nth-child(3),
+.metric:nth-child(4) {
+  background:
+    linear-gradient(135deg, #ffffff, #eef4fb);
+  color: var(--ink);
+  border-color: rgba(8, 23, 52, 0.12);
+}
+
+.metric:nth-child(3)::after,
+.metric:nth-child(4)::after {
+  border-left-color: var(--blue-2);
 }
 
 .metric strong {
   grid-column: 1 / -1;
-  font-size: 34px;
+  font-size: 38px;
+  line-height: 1;
+  color: inherit;
 }
 
 .metric span {
-  color: #d8e5f4;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 800;
+}
+
+.metric:nth-child(3) span,
+.metric:nth-child(4) span {
+  color: #475569;
+}
+
+.metric svg {
+  color: inherit;
 }
 
 .content-grid {
