@@ -309,6 +309,82 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
   );
 }
 
+function isSuzanoName(name = '') {
+  return name.toUpperCase().includes('SUZANO');
+}
+
+function teamDisplayName(name = '') {
+  const cleanName = name
+    .replace(/\bA\.?D\.?\s+SUZANO\b/i, 'AD Suzano')
+    .replace(/\bASSOCIAÇÃO\b/gi, 'Associação')
+    .replace(/\bASSOCIACAO\b/gi, 'Associação')
+    .replace(/\bDESPORTIVA\b/gi, 'Desportiva')
+    .replace(/\bSANTO\b/gi, 'Santo')
+    .replace(/\bANDRE\b/gi, 'André')
+    .replace(/\bANDRÉ\b/gi, 'André')
+    .replace(/\bFUTSAL\b/gi, 'Futsal')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleanName === cleanName.toUpperCase()) {
+    return cleanName
+      .toLowerCase()
+      .replace(/(^|\s|-)([a-záàâãéêíóôõúç])/g, (match) => match.toUpperCase())
+      .replace('Ad Suzano', 'AD Suzano');
+  }
+
+  return cleanName;
+}
+
+function categorySportsNews(category, latest, next, record) {
+  if (latest) {
+    const suzanoHome = isSuzanoName(latest.home);
+    const opponent = teamDisplayName(suzanoHome ? latest.away : latest.home);
+    const goalsFor = suzanoHome ? latest.homeGoals : latest.awayGoals;
+    const goalsAgainst = suzanoHome ? latest.awayGoals : latest.homeGoals;
+    const score = `${goalsFor} x ${goalsAgainst}`;
+    const totalGoals = goalsFor + goalsAgainst;
+    const venueLine = suzanoHome ? 'em casa' : 'fora de casa';
+    const resultText = goalsFor > goalsAgainst ? 'venceu' : goalsFor === goalsAgainst ? 'empatou' : 'foi superado';
+
+    const title =
+      goalsFor > goalsAgainst
+        ? totalGoals >= 7
+          ? `${category.label} vence jogo movimentado contra ${opponent} e ganha força no Paulista A2`
+          : `${category.label} bate ${opponent} e soma pontos importantes no Paulista A2`
+        : goalsFor === goalsAgainst
+          ? `${category.label} busca empate contra ${opponent} e segue vivo na briga`
+          : `${category.label} tropeça contra ${opponent}, mas mantém campanha em pauta`;
+
+    return {
+      source: 'Rodada FPFS',
+      title,
+      summary: `O AD Suzano ${resultText} ${venueLine} por ${score} contra ${opponent}, em resultado publicado na Súmula Online da FPFS.`,
+      impact: record?.played
+        ? `Na tabela da categoria, a equipe aparece com ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols marcados e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
+        : 'O placar passa a orientar a leitura da rodada e os próximos ajustes da categoria.',
+    };
+  }
+
+  if (next) {
+    const opponent = teamDisplayName(isSuzanoName(next.home) ? next.away : next.home);
+
+    return {
+      source: 'Pré-jogo FPFS',
+      title: `${category.label} tem duelo marcado contra ${opponent} pelo Paulista A2`,
+      summary: `A FPFS confirmou AD Suzano x ${opponent} para ${formatShortDate(next.date)}, às ${next.time || 'horário a confirmar'}, em ${next.venue}.`,
+      impact: 'O confronto vira o foco da semana e deve orientar treino, convocação e leitura de desempenho da categoria.',
+    };
+  }
+
+  return {
+    source: category.label,
+    title: `${category.label} aguarda nova rodada confirmada pela FPFS`,
+    summary: 'Ainda não há notícia externa específica nem novo jogo confirmado para destacar nesta categoria.',
+    impact: 'Assim que a Súmula Online publicar jogos ou resultados, o radar passa a abrir com a manchete da rodada.',
+  };
+}
+
 function CategoryNewsPanel({ category }) {
   const fpfsData = fpfsCategories.find((item) => item.category === category.label);
   const latest = fpfsData?.recentGames?.at(-1);
@@ -319,19 +395,7 @@ function CategoryNewsPanel({ category }) {
   );
   const leadNews = categoryNews[0];
   const extraNews = categoryNews.slice(1, 3);
-  const fallbackTitle = latest
-    ? `${category.label}: AD Suzano fecha último compromisso contra ${latest.home === teamName ? latest.away : latest.home}`
-    : next
-      ? `${category.label}: AD Suzano tem próximo jogo definido no Paulista A2`
-      : `AD Suzano ${category.label}: categoria segue sem nova notícia externa localizada`;
-  const fallbackSummary = latest
-    ? `Pela Súmula Online da FPFS, o jogo mais recente localizado terminou ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}.`
-    : next
-      ? `A tabela da FPFS aponta ${next.home} x ${next.away} em ${formatShortDate(next.date)}, às ${next.time || 'horário a confirmar'}, no local ${next.venue}.`
-      : 'A busca pública não encontrou notícia externa específica desta categoria. O painel mantém somente dados confirmados da FPFS.';
-  const fallbackImpact = record?.played
-    ? `Campanha localizada: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
-    : 'Assim que a FPFS publicar jogos ou resultados da categoria, o radar passa a destacar a rodada.';
+  const fallbackNews = categorySportsNews(category, latest, next, record);
 
   return (
     <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
@@ -347,17 +411,17 @@ function CategoryNewsPanel({ category }) {
         </strong>
       </div>
       <div className="category-empty-news">
-        <div className="news-tag">{leadNews?.source ?? category.label}</div>
+        <div className="news-tag">{leadNews?.source ?? fallbackNews.source}</div>
         <h3>
           {leadNews
             ? leadNews.title
-            : fallbackTitle}
+            : fallbackNews.title}
         </h3>
         <p>
-          {leadNews?.summary ?? fallbackSummary}
+          {leadNews?.summary ?? fallbackNews.summary}
         </p>
         <div className="news-impact">
-          {leadNews?.impact ?? fallbackImpact}
+          {leadNews?.impact ?? fallbackNews.impact}
         </div>
         {extraNews.length > 0 && (
           <div className="category-news-list">
