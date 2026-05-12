@@ -332,6 +332,63 @@ input {
   font-weight: 750;
 }
 
+.category-game-list {
+  display: grid;
+  gap: 10px;
+}
+
+.category-game {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border-left: 5px solid var(--blue-2);
+}
+
+.category-game div {
+  display: grid;
+  gap: 5px;
+}
+
+.category-game strong {
+  color: var(--red);
+}
+
+.category-game span {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.category-game small,
+.empty-copy {
+  color: #64748b;
+  font-weight: 750;
+}
+
+.category-game a,
+.youtube-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.youtube-link {
+  width: fit-content;
+  margin-top: 16px;
+  background: var(--red);
+}
+
 .install-card {
   position: fixed;
   left: 14px;

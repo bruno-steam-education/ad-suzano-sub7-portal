@@ -7,10 +7,12 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "update:news": "node scripts/update-news.mjs"
+    "update:news": "node scripts/update-news.mjs",
+    "update:fpfs": "node scripts/update-fpfs.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.0",
+    "cheerio": "^1.2.0",
     "fast-xml-parser": "^5.8.0",
     "lucide-react": "^0.555.0",
     "motion": "^12.38.0",

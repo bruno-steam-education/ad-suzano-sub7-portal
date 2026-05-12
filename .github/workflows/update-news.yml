@@ -33,13 +33,15 @@ jobs:
         run: npm ci
 
       - name: Update weekly news
-        run: npm run update:news
+        run: |
+          npm run update:fpfs
+          npm run update:news
 
-      - name: Commit news changes
+      - name: Commit data changes
         run: |
           git config user.name "ad-suzano-news-bot"
           git config user.email "actions@github.com"
-          git add src/data/news.js
+          git add src/data/news.js src/data/fpfsCategories.js
           if git diff --cached --quiet; then
             echo "No news changes to commit."
           else
