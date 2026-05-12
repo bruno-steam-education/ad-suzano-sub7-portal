@@ -7,6 +7,7 @@ import {
   CalendarDays,
   ChevronRight,
   Clock,
+  Download,
   Goal,
   MapPin,
   Shield,
@@ -20,6 +21,7 @@ import suzanoLogo from './assets/ad-suzano-logo.png';
 import { newsItems, newsWeek } from './data/news';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { sourceLinks, teamName, weeklyNotes } from './data/season';
+import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
 import {
   championshipProjection,
@@ -30,6 +32,8 @@ import {
   suzanoRecord,
 } from './utils/analysis';
 import './styles.css';
+
+registerServiceWorker();
 
 const fmtDate = new Intl.DateTimeFormat('pt-BR', {
   weekday: 'short',
@@ -62,6 +66,7 @@ function App() {
   return (
     <main className="app-shell">
       <Hero record={record} nextMatch={nextSuzano[0]} weather={weather} weatherError={weatherError} />
+      <InstallAppPrompt />
       <NewsBanner />
 
       <section className="content-grid">
@@ -78,6 +83,76 @@ function App() {
         </aside>
       </section>
     </main>
+  );
+}
+
+function InstallAppPrompt() {
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [iosHelp, setIosHelp] = useState(false);
+
+  React.useEffect(() => {
+    const shouldShow = () => isMobileDevice() && !isStandaloneApp();
+    setVisible(shouldShow());
+
+    const onBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+      setVisible(shouldShow());
+    };
+
+    const onInstalled = () => {
+      localStorage.setItem('ad-suzano-pwa-installed', 'true');
+      setVisible(false);
+    };
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    window.addEventListener('appinstalled', onInstalled);
+    window.matchMedia('(display-mode: standalone)').addEventListener?.('change', onInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', onInstalled);
+    };
+  }, []);
+
+  if (!visible) return null;
+
+  const handleInstall = async () => {
+    if (!installPrompt) {
+      setIosHelp(true);
+      return;
+    }
+
+    installPrompt.prompt();
+    const result = await installPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      localStorage.setItem('ad-suzano-pwa-installed', 'true');
+      setVisible(false);
+    }
+    setInstallPrompt(null);
+  };
+
+  return (
+    <div className="install-card" role="region" aria-label="Instalar portal no celular">
+      <button className="install-button" type="button" onClick={handleInstall}>
+        <Download size={18} />
+        Instalar no celular
+      </button>
+      <button
+        className="install-dismiss"
+        type="button"
+        aria-label="Ocultar instalação"
+        onClick={() => setVisible(false)}
+      >
+        Agora não
+      </button>
+      {iosHelp && (
+        <p>
+          No iPhone, toque em compartilhar e escolha “Adicionar à Tela de Início”.
+        </p>
+      )}
+    </div>
   );
 }
 

@@ -235,6 +235,55 @@ input {
   z-index: 3;
 }
 
+.install-card {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 30;
+  display: none;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(7, 26, 61, 0.96);
+  color: #fff;
+  box-shadow: 0 18px 44px rgba(3, 12, 30, 0.34);
+}
+
+.install-button,
+.install-dismiss {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.install-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+  color: var(--blue);
+}
+
+.install-dismiss {
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #dbeafe;
+}
+
+.install-card p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #dbeafe;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .news-band {
   max-width: 1440px;
   margin: -58px auto 0;
@@ -913,6 +962,10 @@ input {
 }
 
 @media (max-width: 720px) {
+  .install-card {
+    display: grid;
+  }
+
   .hero {
     padding-top: 28px;
   }
