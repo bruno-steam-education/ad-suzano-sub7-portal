@@ -12,6 +12,16 @@ const feeds = [
   },
 ];
 
+const priorityLead = {
+  title: 'AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães',
+  category: 'Sub-7',
+  source: 'Boletim do portal',
+  url: null,
+  summary:
+    'No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.',
+  impact: 'Resultado fortalece a confiança do grupo, confirma o bom momento ofensivo e vira o principal destaque da semana.',
+};
+
 const evergreen = [
   {
     title: 'AD Suzano segue com foco no Paulista A2 Sub-7',
@@ -217,7 +227,11 @@ const fetchedByFeed = (
 });
 
 const seen = new Set();
-const news = [...fetchedByFeed, ...evergreen.map((item) => ({ ...item, date: todayKey() }))]
+const news = [
+  { ...priorityLead, date: todayKey() },
+  ...fetchedByFeed,
+  ...evergreen.map((item) => ({ ...item, date: todayKey() })),
+]
   .filter((item) => {
     const key = `${item.title}-${item.url ?? ''}`.toLowerCase();
     if (seen.has(key)) return false;

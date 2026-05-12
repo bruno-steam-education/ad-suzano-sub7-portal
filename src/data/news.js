@@ -3,6 +3,16 @@ export const newsWeek = '2026-05-11';
 export const newsItems = [
   {
     "id": "auto-2026-05-12-1",
+    "title": "AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães",
+    "category": "Sub-7",
+    "source": "Boletim do portal",
+    "url": null,
+    "summary": "No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.",
+    "impact": "Resultado fortalece a confiança do grupo, confirma o bom momento ofensivo e vira o principal destaque da semana.",
+    "date": "2026-05-12"
+  },
+  {
+    "id": "auto-2026-05-12-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano - Prefeitura de Itaquaquecetuba",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -12,7 +22,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-12-2",
+    "id": "auto-2026-05-12-3",
     "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - Portal ABC do ABC",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -22,7 +32,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-12-3",
+    "id": "auto-2026-05-12-4",
     "title": "Pedro Ishi recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal - Diário de Suzano",
     "category": "AD Suzano",
     "date": "2025-09-03",
@@ -32,7 +42,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-12-4",
+    "id": "auto-2026-05-12-5",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
@@ -42,7 +52,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-12-5",
+    "id": "auto-2026-05-12-6",
     "title": "AD Suzano segue com foco no Paulista A2 Sub-7",
     "category": "Boletim",
     "source": "Boletim do portal",
@@ -52,7 +62,7 @@ export const newsItems = [
     "date": "2026-05-12"
   },
   {
-    "id": "auto-2026-05-12-6",
+    "id": "auto-2026-05-12-7",
     "title": "AD Suzano prepara semana com três treinos e jogo oficial",
     "category": "Agenda",
     "source": "Boletim do portal",
@@ -62,7 +72,7 @@ export const newsItems = [
     "date": "2026-05-12"
   },
   {
-    "id": "auto-2026-05-12-7",
+    "id": "auto-2026-05-12-8",
     "title": "Vitória sobre o Santo André fortalece a confiança do grupo",
     "category": "Campanha",
     "source": "Boletim do portal",
@@ -72,7 +82,7 @@ export const newsItems = [
     "date": "2026-05-12"
   },
   {
-    "id": "auto-2026-05-12-8",
+    "id": "auto-2026-05-12-9",
     "title": "Confronto com o Ocian exige atenção à saída de bola",
     "category": "Pré-jogo",
     "source": "Tabela FPFS",
@@ -82,23 +92,13 @@ export const newsItems = [
     "date": "2026-05-12"
   },
   {
-    "id": "auto-2026-05-12-9",
+    "id": "auto-2026-05-12-10",
     "title": "AD Suzano mantém bom volume ofensivo no Sub-7",
     "category": "Análise",
     "source": "Boletim do portal",
     "url": null,
     "summary": "A equipe soma 31 gols nos jogos cadastrados, indicador importante para medir repertório e agressividade ofensiva.",
     "impact": "O ataque é um dos pilares da projeção semanal do portal.",
-    "date": "2026-05-12"
-  },
-  {
-    "id": "auto-2026-05-12-10",
-    "title": "Saldo positivo sustenta projeção competitiva do AD Suzano",
-    "category": "Análise",
-    "source": "Boletim do portal",
-    "url": null,
-    "summary": "O saldo de gols e a sequência recente ajudam a estimar a força do time dentro da campanha.",
-    "impact": "A projeção de título será revisada conforme novos resultados entrarem.",
     "date": "2026-05-12"
   }
 ];
