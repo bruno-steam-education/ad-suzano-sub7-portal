@@ -18,6 +18,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import packageInfo from '../package.json';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { categories } from './data/categories';
 import { fpfsCategories } from './data/fpfsCategories';
@@ -43,6 +44,8 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
   day: '2-digit',
   month: '2-digit',
 });
+
+const appVersion = packageInfo.version;
 
 function App() {
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
@@ -109,7 +112,20 @@ function App() {
       ) : (
         <CompleteCategoryDashboard category={activeCategory} fpfsData={activeFpfs} />
       )}
+      <AppFooter />
     </main>
+  );
+}
+
+function AppFooter() {
+  return (
+    <footer className="app-footer">
+      <div>
+        <strong>AD Suzano Futsal - Portal de Análise</strong>
+        <span>Versão {appVersion}</span>
+      </div>
+      <p>© {new Date().getFullYear()} AD Suzano. Todos os direitos reservados.</p>
+    </footer>
   );
 }
 
