@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
+import { categories } from './data/categories';
 import { newsItems, newsWeek } from './data/news';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
@@ -43,11 +44,13 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 });
 
 function App() {
+  const [activeCategoryId, setActiveCategoryId] = useState('sub7');
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
   const record = useMemo(() => suzanoRecord(), []);
   const upcoming = useMemo(() => nextMatches(new Date()), []);
   const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
+  const activeCategory = categories.find((category) => category.id === activeCategoryId) ?? categories[0];
 
   React.useEffect(() => {
     let active = true;
@@ -66,24 +69,124 @@ function App() {
 
   return (
     <main className="app-shell">
-      <Hero record={record} nextMatch={nextSuzano[0]} weather={weather} weatherError={weatherError} />
+      <Hero
+        category={activeCategory}
+        record={record}
+        nextMatch={activeCategory.hasLiveData ? nextSuzano[0] : null}
+        weather={weather}
+        weatherError={weatherError}
+      />
       <InstallAppPrompt />
-      <NewsBanner />
+      <CategoryNav
+        activeCategoryId={activeCategoryId}
+        onSelect={setActiveCategoryId}
+      />
+      {activeCategory.hasLiveData ? (
+        <>
+          <NewsBanner />
 
-      <section className="content-grid">
-        <div className="main-flow">
-          <NextGames matches={nextSuzano} />
-          <TitleProjection />
-          <WeeklyDesk />
-          <Campaign matches={suzanoMatches()} />
-        </div>
+          <section className="content-grid">
+            <div className="main-flow">
+              <NextGames matches={nextSuzano} />
+              <TitleProjection />
+              <WeeklyDesk />
+              <Campaign matches={suzanoMatches()} />
+            </div>
 
-        <aside className="side-flow">
-          <WeeklySchedule compact />
-          <DataPanel />
-        </aside>
-      </section>
+            <aside className="side-flow">
+              <WeeklySchedule compact />
+              <DataPanel />
+            </aside>
+          </section>
+        </>
+      ) : (
+        <CategoryDashboard category={activeCategory} />
+      )}
     </main>
+  );
+}
+
+function CategoryNav({ activeCategoryId, onSelect }) {
+  return (
+    <nav className="category-nav" aria-label="Categorias AD Suzano">
+      <div className="category-nav-inner">
+        {categories.map((category) => (
+          <button
+            className={category.id === activeCategoryId ? 'active' : ''}
+            key={category.id}
+            type="button"
+            onClick={() => onSelect(category.id)}
+          >
+            <span>{category.label}</span>
+            <small>{category.status}</small>
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function CategoryDashboard({ category }) {
+  return (
+    <section className="category-shell">
+      <div className="category-main">
+        <section className="panel category-intro">
+          <div className="section-title">
+            <div>
+              <span>{category.competition}</span>
+              <h2>{category.title}</h2>
+            </div>
+            <Shield size={22} />
+          </div>
+          <p>{category.description}</p>
+          <div className="category-readiness">
+            <div>
+              <strong>Próximos jogos</strong>
+              <span>Aguardando cadastro da tabela oficial.</span>
+            </div>
+            <div>
+              <strong>Agenda semanal</strong>
+              <span>Pronta para treinos, jogos e atividades da categoria.</span>
+            </div>
+            <div>
+              <strong>Análise estatística</strong>
+              <span>Será ativada quando houver resultados cadastrados.</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="panel empty-panel">
+          <div className="section-title">
+            <div>
+              <span>Estrutura da categoria</span>
+              <h2>Mesmo padrão do Sub-7</h2>
+            </div>
+            <BarChart3 size={22} />
+          </div>
+          <p>
+            Esta versão já está preparada para receber campanha, notícias da categoria,
+            agenda, rotas de treino/jogo, próximos confrontos, chance de vitória e
+            projeção de título.
+          </p>
+        </section>
+      </div>
+
+      <aside className="category-side">
+        <section className="panel data-panel">
+          <div className="section-title">
+            <div>
+              <span>Status</span>
+              <h2>{category.status}</h2>
+            </div>
+            <Sparkles size={22} />
+          </div>
+          <p>
+            Se você enviar a tabela, agenda ou links da FPFS desta categoria, ela passa
+            a ter leitura completa como o Sub-7.
+          </p>
+        </section>
+      </aside>
+    </section>
   );
 }
 
@@ -262,26 +365,32 @@ function formatShortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 }
 
-function Hero({ record, nextMatch, weather, weatherError }) {
+function Hero({ category, record, nextMatch, weather, weatherError }) {
   return (
     <section className="hero">
       <div className="hero-copy">
         <div className="hero-topline">
           <div className="eyebrow">
             <Shield size={18} />
-            Paulista A2 Sub-7
+            {category.competition} {category.label}
           </div>
           <TodayWeather weather={weather} weatherError={weatherError} />
         </div>
-        <h1>AD Suzano Inteligência de Jogo</h1>
+        <h1>{category.title} Inteligência de Jogo</h1>
         <p>
           Portal de leitura competitiva para acompanhar forma, próximos jogos,
-          relações entre adversários e evolução coletiva do Sub-7.
+          relações entre adversários e evolução coletiva da categoria.
         </p>
         {nextMatch && (
           <div className="next-pill">
             <CalendarDays size={18} />
             Próximo: {fmtDate.format(new Date(`${nextMatch.date}T12:00:00`))} às {nextMatch.time}, {nextMatch.home} x {nextMatch.away}
+          </div>
+        )}
+        {!nextMatch && !category.hasLiveData && (
+          <div className="next-pill">
+            <CalendarDays size={18} />
+            Estrutura pronta para receber tabela, agenda e resultados.
           </div>
         )}
       </div>
@@ -291,10 +400,10 @@ function Hero({ record, nextMatch, weather, weatherError }) {
       </div>
 
       <div className="stat-strip">
-        <Metric icon={Trophy} label="Pontos" value={record.points} />
-        <Metric icon={Goal} label="Gols feitos" value={record.goalsFor} />
-        <Metric icon={Activity} label="Saldo" value={record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} />
-        <Metric icon={BarChart3} label="Aproveitamento" value={`${Math.round((record.points / Math.max(1, record.played * 3)) * 100)}%`} />
+        <Metric icon={Trophy} label="Pontos" value={category.hasLiveData ? record.points : 'Em breve'} />
+        <Metric icon={Goal} label="Gols feitos" value={category.hasLiveData ? record.goalsFor : 'Em breve'} />
+        <Metric icon={Activity} label="Saldo" value={category.hasLiveData ? (record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference) : 'Em breve'} />
+        <Metric icon={BarChart3} label="Aproveitamento" value={category.hasLiveData ? `${Math.round((record.points / Math.max(1, record.played * 3)) * 100)}%` : 'Em breve'} />
       </div>
     </section>
   );
