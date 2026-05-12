@@ -1,15 +1,31 @@
 import { XMLParser } from 'fast-xml-parser';
 import { writeFile } from 'node:fs/promises';
 
+const CATEGORY_ORDER = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
+
+function googleNewsUrl(query) {
+  return `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+}
+
 const feeds = [
   {
     category: 'AD Suzano',
-    url: 'https://news.google.com/rss/search?q=%22AD%20Suzano%22%20futsal&hl=pt-BR&gl=BR&ceid=BR:pt-419',
+    url: googleNewsUrl('"AD Suzano" futsal'),
   },
   {
     category: 'AD Suzano',
-    url: 'https://news.google.com/rss/search?q=%22A.D.%20Suzano%22%20futsal&hl=pt-BR&gl=BR&ceid=BR:pt-419',
+    url: googleNewsUrl('"A.D. Suzano" futsal'),
   },
+  ...CATEGORY_ORDER.flatMap((category) => [
+    {
+      category,
+      url: googleNewsUrl(`"AD Suzano" "${category}" futsal`),
+    },
+    {
+      category,
+      url: googleNewsUrl(`"A.D. Suzano" "${category}" futsal`),
+    },
+  ]),
 ];
 
 const priorityLead = {
@@ -116,6 +132,29 @@ const evergreen = [
   },
 ];
 
+const categoryEvergreen = CATEGORY_ORDER.flatMap((category) => [
+  {
+    title: `AD Suzano ${category}: monitoramento diário da categoria`,
+    category,
+    scope: `AD Suzano ${category}`,
+    source: 'Boletim do portal',
+    url: null,
+    summary:
+      `O portal consulta diariamente a SÃºmula Online da FPFS, Google News e buscas pÃºblicas relacionadas ao AD Suzano ${category}.`,
+    impact: 'Quando não houver notícia externa nova, este bloco mantém a categoria com leitura de dados oficiais e agenda.',
+  },
+  {
+    title: `${category}: radar de jogos, resultados e próximos compromissos`,
+    category,
+    scope: `AD Suzano ${category}`,
+    source: 'FPFS SÃºmula Online',
+    url: 'https://eventos.admfutsal.com.br/',
+    summary:
+      `A atualização cruza a temporada 2026, Paulista A2, categoria ${category}, com próximos jogos e resultados localizados.`,
+    impact: 'Ajuda a separar o que é notícia pública, o que vem da FPFS e o que ainda precisa de confirmação.',
+  },
+]);
+
 const parser = new XMLParser({
   ignoreAttributes: false,
   removeNSPrefix: true,
@@ -134,6 +173,15 @@ function repairEncoding(value = '') {
   if (!/[ÃÂ]/.test(value)) return value;
 
   return Buffer.from(value, 'latin1').toString('utf8');
+}
+
+function normalizeStaticItem(item) {
+  return Object.fromEntries(
+    Object.entries(item).map(([key, value]) => [
+      key,
+      typeof value === 'string' ? repairEncoding(value) : value,
+    ]),
+  );
 }
 
 function normalizeItem(item, category) {
@@ -167,12 +215,32 @@ function impactFor(category) {
     'AD Suzano': 'Pode influenciar a narrativa da semana e o acompanhamento da base.',
   };
 
-  return impacts[category] ?? 'Item monitorado para compor o radar semanal.';
+  return impacts[category] ?? `Item monitorado para compor o radar semanal do ${category}.`;
 }
 
 function isAboutAdSuzano(item) {
   const haystack = `${item.title} ${item.summary} ${item.source}`.toLowerCase();
   return haystack.includes('ad suzano') || haystack.includes('a.d. suzano');
+}
+
+function categoryAliases(category) {
+  const number = category.replace(/\D/g, '');
+  return [
+    category.toLowerCase(),
+    category.toLowerCase().replace('-', ' '),
+    category.toLowerCase().replace('-', ''),
+    `sub ${number}`,
+    `sub-${number}`,
+    `sub${number}`,
+  ];
+}
+
+function isRelevantForFeed(item) {
+  if (!isAboutAdSuzano(item)) return false;
+  if (item.category === 'AD Suzano') return true;
+
+  const haystack = `${item.title} ${item.summary} ${item.source}`.toLowerCase();
+  return categoryAliases(item.category).some((alias) => haystack.includes(alias));
 }
 
 function todayKey() {
@@ -222,24 +290,43 @@ const fetchedByFeed = (
 ).flatMap((result) => {
   if (result.status !== 'fulfilled') return [];
   return result.value
-    .filter(isAboutAdSuzano)
+    .filter(isRelevantForFeed)
     .filter(isFreshEnough)
     .slice(0, 5);
 });
 
 const seen = new Set();
-const news = [
-  { ...priorityLead, date: todayKey() },
+const collected = [
+  { ...normalizeStaticItem(priorityLead), date: todayKey() },
   ...fetchedByFeed,
-  ...evergreen.map((item) => ({ ...item, date: todayKey() })),
+  ...evergreen.map((item) => ({ ...normalizeStaticItem(item), date: todayKey() })),
+  ...categoryEvergreen.map((item) => ({ ...normalizeStaticItem(item), date: todayKey() })),
 ]
   .filter((item) => {
     const key = `${item.title}-${item.url ?? ''}`.toLowerCase();
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
+  });
+
+const generalNews = collected
+  .filter((item) => item.category === 'AD Suzano' || item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7')
+  .slice(0, 10);
+
+const perCategoryNews = CATEGORY_ORDER.flatMap((category) =>
+  collected
+    .filter((item) => item.category === category || item.scope === `AD Suzano ${category}`)
+    .slice(0, 3),
+);
+
+const outputSeen = new Set();
+const news = [...generalNews, ...perCategoryNews]
+  .filter((item) => {
+    const key = `${item.title}-${item.category}-${item.url ?? ''}`.toLowerCase();
+    if (outputSeen.has(key)) return false;
+    outputSeen.add(key);
+    return true;
   })
-  .slice(0, 10)
   .map((item, index) => ({
     id: `auto-${todayKey()}-${index + 1}`,
     ...item,

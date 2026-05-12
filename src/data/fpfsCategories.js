@@ -90,7 +90,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-7%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:39.254Z"
+    "checkedAt": "2026-05-12T19:35:06.690Z"
   },
   {
     "id": 901,
@@ -181,7 +181,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-8%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:39.563Z"
+    "checkedAt": "2026-05-12T19:35:07.049Z"
   },
   {
     "id": 902,
@@ -272,7 +272,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-9%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:39.887Z"
+    "checkedAt": "2026-05-12T19:35:07.363Z"
   },
   {
     "id": 903,
@@ -363,7 +363,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-10%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:40.216Z"
+    "checkedAt": "2026-05-12T19:35:07.685Z"
   },
   {
     "id": 899,
@@ -486,7 +486,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-12%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:40.534Z"
+    "checkedAt": "2026-05-12T19:35:08.050Z"
   },
   {
     "id": 897,
@@ -609,7 +609,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-14%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:40.934Z"
+    "checkedAt": "2026-05-12T19:35:08.413Z"
   },
   {
     "id": 898,
@@ -732,7 +732,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-16%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:41.319Z"
+    "checkedAt": "2026-05-12T19:35:08.825Z"
   },
   {
     "id": 896,
@@ -855,6 +855,6 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-18%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-12T16:45:41.678Z"
+    "checkedAt": "2026-05-12T19:35:09.200Z"
   }
 ];

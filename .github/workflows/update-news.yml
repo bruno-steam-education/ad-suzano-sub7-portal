@@ -1,4 +1,4 @@
-name: Update news and deploy
+name: Update FPFS, category news and deploy
 
 on:
   schedule:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  update-news:
+  update-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Update weekly news
+      - name: Update FPFS and category news
         run: |
           npm run update:fpfs
           npm run update:news
@@ -43,9 +43,9 @@ jobs:
           git config user.email "actions@github.com"
           git add src/data/news.js src/data/fpfsCategories.js
           if git diff --cached --quiet; then
-            echo "No news changes to commit."
+            echo "No FPFS or news changes to commit."
           else
-            git commit -m "Update weekly news"
+            git commit -m "Update FPFS and category news"
             git push
           fi
 
@@ -62,7 +62,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: update-news
+    needs: update-data
     steps:
       - name: Deploy
         id: deployment

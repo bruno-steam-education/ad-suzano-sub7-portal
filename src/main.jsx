@@ -286,7 +286,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 
       <section className="content-grid category-complete-grid">
         <div className="main-flow">
-          <CategoryNewsPlaceholder category={category} />
+          <CategoryNewsPanel category={category} />
           <CategoryNextGames category={category} games={fpfsData?.upcomingGames ?? []} />
           <CategoryTitleProjection category={category} record={record} hasSuzanoGames={hasSuzanoGames} />
           <CategoryWeeklyDesk category={category} />
@@ -306,6 +306,68 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
         </aside>
       </section>
     </>
+  );
+}
+
+function CategoryNewsPanel({ category }) {
+  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
+  const latest = fpfsData?.recentGames?.at(-1);
+  const next = fpfsData?.upcomingGames?.[0];
+  const record = fpfsData?.record;
+  const categoryNews = newsItems.filter(
+    (item) => item.category === category.label || item.scope === `AD Suzano ${category.label}`,
+  );
+  const leadNews = categoryNews[0];
+  const extraNews = categoryNews.slice(1, 3);
+
+  return (
+    <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
+      <div className="news-heading">
+        <div>
+          <span>Últimas notícias</span>
+          <h2 id={`news-${category.id}`}>Radar {category.label}</h2>
+        </div>
+        <strong>
+          {categoryNews.length
+            ? `${categoryNews.length} itens monitorados para ${category.label}`
+            : 'Boletim pesquisado na Súmula Online da FPFS'}
+        </strong>
+      </div>
+      <div className="category-empty-news">
+        <div className="news-tag">{leadNews?.source ?? category.label}</div>
+        <h3>
+          {leadNews
+            ? leadNews.title
+            : latest
+              ? `${category.label}: último jogo oficial foi ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}`
+              : next
+                ? `${category.label}: próximo jogo oficial será ${next.home} x ${next.away}`
+                : `AD Suzano ${category.label}: sem nova publicação específica localizada`}
+        </h3>
+        <p>
+          {leadNews?.summary ??
+            (record?.played
+              ? `Campanha localizada na FPFS: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
+              : 'A pesquisa pública não encontrou jogos oficiais do AD Suzano nesta categoria no A2 2026.')}
+        </p>
+        <div className="news-impact">
+          {leadNews?.impact ??
+            (next
+              ? `Próximo compromisso: ${formatShortDate(next.date)} às ${next.time || 'horário a confirmar'}, em ${next.venue}.`
+              : 'Sem compromisso futuro localizado para destacar nesta categoria.')}
+        </div>
+        {extraNews.length > 0 && (
+          <div className="category-news-list">
+            {extraNews.map((item) => (
+              <span key={item.id}>{item.title}</span>
+            ))}
+          </div>
+        )}
+        <a className="source-chip" href={leadNews?.url ?? fpfsData?.gamesUrl} target="_blank" rel="noreferrer">
+          {leadNews?.url ? 'Abrir fonte' : 'FPFS Súmula Online'}
+        </a>
+      </div>
+    </section>
   );
 }
 
@@ -713,8 +775,11 @@ function InstallAppPrompt() {
 }
 
 function NewsBanner() {
-  const lead = newsItems.find((item) => item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7') ?? newsItems[0];
-  const orderedNews = [lead, ...newsItems.filter((item) => item.id !== lead.id)];
+  const mainNews = newsItems
+    .filter((item) => item.category === 'AD Suzano' || item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7')
+    .slice(0, 10);
+  const lead = mainNews.find((item) => item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7') ?? mainNews[0] ?? newsItems[0];
+  const orderedNews = [lead, ...mainNews.filter((item) => item.id !== lead.id)];
   const featureItems = orderedNews.slice(1, 4);
   const tickerItems = orderedNews.slice(4);
 
@@ -725,7 +790,7 @@ function NewsBanner() {
           <span>Últimas notícias</span>
           <h2 id="news-title">Radar semanal AD Suzano</h2>
         </div>
-        <strong>{newsItems.length} notícias na semana de {formatShortDate(newsWeek)}</strong>
+        <strong>{orderedNews.length} notícias na semana de {formatShortDate(newsWeek)}</strong>
       </div>
 
       <div className="news-layout">
