@@ -10,6 +10,7 @@ import {
   Download,
   Goal,
   MapPin,
+  Navigation,
   Shield,
   Sparkles,
   SunMedium,
@@ -20,7 +21,7 @@ import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { newsItems, newsWeek } from './data/news';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
-import { sourceLinks, teamName, weeklyNotes } from './data/season';
+import { sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
 import {
@@ -231,6 +232,32 @@ function NewsLink({ item }) {
   );
 }
 
+function routeLinks(query) {
+  const destination = encodeURIComponent(query);
+  return {
+    google: `https://www.google.com/maps/search/?api=1&query=${destination}`,
+    waze: `https://waze.com/ul?q=${destination}&navigate=yes`,
+  };
+}
+
+function RouteButtons({ query }) {
+  if (!query) return null;
+  const links = routeLinks(query);
+
+  return (
+    <div className="route-actions">
+      <a href={links.google} target="_blank" rel="noreferrer">
+        <MapPin size={15} />
+        Google Maps
+      </a>
+      <a href={links.waze} target="_blank" rel="noreferrer">
+        <Navigation size={15} />
+        Waze
+      </a>
+    </div>
+  );
+}
+
 function formatShortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 }
@@ -349,6 +376,8 @@ function WeeklySchedule({ compact = false }) {
                   <h3>{item.title}</h3>
                   <p><Clock size={15} /> {item.time}</p>
                   <p><MapPin size={15} /> {item.location}</p>
+                  <p className="address-line">{item.address}</p>
+                  <RouteButtons query={item.mapQuery ?? item.address ?? item.location} />
                 </div>
               ))}
             </div>
@@ -411,6 +440,9 @@ function NextGames({ matches }) {
       <div className="match-list">
         {matches.map((match) => {
           const prediction = predictMatch(match);
+          const venueInfo = venueAddresses[match.venue];
+          const address = venueInfo?.address;
+          const mapQuery = venueInfo?.query ?? `${match.venue}, SP`;
           return (
             <article className="match-card" key={`${match.date}-${match.home}-${match.away}`}>
               <div className="match-date">
@@ -424,7 +456,9 @@ function NextGames({ matches }) {
                   <b>x</b>
                   <span>{match.away}</span>
                 </div>
-                <p>{match.venue}</p>
+                <p><MapPin size={15} /> {match.venue}</p>
+                {address && <p className="address-line">{address}</p>}
+                <RouteButtons query={mapQuery} />
                 <ul>
                   {prediction.reasons.map((reason) => (
                     <li key={reason}>{reason}</li>

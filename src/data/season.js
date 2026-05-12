@@ -8,6 +8,29 @@ export const sourceLinks = [
   },
 ];
 
+export const venueAddresses = {
+  'Ginásio do SESC - Suzano': {
+    address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
+    query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
+  },
+  'GinÃ¡sio do SESC - Suzano': {
+    address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
+    query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
+  },
+  'Ginasio do SESC - Suzano': {
+    address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
+    query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
+  },
+  'Ginasio Arena Chute Parada Inglesa': {
+    address: 'Arena Chute Parada Inglesa, São Paulo - SP',
+    query: 'Arena Chute Parada Inglesa, São Paulo, SP',
+  },
+  'GinÃ¡sio Arena Chute Parada Inglesa': {
+    address: 'Arena Chute Parada Inglesa, São Paulo - SP',
+    query: 'Arena Chute Parada Inglesa, São Paulo, SP',
+  },
+};
+
 export const matches = [
   { date: '2026-03-14', time: '15:00', venue: 'Ginásio do SESC - Suzano', home: 'A.D. SUZANO', away: 'MX7 DIADEMA', homeGoals: 4, awayGoals: 1 },
   { date: '2026-03-21', time: '08:30', venue: 'Ginásio 1 da A.D.C. Mercedes Benz', home: 'ADC MERCEDES BENZ', away: 'A.D. SUZANO', homeGoals: 4, awayGoals: 3 },

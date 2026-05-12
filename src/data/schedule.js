@@ -1,5 +1,18 @@
 export const weeklyScheduleWeek = '2026-05-11';
 
+export const locations = {
+  cie: {
+    name: 'CIE (Centro de Iniciação ao Esporte)',
+    address: 'Rua Vicente Scalice com Rua Guilherme Garijo, Jardim Santa Inês, Suzano - SP',
+    query: 'CIE Professor David Ramos Trinca, Rua Vicente Scalice com Rua Guilherme Garijo, Jardim Santa Inês, Suzano, SP',
+  },
+  sesc: {
+    name: 'Ginásio do SESC - Suzano',
+    address: 'Rua Agnaldo Cursino, 289 - Sesc, Suzano - SP, 08693-455',
+    query: 'Ginásio Municipal de Esportes Professor Roberto David, Rua Agnaldo Cursino, 289, Sesc, Suzano, SP',
+  },
+};
+
 export const weeklySchedule = [
   {
     id: 'segunda-treino',
@@ -8,7 +21,9 @@ export const weeklySchedule = [
     title: 'Treino normal',
     type: 'Treino',
     time: '19h00 às 20h30',
-    location: 'CIE (Centro de Iniciação ao Esporte)',
+    location: locations.cie.name,
+    address: locations.cie.address,
+    mapQuery: locations.cie.query,
     tone: 'blue',
   },
   {
@@ -18,7 +33,9 @@ export const weeklySchedule = [
     title: 'Treino normal',
     type: 'Treino',
     time: '19h00 às 20h30',
-    location: 'CIE (Centro de Iniciação ao Esporte)',
+    location: locations.cie.name,
+    address: locations.cie.address,
+    mapQuery: locations.cie.query,
     tone: 'blue',
   },
   {
@@ -28,7 +45,9 @@ export const weeklySchedule = [
     title: 'Psicóloga',
     type: 'Mental',
     time: '20h30 às 21h00',
-    location: 'CIE (Centro de Iniciação ao Esporte)',
+    location: locations.cie.name,
+    address: locations.cie.address,
+    mapQuery: locations.cie.query,
     tone: 'red',
   },
   {
@@ -38,7 +57,9 @@ export const weeklySchedule = [
     title: 'Treino específico para goleiros',
     type: 'Goleiros',
     time: '19h00 às 20h30',
-    location: 'CIE (Centro de Iniciação ao Esporte)',
+    location: locations.cie.name,
+    address: locations.cie.address,
+    mapQuery: locations.cie.query,
     tone: 'ice',
   },
   {
@@ -48,7 +69,9 @@ export const weeklySchedule = [
     title: 'Treino normal',
     type: 'Treino',
     time: '20h30 às 22h00',
-    location: 'CIE (Centro de Iniciação ao Esporte)',
+    location: locations.cie.name,
+    address: locations.cie.address,
+    mapQuery: locations.cie.query,
     tone: 'blue',
   },
   {
@@ -58,7 +81,9 @@ export const weeklySchedule = [
     title: '9° Campeonato Paulista: AD Suzano x Ocian Praia Clube',
     type: 'Jogo oficial',
     time: '15h00',
-    location: 'Ginásio do SESC - Suzano',
+    location: locations.sesc.name,
+    address: locations.sesc.address,
+    mapQuery: locations.sesc.query,
     tone: 'match',
   },
 ];

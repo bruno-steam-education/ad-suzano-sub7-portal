@@ -557,6 +557,9 @@ input {
 }
 
 .match-body p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 7px 0 12px;
 }
 
@@ -715,6 +718,45 @@ input {
   margin: 0;
   color: #475569;
   font-weight: 800;
+}
+
+.schedule-item .address-line,
+.match-body .address-line {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 750;
+}
+
+.schedule-item.match .address-line {
+  color: #dbeafe;
+}
+
+.route-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.route-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.schedule-item.match .route-actions a {
+  background: #fff;
 }
 
 .title-panel {
