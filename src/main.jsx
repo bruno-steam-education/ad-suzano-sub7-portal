@@ -53,6 +53,8 @@ function App() {
   const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
   const activeCategory = categories.find((category) => category.id === activeCategoryId) ?? categories[0];
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
+  const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
+  const hasFullSub7View = activeCategory.id === 'sub7';
 
   React.useEffect(() => {
     let active = true;
@@ -73,8 +75,9 @@ function App() {
     <main className="app-shell">
       <Hero
         category={activeCategory}
-        record={record}
-        nextMatch={activeCategory.hasLiveData ? nextSuzano[0] : null}
+        record={hasFullSub7View ? record : activeFpfs?.record}
+        nextMatch={hasFullSub7View ? nextSuzano[0] : null}
+        hasData={hasFullSub7View || hasFpfsCategoryData}
         weather={weather}
         weatherError={weatherError}
       />
@@ -83,7 +86,7 @@ function App() {
         activeCategoryId={activeCategoryId}
         onSelect={setActiveCategoryId}
       />
-      {activeCategory.hasLiveData ? (
+      {hasFullSub7View ? (
         <>
           <NewsBanner />
 
@@ -112,17 +115,21 @@ function CategoryNav({ activeCategoryId, onSelect }) {
   return (
     <nav className="category-nav" aria-label="Categorias AD Suzano">
       <div className="category-nav-inner">
-        {categories.map((category) => (
-          <button
-            className={category.id === activeCategoryId ? 'active' : ''}
-            key={category.id}
-            type="button"
-            onClick={() => onSelect(category.id)}
-          >
-            <span>{category.label}</span>
-            <small>{category.status}</small>
-          </button>
-        ))}
+        {categories.map((category) => {
+          const categoryFpfs = fpfsCategories.find((item) => item.category === category.label);
+          const hasFpfsData = Boolean(categoryFpfs?.recentGames?.length || categoryFpfs?.upcomingGames?.length);
+          return (
+            <button
+              className={category.id === activeCategoryId ? 'active' : ''}
+              key={category.id}
+              type="button"
+              onClick={() => onSelect(category.id)}
+            >
+              <span>{category.label}</span>
+              <small>{category.id === 'sub7' ? 'Completo' : hasFpfsData ? 'Dados FPFS' : category.status}</small>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );
@@ -205,8 +212,10 @@ function CategoryDashboard({ category, fpfsData }) {
           </div>
           <p>
             Temporada 2026, Campeonato Paulista, Divisão A2, categoria {category.label}.
-            A estrutura do Sub-7 segue mais completa por conter agenda, notícias e
-            leituras próprias adicionais.
+            {hasSuzanoGames
+              ? ' Dados carregados da tabela e dos jogos oficiais da Súmula Online.'
+              : ' A FPFS foi consultada, mas não retornou jogos do AD Suzano para esta categoria nesta divisão.'}
+            {' '}A estrutura do Sub-7 segue mais completa por conter agenda, notícias e leituras próprias adicionais.
           </p>
           {fpfsData && (
             <>
@@ -427,7 +436,7 @@ function formatShortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 }
 
-function Hero({ category, record, nextMatch, weather, weatherError }) {
+function Hero({ category, record, nextMatch, hasData, weather, weatherError }) {
   return (
     <section className="hero">
       <div className="hero-copy">
@@ -449,7 +458,7 @@ function Hero({ category, record, nextMatch, weather, weatherError }) {
             Próximo: {fmtDate.format(new Date(`${nextMatch.date}T12:00:00`))} às {nextMatch.time}, {nextMatch.home} x {nextMatch.away}
           </div>
         )}
-        {!nextMatch && !category.hasLiveData && (
+        {!nextMatch && !hasData && (
           <div className="next-pill">
             <CalendarDays size={18} />
             Estrutura pronta para receber tabela, agenda e resultados.
@@ -462,10 +471,10 @@ function Hero({ category, record, nextMatch, weather, weatherError }) {
       </div>
 
       <div className="stat-strip">
-        <Metric icon={Trophy} label="Pontos" value={category.hasLiveData ? record.points : 'Em breve'} />
-        <Metric icon={Goal} label="Gols feitos" value={category.hasLiveData ? record.goalsFor : 'Em breve'} />
-        <Metric icon={Activity} label="Saldo" value={category.hasLiveData ? (record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference) : 'Em breve'} />
-        <Metric icon={BarChart3} label="Aproveitamento" value={category.hasLiveData ? `${Math.round((record.points / Math.max(1, record.played * 3)) * 100)}%` : 'Em breve'} />
+        <Metric icon={Trophy} label="Pontos" value={hasData ? record.points : 'Em breve'} />
+        <Metric icon={Goal} label="Gols feitos" value={hasData ? record.goalsFor : 'Em breve'} />
+        <Metric icon={Activity} label="Saldo" value={hasData ? (record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference) : 'Em breve'} />
+        <Metric icon={BarChart3} label="Aproveitamento" value={hasData ? `${Math.round((record.points / Math.max(1, record.played * 3)) * 100)}%` : 'Em breve'} />
       </div>
     </section>
   );
