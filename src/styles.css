@@ -76,6 +76,50 @@ input {
   color: #e8eef7;
 }
 
+.hero-topline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.today-weather {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4px 9px;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: 0 12px 28px rgba(3, 12, 30, 0.16);
+}
+
+.today-weather span {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.today-weather strong {
+  grid-column: 2;
+  font-size: 15px;
+  color: var(--red);
+}
+
+.today-weather em {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  color: #475569;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .hero h1 {
   max-width: 780px;
   margin: 26px 0 18px;

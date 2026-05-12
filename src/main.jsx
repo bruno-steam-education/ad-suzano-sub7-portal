@@ -9,13 +9,17 @@ import {
   Goal,
   Shield,
   Sparkles,
+  SunMedium,
+  Thermometer,
   Trophy,
   Users,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { newsItems, newsWeek } from './data/news';
 import { players } from './data/players';
 import { sourceLinks, teamName, weeklyNotes } from './data/season';
+import { fetchSuzanoWeather } from './services/weather';
 import {
   mondayAnalysisDate,
   nextMatches,
@@ -33,14 +37,31 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 
 function App() {
   const [selectedPlayer, setSelectedPlayer] = useState(players[0].id);
+  const [weather, setWeather] = useState(null);
+  const [weatherError, setWeatherError] = useState(false);
   const record = useMemo(() => suzanoRecord(), []);
   const upcoming = useMemo(() => nextMatches(new Date()), []);
   const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
   const highlightedPlayer = players.find((player) => player.id === selectedPlayer) ?? players[0];
 
+  React.useEffect(() => {
+    let active = true;
+    fetchSuzanoWeather()
+      .then((data) => {
+        if (active) setWeather(data);
+      })
+      .catch(() => {
+        if (active) setWeatherError(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <main className="app-shell">
-      <Hero record={record} nextMatch={nextSuzano[0]} />
+      <Hero record={record} nextMatch={nextSuzano[0]} weather={weather} weatherError={weatherError} />
       <NewsBanner />
 
       <section className="content-grid">
@@ -78,24 +99,35 @@ function NewsBanner() {
       </div>
 
       <div className="news-layout">
-        <article className="lead-news">
+        <motion.article
+          className="lead-news"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.45 }}
+        >
           <div className="news-tag">{lead.category}</div>
           <h3>{lead.title}</h3>
           <p>{lead.summary}</p>
           <div className="news-impact">{lead.impact}</div>
           <NewsLink item={lead} />
-        </article>
+        </motion.article>
 
         <div className="news-stack">
           {featureItems.map((item) => (
-            <article className="mini-news" key={item.id}>
+            <motion.article
+              className="mini-news"
+              key={item.id}
+              whileHover={{ x: 4 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+            >
               <div>
                 <span>{item.category}</span>
                 <h3>{item.title}</h3>
               </div>
               <p>{item.summary}</p>
               <NewsLink item={item} />
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
@@ -129,13 +161,16 @@ function formatShortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
 }
 
-function Hero({ record, nextMatch }) {
+function Hero({ record, nextMatch, weather, weatherError }) {
   return (
     <section className="hero">
       <div className="hero-copy">
-        <div className="eyebrow">
-          <Shield size={18} />
-          Paulista A2 Sub-7
+        <div className="hero-topline">
+          <div className="eyebrow">
+            <Shield size={18} />
+            Paulista A2 Sub-7
+          </div>
+          <TodayWeather weather={weather} weatherError={weatherError} />
         </div>
         <h1>AD Suzano Inteligencia de Jogo</h1>
         <p>
@@ -164,13 +199,48 @@ function Hero({ record, nextMatch }) {
   );
 }
 
+function TodayWeather({ weather, weatherError }) {
+  const today = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    timeZone: 'America/Sao_Paulo',
+  }).format(new Date());
+
+  return (
+    <div className="today-weather">
+      <SunMedium size={18} />
+      <span>{today}</span>
+      <strong>
+        {weather
+          ? `${weather.temperature}°C em Suzano`
+          : weatherError
+            ? 'Clima indisponivel'
+            : 'Atualizando clima...'}
+      </strong>
+      {weather && (
+        <em>
+          <Thermometer size={15} />
+          Sensacao {weather.apparent}°C · {weather.label}
+        </em>
+      )}
+    </div>
+  );
+}
+
 function Metric({ icon: Icon, label, value }) {
   return (
-    <div className="metric">
+    <motion.div
+      className="metric"
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -4, scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+    >
       <Icon size={20} />
       <span>{label}</span>
       <strong>{value}</strong>
-    </div>
+    </motion.div>
   );
 }
 

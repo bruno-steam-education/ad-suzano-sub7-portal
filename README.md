@@ -25,3 +25,10 @@ Edite os arquivos em `src/data/`:
 - `players.js`: atletas, indicadores manuais e videos do YouTube.
 
 O portal calcula automaticamente forma recente, tabela simplificada, relacoes indiretas entre adversarios e chance de vitoria.
+
+## Noticias e clima
+
+- O card "Hoje em Suzano" usa a API publica Open-Meteo no navegador.
+- O workflow `.github/workflows/update-news.yml` roda todos os dias as 06:30 de Sao Paulo (`09:30 UTC`) e executa `npm run update:news`.
+- O script `scripts/update-news.mjs` busca feeds RSS publicos, gera pelo menos 10 itens semanais em `src/data/news.js` e publica o Pages na mesma execucao.
+- A interface usa Motion (`motiondivision/motion`) para microinteracoes e transicoes leves em React.
