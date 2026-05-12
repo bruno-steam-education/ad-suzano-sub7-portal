@@ -95,6 +95,39 @@ export function predictMatch(match) {
   };
 }
 
+export function championshipProjection() {
+  const record = suzanoRecord();
+  const remainingSuzanoMatches = matches.filter(
+    (match) => !played(match) && (match.home === teamName || match.away === teamName),
+  );
+  const projectedPoints = remainingSuzanoMatches.reduce((total, match) => {
+    const prediction = predictMatch(match);
+    return total + prediction.chance / 100 * 3;
+  }, record.points);
+  const currentEfficiency = record.played ? record.points / (record.played * 3) : 0;
+  const recentWins = record.recent.slice(-4).filter((game) => game.result === 'V').length;
+  const goalBalanceSignal = Math.min(1, Math.max(0, (record.goalDifference + 8) / 22));
+  const attackSignal = Math.min(1, record.attackRate / 5);
+  const baseChance =
+    currentEfficiency * 42 +
+    goalBalanceSignal * 20 +
+    attackSignal * 14 +
+    recentWins * 4 +
+    Math.min(10, projectedPoints / 3);
+  const chance = Math.round(Math.min(78, Math.max(12, baseChance)));
+
+  return {
+    chance,
+    projectedPoints: Number(projectedPoints.toFixed(1)),
+    reasons: [
+      `${record.points} pontos em ${record.played} jogos, com ${Math.round(currentEfficiency * 100)}% de aproveitamento.`,
+      `Sequencia recente com ${recentWins} vitorias nos ultimos 4 jogos mapeados.`,
+      `Saldo de ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} e media de ${record.attackRate.toFixed(1)} gols por jogo.`,
+      `Projecao estatistica de ${Number(projectedPoints.toFixed(1))} pontos apos os proximos jogos cadastrados.`,
+    ],
+  };
+}
+
 function buildReasons(opponent, suzano, rival, match) {
   const reasons = [];
   const lastSuzano = suzano.recent.at(-1);

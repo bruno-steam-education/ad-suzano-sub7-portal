@@ -3,10 +3,13 @@ import { createRoot } from 'react-dom/client';
 import {
   Activity,
   BarChart3,
+  Brain,
   CalendarDays,
   ChevronRight,
   CirclePlay,
+  Clock,
   Goal,
+  MapPin,
   Shield,
   Sparkles,
   SunMedium,
@@ -18,9 +21,11 @@ import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { newsItems, newsWeek } from './data/news';
 import { players } from './data/players';
+import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { sourceLinks, teamName, weeklyNotes } from './data/season';
 import { fetchSuzanoWeather } from './services/weather';
 import {
+  championshipProjection,
   mondayAnalysisDate,
   nextMatches,
   predictMatch,
@@ -67,6 +72,8 @@ function App() {
       <section className="content-grid">
         <div className="main-flow">
           <NextGames matches={nextSuzano} />
+          <WeeklySchedule />
+          <TitleProjection />
           <WeeklyDesk />
           <Campaign matches={suzanoMatches()} />
         </div>
@@ -241,6 +248,85 @@ function Metric({ icon: Icon, label, value }) {
       <span>{label}</span>
       <strong>{value}</strong>
     </motion.div>
+  );
+}
+
+function WeeklySchedule() {
+  const grouped = weeklySchedule.reduce((acc, item) => {
+    acc[item.date] = acc[item.date] ?? [];
+    acc[item.date].push(item);
+    return acc;
+  }, {});
+
+  return (
+    <section className="panel schedule-panel">
+      <div className="section-title">
+        <div>
+          <span>Agenda da semana</span>
+          <h2>Semana de {formatShortDate(weeklyScheduleWeek)}</h2>
+        </div>
+        <CalendarDays size={22} />
+      </div>
+
+      <div className="schedule-grid">
+        {Object.entries(grouped).map(([date, items]) => (
+          <article className="schedule-day" key={date}>
+            <div className="schedule-date">
+              <strong>{items[0].weekday}</strong>
+              <span>{formatShortDate(date)}</span>
+            </div>
+            <div className="schedule-items">
+              {items.map((item) => (
+                <div className={`schedule-item ${item.tone}`} key={item.id}>
+                  <div className="schedule-type">{iconForSchedule(item.type)} {item.type}</div>
+                  <h3>{item.title}</h3>
+                  <p><Clock size={15} /> {item.time}</p>
+                  <p><MapPin size={15} /> {item.location}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function iconForSchedule(type) {
+  if (type === 'Mental') return <Brain size={16} />;
+  if (type === 'Jogo oficial') return <Trophy size={16} />;
+  if (type === 'Goleiros') return <Shield size={16} />;
+  return <Activity size={16} />;
+}
+
+function TitleProjection() {
+  const projection = championshipProjection();
+
+  return (
+    <section className="panel title-panel">
+      <div className="title-odds">
+        <div>
+          <span>Projecao estatistica</span>
+          <h2>Chance de ser campeao</h2>
+          <p>
+            Estimativa semanal baseada em aproveitamento, saldo, media de gols,
+            fase recente e dificuldade dos proximos confrontos cadastrados.
+          </p>
+        </div>
+        <div className="odds-ring" style={{ '--odds': `${projection.chance}%` }}>
+          <strong>{projection.chance}%</strong>
+          <span>Titulo</span>
+        </div>
+      </div>
+      <div className="odds-reasons">
+        {projection.reasons.map((reason) => (
+          <div key={reason}>
+            <ChevronRight size={18} />
+            {reason}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

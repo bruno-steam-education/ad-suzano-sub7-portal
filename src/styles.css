@@ -562,6 +562,171 @@ input {
   color: #334155;
 }
 
+.schedule-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.schedule-day {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+}
+
+.schedule-date {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding-right: 14px;
+  border-right: 1px solid var(--line);
+}
+
+.schedule-date strong {
+  font-size: 19px;
+}
+
+.schedule-date span {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.schedule-items {
+  display: grid;
+  gap: 10px;
+}
+
+.schedule-item {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fff;
+  border-left: 5px solid var(--blue-2);
+}
+
+.schedule-item.red {
+  border-left-color: var(--red);
+}
+
+.schedule-item.ice {
+  background: #eef4fb;
+}
+
+.schedule-item.match {
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  color: #fff;
+  border-left-color: var(--red);
+}
+
+.schedule-type,
+.schedule-item p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.schedule-type {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.schedule-item.match .schedule-type,
+.schedule-item.match p {
+  color: #dbeafe;
+}
+
+.schedule-item h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.schedule-item p {
+  margin: 0;
+  color: #475569;
+  font-weight: 800;
+}
+
+.title-panel {
+  background:
+    linear-gradient(135deg, rgba(217, 35, 50, 0.95) 0 28%, transparent 28.2%),
+    linear-gradient(135deg, #071a3d, #0e3c86);
+  color: #fff;
+}
+
+.title-odds {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  gap: 22px;
+  align-items: center;
+}
+
+.title-odds span {
+  color: #dbeafe;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title-odds h2 {
+  margin: 4px 0 10px;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1;
+}
+
+.title-odds p {
+  max-width: 780px;
+  margin: 0;
+  color: #d9e5f3;
+}
+
+.odds-ring {
+  width: 154px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #071a3d 0 56%, transparent 57%),
+    conic-gradient(#fff var(--odds), rgba(255, 255, 255, 0.22) 0);
+}
+
+.odds-ring strong {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.odds-ring span {
+  margin-top: -38px;
+  color: #dbeafe;
+}
+
+.odds-reasons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.odds-reasons div {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #eef5ff;
+  font-weight: 800;
+}
+
 .focus-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -726,7 +891,9 @@ input {
   }
 
   .stat-strip,
-  .focus-grid {
+  .focus-grid,
+  .odds-reasons,
+  .title-odds {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -742,8 +909,17 @@ input {
 
   .stat-strip,
   .focus-grid,
-  .match-card {
+  .match-card,
+  .schedule-day,
+  .odds-reasons,
+  .title-odds {
     grid-template-columns: 1fr;
+  }
+
+  .schedule-date {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0 10px;
   }
 
   .match-date {
