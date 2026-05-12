@@ -95,6 +95,7 @@ function App() {
             <div className="main-flow">
               <NextGames matches={nextSuzano} />
               <TitleProjection />
+              <AccessProjection />
               <WeeklyDesk />
               <Campaign matches={suzanoMatches()} />
             </div>
@@ -965,6 +966,105 @@ function TitleProjection() {
             {reason}
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function a1AccessProjection() {
+  const record = suzanoRecord();
+  const currentEfficiency = record.played ? record.points / (record.played * 3) : 0;
+  const recentWins = record.recent.slice(-4).filter((game) => game.result === 'V').length;
+  const goalBalanceSignal = Math.min(8, Math.max(-4, record.goalDifference) * 0.62);
+  const rawChance =
+    25 +
+    currentEfficiency * 24 +
+    goalBalanceSignal +
+    recentWins * 2 +
+    6 -
+    8 -
+    3;
+  const chance = Math.round(Math.min(62, Math.max(28, rawChance)));
+
+  return {
+    chance,
+    efficiency: Math.round(currentEfficiency * 100),
+    recentWins,
+    reasons: [
+      `A regra divulgada para a iniciação prevê 4 acessos da A2 para a A1 pelo Ranking de Eficiência.`,
+      `O Sub-7 tem ${record.points} pontos em ${record.played} jogos, ${Math.round(currentEfficiency * 100)}% de aproveitamento e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`,
+      `A sequência recente pesa a favor: ${recentWins} vitórias nos últimos 4 jogos mapeados, incluindo o 7 x 3 fora no Dia das Mães.`,
+      `A projeção ainda fica travada porque faltam os dados do Torneio União e a pontuação disciplinar oficial.`,
+    ],
+    process: [
+      'Paulista A2 atual: aproveitamento, saldo de gols e fase recente.',
+      'Regra de acesso: 4 vagas sobem da A2 para a A1 nas categorias de iniciação.',
+      'Torneio União: tratado como pendente até termos tabela e resultados oficiais.',
+      'Disciplina: cartões podem retirar pontos do ranking, então o modelo segura a chance sem súmula completa.',
+    ],
+    milestones: [
+      `Manter pelo menos 65% de aproveitamento; hoje o portal projeta ${Math.round(currentEfficiency * 100)}%.`,
+      'Buscar 4 a 6 pontos nos próximos dois jogos para sustentar zona real de acesso.',
+      'Preservar saldo positivo acima de +12 e elevar a média ofensiva sem abrir transições.',
+      'Chegar ao Torneio União com campanha forte e plano de jogo limpo para não perder pontos por cartões.',
+    ],
+  };
+}
+
+function AccessProjection() {
+  const projection = a1AccessProjection();
+
+  return (
+    <section className="panel access-panel">
+      <div className="access-layout">
+        <div className="access-copy">
+          <span>Projeção de acesso</span>
+          <h2>Chance de subir para a A1 como Sub-8</h2>
+          <p>
+            Estimativa baseada na regra de acesso da iniciação, campanha atual do
+            Paulista A2, fase recente e variáveis ainda pendentes do Ranking de Eficiência.
+          </p>
+        </div>
+
+        <div className="access-score">
+          <div className="odds-ring access-ring" style={{ '--odds': `${projection.chance}%` }}>
+            <strong>{projection.chance}%</strong>
+            <span>Acesso A1</span>
+          </div>
+          <small>Faixa conservadora até entrar Torneio União e cartões.</small>
+        </div>
+      </div>
+
+      <div className="access-section">
+        <h3>Motivo da estimativa</h3>
+        <div className="odds-reasons">
+          {projection.reasons.map((reason) => (
+            <div key={reason}>
+              <ChevronRight size={18} />
+              {reason}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="access-bottom-grid">
+        <div className="access-box">
+          <h3>Processo usado</h3>
+          <ol>
+            {projection.process.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="access-box access-box-red">
+          <h3>Próximos marcos</h3>
+          <ul>
+            {projection.milestones.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
