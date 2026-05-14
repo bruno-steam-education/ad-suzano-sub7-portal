@@ -2,7 +2,7 @@ export const newsWeek = '2026-05-11';
 
 export const newsItems = [
   {
-    "id": "auto-2026-05-13-1",
+    "id": "auto-2026-05-14-1",
     "title": "AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,10 +10,10 @@ export const newsItems = [
     "url": null,
     "summary": "No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.",
     "impact": "Resultado fortalece a confiança do grupo, confirma o bom momento ofensivo e vira o principal destaque da semana.",
-    "date": "2026-05-13"
+    "date": "2026-05-14"
   },
   {
-    "id": "auto-2026-05-13-2",
+    "id": "auto-2026-05-14-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano - Prefeitura de Itaquaquecetuba",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -23,7 +23,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-13-3",
+    "id": "auto-2026-05-14-3",
     "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - Portal ABC do ABC",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -33,23 +33,13 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-13-4",
+    "id": "auto-2026-05-14-4",
     "title": "Pedro Ishi recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal - Diário de Suzano",
     "category": "AD Suzano",
     "date": "2025-09-03",
     "source": "Diário de Suzano",
     "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPa0ZvZFBrVWZHZG9sZ3pIYUNLT1NOdW42Vk5xT2ltOV9sQWMzMklTUVdIT1Vfelhobzg4bmFNVFlCaFBFTjY0V1RldVBSOHhadGdFbkVuNzdGTW9XanVHVG1ualdENkV2SGlkd1c3WVZKRjluVUVfcWU0R0gxWXRxV1JpUzRGaHpuTmo0aWk4SzRVcHRjbzd3eHJhdGtKeWxQdlRzWEhPOC1kVFhjalZjVlZ4a1B4QdIBuwFBVV95cUxOajNrXzJIOE0ybFp1SVpnMDRmMk05VHB3LXVBQ2V0d2Y0Z1AxVk5zbTNXWU96NE92TVh5ekRhUWlFSURrZkJBVFJGaTF5WVBjaERwVk5rTnVIeVZhallqbWxNTTlIelJpSGVPZDRldkpGUElVOGxfU0IyU0lyY1cyS3RPQUJJUFl5dER4X2h0bFl6Vm1yU2hWWlQxTUJPYm56Z0tNYmlhcXRRQTJuTWZrOHIycHFsT1VZekM0?oc=5",
     "summary": "Pedro Ishi recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal Diário de Suzano",
-    "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
-  },
-  {
-    "id": "auto-2026-05-13-5",
-    "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
-    "category": "AD Suzano",
-    "date": "2026-03-12",
-    "source": "Notícias de Mogi",
-    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNS2k5TjFaR3JCeVpkVW40TGZSNTdFWjBIMzVDT01VOVdTbGRDUi1BSFQ0TFpTUzFhRjdWd1dPcUtmWS1XZ1g4XzEyWU1UMHd6V201NnB3ek5GMW9OLVVhamFid1hZWEhDSWVSci1Ld01jRW9GejU2bHBjZ0VwS2VWMkZvMzlaemtzMEREX1lvWXZJNGhkcnNEbGx5ZFZDZnZkSS1MckU0QTlJeUpSTW1qRG05Zw?oc=5",
-    "summary": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo Notícias de Mogi",
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   }
 ];
