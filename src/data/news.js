@@ -3,13 +3,13 @@ export const newsWeek = '2026-05-11';
 export const newsItems = [
   {
     "id": "auto-2026-05-17-1",
-    "title": "AD Suzano Sub-7 vence por 7 x 3 no domingo de Dia das Mães",
+    "title": "AD Suzano Sub-7 vence Ocian Praia Clube e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
-    "source": "Boletim do portal",
-    "url": null,
-    "summary": "No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.",
-    "impact": "Resultado fortalece a confiança do grupo, confirma o bom momento ofensivo e vira o principal destaque da semana.",
+    "source": "FPFS Súmula Online",
+    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139309",
+    "summary": "O Sub-7 teve vitória por 3 x 1 contra Ocian Praia Clube, em partida registrada pela Súmula Online da FPFS no dia 16/05/2026.",
+    "impact": "Com o resultado, o AD Suzano aparece com 19 pontos em 9 jogos, 34 gols marcados e saldo +15.",
     "date": "2026-05-17"
   },
   {

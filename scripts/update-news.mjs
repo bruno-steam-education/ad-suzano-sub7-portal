@@ -1,5 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import { writeFile } from 'node:fs/promises';
+import { fpfsCategories } from '../src/data/fpfsCategories.js';
 
 const CATEGORY_ORDER = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 
@@ -38,6 +39,63 @@ const priorityLead = {
     'No domingo, 10/05, Dia das Mães, o AD Suzano Sub-7 venceu a Associação Desportiva Santo André Futsal por 7 x 3 fora de casa e abriu a semana com uma vitória de peso.',
   impact: 'Resultado fortalece a confiança do grupo, confirma o bom momento ofensivo e vira o principal destaque da semana.',
 };
+
+function suzanoIn(name = '') {
+  return name.toUpperCase().includes('SUZANO');
+}
+
+function displayTeam(name = '') {
+  const cleanName = name
+    .replace(/\bA\.?D\.?\s+SUZANO\b/i, 'AD Suzano')
+    .replace(/\bASSOCIAÇÃO\b/gi, 'Associação')
+    .replace(/\bASSOCIACAO\b/gi, 'Associação')
+    .replace(/\bDESPORTIVA\b/gi, 'Desportiva')
+    .replace(/\bSANTO\b/gi, 'Santo')
+    .replace(/\bANDRE\b/gi, 'André')
+    .replace(/\bANDRÉ\b/gi, 'André')
+    .replace(/\bOCIAN\b/gi, 'Ocian')
+    .replace(/\bPRAIA\b/gi, 'Praia')
+    .replace(/\bCLUBE\b/gi, 'Clube')
+    .replace(/\bFUTSAL\b/gi, 'Futsal')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleanName === cleanName.toUpperCase()) {
+    return cleanName
+      .toLowerCase()
+      .replace(/(^|\s|-)([a-záàâãéêíóôõúç])/g, (match) => match.toUpperCase())
+      .replace('Ad Suzano', 'AD Suzano')
+      .replace('Ocian', 'Ocian');
+  }
+
+  return cleanName;
+}
+
+function buildSub7LeadFromFpfs() {
+  const sub7 = fpfsCategories.find((category) => category.category === 'Sub-7');
+  const latest = sub7?.recentGames?.at(-1);
+  if (!latest || !Number.isFinite(latest.homeGoals) || !Number.isFinite(latest.awayGoals)) return null;
+
+  const suzanoHome = suzanoIn(latest.home);
+  const opponent = displayTeam(suzanoHome ? latest.away : latest.home);
+  const goalsFor = suzanoHome ? latest.homeGoals : latest.awayGoals;
+  const goalsAgainst = suzanoHome ? latest.awayGoals : latest.homeGoals;
+  const score = `${goalsFor} x ${goalsAgainst}`;
+  const resultVerb = goalsFor > goalsAgainst ? 'vence' : goalsFor === goalsAgainst ? 'empata com' : 'perde para';
+  const resultText = goalsFor > goalsAgainst ? 'vitória' : goalsFor === goalsAgainst ? 'empate' : 'revés';
+
+  return {
+    title: `AD Suzano Sub-7 ${resultVerb} ${opponent} e atualiza campanha no Paulista A2`,
+    category: 'Sub-7',
+    scope: 'AD Suzano Sub-7',
+    source: 'FPFS Súmula Online',
+    url: latest.summaryUrl ?? sub7.gamesUrl,
+    summary:
+      `O Sub-7 teve ${resultText} por ${score} contra ${opponent}, em partida registrada pela Súmula Online da FPFS no dia ${latest.date.split('-').reverse().join('/')}.`,
+    impact:
+      `Com o resultado, o AD Suzano aparece com ${sub7.record.points} pontos em ${sub7.record.played} jogos, ${sub7.record.goalsFor} gols marcados e saldo ${sub7.record.goalDifference > 0 ? `+${sub7.record.goalDifference}` : sub7.record.goalDifference}.`,
+  };
+}
 
 const evergreen = [
   {
@@ -298,8 +356,9 @@ const fetchedByFeed = (
 });
 
 const seen = new Set();
+const leadStory = buildSub7LeadFromFpfs() ?? priorityLead;
 const collected = [
-  { ...normalizeStaticItem(priorityLead), date: todayKey() },
+  { ...normalizeStaticItem(leadStory), date: todayKey() },
   ...fetchedByFeed,
   ...evergreen.map((item) => ({ ...normalizeStaticItem(item), date: todayKey() })),
 ]

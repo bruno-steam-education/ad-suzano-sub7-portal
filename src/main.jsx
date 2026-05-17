@@ -49,6 +49,13 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 const appVersion = packageInfo.version;
 const supporterPlaylistUrl = 'https://youtube.com/playlist?list=PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM&si=nvwTyHLvLWB9V88c';
 
+function normalizeFpfsGame(game) {
+  return {
+    ...game,
+    time: game.time?.replace('h', ':') ?? '',
+  };
+}
+
 function App() {
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
   const [weather, setWeather] = useState(null);
@@ -60,7 +67,12 @@ function App() {
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
   const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
   const hasFullSub7View = activeCategory.id === 'sub7';
-  const activeCategoryNextMatch = hasFullSub7View ? nextSuzano[0] : activeFpfs?.upcomingGames?.[0];
+  const sub7FpfsMatches = activeFpfs?.upcomingGames?.map(normalizeFpfsGame) ?? [];
+  const sub7FpfsRecent = activeFpfs?.recentGames?.map(normalizeFpfsGame) ?? [];
+  const sub7NextSuzano = sub7FpfsMatches.length ? sub7FpfsMatches : nextSuzano;
+  const sub7CampaignMatches = sub7FpfsRecent.length ? sub7FpfsRecent : suzanoMatches();
+  const sub7DisplayRecord = activeFpfs?.record ?? record;
+  const activeCategoryNextMatch = hasFullSub7View ? sub7NextSuzano[0] : activeFpfs?.upcomingGames?.[0];
 
   React.useEffect(() => {
     let active = true;
@@ -81,7 +93,7 @@ function App() {
     <main className="app-shell">
       <Hero
         category={activeCategory}
-        record={hasFullSub7View ? record : activeFpfs?.record}
+        record={hasFullSub7View ? sub7DisplayRecord : activeFpfs?.record}
         nextMatch={activeCategoryNextMatch}
         hasData={hasFullSub7View || hasFpfsCategoryData}
         weather={weather}
@@ -98,11 +110,11 @@ function App() {
 
           <section className="content-grid">
             <div className="main-flow">
-              <NextGames matches={nextSuzano} />
+              <NextGames matches={sub7NextSuzano} />
               <TitleProjection />
               <AccessProjection />
               <WeeklyDesk />
-              <Campaign matches={suzanoMatches()} />
+              <Campaign matches={sub7CampaignMatches} />
             </div>
 
             <aside className="side-flow">

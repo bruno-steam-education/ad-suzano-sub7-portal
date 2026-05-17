@@ -3,6 +3,7 @@ name: Update FPFS, category news and deploy
 on:
   schedule:
     - cron: '30 9 * * *'
+    - cron: '30 21 * * *'
   workflow_dispatch:
 
 permissions:
