@@ -37,6 +37,7 @@ jobs:
         run: |
           npm run update:fpfs
           npm run update:news
+          npm run audit:robots
 
       - name: Commit data changes
         run: |

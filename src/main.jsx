@@ -264,6 +264,7 @@ function CategoryDashboard({ category, fpfsData }) {
 function CompleteCategoryDashboard({ category, fpfsData }) {
   const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
   const record = fpfsData?.record;
+  const robot = categoryRobot(category, fpfsData);
 
   return (
     <>
@@ -301,8 +302,9 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
       <section className="content-grid category-complete-grid">
         <div className="main-flow">
           <CategoryNewsPanel category={category} />
-          <CategoryNextGames category={category} games={fpfsData?.upcomingGames ?? []} />
-          <CategoryTitleProjection category={category} record={record} hasSuzanoGames={hasSuzanoGames} />
+          <CategoryNextGamesV2 category={category} games={fpfsData?.upcomingGames ?? []} robot={robot} />
+          <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
+          <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
           <CategoryWeeklyDesk category={category} />
           <CategoryGamesPanel
             title="Últimos resultados"
@@ -315,6 +317,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 
         <aside className="side-flow">
           <CategorySchedulePlaceholder category={category} games={fpfsData?.upcomingGames ?? []} />
+          <CategoryRobotAudit category={category} robot={robot} />
           <CategoryYouTubePanel category={category} fpfsData={fpfsData} />
           <CategoryDataPanel category={category} fpfsData={fpfsData} hasSuzanoGames={hasSuzanoGames} />
         </aside>
@@ -347,7 +350,94 @@ function teamDisplayName(name = '') {
       .replace('Ad Suzano', 'AD Suzano');
   }
 
-  return cleanName;
+  return cleanName
+    .replace(/\bOCIAN\b/gi, 'Ocian')
+    .replace(/\bPRAIA\b/gi, 'Praia')
+    .replace(/\bCLUBE\b/gi, 'Clube')
+    .replace(/\bCHUTE\b/gi, 'Chute');
+}
+
+function categoryRobot(category, fpfsData) {
+  const record = fpfsData?.record ?? {};
+  const played = record.played ?? 0;
+  const efficiency = played ? record.points / Math.max(1, played * 3) : 0;
+  const recentGames = fpfsData?.recentGames ?? [];
+  const upcomingGames = fpfsData?.upcomingGames ?? [];
+  const recentWins = recentGames.slice(-4).filter((game) => {
+    const suzanoHome = isSuzanoName(game.home);
+    const goalsFor = suzanoHome ? game.homeGoals : game.awayGoals;
+    const goalsAgainst = suzanoHome ? game.awayGoals : game.homeGoals;
+    return Number.isFinite(goalsFor) && goalsFor > goalsAgainst;
+  }).length;
+  const goalSignal = Math.max(-12, Math.min(14, record.goalDifference ?? 0));
+  const attackRate = played ? (record.goalsFor ?? 0) / played : 0;
+  const defenseRate = played ? (record.goalsAgainst ?? 0) / played : 0;
+  const titleChance = Math.round(Math.max(6, Math.min(84, 14 + efficiency * 58 + goalSignal * 1.15 + recentWins * 2)));
+  const accessChance = Math.round(Math.max(20, Math.min(72, 18 + efficiency * 38 + goalSignal * 0.9 + recentWins * 2 + 7)));
+
+  return {
+    category,
+    record,
+    played,
+    efficiency,
+    efficiencyLabel: `${Math.round(efficiency * 100)}%`,
+    recentWins,
+    attackRate,
+    defenseRate,
+    titleChance,
+    accessChance,
+    upcomingGames,
+    recentGames,
+    freshness: fpfsData?.checkedAt ? new Date(fpfsData.checkedAt) : null,
+  };
+}
+
+function opponentForCategoryGame(game) {
+  return teamDisplayName(isSuzanoName(game.home) ? game.away : game.home);
+}
+
+function categoryMatchPrediction(category, game, robot, index = 0) {
+  const suzanoHome = isSuzanoName(game.home);
+  const homeBoost = suzanoHome ? 5 : -2;
+  const recentBoost = robot.recentWins * 2.4;
+  const defensePenalty = Math.min(9, robot.defenseRate * 1.5);
+  const attackBoost = Math.min(10, robot.attackRate * 2.1);
+  const slotPenalty = index * 2;
+  const chance = Math.round(Math.max(18, Math.min(84, 34 + robot.efficiency * 34 + homeBoost + recentBoost + attackBoost - defensePenalty - slotPenalty)));
+  const latest = robot.recentGames.at(-1);
+  const latestText = latest
+    ? `vem de ${isSuzanoName(latest.home) ? latest.homeGoals : latest.awayGoals} x ${isSuzanoName(latest.home) ? latest.awayGoals : latest.homeGoals} contra ${opponentForCategoryGame(latest)}`
+    : 'ainda não tem resultado recente localizado';
+
+  return {
+    chance,
+    opponent: opponentForCategoryGame(game),
+    reasons: [
+      `${category.label} ${latestText}.`,
+      `Campanha: ${robot.record.points ?? 0} pontos, ${robot.efficiencyLabel} de aproveitamento e saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}.`,
+      `Médias: ${robot.attackRate.toFixed(1)} gols feitos e ${robot.defenseRate.toFixed(1)} sofridos por jogo na FPFS.`,
+    ],
+  };
+}
+
+function buildThreeGameSlots(games) {
+  const realGames = games.slice(0, 3).map((game, index) => ({ game, index, pending: false }));
+  const missing = Math.max(0, 3 - realGames.length);
+  return [
+    ...realGames,
+    ...Array.from({ length: missing }, (_, offset) => ({ game: null, index: realGames.length + offset, pending: true })),
+  ];
+}
+
+function categoryAudit(robot) {
+  const checkedAt = robot.freshness;
+  const ageHours = checkedAt ? (Date.now() - checkedAt.getTime()) / 36e5 : Infinity;
+  return [
+    { label: 'Vitórias dos próximos jogos', ok: robot.upcomingGames.slice(0, 3).every((game, index) => categoryMatchPrediction(robot.category, game, robot, index).chance > 0) },
+    { label: 'Chance de título', ok: robot.titleChance > 0 },
+    { label: 'Chance de acesso', ok: robot.accessChance > 0 },
+    { label: 'Fonte FPFS atualizada', ok: ageHours <= 36 },
+  ];
 }
 
 function categorySportsNews(category, latest, next, record) {
@@ -488,6 +578,85 @@ function CategoryNewsPlaceholder({ category }) {
   );
 }
 
+function CategoryNextGamesV2({ category, games, robot }) {
+  const slots = buildThreeGameSlots(games);
+
+  return (
+    <section className="panel">
+      <div className="section-title">
+        <div>
+          <span>Robô pré-jogo</span>
+          <h2>Próximos 3 confrontos</h2>
+        </div>
+        <Sparkles size={22} />
+      </div>
+
+      <div className="match-list">
+        {slots.map(({ game, index, pending }) => {
+          if (pending) {
+            return (
+              <article className="match-card category-match-card pending-game-slot" key={`${category.id}-pending-${index}`}>
+                <div className="match-date">
+                  <strong>Jogo {index + 1}</strong>
+                  <span>FPFS</span>
+                </div>
+                <div className="match-body">
+                  <div className="teams-line">
+                    <span>Aguardando publicação</span>
+                  </div>
+                  <p>A Súmula Online ainda não liberou este compromisso da categoria.</p>
+                  <ul>
+                    <li>O robô mantém o espaço pronto para análise assim que a FPFS publicar data, local e adversário.</li>
+                    <li>Sem fonte oficial, não há percentual exibido para evitar chute.</li>
+                  </ul>
+                </div>
+                <div className="chance pending-chance">
+                  <span>Chance AD Suzano</span>
+                  <strong>--</strong>
+                  <small>Aguardando jogo oficial</small>
+                </div>
+              </article>
+            );
+          }
+
+          const prediction = categoryMatchPrediction(category, game, robot, index);
+
+          return (
+            <article className="match-card category-match-card" key={`${category.id}-${game.date}-${game.home}-${game.away}`}>
+              <div className="match-date">
+                <strong>{fmtDate.format(new Date(`${game.date}T12:00:00`))}</strong>
+                <span>{game.time || 'A confirmar'}</span>
+              </div>
+              <div className="match-body">
+                <div className="teams-line">
+                  <span>{game.home}</span>
+                  <b>x</b>
+                  <span>{game.away}</span>
+                </div>
+                <p><MapPin size={15} /> {game.venue}</p>
+                <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
+                <ul>
+                  {prediction.reasons.map((reason) => (
+                    <li key={reason}>{reason}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="chance pending-chance">
+                <span>Chance AD Suzano</span>
+                <strong>{prediction.chance}%</strong>
+                <small>Robô {category.label}: campanha, saldo, mando e fase recente</small>
+                <div className="chance-bar">
+                  <i style={{ width: `${prediction.chance}%` }} />
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function CategoryNextGames({ category, games }) {
   return (
     <section className="panel">
@@ -540,6 +709,36 @@ function categoryGameChance(category) {
   return Math.round(Math.max(18, Math.min(82, 42 + efficiency * 34 + goalSignal)));
 }
 
+function CategoryTitleProjectionV2({ category, robot, hasSuzanoGames }) {
+  const record = robot.record;
+
+  return (
+    <section className="panel title-panel pending-title-panel">
+      <div className="title-odds">
+        <div>
+          <span>Robô estatístico {category.label}</span>
+          <h2>Chance de ser campeão</h2>
+          <p>
+            {hasSuzanoGames
+              ? `Leitura do robô: ${record.points} pontos em ${record.played} jogos, ${robot.efficiencyLabel} de aproveitamento, saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} e ${robot.recentWins} vitórias nos últimos 4 jogos.`
+              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projeção.'}
+          </p>
+        </div>
+        <div className="odds-ring pending-ring" style={{ '--odds': `${robot.titleChance}%` }}>
+          <strong>{hasSuzanoGames ? `${robot.titleChance}%` : '--'}</strong>
+          <span>Título</span>
+        </div>
+      </div>
+      <div className="odds-reasons">
+        <div><ChevronRight size={18} />Aproveitamento atual: {hasSuzanoGames ? robot.efficiencyLabel : 'aguardando dados'}.</div>
+        <div><ChevronRight size={18} />Saldo: {record?.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 'aguardando dados'}.</div>
+        <div><ChevronRight size={18} />Ataque: {hasSuzanoGames ? `${robot.attackRate.toFixed(1)} gols por jogo` : 'aguardando dados'}.</div>
+        <div><ChevronRight size={18} />Fase recente: {hasSuzanoGames ? `${robot.recentWins} vitórias nos últimos 4 jogos` : 'aguardando dados'}.</div>
+      </div>
+    </section>
+  );
+}
+
 function CategoryTitleProjection({ category, record, hasSuzanoGames }) {
   const efficiency = record?.played ? Math.round((record.points / Math.max(1, record.played * 3)) * 100) : null;
   const titleChance = categoryTitleChance(record);
@@ -576,6 +775,79 @@ function categoryTitleChance(record) {
   const efficiency = record.points / Math.max(1, record.played * 3);
   const goalSignal = Math.max(-15, Math.min(15, record.goalDifference)) * 1.1;
   return Math.round(Math.max(6, Math.min(78, 18 + efficiency * 52 + goalSignal)));
+}
+
+function CategoryAccessProjection({ category, robot, hasSuzanoGames }) {
+  const record = robot.record;
+
+  return (
+    <section className="panel access-panel category-access-panel">
+      <div className="access-layout">
+        <div className="access-copy">
+          <span>Robô de acesso {category.label}</span>
+          <h2>Chance de subir para a A1</h2>
+          <p>
+            {hasSuzanoGames
+              ? `Projeção por Ranking de Eficiência: Paulista A2 atual, saldo, fase recente e margem disciplinar ainda pendente.`
+              : 'Aguardando dados oficiais para estimar acesso.'}
+          </p>
+        </div>
+        <div className="access-score">
+          <div className="odds-ring access-ring" style={{ '--odds': `${robot.accessChance}%` }}>
+            <strong>{hasSuzanoGames ? `${robot.accessChance}%` : '--'}</strong>
+            <span>Acesso A1</span>
+          </div>
+          <small>{category.label}: cálculo próprio do robô da categoria.</small>
+        </div>
+      </div>
+      <div className="access-bottom-grid">
+        <div className="access-box">
+          <h3>Por que esse número</h3>
+          <ul>
+            <li>{record.points ?? 0} pontos em {record.played ?? 0} jogos.</li>
+            <li>{robot.efficiencyLabel} de aproveitamento na base FPFS.</li>
+            <li>Saldo {record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference ?? 0} e média de {robot.attackRate.toFixed(1)} gols feitos.</li>
+          </ul>
+        </div>
+        <div className="access-box access-box-red">
+          <h3>Próximos marcos</h3>
+          <ul>
+            <li>Manter aproveitamento acima de 60%.</li>
+            <li>Evitar cartões para não perder pontos disciplinares.</li>
+            <li>Transformar os próximos jogos publicados pela FPFS em pontos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CategoryRobotAudit({ category, robot }) {
+  const checks = categoryAudit(robot);
+  const checkedAt = robot.freshness
+    ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).format(robot.freshness)
+    : 'sem data';
+
+  return (
+    <section className="panel robot-audit-panel">
+      <div className="section-title">
+        <div>
+          <span>Pente fino</span>
+          <h2>Robô {category.label}</h2>
+        </div>
+        <Sparkles size={22} />
+      </div>
+      <p>Última leitura FPFS: {checkedAt}. O robô confere percentuais de vitória, título e acesso antes de publicar.</p>
+      <div className="robot-check-list">
+        {checks.map((check) => (
+          <div className={check.ok ? 'ok' : 'warn'} key={check.label}>
+            <strong>{check.ok ? 'OK' : 'Atenção'}</strong>
+            <span>{check.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function CategoryWeeklyDesk({ category }) {

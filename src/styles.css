@@ -480,6 +480,56 @@ input {
   color: #64748b;
 }
 
+.pending-game-slot {
+  border-style: dashed;
+  background: #f8fafc;
+}
+
+.pending-game-slot .teams-line span {
+  color: #64748b;
+}
+
+.category-access-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(236, 243, 252, 0.98)),
+    #f8fafc;
+}
+
+.robot-audit-panel {
+  background: #fff;
+}
+
+.robot-audit-panel p {
+  margin: 0 0 14px;
+  color: #334155;
+  font-weight: 800;
+}
+
+.robot-check-list {
+  display: grid;
+  gap: 8px;
+}
+
+.robot-check-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #eef4fb;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.robot-check-list .ok strong {
+  color: #15803d;
+}
+
+.robot-check-list .warn strong {
+  color: var(--red);
+}
+
 .pending-title-panel {
   background:
     linear-gradient(135deg, rgba(217, 35, 50, 0.82) 0 24%, transparent 24.2%),
