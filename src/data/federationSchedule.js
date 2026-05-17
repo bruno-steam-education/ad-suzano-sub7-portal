@@ -1,0 +1,31 @@
+export const federationScheduleSource = {
+  label: 'Tabela enviada pela Federacao - Campeonato Paulista 2026',
+  file: 'CAMPEONATO PAULISTA 2026.pdf',
+  checkedAt: '2026-05-17',
+};
+
+export const initiationA2BaseSchedule = [
+  { round: 1, date: '2026-03-14', time: '15:00', home: 'AD SUZANO', away: 'MX7 FUTSAL', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 2, date: '2026-03-21', time: '08:30', home: 'ADC MERCEDES BENZ', away: 'AD SUZANO', venue: 'Ginasio Mercedes/ Itau (Diadema)' },
+  { round: 3, date: '2026-03-28', time: '15:00', home: 'AD SUZANO', away: 'SPORT BENFICA MC', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 4, date: '2026-04-11', time: '09:00', home: 'METALURGICOS/ JUNDIA', away: 'AD SUZANO', venue: 'Sindicato dos Metalurgisco de Jundiai (Jundia)' },
+  { round: 5, date: '2026-04-18', time: '15:00', home: 'AD SUZANO', away: 'CAAS FUTMAX', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 6, date: '2026-04-26', time: '14:30', home: 'AE FRIBURGO', away: 'AD SUZANO', venue: 'Ginasio CDC Cidade Dutra (Zona Sul Jd Dutra)' },
+  { round: 7, date: '2026-05-02', time: '15:00', home: 'AD SUZANO', away: 'UNIAO MAUA FUTSAL', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 8, date: '2026-05-10', time: '14:30', home: 'AD SANTO ANDRE FUTSAL', away: 'AD SUZANO', venue: 'Ginasio Poliesportivo Sacadura Cabral (Santo Andre)' },
+  { round: 9, date: '2026-05-16', time: '15:00', home: 'AD SUZANO', away: 'OCIAN PRAIA CLUBE', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 10, date: '2026-05-24', time: '14:30', home: 'AE CHUTE FUTSAL', away: 'AD SUZANO', venue: 'Ginasio Arena Chute Futsal (Guarulhos)' },
+  { round: 11, date: '2026-05-30', time: '15:00', home: 'AD SUZANO', away: 'ADC MARVEL', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 12, date: '2026-06-04', time: '14:30', home: 'PAULISTA FC - MOOCA', away: 'AD SUZANO', venue: 'Ginasio Paulista FC Mooca (Alto da Mooca)' },
+  { round: 13, date: '2026-06-06', time: '15:00', home: 'AD SUZANO', away: 'CTC VILA EMA', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 14, date: '2026-06-14', time: '14:30', home: 'AD NANDO GRANA', away: 'AD SUZANO', venue: 'Ginasio Sol a Sol (Indaiatuba)' },
+  { round: 15, date: '2026-06-20', time: '15:00', home: 'AD SUZANO', away: 'CLUBE BATALHA', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 16, date: '2026-06-27', time: '08:30', home: 'SANTO ANDRE FUTSAL', away: 'AD SUZANO', venue: 'Gisanio SAJEA (Santo Andre)' },
+  { round: 17, date: '2026-07-04', time: '15:00', home: 'AD SUZANO', away: 'SER CAIEIRAS', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 18, date: '2026-07-09', time: '15:00', home: 'AD SUZANO', away: 'GR GREMETAL', venue: 'Ginasio do Sesc (Sesc)' },
+  { round: 19, date: '2026-08-02', time: '08:30', home: 'IFA BONS DE BOLA/ CONEXAO 29', away: 'AD SUZANO', venue: 'Ginasio do C.E Itaquera/ Sindicato Securitarios (Itaquera)' },
+  { round: 20, date: '2026-08-08', time: '15:00', home: 'AD SUZANO', away: 'AE RIVER', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 21, date: '2026-08-15', time: '14:30', home: 'ADEF FUTSAL', away: 'AD SUZANO', venue: 'Ginasio Toca do Tigre (Cotia)' },
+  { round: 22, date: '2026-08-22', time: '15:00', home: 'AD SUZANO', away: 'WIMPRO VEGUS GUARULHOS', venue: 'Ginasio do Sesc (Suzano)' },
+  { round: 23, date: '2026-08-30', time: '14:30', home: 'GDR 7 DE SETEMBRO/ BATE BOLA', away: 'AD SUZANO', venue: 'Ginasio Gremio Desportivo e Recreativo 7 de setembro (Vila Reg. Feijo Zona Leste)' },
+];

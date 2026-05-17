@@ -22,6 +22,7 @@ import { motion } from 'motion/react';
 import packageInfo from '../package.json';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { categories } from './data/categories';
+import { federationScheduleSource, initiationA2BaseSchedule } from './data/federationSchedule';
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
@@ -56,6 +57,60 @@ function normalizeFpfsGame(game) {
   };
 }
 
+
+function timeWithOffset(time, offsetMinutes = 0) {
+  if (!time || !time.includes(':')) return time ?? '';
+  const [hour, minute] = time.split(':').map(Number);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) return time;
+  const total = (hour * 60 + minute + offsetMinutes + 24 * 60) % (24 * 60);
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+}
+
+function categoryScheduleOffset(category) {
+  return {
+    'Sub-7': 0,
+    'Sub-8': 60,
+    'Sub-9': 120,
+    'Sub-10': 180,
+  }[category?.label] ?? 0;
+}
+
+function federationGameForCategory(baseGame, category) {
+  const normalizeTeam = (team) => isSuzanoName(team) ? 'A.D. SUZANO' : team;
+  return {
+    ...baseGame,
+    home: normalizeTeam(baseGame.home),
+    away: normalizeTeam(baseGame.away),
+    time: timeWithOffset(baseGame.time, categoryScheduleOffset(category)),
+    source: federationScheduleSource.label,
+    sourceFile: federationScheduleSource.file,
+    projectedFromPdf: true,
+  };
+}
+
+function sameFixture(a, b) {
+  if (!a || !b || a.date !== b.date) return false;
+  const teamsA = `${a.home} ${a.away}`.toUpperCase();
+  const teamsB = `${b.home} ${b.away}`.toUpperCase();
+  return teamsA.includes('SUZANO') && teamsB.includes('SUZANO');
+}
+
+function nextThreeCategoryGames(category, fpfsData, today = new Date()) {
+  const official = (fpfsData?.upcomingGames ?? []).map(normalizeFpfsGame);
+  const todayKey = today.toISOString().slice(0, 10);
+  const canUseFederationPdf = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10'].includes(category?.label);
+  const federationGames = canUseFederationPdf
+    ? initiationA2BaseSchedule
+        .filter((game) => game.date >= todayKey)
+        .map((game) => federationGameForCategory(game, category))
+        .filter((game) => !official.some((officialGame) => sameFixture(officialGame, game)))
+    : [];
+
+  return [...official, ...federationGames]
+    .sort((a, b) => `${a.date}T${a.time || '23:59'}`.localeCompare(`${b.date}T${b.time || '23:59'}`))
+    .slice(0, 3);
+}
+
 function App() {
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
   const [weather, setWeather] = useState(null);
@@ -67,12 +122,12 @@ function App() {
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
   const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
   const hasFullSub7View = activeCategory.id === 'sub7';
-  const sub7FpfsMatches = activeFpfs?.upcomingGames?.map(normalizeFpfsGame) ?? [];
+  const sub7FpfsMatches = nextThreeCategoryGames(activeCategory, activeFpfs);
   const sub7FpfsRecent = activeFpfs?.recentGames?.map(normalizeFpfsGame) ?? [];
   const sub7NextSuzano = sub7FpfsMatches.length ? sub7FpfsMatches : nextSuzano;
   const sub7CampaignMatches = sub7FpfsRecent.length ? sub7FpfsRecent : suzanoMatches();
   const sub7DisplayRecord = activeFpfs?.record ?? record;
-  const activeCategoryNextMatch = hasFullSub7View ? sub7NextSuzano[0] : activeFpfs?.upcomingGames?.[0];
+  const activeCategoryNextMatch = hasFullSub7View ? sub7NextSuzano[0] : nextThreeCategoryGames(activeCategory, activeFpfs)[0];
 
   React.useEffect(() => {
     let active = true;
@@ -110,7 +165,7 @@ function App() {
 
           <section className="content-grid">
             <div className="main-flow">
-              <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, activeFpfs)} />
+              <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, { ...activeFpfs, upcomingGames: sub7NextSuzano })} />
               <TitleProjection />
               <AccessProjection />
               <WeeklyDesk />
@@ -170,6 +225,7 @@ function CategoryNav({ activeCategoryId, onSelect }) {
 function CategoryDashboard({ category, fpfsData }) {
   const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
   const record = fpfsData?.record;
+  const upcomingGames = nextThreeCategoryGames(category, fpfsData);
 
   return (
     <section className="category-shell">
@@ -197,7 +253,7 @@ function CategoryDashboard({ category, fpfsData }) {
               <span>Saldo {record?.goalDifference && record.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 0} na base FPFS.</span>
             </div>
             <div>
-              <strong>{fpfsData?.upcomingGames?.length ?? 0} próximos jogos</strong>
+              <strong>{upcomingGames.length} próximos jogos</strong>
               <span>Atualização automática via eventos.admfutsal.com.br.</span>
             </div>
           </div>
@@ -205,7 +261,7 @@ function CategoryDashboard({ category, fpfsData }) {
 
         <CategoryGamesPanel
           title="Próximos jogos"
-          games={fpfsData?.upcomingGames ?? []}
+          games={upcomingGames}
           emptyText="Nenhum próximo jogo do AD Suzano encontrado nesta categoria pela Súmula Online."
         />
 
@@ -264,7 +320,8 @@ function CategoryDashboard({ category, fpfsData }) {
 function CompleteCategoryDashboard({ category, fpfsData }) {
   const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
   const record = fpfsData?.record;
-  const robot = categoryRobot(category, fpfsData);
+  const upcomingGames = nextThreeCategoryGames(category, fpfsData);
+  const robot = categoryRobot(category, { ...fpfsData, upcomingGames });
 
   return (
     <>
@@ -292,7 +349,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
               <span>Saldo {record?.goalDifference && record.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 0} na base FPFS.</span>
             </div>
             <div>
-              <strong>{fpfsData?.upcomingGames?.length ?? 0} próximos jogos</strong>
+              <strong>{upcomingGames.length} próximos jogos</strong>
               <span>Atualização automática via eventos.admfutsal.com.br.</span>
             </div>
           </div>
@@ -302,7 +359,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
       <section className="content-grid category-complete-grid">
         <div className="main-flow">
           <CategoryNewsPanel category={category} />
-          <CategoryNextGamesV2 category={category} games={fpfsData?.upcomingGames ?? []} robot={robot} />
+          <CategoryNextGamesV2 category={category} games={upcomingGames} robot={robot} />
           <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
           <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
           <CategoryWeeklyDesk category={category} />
@@ -316,7 +373,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
         </div>
 
         <aside className="side-flow">
-          <CategorySchedulePlaceholder category={category} games={fpfsData?.upcomingGames ?? []} />
+          <CategorySchedulePlaceholder category={category} games={upcomingGames} />
           <CategoryRobotAudit category={category} robot={robot} />
           <CategoryYouTubePanel category={category} fpfsData={fpfsData} />
           <CategoryDataPanel category={category} fpfsData={fpfsData} hasSuzanoGames={hasSuzanoGames} />
@@ -678,6 +735,9 @@ function CategoryNextGamesV2({ category, games, robot }) {
                 <p><MapPin size={15} /> {game.venue}</p>
                 <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
                 <ul>
+                  {game.projectedFromPdf && (
+                    <li>Fonte complementar: tabela enviada pela Federacao ({game.sourceFile}).</li>
+                  )}
                   {prediction.reasons.map((reason) => (
                     <li key={reason}>{reason}</li>
                   ))}
@@ -1586,6 +1646,9 @@ function NextGames({ matches }) {
                 {address && <p className="address-line">{address}</p>}
                 <RouteButtons query={mapQuery} />
                 <ul>
+                  {game.projectedFromPdf && (
+                    <li>Fonte complementar: tabela enviada pela Federacao ({game.sourceFile}).</li>
+                  )}
                   {prediction.reasons.map((reason) => (
                     <li key={reason}>{reason}</li>
                   ))}
