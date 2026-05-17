@@ -9,24 +9,16 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/900",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/900/jogos",
     "record": {
-      "played": 8,
-      "wins": 5,
+      "played": 9,
+      "wins": 6,
       "draws": 1,
       "losses": 2,
-      "goalsFor": 31,
-      "goalsAgainst": 18,
-      "points": 16,
-      "goalDifference": 13
+      "goalsFor": 34,
+      "goalsAgainst": 19,
+      "points": 19,
+      "goalDifference": 15
     },
     "upcomingGames": [
-      {
-        "date": "2026-05-16",
-        "time": "15h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "OCIAN PRAIA CLUBE",
-        "summaryUrl": null
-      },
       {
         "date": "2026-05-24",
         "time": "14h30",
@@ -37,16 +29,6 @@ export const fpfsCategories = [
       }
     ],
     "recentGames": [
-      {
-        "date": "2026-04-11",
-        "time": "09h00",
-        "venue": "GINÁSIO SINDICATO DOS METALÚRGICO DE JUNDIAI",
-        "home": "METALÚRGICOS DE JUNDIAÍ",
-        "away": "A.D. SUZANO",
-        "homeGoals": 3,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139267"
-      },
       {
         "date": "2026-04-18",
         "time": "15h00",
@@ -86,11 +68,21 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 7,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139363"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "15h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "OCIAN PRAIA CLUBE",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139309"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-7%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:06.664Z"
+    "checkedAt": "2026-05-17T12:09:31.271Z"
   },
   {
     "id": 901,
@@ -100,24 +92,16 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/901",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/901/jogos",
     "record": {
-      "played": 8,
-      "wins": 5,
+      "played": 9,
+      "wins": 6,
       "draws": 3,
       "losses": 0,
-      "goalsFor": 25,
-      "goalsAgainst": 17,
-      "points": 18,
-      "goalDifference": 8
+      "goalsFor": 28,
+      "goalsAgainst": 19,
+      "points": 21,
+      "goalDifference": 9
     },
     "upcomingGames": [
-      {
-        "date": "2026-05-16",
-        "time": "16h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "OCIAN PRAIA CLUBE",
-        "summaryUrl": null
-      },
       {
         "date": "2026-05-24",
         "time": "15h30",
@@ -128,16 +112,6 @@ export const fpfsCategories = [
       }
     ],
     "recentGames": [
-      {
-        "date": "2026-04-11",
-        "time": "10h00",
-        "venue": "GINÁSIO SINDICATO DOS METALÚRGICO DE JUNDIAI",
-        "home": "METALÚRGICOS DE JUNDIAÍ",
-        "away": "A.D. SUZANO",
-        "homeGoals": 5,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139498"
-      },
       {
         "date": "2026-04-18",
         "time": "16h00",
@@ -177,11 +151,21 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 4,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139594"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "16h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "OCIAN PRAIA CLUBE",
+        "homeGoals": 3,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139540"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-8%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:06.894Z"
+    "checkedAt": "2026-05-17T12:09:31.504Z"
   },
   {
     "id": 902,
@@ -191,24 +175,16 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/902",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/902/jogos",
     "record": {
-      "played": 8,
-      "wins": 2,
+      "played": 9,
+      "wins": 3,
       "draws": 3,
       "losses": 3,
-      "goalsFor": 15,
-      "goalsAgainst": 17,
-      "points": 9,
-      "goalDifference": -2
+      "goalsFor": 18,
+      "goalsAgainst": 18,
+      "points": 12,
+      "goalDifference": 0
     },
     "upcomingGames": [
-      {
-        "date": "2026-05-16",
-        "time": "17h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "OCIAN PRAIA CLUBE",
-        "summaryUrl": null
-      },
       {
         "date": "2026-05-24",
         "time": "16h30",
@@ -219,16 +195,6 @@ export const fpfsCategories = [
       }
     ],
     "recentGames": [
-      {
-        "date": "2026-04-11",
-        "time": "11h00",
-        "venue": "GINÁSIO SINDICATO DOS METALÚRGICO DE JUNDIAI",
-        "home": "METALÚRGICOS DE JUNDIAÍ",
-        "away": "A.D. SUZANO",
-        "homeGoals": 2,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139729"
-      },
       {
         "date": "2026-04-18",
         "time": "17h00",
@@ -268,11 +234,21 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139825"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "17h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "OCIAN PRAIA CLUBE",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139771"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-9%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:07.118Z"
+    "checkedAt": "2026-05-17T12:09:31.738Z"
   },
   {
     "id": 903,
@@ -282,24 +258,16 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/903",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/903/jogos",
     "record": {
-      "played": 8,
+      "played": 9,
       "wins": 1,
-      "draws": 1,
+      "draws": 2,
       "losses": 6,
-      "goalsFor": 12,
-      "goalsAgainst": 25,
-      "points": 4,
+      "goalsFor": 15,
+      "goalsAgainst": 28,
+      "points": 5,
       "goalDifference": -13
     },
     "upcomingGames": [
-      {
-        "date": "2026-05-16",
-        "time": "18h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "OCIAN PRAIA CLUBE",
-        "summaryUrl": null
-      },
       {
         "date": "2026-05-24",
         "time": "17h30",
@@ -310,16 +278,6 @@ export const fpfsCategories = [
       }
     ],
     "recentGames": [
-      {
-        "date": "2026-04-11",
-        "time": "12h00",
-        "venue": "GINÁSIO SINDICATO DOS METALÚRGICO DE JUNDIAI",
-        "home": "METALÚRGICOS DE JUNDIAÍ",
-        "away": "A.D. SUZANO",
-        "homeGoals": 4,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139960"
-      },
       {
         "date": "2026-04-18",
         "time": "18h00",
@@ -359,11 +317,21 @@ export const fpfsCategories = [
         "homeGoals": 4,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140056"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "18h00",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "OCIAN PRAIA CLUBE",
+        "homeGoals": 3,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140002"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-10%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:07.319Z"
+    "checkedAt": "2026-05-17T12:09:31.947Z"
   },
   {
     "id": 899,
@@ -486,7 +454,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-12%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:07.507Z"
+    "checkedAt": "2026-05-17T12:09:32.183Z"
   },
   {
     "id": 897,
@@ -609,7 +577,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-14%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:07.726Z"
+    "checkedAt": "2026-05-17T12:09:32.420Z"
   },
   {
     "id": 898,
@@ -732,7 +700,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-16%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:07.925Z"
+    "checkedAt": "2026-05-17T12:09:32.617Z"
   },
   {
     "id": 896,
@@ -855,6 +823,6 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-18%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-16T12:13:08.114Z"
+    "checkedAt": "2026-05-17T12:09:32.801Z"
   }
 ];
