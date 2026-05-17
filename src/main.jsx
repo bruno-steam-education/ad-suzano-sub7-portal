@@ -25,7 +25,7 @@ import { categories } from './data/categories';
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
 import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
-import { sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
+import { contextualResults, sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
 import {
@@ -110,7 +110,7 @@ function App() {
 
           <section className="content-grid">
             <div className="main-flow">
-              <NextGames matches={sub7NextSuzano} />
+              <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, activeFpfs)} />
               <TitleProjection />
               <AccessProjection />
               <WeeklyDesk />
@@ -416,8 +416,46 @@ function categoryMatchPrediction(category, game, robot, index = 0) {
       `${category.label} ${latestText}.`,
       `Campanha: ${robot.record.points ?? 0} pontos, ${robot.efficiencyLabel} de aproveitamento e saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}.`,
       `Médias: ${robot.attackRate.toFixed(1)} gols feitos e ${robot.defenseRate.toFixed(1)} sofridos por jogo na FPFS.`,
+      ...smartCrossReasons(category, game, robot),
     ],
   };
+}
+
+function pendingCategoryProjection(category, robot, index = 0) {
+  const chance = Math.round(Math.max(18, Math.min(78, 30 + robot.efficiency * 34 + Math.max(-8, Math.min(10, robot.record.goalDifference ?? 0)) + robot.recentWins * 2 - index * 3)));
+
+  return {
+    chance,
+    reasons: [
+      `Base do robô ${category.label}: ${robot.record.points ?? 0} pontos em ${robot.record.played ?? 0} jogos e ${robot.efficiencyLabel} de aproveitamento.`,
+      `Saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}, com média de ${robot.attackRate.toFixed(1)} gols feitos por jogo.`,
+      'Adversário ainda não publicado pela FPFS; percentual é uma estimativa de força média da categoria.',
+    ],
+  };
+}
+
+function smartCrossReasons(category, game, robot) {
+  if (category.label !== 'Sub-7') return [];
+  const opponent = opponentForCategoryGame(game).toUpperCase();
+  const suzanoWins = robot.recentGames
+    .filter((recent) => {
+      const suzanoHome = isSuzanoName(recent.home);
+      const goalsFor = suzanoHome ? recent.homeGoals : recent.awayGoals;
+      const goalsAgainst = suzanoHome ? recent.awayGoals : recent.homeGoals;
+      return Number.isFinite(goalsFor) && goalsFor > goalsAgainst;
+    })
+    .map((recent) => opponentForCategoryGame(recent).toUpperCase());
+
+  const bridge = contextualResults.find((result) => {
+    const teams = [result.home.toUpperCase(), result.away.toUpperCase()];
+    return teams.some((team) => team.includes(opponent.split(' ')[0])) && suzanoWins.some((wonTeam) => teams.some((team) => team.includes(wonTeam.split(' ')[0])));
+  });
+
+  if (!bridge) return [];
+
+  return [
+    `Cruzamento indireto: ${teamDisplayName(bridge.home)} ${bridge.homeGoals} x ${bridge.awayGoals} ${teamDisplayName(bridge.away)} ajuda a calibrar o confronto.`,
+  ];
 }
 
 function buildThreeGameSlots(games) {
@@ -454,11 +492,11 @@ function categorySportsNews(category, latest, next, record) {
     const title =
       goalsFor > goalsAgainst
         ? totalGoals >= 7
-          ? `${category.label} vence jogo movimentado contra ${opponent} e ganha força no Paulista A2`
-          : `${category.label} bate ${opponent} e soma pontos importantes no Paulista A2`
+          ? `${category.label} vence ${opponent} por ${score} em jogo movimentado no Paulista A2`
+          : `${category.label} bate ${opponent} por ${score} e soma pontos importantes`
         : goalsFor === goalsAgainst
-          ? `${category.label} busca empate contra ${opponent} e segue vivo na briga`
-          : `${category.label} tropeça contra ${opponent}, mas mantém campanha em pauta`;
+          ? `${category.label} fica no ${score} com ${opponent} e segue vivo na briga`
+          : `${category.label} perde por ${score} para ${opponent}, mas mant�m campanha em pauta`;
 
     return {
       source: 'Rodada FPFS',
@@ -594,6 +632,7 @@ function CategoryNextGamesV2({ category, games, robot }) {
       <div className="match-list">
         {slots.map(({ game, index, pending }) => {
           if (pending) {
+            const projection = pendingCategoryProjection(category, robot, index);
             return (
               <article className="match-card category-match-card pending-game-slot" key={`${category.id}-pending-${index}`}>
                 <div className="match-date">
@@ -607,13 +646,16 @@ function CategoryNextGamesV2({ category, games, robot }) {
                   <p>A Súmula Online ainda não liberou este compromisso da categoria.</p>
                   <ul>
                     <li>O robô mantém o espaço pronto para análise assim que a FPFS publicar data, local e adversário.</li>
-                    <li>Sem fonte oficial, não há percentual exibido para evitar chute.</li>
+                    <li>Estimativa base da categoria: {projection.chance}% até a FPFS confirmar o adversário.</li>
                   </ul>
                 </div>
                 <div className="chance pending-chance">
                   <span>Chance AD Suzano</span>
-                  <strong>--</strong>
-                  <small>Aguardando jogo oficial</small>
+                  <strong>{projection.chance}%</strong>
+                  <small>Base estatística da categoria</small>
+                  <div className="chance-bar">
+                    <i style={{ width: `${projection.chance}%` }} />
+                  </div>
                 </div>
               </article>
             );
@@ -1650,3 +1692,4 @@ function DataPanel() {
 }
 
 createRoot(document.getElementById('root')).render(<App />);
+

@@ -3,7 +3,7 @@ export const newsWeek = '2026-05-11';
 export const newsItems = [
   {
     "id": "auto-2026-05-17-1",
-    "title": "AD Suzano Sub-7 vence Ocian Praia Clube e atualiza campanha no Paulista A2",
+    "title": "AD Suzano Sub-7 vence Ocian Praia Clube por 3 x 1 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
     "source": "FPFS Súmula Online",

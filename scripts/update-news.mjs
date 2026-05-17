@@ -85,7 +85,7 @@ function buildSub7LeadFromFpfs() {
   const resultText = goalsFor > goalsAgainst ? 'vitória' : goalsFor === goalsAgainst ? 'empate' : 'revés';
 
   return {
-    title: `AD Suzano Sub-7 ${resultVerb} ${opponent} e atualiza campanha no Paulista A2`,
+    title: `AD Suzano Sub-7 ${resultVerb} ${opponent} por ${score} e atualiza campanha no Paulista A2`,
     category: 'Sub-7',
     scope: 'AD Suzano Sub-7',
     source: 'FPFS Súmula Online',
