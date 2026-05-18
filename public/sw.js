@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ad-suzano-sub7-v1';
+const CACHE_NAME = 'ad-suzano-sub7-v1.0.10';
 const APP_SHELL = ['./', './manifest.webmanifest', './ad-suzano-logo.png'];
 
 self.addEventListener('install', (event) => {
@@ -28,5 +28,36 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./'))),
+  );
+});
+
+self.addEventListener('push', (event) => {
+  const fallback = {
+    title: 'Agenda Sub-7 atualizada',
+    body: 'Confira a programacao da semana e o jogo contra o Chute Futsal.',
+    url: './',
+  };
+  const data = event.data ? event.data.json() : fallback;
+
+  event.waitUntil(
+    self.registration.showNotification(data.title || fallback.title, {
+      body: data.body || fallback.body,
+      icon: './ad-suzano-logo.png',
+      badge: './ad-suzano-logo.png',
+      data: { url: data.url || fallback.url },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = event.notification.data?.url || './';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      const client = clientList.find((item) => item.url.includes(self.registration.scope));
+      if (client) return client.focus();
+      return clients.openWindow(url);
+    }),
   );
 });

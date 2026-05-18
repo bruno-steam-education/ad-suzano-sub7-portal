@@ -572,6 +572,88 @@ input {
   font-weight: 800;
 }
 
+.weekly-app-notice {
+  max-width: 1440px;
+  margin: -18px auto 20px;
+  padding: 0 clamp(16px, 4vw, 48px);
+  position: relative;
+  z-index: 5;
+}
+
+.weekly-app-notice div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 40px rgba(8, 23, 52, 0.12);
+}
+
+.weekly-app-notice strong {
+  color: var(--red);
+  font-weight: 950;
+}
+
+.weekly-app-notice span {
+  color: #334155;
+  font-weight: 800;
+}
+
+.standings-panel {
+  overflow: hidden;
+}
+
+.standings-summary {
+  margin: -6px 0 16px;
+  color: #334155;
+  font-weight: 850;
+}
+
+.standings-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.standings-table {
+  width: 100%;
+  min-width: 840px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.standings-table th,
+.standings-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+  font-size: 13px;
+}
+
+.standings-table th {
+  background: #071a3d;
+  color: #fff;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.standings-table td:nth-child(2),
+.standings-table th:nth-child(2) {
+  text-align: left;
+  min-width: 260px;
+  font-weight: 900;
+}
+
+.standings-table .suzano-row td {
+  background: #eaf2ff;
+  color: var(--blue);
+  font-weight: 950;
+}
+
 .install-card {
   position: fixed;
   left: 14px;
@@ -954,6 +1036,15 @@ input {
 .schedule-grid {
   display: grid;
   gap: 12px;
+}
+
+.schedule-note {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(9, 39, 92, 0.08);
+  color: #334155;
+  font-weight: 850;
 }
 
 .schedule-panel.compact .section-title h2 {

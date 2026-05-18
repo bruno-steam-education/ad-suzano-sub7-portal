@@ -17,6 +17,19 @@ function normalizeTeam(value = '') {
   return parts.find((part) => part.includes('SUZANO')) ?? text;
 }
 
+function canonicalTeam(value = '') {
+  return normalizeTeam(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/A\.?\s*D\.?/g, 'AD')
+    .replace(/[^A-Z0-9]+/g, ' ')
+    .replace(/\bFUTSAL\b/g, '')
+    .replace(/\bCLUBE\b/g, '')
+    .replace(/\bASSOCIACAO\b/g, 'ASS')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function isSuzanoTeam(value = '') {
   return normalizeTeam(value).includes('SUZANO');
 }
@@ -80,7 +93,6 @@ async function scrapeGames(event) {
     if (teams.length < 2) return;
     const home = normalizeTeam(teams[0]);
     const away = normalizeTeam(teams[1]);
-    if (!isSuzanoTeam(home) && !isSuzanoTeam(away)) return;
 
     const [day, month] = dateText.split('/');
     const score = parseScore(result);
@@ -96,6 +108,73 @@ async function scrapeGames(event) {
   });
 
   return games.sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+
+async function scrapeStandings(event) {
+  const html = await fetchHtml(`/evento/${event.id}`);
+  const $ = cheerio.load(html);
+  const standings = [];
+  const table = $('.tab-pane.show.active .classification_table').first().length
+    ? $('.tab-pane.show.active .classification_table').first()
+    : $('.classification_table').first();
+
+  table.find('tbody tr').each((_, row) => {
+    const cells = $(row).find('td');
+    if (cells.length < 11) return;
+    const numberAt = (index) => {
+      const value = cleanText($(cells[index]).text()).replace(',', '.').replace(/[^\d.-]/g, '');
+      return value === '' ? null : Number(value);
+    };
+
+    standings.push({
+      group: cleanText($(cells[0]).text()),
+      position: numberAt(1),
+      positionLabel: cleanText($(cells[1]).text()),
+      team: normalizeTeam($(cells[2]).text()),
+      points: numberAt(3),
+      played: numberAt(4),
+      wins: numberAt(5),
+      draws: numberAt(6),
+      losses: numberAt(7),
+      goalsFor: numberAt(8),
+      goalsAgainst: numberAt(9),
+      goalDifference: numberAt(10),
+      average: numberAt(11),
+      goalsForAverage: numberAt(12),
+      goalsAgainstAverage: numberAt(13),
+      technicalIndex: numberAt(14),
+    });
+  });
+
+  return standings;
+}
+
+function findStandingForTeam(standings, team) {
+  const target = canonicalTeam(team);
+  if (!target) return null;
+  return standings.find((standing) => {
+    const candidate = canonicalTeam(standing.team);
+    return candidate === target || candidate.includes(target) || target.includes(candidate);
+  }) ?? null;
+}
+
+function lastGameForTeam(games, team, beforeDate) {
+  const target = canonicalTeam(team);
+  if (!target) return null;
+  return games
+    .filter((game) => Number.isFinite(game.homeGoals) && Number.isFinite(game.awayGoals))
+    .filter((game) => !beforeDate || game.date <= beforeDate)
+    .filter((game) => {
+      const home = canonicalTeam(game.home);
+      const away = canonicalTeam(game.away);
+      return home === target || away === target || home.includes(target) || away.includes(target) || target.includes(home) || target.includes(away);
+    })
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+    .at(-1) ?? null;
+}
+
+function opponentForSuzanoGame(game) {
+  return isSuzanoTeam(game.home) ? game.away : game.home;
 }
 
 function recordFor(games) {
@@ -122,17 +201,27 @@ const events = await getEvents();
 const categories = [];
 
 for (const event of events) {
-  const games = await scrapeGames(event);
+  const allGames = await scrapeGames(event);
+  const standings = await scrapeStandings(event);
+  const games = allGames.filter((game) => isSuzanoTeam(game.home) || isSuzanoTeam(game.away));
   const playedGames = games.filter((game) => Number.isFinite(game.homeGoals));
-  const upcomingGames = games.filter((game) => !Number.isFinite(game.homeGoals));
+  const upcomingGames = games
+    .filter((game) => !Number.isFinite(game.homeGoals))
+    .map((game) => ({
+      ...game,
+      opponentStanding: findStandingForTeam(standings, opponentForSuzanoGame(game)),
+      opponentLastGame: lastGameForTeam(allGames, opponentForSuzanoGame(game), game.date),
+    }));
   const record = recordFor(games);
   const goalDifference = record.goalsFor - record.goalsAgainst;
 
   categories.push({
     ...event,
     record: { ...record, goalDifference },
+    standings,
     upcomingGames,
     recentGames: playedGames.slice(-5),
+    allRecentGames: allGames.filter((game) => Number.isFinite(game.homeGoals)).slice(-40),
     youtubeSearchUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(`AD Suzano ${event.category} futsal 2026`)}`,
     source: 'FPFS Súmula Online',
     checkedAt: new Date().toISOString(),

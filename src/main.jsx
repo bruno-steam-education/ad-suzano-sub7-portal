@@ -25,7 +25,7 @@ import { categories } from './data/categories';
 import { federationScheduleSource, initiationA2BaseSchedule } from './data/federationSchedule';
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
-import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
+import { weeklyNotice, weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { contextualResults, sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
@@ -155,6 +155,7 @@ function App() {
         weatherError={weatherError}
       />
       <InstallAppPrompt />
+      <WeeklyAppNotice />
       <CategoryNav
         activeCategoryId={activeCategoryId}
         onSelect={setActiveCategoryId}
@@ -166,6 +167,7 @@ function App() {
           <section className="content-grid">
             <div className="main-flow">
               <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, { ...activeFpfs, upcomingGames: sub7NextSuzano })} />
+              <CategoryStandingsMirror category={activeCategory} fpfsData={activeFpfs} />
               <TitleProjection />
               <AccessProjection />
               <WeeklyDesk />
@@ -360,6 +362,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
         <div className="main-flow">
           <CategoryNewsPanel category={category} />
           <CategoryNextGamesV2 category={category} games={upcomingGames} robot={robot} />
+          <CategoryStandingsMirror category={category} fpfsData={fpfsData} />
           <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
           <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
           <CategoryWeeklyDesk category={category} />
@@ -445,12 +448,68 @@ function categoryRobot(category, fpfsData) {
     accessChance,
     upcomingGames,
     recentGames,
+    standings: fpfsData?.standings ?? [],
+    allRecentGames: fpfsData?.allRecentGames ?? [],
     freshness: fpfsData?.checkedAt ? new Date(fpfsData.checkedAt) : null,
   };
 }
 
 function opponentForCategoryGame(game) {
   return teamDisplayName(isSuzanoName(game.home) ? game.away : game.home);
+}
+
+function comparableTeamName(value = '') {
+  return String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/A\.?\s*D\.?/gi, 'AD')
+    .replace(/[^A-Z0-9]+/gi, ' ')
+    .replace(/\bFUTSAL\b/gi, '')
+    .replace(/\bCLUBE\b/gi, '')
+    .replace(/\bASSOCIACAO\b/gi, 'ASS')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toUpperCase();
+}
+
+function findTeamStanding(standings = [], teamName = '') {
+  const target = comparableTeamName(teamName);
+  if (!target) return null;
+  return standings.find((standing) => {
+    const candidate = comparableTeamName(standing.team);
+    return candidate === target || candidate.includes(target) || target.includes(candidate);
+  }) ?? null;
+}
+
+function findTeamLastGame(games = [], teamName = '', beforeDate) {
+  const target = comparableTeamName(teamName);
+  if (!target) return null;
+  return games
+    .filter((game) => Number.isFinite(game.homeGoals) && Number.isFinite(game.awayGoals))
+    .filter((game) => !beforeDate || game.date <= beforeDate)
+    .filter((game) => {
+      const home = comparableTeamName(game.home);
+      const away = comparableTeamName(game.away);
+      return home === target || away === target || home.includes(target) || away.includes(target) || target.includes(home) || target.includes(away);
+    })
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+    .at(-1) ?? null;
+}
+
+function formatOpponentStanding(standing) {
+  if (!standing) return null;
+  const saldo = standing.goalDifference > 0 ? `+${standing.goalDifference}` : standing.goalDifference ?? 0;
+  return `Adversario na tabela: ${teamDisplayName(standing.team)} esta em ${standing.positionLabel ?? `${standing.position}o`} lugar, com ${standing.points ?? 0} pontos, ${standing.played ?? 0} jogos e saldo ${saldo}.`;
+}
+
+function formatOpponentLastGame(game, opponent) {
+  if (!game) return null;
+  const opponentHome = comparableTeamName(game.home) === comparableTeamName(opponent);
+  const goalsFor = opponentHome ? game.homeGoals : game.awayGoals;
+  const goalsAgainst = opponentHome ? game.awayGoals : game.homeGoals;
+  const rival = opponentHome ? game.away : game.home;
+  const result = goalsFor > goalsAgainst ? 'venceu' : goalsFor === goalsAgainst ? 'empatou' : 'perdeu';
+  return `Ultimo jogo do adversario: ${teamDisplayName(opponent)} ${result} por ${goalsFor} x ${goalsAgainst} contra ${teamDisplayName(rival)}.`;
 }
 
 function categoryMatchPrediction(category, game, robot, index = 0) {
@@ -464,17 +523,22 @@ function categoryMatchPrediction(category, game, robot, index = 0) {
   const latest = robot.recentGames.at(-1);
   const latestText = latest
     ? `vem de ${isSuzanoName(latest.home) ? latest.homeGoals : latest.awayGoals} x ${isSuzanoName(latest.home) ? latest.awayGoals : latest.homeGoals} contra ${opponentForCategoryGame(latest)}`
-    : 'ainda não tem resultado recente localizado';
+    : 'ainda nao tem resultado recente localizado';
+  const opponent = opponentForCategoryGame(game);
+  const opponentStanding = game.opponentStanding ?? findTeamStanding(robot.standings, opponent);
+  const opponentLastGame = game.opponentLastGame ?? findTeamLastGame(robot.allRecentGames, opponent, game.date);
 
   return {
     chance,
-    opponent: opponentForCategoryGame(game),
+    opponent,
     reasons: [
       `${category.label} ${latestText}.`,
+      formatOpponentStanding(opponentStanding),
+      formatOpponentLastGame(opponentLastGame, opponent),
       `Campanha: ${robot.record.points ?? 0} pontos, ${robot.efficiencyLabel} de aproveitamento e saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}.`,
-      `Médias: ${robot.attackRate.toFixed(1)} gols feitos e ${robot.defenseRate.toFixed(1)} sofridos por jogo na FPFS.`,
+      `Medias: ${robot.attackRate.toFixed(1)} gols feitos e ${robot.defenseRate.toFixed(1)} sofridos por jogo na FPFS.`,
       ...smartCrossReasons(category, game, robot),
-    ],
+    ].filter(Boolean),
   };
 }
 
@@ -669,6 +733,70 @@ function CategoryNewsPlaceholder({ category }) {
         {next && <div className="news-impact">Próximo compromisso: {formatShortDate(next.date)} às {next.time || 'horário a confirmar'}, em {next.venue}.</div>}
         <a className="source-chip" href={fpfsData?.gamesUrl} target="_blank" rel="noreferrer">FPFS Súmula Online</a>
       </div>
+    </section>
+  );
+}
+
+function CategoryStandingsMirror({ category, fpfsData }) {
+  const standings = fpfsData?.standings ?? [];
+  const suzanoPosition = standings.find((item) => isSuzanoName(item.team));
+
+  return (
+    <section className="panel standings-panel">
+      <div className="section-title">
+        <div>
+          <span>Tabela Paulista A2</span>
+          <h2>Tabela espelho {category.label}</h2>
+        </div>
+        <BarChart3 size={22} />
+      </div>
+      {standings.length ? (
+        <>
+          {suzanoPosition && (
+            <p className="standings-summary">
+              AD Suzano aparece em {suzanoPosition.positionLabel ?? `${suzanoPosition.position}o`} lugar, com {suzanoPosition.points} pontos, {suzanoPosition.played} jogos e saldo {suzanoPosition.goalDifference > 0 ? `+${suzanoPosition.goalDifference}` : suzanoPosition.goalDifference}.
+            </p>
+          )}
+          <div className="standings-table-wrap">
+            <table className="standings-table">
+              <thead>
+                <tr>
+                  <th>Pos</th>
+                  <th>Clube</th>
+                  <th>Pts</th>
+                  <th>J</th>
+                  <th>V</th>
+                  <th>E</th>
+                  <th>D</th>
+                  <th>GP</th>
+                  <th>GC</th>
+                  <th>SG</th>
+                  <th>IT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {standings.map((row) => (
+                  <tr className={isSuzanoName(row.team) ? 'suzano-row' : ''} key={`${category.id}-${row.position}-${row.team}`}>
+                    <td>{row.positionLabel ?? row.position}</td>
+                    <td>{teamDisplayName(row.team)}</td>
+                    <td>{row.points}</td>
+                    <td>{row.played}</td>
+                    <td>{row.wins}</td>
+                    <td>{row.draws}</td>
+                    <td>{row.losses}</td>
+                    <td>{row.goalsFor}</td>
+                    <td>{row.goalsAgainst}</td>
+                    <td>{row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}</td>
+                    <td>{row.technicalIndex}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <p className="standings-summary">Tabela ainda nao localizada na Sumula Online da FPFS para esta categoria.</p>
+      )}
     </section>
   );
 }
@@ -1159,6 +1287,17 @@ function CategoryGamesPanel({ title, games, emptyText, showRoutes = false }) {
   );
 }
 
+function WeeklyAppNotice() {
+  return (
+    <section className="weekly-app-notice" aria-label="Aviso da semana Sub-7">
+      <div>
+        <strong>{weeklyNotice.title}</strong>
+        <span>{weeklyNotice.body}</span>
+      </div>
+    </section>
+  );
+}
+
 function InstallAppPrompt() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -1465,6 +1604,7 @@ function WeeklySchedule({ compact = false }) {
                   <p><MapPin size={15} /> {item.location}</p>
                   <p className="address-line">{item.address}</p>
                   <RouteButtons query={item.mapQuery ?? item.address ?? item.location} />
+                  {item.note && <p className="schedule-note">{item.note}</p>}
                 </div>
               ))}
             </div>
