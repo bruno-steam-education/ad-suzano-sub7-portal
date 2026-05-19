@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ad-suzano-sub7-v1.0.10';
+const CACHE_NAME = 'ad-suzano-sub7-v1.0.11';
 const APP_SHELL = ['./', './manifest.webmanifest', './ad-suzano-logo.png'];
 
 self.addEventListener('install', (event) => {
