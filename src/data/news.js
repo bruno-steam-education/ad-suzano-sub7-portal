@@ -2,7 +2,7 @@ export const newsWeek = '2026-05-18';
 
 export const newsItems = [
   {
-    "id": "auto-2026-05-21-1",
+    "id": "auto-2026-05-22-1",
     "title": "AD Suzano Sub-7 vence Ocian Praia Clube por 3 x 1 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,10 +10,10 @@ export const newsItems = [
     "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139309",
     "summary": "O Sub-7 teve vitória por 3 x 1 contra Ocian Praia Clube, em partida registrada pela Súmula Online da FPFS no dia 16/05/2026.",
     "impact": "Com o resultado, o AD Suzano aparece com 19 pontos em 9 jogos, 34 gols marcados e saldo +15.",
-    "date": "2026-05-21"
+    "date": "2026-05-22"
   },
   {
-    "id": "auto-2026-05-21-2",
+    "id": "auto-2026-05-22-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano - Prefeitura de Itaquaquecetuba",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -23,23 +23,13 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-05-21-3",
+    "id": "auto-2026-05-22-3",
     "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - Portal ABC do ABC",
     "category": "AD Suzano",
     "date": "2026-03-11",
     "source": "Portal ABC do ABC",
     "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5aS0lDQXh6eGsxUXpvaFgtT3RMVEktVHZWTUNMWGNXSW95TTBEWlYxYjczTTY5dXFwR3BnQ043Rnd2WEpZbUU1WnRrSlBZZktPMEg3bnNhY0hGbEM2TUd3aFo1Z3A0aFZOcUJhZFFrbGxwdW5RVmEyTVlSWmoxZw?oc=5",
     "summary": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano Portal ABC do ABC",
-    "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
-  },
-  {
-    "id": "auto-2026-05-21-4",
-    "title": "Pedro Ishi recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal - Diário de Suzano",
-    "category": "AD Suzano",
-    "date": "2025-09-03",
-    "source": "Diário de Suzano",
-    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPa0ZvZFBrVWZHZG9sZ3pIYUNLT1NOdW42Vk5xT2ltOV9sQWMzMklTUVdIT1Vfelhobzg4bmFNVFlCaFBFTjY0V1RldVBSOHhadGdFbkVuNzdGTW9XanVHVG1ualdENkV2SGlkd1c3WVZKRjluVUVfcWU0R0gxWXRxV1JpUzRGaHpuTmo0aWk4SzRVcHRjbzd3eHJhdGtKeWxQdlRzWEhPOC1kVFhjalZjVlZ4a1B4QdIBuwFBVV95cUxOajNrXzJIOE0ybFp1SVpnMDRmMk05VHB3LXVBQ2V0d2Y0Z1AxVk5zbTNXWU96NE92TVh5ekRhUWlFSURrZkJBVFJGaTF5WVBjaERwVk5rTnVIeVZhallqbWxNTTlIelJpSGVPZDRldkpGUElVOGxfU0IyU0lyY1cyS3RPQUJJUFl5dER4X2h0bFl6Vm1yU2hWWlQxTUJPYm56Z0tNYmlhcXRRQTJuTWZrOHIycHFsT1VZekM0?oc=5",
-    "summary": "Pedro Ishi recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal Diário de Suzano",
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   }
 ];
