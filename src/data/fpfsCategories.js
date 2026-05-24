@@ -9,14 +9,14 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/900",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/900/jogos",
     "record": {
-      "played": 9,
-      "wins": 6,
+      "played": 10,
+      "wins": 7,
       "draws": 1,
       "losses": 2,
-      "goalsFor": 34,
-      "goalsAgainst": 19,
-      "points": 19,
-      "goalDifference": 15
+      "goalsFor": 40,
+      "goalsAgainst": 22,
+      "points": 22,
+      "goalDifference": 18
     },
     "standings": [
       {
@@ -24,23 +24,41 @@ export const fpfsCategories = [
         "position": 1,
         "positionLabel": "1º",
         "team": "GR GREMETAL",
-        "points": 25,
-        "played": 9,
-        "wins": 8,
+        "points": 28,
+        "played": 10,
+        "wins": 9,
         "draws": 1,
         "losses": 0,
-        "goalsFor": 32,
-        "goalsAgainst": 8,
-        "goalDifference": 24,
-        "average": 4,
-        "goalsForAverage": 3.56,
-        "goalsAgainstAverage": 0.89,
-        "technicalIndex": 2.78
+        "goalsFor": 38,
+        "goalsAgainst": 10,
+        "goalDifference": 28,
+        "average": 3.8,
+        "goalsForAverage": 3.8,
+        "goalsAgainstAverage": 1,
+        "technicalIndex": 2.8
       },
       {
         "group": "CHAVE UNICA",
         "position": 2,
         "positionLabel": "2º",
+        "team": "INST. BONS DE BOLA",
+        "points": 25,
+        "played": 10,
+        "wins": 8,
+        "draws": 1,
+        "losses": 1,
+        "goalsFor": 41,
+        "goalsAgainst": 18,
+        "goalDifference": 23,
+        "average": 2.28,
+        "goalsForAverage": 4.1,
+        "goalsAgainstAverage": 1.8,
+        "technicalIndex": 2.5
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 3,
+        "positionLabel": "3º",
         "team": "SPORT BENFICA DE MOGI DAS CRUZES",
         "points": 23,
         "played": 10,
@@ -57,8 +75,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 3,
-        "positionLabel": "3º",
+        "position": 4,
+        "positionLabel": "4º",
         "team": "METALÚRGICOS DE JUNDIAÍ",
         "points": 23,
         "played": 10,
@@ -75,26 +93,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 4,
-        "positionLabel": "4º",
-        "team": "INST. BONS DE BOLA",
+        "position": 5,
+        "positionLabel": "5º",
+        "team": "A.D. SUZANO",
         "points": 22,
-        "played": 9,
+        "played": 10,
         "wins": 7,
         "draws": 1,
-        "losses": 1,
-        "goalsFor": 37,
-        "goalsAgainst": 15,
-        "goalDifference": 22,
-        "average": 2.47,
-        "goalsForAverage": 4.11,
-        "goalsAgainstAverage": 1.67,
-        "technicalIndex": 2.44
+        "losses": 2,
+        "goalsFor": 40,
+        "goalsAgainst": 22,
+        "goalDifference": 18,
+        "average": 1.82,
+        "goalsForAverage": 4,
+        "goalsAgainstAverage": 2.2,
+        "technicalIndex": 2.2
       },
       {
         "group": "CHAVE UNICA",
-        "position": 5,
-        "positionLabel": "5º",
+        "position": 6,
+        "positionLabel": "6º",
         "team": "CTC VILA EMA",
         "points": 22,
         "played": 10,
@@ -111,26 +129,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 6,
-        "positionLabel": "6º",
-        "team": "A.D. SUZANO",
+        "position": 7,
+        "positionLabel": "7º",
+        "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
         "points": 19,
-        "played": 9,
+        "played": 10,
         "wins": 6,
         "draws": 1,
-        "losses": 2,
-        "goalsFor": 34,
-        "goalsAgainst": 19,
-        "goalDifference": 15,
-        "average": 1.79,
-        "goalsForAverage": 3.78,
-        "goalsAgainstAverage": 2.11,
-        "technicalIndex": 2.11
+        "losses": 3,
+        "goalsFor": 45,
+        "goalsAgainst": 29,
+        "goalDifference": 16,
+        "average": 1.55,
+        "goalsForAverage": 4.5,
+        "goalsAgainstAverage": 2.9,
+        "technicalIndex": 1.9
       },
       {
         "group": "CHAVE UNICA",
-        "position": 7,
-        "positionLabel": "7º",
+        "position": 8,
+        "positionLabel": "8º",
         "team": "CLUBE BATALHA",
         "points": 19,
         "played": 10,
@@ -147,8 +165,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
+        "position": 9,
+        "positionLabel": "9º",
         "team": "SANTO ANDRÉ FUTSAL",
         "points": 18,
         "played": 9,
@@ -165,57 +183,39 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
-        "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "points": 18,
-        "played": 9,
-        "wins": 6,
-        "draws": 0,
-        "losses": 3,
-        "goalsFor": 43,
-        "goalsAgainst": 27,
-        "goalDifference": 16,
-        "average": 1.59,
-        "goalsForAverage": 4.78,
-        "goalsAgainstAverage": 3,
-        "technicalIndex": 2
-      },
-      {
-        "group": "CHAVE UNICA",
         "position": 10,
         "positionLabel": "10º",
-        "team": "OCIAN PRAIA CLUBE",
-        "points": 16,
-        "played": 9,
+        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "points": 17,
+        "played": 10,
         "wins": 5,
-        "draws": 1,
+        "draws": 2,
         "losses": 3,
         "goalsFor": 28,
-        "goalsAgainst": 19,
-        "goalDifference": 9,
-        "average": 1.47,
-        "goalsForAverage": 3.11,
-        "goalsAgainstAverage": 2.11,
-        "technicalIndex": 1.78
+        "goalsAgainst": 30,
+        "goalDifference": -2,
+        "average": 0.93,
+        "goalsForAverage": 2.8,
+        "goalsAgainstAverage": 3,
+        "technicalIndex": 1.7
       },
       {
         "group": "CHAVE UNICA",
         "position": 11,
         "positionLabel": "11º",
-        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "team": "OCIAN PRAIA CLUBE",
         "points": 16,
-        "played": 9,
+        "played": 10,
         "wins": 5,
         "draws": 1,
-        "losses": 3,
-        "goalsFor": 26,
-        "goalsAgainst": 28,
-        "goalDifference": -2,
-        "average": 0.93,
-        "goalsForAverage": 2.89,
-        "goalsAgainstAverage": 3.11,
-        "technicalIndex": 1.78
+        "losses": 4,
+        "goalsFor": 31,
+        "goalsAgainst": 23,
+        "goalDifference": 8,
+        "average": 1.35,
+        "goalsForAverage": 3.1,
+        "goalsAgainstAverage": 2.3,
+        "technicalIndex": 1.6
       },
       {
         "group": "CHAVE UNICA",
@@ -257,24 +257,42 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 14,
         "positionLabel": "14º",
-        "team": "CHUTE FUTSAL",
-        "points": 12,
-        "played": 9,
+        "team": "AE FRIBURGO",
+        "points": 13,
+        "played": 10,
         "wins": 4,
-        "draws": 0,
+        "draws": 1,
         "losses": 5,
-        "goalsFor": 29,
-        "goalsAgainst": 29,
-        "goalDifference": 0,
-        "average": 1,
-        "goalsForAverage": 3.22,
-        "goalsAgainstAverage": 3.22,
-        "technicalIndex": 1.33
+        "goalsFor": 35,
+        "goalsAgainst": 36,
+        "goalDifference": -1,
+        "average": 0.97,
+        "goalsForAverage": 3.5,
+        "goalsAgainstAverage": 3.6,
+        "technicalIndex": 1.3
       },
       {
         "group": "CHAVE UNICA",
         "position": 15,
         "positionLabel": "15º",
+        "team": "CHUTE FUTSAL",
+        "points": 12,
+        "played": 10,
+        "wins": 4,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 32,
+        "goalsAgainst": 35,
+        "goalDifference": -3,
+        "average": 0.91,
+        "goalsForAverage": 3.2,
+        "goalsAgainstAverage": 3.5,
+        "technicalIndex": 1.2
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 16,
+        "positionLabel": "16º",
         "team": "A. UNIÃO MAUÁ",
         "points": 11,
         "played": 9,
@@ -288,24 +306,6 @@ export const fpfsCategories = [
         "goalsForAverage": 2.89,
         "goalsAgainstAverage": 2.67,
         "technicalIndex": 1.22
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 16,
-        "positionLabel": "16º",
-        "team": "AE FRIBURGO",
-        "points": 10,
-        "played": 9,
-        "wins": 3,
-        "draws": 1,
-        "losses": 5,
-        "goalsFor": 28,
-        "goalsAgainst": 35,
-        "goalDifference": -7,
-        "average": 0.8,
-        "goalsForAverage": 3.11,
-        "goalsAgainstAverage": 3.89,
-        "technicalIndex": 1.11
       },
       {
         "group": "CHAVE UNICA",
@@ -349,17 +349,17 @@ export const fpfsCategories = [
         "positionLabel": "19º",
         "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
         "points": 7,
-        "played": 9,
+        "played": 10,
         "wins": 2,
         "draws": 1,
-        "losses": 6,
-        "goalsFor": 23,
-        "goalsAgainst": 38,
-        "goalDifference": -15,
-        "average": 0.61,
-        "goalsForAverage": 2.56,
-        "goalsAgainstAverage": 4.22,
-        "technicalIndex": 0.78
+        "losses": 7,
+        "goalsFor": 25,
+        "goalsAgainst": 44,
+        "goalDifference": -19,
+        "average": 0.57,
+        "goalsForAverage": 2.5,
+        "goalsAgainstAverage": 4.4,
+        "technicalIndex": 0.7
       },
       {
         "group": "CHAVE UNICA",
@@ -403,17 +403,17 @@ export const fpfsCategories = [
         "positionLabel": "22º",
         "team": "AA WIMPRO GUARULHOS",
         "points": 4,
-        "played": 9,
+        "played": 10,
         "wins": 1,
         "draws": 1,
-        "losses": 7,
-        "goalsFor": 14,
-        "goalsAgainst": 33,
-        "goalDifference": -19,
-        "average": 0.42,
-        "goalsForAverage": 1.56,
-        "goalsAgainstAverage": 3.67,
-        "technicalIndex": 0.44
+        "losses": 8,
+        "goalsFor": 15,
+        "goalsAgainst": 40,
+        "goalDifference": -25,
+        "average": 0.38,
+        "goalsForAverage": 1.5,
+        "goalsAgainstAverage": 4,
+        "technicalIndex": 0.4
       },
       {
         "group": "CHAVE UNICA",
@@ -452,55 +452,8 @@ export const fpfsCategories = [
         "technicalIndex": 0.3
       }
     ],
-    "upcomingGames": [
-      {
-        "date": "2026-05-24",
-        "time": "14h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "A.D. SUZANO",
-        "summaryUrl": null,
-        "opponentStanding": {
-          "group": "CHAVE UNICA",
-          "position": 14,
-          "positionLabel": "14º",
-          "team": "CHUTE FUTSAL",
-          "points": 12,
-          "played": 9,
-          "wins": 4,
-          "draws": 0,
-          "losses": 5,
-          "goalsFor": 29,
-          "goalsAgainst": 29,
-          "goalDifference": 0,
-          "average": 1,
-          "goalsForAverage": 3.22,
-          "goalsAgainstAverage": 3.22,
-          "technicalIndex": 1.33
-        },
-        "opponentLastGame": {
-          "date": "2026-05-16",
-          "time": "08h30",
-          "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-          "home": "S.E.R. CAIEIRAS",
-          "away": "CHUTE FUTSAL",
-          "homeGoals": 1,
-          "awayGoals": 6,
-          "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139357"
-        }
-      }
-    ],
+    "upcomingGames": [],
     "recentGames": [
-      {
-        "date": "2026-04-18",
-        "time": "15h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 3,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139330"
-      },
       {
         "date": "2026-04-26",
         "time": "14h30",
@@ -540,59 +493,19 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139309"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139294"
       }
     ],
     "allRecentGames": [
-      {
-        "date": "2026-05-02",
-        "time": "08h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "OCIAN PRAIA CLUBE",
-        "homeGoals": 6,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139240"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "09h00",
-        "venue": "GINÁSIO DO JABAQUARA",
-        "home": "GR GREMETAL",
-        "away": "MX7 DIADEMA",
-        "homeGoals": 3,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139385"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "14h30",
-        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 4,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140160"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "14h30",
-        "venue": "GINASIO TOCA DO TIGRE",
-        "home": "ADEF/COTIA",
-        "away": "METALÚRGICOS DE JUNDIAÍ",
-        "homeGoals": 6,
-        "awayGoals": 8,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139417"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "14h30",
-        "venue": "GINÁSIO DO CTC VILA EMA",
-        "home": "CTC VILA EMA",
-        "away": "ASSOCIAÇÃO PAULISTA FUTEBOL CLUBE MOOCA",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139250"
-      },
       {
         "date": "2026-05-02",
         "time": "15h00",
@@ -616,6 +529,16 @@ export const fpfsCategories = [
       {
         "date": "2026-05-03",
         "time": "14h30",
+        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
+        "home": "AA WIMPRO GUARULHOS",
+        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "homeGoals": 0,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140124"
+      },
+      {
+        "date": "2026-05-03",
+        "time": "14h30",
         "venue": "GINÁSIO DO GDR 7 DE SETEMBRO",
         "home": "G.D.R. 7 DE SETEMBRO",
         "away": "ADC MERCEDES BENZ",
@@ -624,14 +547,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139306"
       },
       {
-        "date": "2026-05-03",
-        "time": "14h30",
-        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
-        "home": "AA WIMPRO GUARULHOS",
-        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "homeGoals": 0,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140124"
+        "date": "2026-05-09",
+        "time": "08h30",
+        "venue": "GINÁSIO 1 DA A.D.C. MERCEDES BENZ",
+        "home": "ADC MERCEDES BENZ",
+        "away": "MX7 DIADEMA",
+        "homeGoals": 8,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139352"
       },
       {
         "date": "2026-05-09",
@@ -642,6 +565,16 @@ export const fpfsCategories = [
         "homeGoals": 0,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139255"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "08h30",
+        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
+        "home": "A. UNIÃO MAUÁ",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 1,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139410"
       },
       {
         "date": "2026-05-09",
@@ -662,26 +595,6 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 4,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139374"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "08h30",
-        "venue": "GINÁSIO 1 DA A.D.C. MERCEDES BENZ",
-        "home": "ADC MERCEDES BENZ",
-        "away": "MX7 DIADEMA",
-        "homeGoals": 8,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139352"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "08h30",
-        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
-        "home": "A. UNIÃO MAUÁ",
-        "away": "INST. BONS DE BOLA",
-        "homeGoals": 1,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139410"
       },
       {
         "date": "2026-05-09",
@@ -726,16 +639,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-10",
         "time": "14h30",
-        "venue": "GINASIO POLIESPORTIVO SACADURA",
-        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "away": "A.D. SUZANO",
-        "homeGoals": 3,
-        "awayGoals": 7,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139363"
-      },
-      {
-        "date": "2026-05-10",
-        "time": "14h30",
         "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
         "home": "CHUTE FUTSAL",
         "away": "SANTO ANDRÉ FUTSAL",
@@ -744,14 +647,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139231"
       },
       {
-        "date": "2026-05-16",
-        "time": "08h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "ADC MARVEL",
-        "homeGoals": 5,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139282"
+        "date": "2026-05-10",
+        "time": "14h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 7,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139363"
       },
       {
         "date": "2026-05-16",
@@ -762,6 +665,16 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 6,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139357"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "08h30",
+        "venue": "GINÁSIO SAJEA",
+        "home": "SANTO ANDRÉ FUTSAL",
+        "away": "ADC MARVEL",
+        "homeGoals": 5,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139282"
       },
       {
         "date": "2026-05-16",
@@ -776,12 +689,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-16",
         "time": "14h30",
-        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
-        "home": "AA WIMPRO GUARULHOS",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 4,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140138"
+        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "A. UNIÃO MAUÁ",
+        "homeGoals": 6,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140150"
       },
       {
         "date": "2026-05-16",
@@ -796,12 +709,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-16",
         "time": "14h30",
-        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "A. UNIÃO MAUÁ",
-        "homeGoals": 6,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140150"
+        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
+        "home": "AA WIMPRO GUARULHOS",
+        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
+        "homeGoals": 4,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140138"
       },
       {
         "date": "2026-05-16",
@@ -836,16 +749,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-17",
         "time": "14h30",
-        "venue": "GINASIO SOL - SOL",
-        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "away": "CTC VILA EMA",
-        "homeGoals": 3,
-        "awayGoals": 10,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139359"
-      },
-      {
-        "date": "2026-05-17",
-        "time": "14h30",
         "venue": "BATALHA SPORT CENTER",
         "home": "CLUBE BATALHA",
         "away": "ASSOCIAÇÃO PAULISTA FUTEBOL CLUBE MOOCA",
@@ -862,6 +765,16 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139228"
+      },
+      {
+        "date": "2026-05-17",
+        "time": "14h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "CTC VILA EMA",
+        "homeGoals": 3,
+        "awayGoals": 10,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139359"
       },
       {
         "date": "2026-05-23",
@@ -886,22 +799,22 @@ export const fpfsCategories = [
       {
         "date": "2026-05-23",
         "time": "08h30",
-        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
-        "home": "A. UNIÃO MAUÁ",
-        "away": "ADEF/COTIA",
-        "homeGoals": 5,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139371"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "08h30",
         "venue": "GINASIO ARENA UNILUS",
         "home": "ADC MARVEL",
         "away": "S.E.R. CAIEIRAS",
         "homeGoals": 3,
         "awayGoals": 0,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139236"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "08h30",
+        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
+        "home": "A. UNIÃO MAUÁ",
+        "away": "ADEF/COTIA",
+        "homeGoals": 5,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139371"
       },
       {
         "date": "2026-05-23",
@@ -934,6 +847,56 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139292"
       },
       {
+        "date": "2026-05-24",
+        "time": "09h30",
+        "venue": "GINÁSIO OCIAN PRAIA CLUBE",
+        "home": "OCIAN PRAIA CLUBE",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 3,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139263"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139294"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINÁSIO ACADÊMICOS DA CIDADE DUTRA",
+        "home": "AE FRIBURGO",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 7,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140134"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "GR GREMETAL",
+        "homeGoals": 2,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139233"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "homeGoals": 2,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140142"
+      },
+      {
         "date": "2026-06-07",
         "time": "14h30",
         "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
@@ -946,7 +909,7 @@ export const fpfsCategories = [
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-7%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:31.195Z"
+    "checkedAt": "2026-05-24T22:30:33.856Z"
   },
   {
     "id": 901,
@@ -956,14 +919,14 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/901",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/901/jogos",
     "record": {
-      "played": 9,
-      "wins": 6,
+      "played": 10,
+      "wins": 7,
       "draws": 3,
       "losses": 0,
-      "goalsFor": 28,
-      "goalsAgainst": 19,
-      "points": 21,
-      "goalDifference": 9
+      "goalsFor": 34,
+      "goalsAgainst": 21,
+      "points": 24,
+      "goalDifference": 13
     },
     "standings": [
       {
@@ -1026,17 +989,17 @@ export const fpfsCategories = [
         "positionLabel": "4º",
         "team": "A.D. SUZANO",
         "points": 21,
-        "played": 9,
+        "played": 10,
         "wins": 6,
         "draws": 3,
-        "losses": 0,
-        "goalsFor": 28,
-        "goalsAgainst": 19,
+        "losses": 1,
+        "goalsFor": 33,
+        "goalsAgainst": 22,
         "goalDifference": 9,
-        "average": 1.47,
-        "goalsForAverage": 3.11,
-        "goalsAgainstAverage": 2.11,
-        "technicalIndex": 2.33
+        "average": 1.5,
+        "goalsForAverage": 3.3,
+        "goalsAgainstAverage": 2.2,
+        "technicalIndex": 2.1
       },
       {
         "group": "CHAVE UNICA",
@@ -1060,6 +1023,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 6,
         "positionLabel": "6º",
+        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "points": 19,
+        "played": 10,
+        "wins": 6,
+        "draws": 1,
+        "losses": 3,
+        "goalsFor": 36,
+        "goalsAgainst": 24,
+        "goalDifference": 12,
+        "average": 1.5,
+        "goalsForAverage": 3.6,
+        "goalsAgainstAverage": 2.4,
+        "technicalIndex": 1.9
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 7,
+        "positionLabel": "7º",
         "team": "ADC MERCEDES BENZ",
         "points": 18,
         "played": 10,
@@ -1076,8 +1057,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 7,
-        "positionLabel": "7º",
+        "position": 8,
+        "positionLabel": "8º",
+        "team": "INST. BONS DE BOLA",
+        "points": 18,
+        "played": 10,
+        "wins": 5,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 24,
+        "goalsAgainst": 17,
+        "goalDifference": 7,
+        "average": 1.41,
+        "goalsForAverage": 2.4,
+        "goalsAgainstAverage": 1.7,
+        "technicalIndex": 1.8
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 9,
+        "positionLabel": "9º",
         "team": "SANTO ANDRÉ FUTSAL",
         "points": 17,
         "played": 9,
@@ -1094,26 +1093,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
-        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "points": 16,
-        "played": 9,
-        "wins": 5,
-        "draws": 1,
-        "losses": 3,
-        "goalsFor": 29,
-        "goalsAgainst": 21,
-        "goalDifference": 8,
-        "average": 1.38,
-        "goalsForAverage": 3.22,
-        "goalsAgainstAverage": 2.33,
-        "technicalIndex": 1.78
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
+        "position": 10,
+        "positionLabel": "10º",
         "team": "A. UNIÃO MAUÁ",
         "points": 16,
         "played": 9,
@@ -1127,24 +1108,6 @@ export const fpfsCategories = [
         "goalsForAverage": 3.22,
         "goalsAgainstAverage": 2.67,
         "technicalIndex": 1.78
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 10,
-        "positionLabel": "10º",
-        "team": "INST. BONS DE BOLA",
-        "points": 15,
-        "played": 9,
-        "wins": 4,
-        "draws": 3,
-        "losses": 2,
-        "goalsFor": 21,
-        "goalsAgainst": 16,
-        "goalDifference": 5,
-        "average": 1.31,
-        "goalsForAverage": 2.33,
-        "goalsAgainstAverage": 1.78,
-        "technicalIndex": 1.67
       },
       {
         "group": "CHAVE UNICA",
@@ -1186,6 +1149,42 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 13,
         "positionLabel": "13º",
+        "team": "AE FRIBURGO",
+        "points": 12,
+        "played": 9,
+        "wins": 4,
+        "draws": 0,
+        "losses": 5,
+        "goalsFor": 30,
+        "goalsAgainst": 32,
+        "goalDifference": -2,
+        "average": 0.94,
+        "goalsForAverage": 3.33,
+        "goalsAgainstAverage": 3.56,
+        "technicalIndex": 1.33
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 14,
+        "positionLabel": "14º",
+        "team": "CHUTE FUTSAL",
+        "points": 12,
+        "played": 10,
+        "wins": 4,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 30,
+        "goalsAgainst": 41,
+        "goalDifference": -9,
+        "average": 0.73,
+        "goalsForAverage": 3,
+        "goalsAgainstAverage": 4.1,
+        "technicalIndex": 1.2
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 15,
+        "positionLabel": "15º",
         "team": "ADC MARVEL",
         "points": 11,
         "played": 10,
@@ -1202,8 +1201,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 14,
-        "positionLabel": "14º",
+        "position": 16,
+        "positionLabel": "16º",
         "team": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
         "points": 11,
         "played": 10,
@@ -1220,26 +1219,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 15,
-        "positionLabel": "15º",
+        "position": 17,
+        "positionLabel": "17º",
         "team": "GR GREMETAL",
         "points": 10,
-        "played": 9,
+        "played": 10,
         "wins": 3,
         "draws": 1,
-        "losses": 5,
-        "goalsFor": 25,
-        "goalsAgainst": 24,
-        "goalDifference": 1,
-        "average": 1.04,
-        "goalsForAverage": 2.78,
-        "goalsAgainstAverage": 2.67,
-        "technicalIndex": 1.11
+        "losses": 6,
+        "goalsFor": 28,
+        "goalsAgainst": 31,
+        "goalDifference": -3,
+        "average": 0.9,
+        "goalsForAverage": 2.8,
+        "goalsAgainstAverage": 3.1,
+        "technicalIndex": 1
       },
       {
         "group": "CHAVE UNICA",
-        "position": 16,
-        "positionLabel": "16º",
+        "position": 18,
+        "positionLabel": "18º",
         "team": "MX7 DIADEMA",
         "points": 10,
         "played": 10,
@@ -1256,8 +1255,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 17,
-        "positionLabel": "17º",
+        "position": 19,
+        "positionLabel": "19º",
         "team": "ADEF/COTIA",
         "points": 10,
         "played": 10,
@@ -1274,111 +1273,75 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 18,
-        "positionLabel": "18º",
-        "team": "OCIAN PRAIA CLUBE",
-        "points": 10,
-        "played": 9,
-        "wins": 3,
-        "draws": 1,
-        "losses": 5,
-        "goalsFor": 18,
-        "goalsAgainst": 28,
-        "goalDifference": -10,
-        "average": 0.64,
-        "goalsForAverage": 2,
-        "goalsAgainstAverage": 3.11,
-        "technicalIndex": 1.11
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 19,
-        "positionLabel": "19º",
-        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "points": 9,
-        "played": 8,
-        "wins": 3,
-        "draws": 0,
-        "losses": 5,
-        "goalsFor": 24,
-        "goalsAgainst": 25,
-        "goalDifference": -1,
-        "average": 0.96,
-        "goalsForAverage": 3,
-        "goalsAgainstAverage": 3.13,
-        "technicalIndex": 1.13
-      },
-      {
-        "group": "CHAVE UNICA",
         "position": 20,
         "positionLabel": "20º",
-        "team": "AA WIMPRO GUARULHOS",
-        "points": 9,
-        "played": 9,
+        "team": "OCIAN PRAIA CLUBE",
+        "points": 10,
+        "played": 10,
         "wins": 3,
-        "draws": 0,
+        "draws": 1,
         "losses": 6,
         "goalsFor": 19,
-        "goalsAgainst": 22,
-        "goalDifference": -3,
-        "average": 0.86,
-        "goalsForAverage": 2.11,
-        "goalsAgainstAverage": 2.44,
+        "goalsAgainst": 31,
+        "goalDifference": -12,
+        "average": 0.61,
+        "goalsForAverage": 1.9,
+        "goalsAgainstAverage": 3.1,
         "technicalIndex": 1
       },
       {
         "group": "CHAVE UNICA",
         "position": 21,
         "positionLabel": "21º",
-        "team": "AE FRIBURGO",
-        "points": 9,
-        "played": 8,
-        "wins": 3,
-        "draws": 0,
-        "losses": 5,
-        "goalsFor": 26,
-        "goalsAgainst": 30,
-        "goalDifference": -4,
-        "average": 0.87,
-        "goalsForAverage": 3.25,
-        "goalsAgainstAverage": 3.75,
-        "technicalIndex": 1.13
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 22,
-        "positionLabel": "22º",
-        "team": "CHUTE FUTSAL",
+        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
         "points": 9,
         "played": 9,
         "wins": 3,
         "draws": 0,
         "losses": 6,
         "goalsFor": 27,
-        "goalsAgainst": 36,
-        "goalDifference": -9,
-        "average": 0.75,
+        "goalsAgainst": 32,
+        "goalDifference": -5,
+        "average": 0.84,
         "goalsForAverage": 3,
-        "goalsAgainstAverage": 4,
+        "goalsAgainstAverage": 3.56,
         "technicalIndex": 1
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 22,
+        "positionLabel": "22º",
+        "team": "AA WIMPRO GUARULHOS",
+        "points": 9,
+        "played": 10,
+        "wins": 3,
+        "draws": 0,
+        "losses": 7,
+        "goalsFor": 21,
+        "goalsAgainst": 26,
+        "goalDifference": -5,
+        "average": 0.81,
+        "goalsForAverage": 2.1,
+        "goalsAgainstAverage": 2.6,
+        "technicalIndex": 0.9
       },
       {
         "group": "CHAVE UNICA",
         "position": 23,
         "positionLabel": "23º",
         "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "points": 5,
-        "played": 9,
-        "wins": 1,
+        "points": 8,
+        "played": 10,
+        "wins": 2,
         "draws": 2,
         "losses": 6,
-        "goalsFor": 23,
-        "goalsAgainst": 35,
-        "goalDifference": -12,
-        "average": 0.66,
-        "goalsForAverage": 2.56,
-        "goalsAgainstAverage": 3.89,
-        "technicalIndex": 0.56
+        "goalsFor": 30,
+        "goalsAgainst": 38,
+        "goalDifference": -8,
+        "average": 0.79,
+        "goalsForAverage": 3,
+        "goalsAgainstAverage": 3.8,
+        "technicalIndex": 0.8
       },
       {
         "group": "CHAVE UNICA",
@@ -1399,55 +1362,8 @@ export const fpfsCategories = [
         "technicalIndex": 0.3
       }
     ],
-    "upcomingGames": [
-      {
-        "date": "2026-05-24",
-        "time": "15h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "A.D. SUZANO",
-        "summaryUrl": null,
-        "opponentStanding": {
-          "group": "CHAVE UNICA",
-          "position": 22,
-          "positionLabel": "22º",
-          "team": "CHUTE FUTSAL",
-          "points": 9,
-          "played": 9,
-          "wins": 3,
-          "draws": 0,
-          "losses": 6,
-          "goalsFor": 27,
-          "goalsAgainst": 36,
-          "goalDifference": -9,
-          "average": 0.75,
-          "goalsForAverage": 3,
-          "goalsAgainstAverage": 4,
-          "technicalIndex": 1
-        },
-        "opponentLastGame": {
-          "date": "2026-05-16",
-          "time": "09h30",
-          "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-          "home": "S.E.R. CAIEIRAS",
-          "away": "CHUTE FUTSAL",
-          "homeGoals": 4,
-          "awayGoals": 3,
-          "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139588"
-        }
-      }
-    ],
+    "upcomingGames": [],
     "recentGames": [
-      {
-        "date": "2026-04-18",
-        "time": "16h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 2,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139561"
-      },
       {
         "date": "2026-04-26",
         "time": "15h30",
@@ -1487,39 +1403,19 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139540"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139525"
       }
     ],
     "allRecentGames": [
-      {
-        "date": "2026-05-02",
-        "time": "09h30",
-        "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-        "home": "S.E.R. CAIEIRAS",
-        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139489"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "09h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "OCIAN PRAIA CLUBE",
-        "homeGoals": 5,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139471"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "10h00",
-        "venue": "GINÁSIO DO JABAQUARA",
-        "home": "GR GREMETAL",
-        "away": "MX7 DIADEMA",
-        "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139616"
-      },
       {
         "date": "2026-05-02",
         "time": "15h30",
@@ -1532,26 +1428,6 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-02",
-        "time": "15h30",
-        "venue": "GINÁSIO DO CTC VILA EMA",
-        "home": "CTC VILA EMA",
-        "away": "ASSOCIAÇÃO PAULISTA FUTEBOL CLUBE MOOCA",
-        "homeGoals": 4,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139481"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "15h30",
-        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 6,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142069"
-      },
-      {
-        "date": "2026-05-02",
         "time": "16h00",
         "venue": "GINÁSIO DO SESC - SUZANO",
         "home": "A.D. SUZANO",
@@ -1559,16 +1435,6 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139455"
-      },
-      {
-        "date": "2026-05-03",
-        "time": "15h30",
-        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
-        "home": "AA WIMPRO GUARULHOS",
-        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142050"
       },
       {
         "date": "2026-05-03",
@@ -1591,14 +1457,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139546"
       },
       {
-        "date": "2026-05-09",
-        "time": "09h30",
-        "venue": "GINÁSIO CEMPRE - BASE",
-        "home": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "away": "G.D.R. 7 DE SETEMBRO",
-        "homeGoals": 4,
+        "date": "2026-05-03",
+        "time": "15h30",
+        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
+        "home": "AA WIMPRO GUARULHOS",
+        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "homeGoals": 2,
         "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139600"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142050"
       },
       {
         "date": "2026-05-09",
@@ -1642,6 +1508,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-09",
+        "time": "09h30",
+        "venue": "GINÁSIO CEMPRE - BASE",
+        "home": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "away": "G.D.R. 7 DE SETEMBRO",
+        "homeGoals": 4,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139600"
+      },
+      {
+        "date": "2026-05-09",
         "time": "10h00",
         "venue": "GINÁSIO SINDICATO DOS METALÚRGICO DE JUNDIAI",
         "home": "METALÚRGICOS DE JUNDIAÍ",
@@ -1663,16 +1539,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-09",
         "time": "15h30",
-        "venue": "GINÁSIO DO CTC VILA EMA",
-        "home": "CTC VILA EMA",
-        "away": "GR GREMETAL",
-        "homeGoals": 2,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139649"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "15h30",
         "venue": "GINÁSIO ARENA PAULISTA F.C.",
         "home": "ASSOCIAÇÃO PAULISTA FUTEBOL CLUBE MOOCA",
         "away": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
@@ -1681,14 +1547,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139527"
       },
       {
-        "date": "2026-05-10",
+        "date": "2026-05-09",
         "time": "15h30",
-        "venue": "GINASIO POLIESPORTIVO SACADURA",
-        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "away": "A.D. SUZANO",
-        "homeGoals": 3,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139594"
+        "venue": "GINÁSIO DO CTC VILA EMA",
+        "home": "CTC VILA EMA",
+        "away": "GR GREMETAL",
+        "homeGoals": 2,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139649"
       },
       {
         "date": "2026-05-10",
@@ -1701,14 +1567,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139462"
       },
       {
-        "date": "2026-05-16",
-        "time": "09h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "ADC MARVEL",
-        "homeGoals": 4,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139513"
+        "date": "2026-05-10",
+        "time": "15h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139594"
       },
       {
         "date": "2026-05-16",
@@ -1722,6 +1588,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-16",
+        "time": "09h30",
+        "venue": "GINÁSIO SAJEA",
+        "home": "SANTO ANDRÉ FUTSAL",
+        "away": "ADC MARVEL",
+        "homeGoals": 4,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139513"
+      },
+      {
+        "date": "2026-05-16",
         "time": "10h00",
         "venue": "GINÁSIO DO JABAQUARA",
         "home": "GR GREMETAL",
@@ -1729,16 +1605,6 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 5,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139487"
-      },
-      {
-        "date": "2026-05-16",
-        "time": "15h30",
-        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
-        "home": "AA WIMPRO GUARULHOS",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 1,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142070"
       },
       {
         "date": "2026-05-16",
@@ -1762,6 +1628,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-16",
+        "time": "15h30",
+        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
+        "home": "AA WIMPRO GUARULHOS",
+        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
+        "homeGoals": 1,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142070"
+      },
+      {
+        "date": "2026-05-16",
         "time": "16h00",
         "venue": "GINÁSIO DO SESC - SUZANO",
         "home": "A.D. SUZANO",
@@ -1769,16 +1645,6 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139540"
-      },
-      {
-        "date": "2026-05-17",
-        "time": "09h30",
-        "venue": "GINÁSIO SINDICATO DOS SECURITÁRIOS",
-        "home": "INST. BONS DE BOLA",
-        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139552"
       },
       {
         "date": "2026-05-17",
@@ -1792,13 +1658,23 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-17",
+        "time": "09h30",
+        "venue": "GINÁSIO SINDICATO DOS SECURITÁRIOS",
+        "home": "INST. BONS DE BOLA",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139552"
+      },
+      {
+        "date": "2026-05-17",
         "time": "15h30",
-        "venue": "GINÁSIO DO GDR 7 DE SETEMBRO",
-        "home": "G.D.R. 7 DE SETEMBRO",
-        "away": "METALÚRGICOS DE JUNDIAÍ",
-        "homeGoals": 4,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139459"
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "CTC VILA EMA",
+        "homeGoals": 5,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139590"
       },
       {
         "date": "2026-05-17",
@@ -1813,32 +1689,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-17",
         "time": "15h30",
-        "venue": "GINASIO SOL - SOL",
-        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "away": "CTC VILA EMA",
-        "homeGoals": 5,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139590"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "09h30",
-        "venue": "GINÁSIO CEMPRE - BASE",
-        "home": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "away": "ADC MERCEDES BENZ",
-        "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139514"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "09h30",
-        "venue": "GINASIO ARENA UNILUS",
-        "home": "ADC MARVEL",
-        "away": "S.E.R. CAIEIRAS",
-        "homeGoals": 1,
+        "venue": "GINÁSIO DO GDR 7 DE SETEMBRO",
+        "home": "G.D.R. 7 DE SETEMBRO",
+        "away": "METALÚRGICOS DE JUNDIAÍ",
+        "homeGoals": 4,
         "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139467"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139459"
       },
       {
         "date": "2026-05-23",
@@ -1853,12 +1709,32 @@ export const fpfsCategories = [
       {
         "date": "2026-05-23",
         "time": "09h30",
+        "venue": "GINASIO ARENA UNILUS",
+        "home": "ADC MARVEL",
+        "away": "S.E.R. CAIEIRAS",
+        "homeGoals": 1,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139467"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "09h30",
         "venue": "GINÁSIO POLIESPORTIVO JOÃO CARLOS DE CAMARGO",
         "home": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
         "away": "G.D.R. 7 DE SETEMBRO",
         "homeGoals": 0,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139528"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "09h30",
+        "venue": "GINÁSIO CEMPRE - BASE",
+        "home": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "away": "ADC MERCEDES BENZ",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139514"
       },
       {
         "date": "2026-05-23",
@@ -1889,11 +1765,61 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139523"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "10h30",
+        "venue": "GINÁSIO OCIAN PRAIA CLUBE",
+        "home": "OCIAN PRAIA CLUBE",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 1,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139494"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "GR GREMETAL",
+        "homeGoals": 7,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139464"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "homeGoals": 7,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142040"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h30",
+        "venue": "GINÁSIO ACADÊMICOS DA CIDADE DUTRA",
+        "home": "AE FRIBURGO",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 4,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142064"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139525"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-8%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:31.632Z"
+    "checkedAt": "2026-05-24T22:30:34.386Z"
   },
   {
     "id": 902,
@@ -1903,14 +1829,14 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/902",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/902/jogos",
     "record": {
-      "played": 9,
+      "played": 10,
       "wins": 3,
       "draws": 3,
-      "losses": 3,
-      "goalsFor": 18,
-      "goalsAgainst": 18,
+      "losses": 4,
+      "goalsFor": 19,
+      "goalsAgainst": 21,
       "points": 12,
-      "goalDifference": 0
+      "goalDifference": -2
     },
     "standings": [
       {
@@ -1989,6 +1915,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 5,
         "positionLabel": "5º",
+        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "points": 22,
+        "played": 10,
+        "wins": 7,
+        "draws": 1,
+        "losses": 2,
+        "goalsFor": 35,
+        "goalsAgainst": 22,
+        "goalDifference": 12,
+        "average": 1.59,
+        "goalsForAverage": 3.5,
+        "goalsAgainstAverage": 2.2,
+        "technicalIndex": 2.2
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 6,
+        "positionLabel": "6º",
         "team": "A. UNIÃO MAUÁ",
         "points": 22,
         "played": 9,
@@ -2005,8 +1949,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 6,
-        "positionLabel": "6º",
+        "position": 7,
+        "positionLabel": "7º",
         "team": "METALÚRGICOS DE JUNDIAÍ",
         "points": 20,
         "played": 10,
@@ -2023,26 +1967,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 7,
-        "positionLabel": "7º",
-        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "position": 8,
+        "positionLabel": "8º",
+        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
         "points": 19,
         "played": 9,
         "wins": 6,
         "draws": 1,
         "losses": 2,
-        "goalsFor": 30,
-        "goalsAgainst": 18,
-        "goalDifference": 12,
-        "average": 1.67,
-        "goalsForAverage": 3.33,
-        "goalsAgainstAverage": 2,
+        "goalsFor": 27,
+        "goalsAgainst": 17,
+        "goalDifference": 9,
+        "average": 1.59,
+        "goalsForAverage": 3,
+        "goalsAgainstAverage": 1.89,
         "technicalIndex": 2.11
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
+        "position": 9,
+        "positionLabel": "9º",
         "team": "ADC MARVEL",
         "points": 19,
         "played": 10,
@@ -2056,24 +2000,6 @@ export const fpfsCategories = [
         "goalsForAverage": 1.7,
         "goalsAgainstAverage": 1.4,
         "technicalIndex": 1.9
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
-        "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "points": 16,
-        "played": 8,
-        "wins": 5,
-        "draws": 1,
-        "losses": 2,
-        "goalsFor": 25,
-        "goalsAgainst": 16,
-        "goalDifference": 9,
-        "average": 1.56,
-        "goalsForAverage": 3.13,
-        "goalsAgainstAverage": 2,
-        "technicalIndex": 2
       },
       {
         "group": "CHAVE UNICA",
@@ -2135,22 +2061,40 @@ export const fpfsCategories = [
         "positionLabel": "13º",
         "team": "A.D. SUZANO",
         "points": 12,
-        "played": 9,
+        "played": 10,
         "wins": 3,
         "draws": 3,
-        "losses": 3,
-        "goalsFor": 18,
-        "goalsAgainst": 18,
+        "losses": 4,
+        "goalsFor": 19,
+        "goalsAgainst": 22,
         "goalDifference": 0,
-        "average": 1,
-        "goalsForAverage": 2,
-        "goalsAgainstAverage": 2,
-        "technicalIndex": 1.33
+        "average": 0.86,
+        "goalsForAverage": 1.9,
+        "goalsAgainstAverage": 2.2,
+        "technicalIndex": 1.2
       },
       {
         "group": "CHAVE UNICA",
         "position": 14,
         "positionLabel": "14º",
+        "team": "AE FRIBURGO",
+        "points": 12,
+        "played": 9,
+        "wins": 3,
+        "draws": 3,
+        "losses": 3,
+        "goalsFor": 17,
+        "goalsAgainst": 23,
+        "goalDifference": -8,
+        "average": 0.74,
+        "goalsForAverage": 1.89,
+        "goalsAgainstAverage": 2.56,
+        "technicalIndex": 1.33
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 15,
+        "positionLabel": "15º",
         "team": "S.E.R. CAIEIRAS",
         "points": 11,
         "played": 10,
@@ -2167,8 +2111,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 15,
-        "positionLabel": "15º",
+        "position": 16,
+        "positionLabel": "16º",
         "team": "MX7 DIADEMA",
         "points": 11,
         "played": 10,
@@ -2185,26 +2129,62 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 16,
-        "positionLabel": "16º",
+        "position": 17,
+        "positionLabel": "17º",
         "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
         "points": 11,
-        "played": 9,
+        "played": 10,
         "wins": 3,
         "draws": 2,
-        "losses": 4,
-        "goalsFor": 23,
-        "goalsAgainst": 26,
+        "losses": 5,
+        "goalsFor": 24,
+        "goalsAgainst": 28,
         "goalDifference": -3,
-        "average": 0.88,
-        "goalsForAverage": 2.56,
-        "goalsAgainstAverage": 2.89,
-        "technicalIndex": 1.22
+        "average": 0.86,
+        "goalsForAverage": 2.4,
+        "goalsAgainstAverage": 2.8,
+        "technicalIndex": 1.1
       },
       {
         "group": "CHAVE UNICA",
-        "position": 17,
-        "positionLabel": "17º",
+        "position": 18,
+        "positionLabel": "18º",
+        "team": "INST. BONS DE BOLA",
+        "points": 11,
+        "played": 10,
+        "wins": 3,
+        "draws": 2,
+        "losses": 5,
+        "goalsFor": 20,
+        "goalsAgainst": 30,
+        "goalDifference": -10,
+        "average": 0.67,
+        "goalsForAverage": 2,
+        "goalsAgainstAverage": 3,
+        "technicalIndex": 1.1
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 19,
+        "positionLabel": "19º",
+        "team": "CHUTE FUTSAL",
+        "points": 10,
+        "played": 10,
+        "wins": 3,
+        "draws": 1,
+        "losses": 6,
+        "goalsFor": 22,
+        "goalsAgainst": 36,
+        "goalDifference": -17,
+        "average": 0.61,
+        "goalsForAverage": 2.2,
+        "goalsAgainstAverage": 3.6,
+        "technicalIndex": 1
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 20,
+        "positionLabel": "20º",
         "team": "CTC VILA EMA",
         "points": 9,
         "played": 10,
@@ -2221,75 +2201,21 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 18,
-        "positionLabel": "18º",
-        "team": "OCIAN PRAIA CLUBE",
-        "points": 8,
-        "played": 9,
-        "wins": 2,
-        "draws": 2,
-        "losses": 5,
-        "goalsFor": 9,
-        "goalsAgainst": 15,
-        "goalDifference": -6,
-        "average": 0.6,
-        "goalsForAverage": 1,
-        "goalsAgainstAverage": 1.67,
-        "technicalIndex": 0.89
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 19,
-        "positionLabel": "19º",
-        "team": "AE FRIBURGO",
-        "points": 8,
-        "played": 8,
-        "wins": 2,
-        "draws": 2,
-        "losses": 4,
-        "goalsFor": 14,
-        "goalsAgainst": 22,
-        "goalDifference": -8,
-        "average": 0.64,
-        "goalsForAverage": 1.75,
-        "goalsAgainstAverage": 2.75,
-        "technicalIndex": 1
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 20,
-        "positionLabel": "20º",
-        "team": "INST. BONS DE BOLA",
-        "points": 8,
-        "played": 9,
-        "wins": 2,
-        "draws": 2,
-        "losses": 5,
-        "goalsFor": 16,
-        "goalsAgainst": 28,
-        "goalDifference": -12,
-        "average": 0.57,
-        "goalsForAverage": 1.78,
-        "goalsAgainstAverage": 3.11,
-        "technicalIndex": 0.89
-      },
-      {
-        "group": "CHAVE UNICA",
         "position": 21,
         "positionLabel": "21º",
-        "team": "CHUTE FUTSAL",
-        "points": 7,
-        "played": 9,
+        "team": "OCIAN PRAIA CLUBE",
+        "points": 8,
+        "played": 10,
         "wins": 2,
-        "draws": 1,
+        "draws": 2,
         "losses": 6,
-        "goalsFor": 18,
-        "goalsAgainst": 35,
-        "goalDifference": -17,
-        "average": 0.51,
-        "goalsForAverage": 2,
-        "goalsAgainstAverage": 3.89,
-        "technicalIndex": 0.78
+        "goalsFor": 11,
+        "goalsAgainst": 19,
+        "goalDifference": -8,
+        "average": 0.58,
+        "goalsForAverage": 1.1,
+        "goalsAgainstAverage": 1.9,
+        "technicalIndex": 0.8
       },
       {
         "group": "CHAVE UNICA",
@@ -2315,86 +2241,39 @@ export const fpfsCategories = [
         "positionLabel": "23º",
         "team": "GR GREMETAL",
         "points": 4,
-        "played": 9,
+        "played": 10,
         "wins": 1,
         "draws": 1,
-        "losses": 7,
-        "goalsFor": 20,
-        "goalsAgainst": 33,
+        "losses": 8,
+        "goalsFor": 24,
+        "goalsAgainst": 38,
         "goalDifference": -13,
-        "average": 0.61,
-        "goalsForAverage": 2.22,
-        "goalsAgainstAverage": 3.67,
-        "technicalIndex": 0.44
+        "average": 0.63,
+        "goalsForAverage": 2.4,
+        "goalsAgainstAverage": 3.8,
+        "technicalIndex": 0.4
       },
       {
         "group": "CHAVE UNICA",
         "position": 24,
         "positionLabel": "24º",
         "team": "AA WIMPRO GUARULHOS",
-        "points": 0,
-        "played": 9,
-        "wins": 0,
-        "draws": 0,
-        "losses": 9,
-        "goalsFor": 10,
-        "goalsAgainst": 41,
+        "points": -2,
+        "played": 10,
+        "wins": -1,
+        "draws": 1,
+        "losses": 10,
+        "goalsFor": 11,
+        "goalsAgainst": 44,
         "goalDifference": -31,
-        "average": 0.24,
-        "goalsForAverage": 1.11,
-        "goalsAgainstAverage": 4.56,
-        "technicalIndex": 0
+        "average": 0.25,
+        "goalsForAverage": 1.1,
+        "goalsAgainstAverage": 4.4,
+        "technicalIndex": -0.2
       }
     ],
-    "upcomingGames": [
-      {
-        "date": "2026-05-24",
-        "time": "16h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "A.D. SUZANO",
-        "summaryUrl": null,
-        "opponentStanding": {
-          "group": "CHAVE UNICA",
-          "position": 21,
-          "positionLabel": "21º",
-          "team": "CHUTE FUTSAL",
-          "points": 7,
-          "played": 9,
-          "wins": 2,
-          "draws": 1,
-          "losses": 6,
-          "goalsFor": 18,
-          "goalsAgainst": 35,
-          "goalDifference": -17,
-          "average": 0.51,
-          "goalsForAverage": 2,
-          "goalsAgainstAverage": 3.89,
-          "technicalIndex": 0.78
-        },
-        "opponentLastGame": {
-          "date": "2026-05-16",
-          "time": "10h30",
-          "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-          "home": "S.E.R. CAIEIRAS",
-          "away": "CHUTE FUTSAL",
-          "homeGoals": 2,
-          "awayGoals": 2,
-          "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139819"
-        }
-      }
-    ],
+    "upcomingGames": [],
     "recentGames": [
-      {
-        "date": "2026-04-18",
-        "time": "17h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 3,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139792"
-      },
       {
         "date": "2026-04-26",
         "time": "16h30",
@@ -2434,59 +2313,19 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139771"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "16h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139756"
       }
     ],
     "allRecentGames": [
-      {
-        "date": "2026-05-02",
-        "time": "10h30",
-        "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-        "home": "S.E.R. CAIEIRAS",
-        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "homeGoals": 1,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139720"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "10h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "OCIAN PRAIA CLUBE",
-        "homeGoals": 1,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139702"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "11h00",
-        "venue": "GINÁSIO DO JABAQUARA",
-        "home": "GR GREMETAL",
-        "away": "MX7 DIADEMA",
-        "homeGoals": 2,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139847"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "16h30",
-        "venue": "GINÁSIO DO CTC VILA EMA",
-        "home": "CTC VILA EMA",
-        "away": "ASSOCIAÇÃO PAULISTA FUTEBOL CLUBE MOOCA",
-        "homeGoals": 1,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139712"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "16h30",
-        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 5,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142113"
-      },
       {
         "date": "2026-05-02",
         "time": "16h30",
@@ -2540,16 +2379,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-09",
         "time": "10h30",
-        "venue": "GINÁSIO POLIESPORTIVO JOÃO CARLOS DE CAMARGO",
-        "home": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "away": "ADEF/COTIA",
-        "homeGoals": 3,
-        "awayGoals": 7,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139717"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "10h30",
         "venue": "GINASIO ARENA UNILUS",
         "home": "ADC MARVEL",
         "away": "CLUBE BATALHA",
@@ -2576,6 +2405,16 @@ export const fpfsCategories = [
         "homeGoals": 5,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139872"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "10h30",
+        "venue": "GINÁSIO POLIESPORTIVO JOÃO CARLOS DE CAMARGO",
+        "home": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
+        "away": "ADEF/COTIA",
+        "homeGoals": 3,
+        "awayGoals": 7,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139717"
       },
       {
         "date": "2026-05-09",
@@ -2630,16 +2469,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-10",
         "time": "16h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "SANTO ANDRÉ FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 9,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139693"
-      },
-      {
-        "date": "2026-05-10",
-        "time": "16h30",
         "venue": "GINASIO POLIESPORTIVO SACADURA",
         "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
         "away": "A.D. SUZANO",
@@ -2648,14 +2477,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139825"
       },
       {
-        "date": "2026-05-16",
-        "time": "10h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "ADC MARVEL",
+        "date": "2026-05-10",
+        "time": "16h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "SANTO ANDRÉ FUTSAL",
         "homeGoals": 3,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139744"
+        "awayGoals": 9,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139693"
       },
       {
         "date": "2026-05-16",
@@ -2666,6 +2495,16 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139819"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "10h30",
+        "venue": "GINÁSIO SAJEA",
+        "home": "SANTO ANDRÉ FUTSAL",
+        "away": "ADC MARVEL",
+        "homeGoals": 3,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139744"
       },
       {
         "date": "2026-05-16",
@@ -2690,22 +2529,22 @@ export const fpfsCategories = [
       {
         "date": "2026-05-16",
         "time": "16h30",
-        "venue": "GINASIO TOCA DO TIGRE",
-        "home": "ADEF/COTIA",
-        "away": "AE FRIBURGO",
-        "homeGoals": 1,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139672"
-      },
-      {
-        "date": "2026-05-16",
-        "time": "16h30",
         "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
         "home": "AA WIMPRO GUARULHOS",
         "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
         "homeGoals": 0,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142114"
+      },
+      {
+        "date": "2026-05-16",
+        "time": "16h30",
+        "venue": "GINASIO TOCA DO TIGRE",
+        "home": "ADEF/COTIA",
+        "away": "AE FRIBURGO",
+        "homeGoals": 1,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139672"
       },
       {
         "date": "2026-05-16",
@@ -2750,6 +2589,16 @@ export const fpfsCategories = [
       {
         "date": "2026-05-17",
         "time": "16h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "CTC VILA EMA",
+        "homeGoals": 5,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139821"
+      },
+      {
+        "date": "2026-05-17",
+        "time": "16h30",
         "venue": "GINÁSIO DO GDR 7 DE SETEMBRO",
         "home": "G.D.R. 7 DE SETEMBRO",
         "away": "METALÚRGICOS DE JUNDIAÍ",
@@ -2758,14 +2607,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139690"
       },
       {
-        "date": "2026-05-17",
-        "time": "16h30",
-        "venue": "GINASIO SOL - SOL",
-        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "away": "CTC VILA EMA",
-        "homeGoals": 5,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139821"
+        "date": "2026-05-23",
+        "time": "10h30",
+        "venue": "GINASIO ARENA UNILUS",
+        "home": "ADC MARVEL",
+        "away": "S.E.R. CAIEIRAS",
+        "homeGoals": 1,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139698"
       },
       {
         "date": "2026-05-23",
@@ -2799,16 +2648,6 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-23",
-        "time": "10h30",
-        "venue": "GINASIO ARENA UNILUS",
-        "home": "ADC MARVEL",
-        "away": "S.E.R. CAIEIRAS",
-        "homeGoals": 1,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139698"
-      },
-      {
-        "date": "2026-05-23",
         "time": "11h00",
         "venue": "GINÁSIO METALURGICOS JUNDIAÍ VARZEA E C. LIMPO PTA",
         "home": "METALÚRGICOS DE JUNDIAÍ",
@@ -2836,11 +2675,61 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 0,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139754"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "11h30",
+        "venue": "GINÁSIO OCIAN PRAIA CLUBE",
+        "home": "OCIAN PRAIA CLUBE",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 2,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139725"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "16h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "homeGoals": 1,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142084"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "16h30",
+        "venue": "GINÁSIO ACADÊMICOS DA CIDADE DUTRA",
+        "home": "AE FRIBURGO",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 2,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142108"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "16h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139756"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "16h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "GR GREMETAL",
+        "homeGoals": 4,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139695"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-9%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:32.034Z"
+    "checkedAt": "2026-05-24T22:30:35.191Z"
   },
   {
     "id": 903,
@@ -2850,13 +2739,13 @@ export const fpfsCategories = [
     "url": "https://eventos.admfutsal.com.br/evento/903",
     "gamesUrl": "https://eventos.admfutsal.com.br/evento/903/jogos",
     "record": {
-      "played": 9,
+      "played": 10,
       "wins": 1,
-      "draws": 2,
+      "draws": 3,
       "losses": 6,
-      "goalsFor": 15,
-      "goalsAgainst": 28,
-      "points": 5,
+      "goalsFor": 17,
+      "goalsAgainst": 30,
+      "points": 6,
       "goalDifference": -13
     },
     "standings": [
@@ -2866,17 +2755,17 @@ export const fpfsCategories = [
         "positionLabel": "1º",
         "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
         "points": 21,
-        "played": 8,
+        "played": 9,
         "wins": 7,
         "draws": 0,
-        "losses": 1,
-        "goalsFor": 34,
-        "goalsAgainst": 12,
+        "losses": 2,
+        "goalsFor": 36,
+        "goalsAgainst": 14,
         "goalDifference": 22,
-        "average": 2.83,
-        "goalsForAverage": 4.25,
-        "goalsAgainstAverage": 1.5,
-        "technicalIndex": 2.63
+        "average": 2.57,
+        "goalsForAverage": 4,
+        "goalsAgainstAverage": 1.56,
+        "technicalIndex": 2.33
       },
       {
         "group": "CHAVE UNICA",
@@ -2955,18 +2844,18 @@ export const fpfsCategories = [
         "position": 6,
         "positionLabel": "6º",
         "team": "CHUTE FUTSAL",
-        "points": 16,
-        "played": 9,
+        "points": 17,
+        "played": 10,
         "wins": 5,
-        "draws": 1,
+        "draws": 2,
         "losses": 3,
-        "goalsFor": 21,
-        "goalsAgainst": 17,
+        "goalsFor": 23,
+        "goalsAgainst": 19,
         "goalDifference": 4,
-        "average": 1.24,
-        "goalsForAverage": 2.33,
-        "goalsAgainstAverage": 1.89,
-        "technicalIndex": 1.78
+        "average": 1.21,
+        "goalsForAverage": 2.3,
+        "goalsAgainstAverage": 1.9,
+        "technicalIndex": 1.7
       },
       {
         "group": "CHAVE UNICA",
@@ -2992,17 +2881,17 @@ export const fpfsCategories = [
         "positionLabel": "8º",
         "team": "AE FRIBURGO",
         "points": 15,
-        "played": 8,
+        "played": 9,
         "wins": 5,
         "draws": 0,
-        "losses": 3,
-        "goalsFor": 21,
-        "goalsAgainst": 20,
+        "losses": 4,
+        "goalsFor": 22,
+        "goalsAgainst": 23,
         "goalDifference": 1,
-        "average": 1.05,
-        "goalsForAverage": 2.63,
-        "goalsAgainstAverage": 2.5,
-        "technicalIndex": 1.88
+        "average": 0.96,
+        "goalsForAverage": 2.44,
+        "goalsAgainstAverage": 2.56,
+        "technicalIndex": 1.67
       },
       {
         "group": "CHAVE UNICA",
@@ -3064,17 +2953,17 @@ export const fpfsCategories = [
         "positionLabel": "12º",
         "team": "GR GREMETAL",
         "points": 13,
-        "played": 8,
+        "played": 9,
         "wins": 4,
         "draws": 1,
-        "losses": 3,
-        "goalsFor": 26,
-        "goalsAgainst": 24,
+        "losses": 4,
+        "goalsFor": 30,
+        "goalsAgainst": 27,
         "goalDifference": 2,
-        "average": 1.08,
-        "goalsForAverage": 3.25,
+        "average": 1.11,
+        "goalsForAverage": 3.33,
         "goalsAgainstAverage": 3,
-        "technicalIndex": 1.63
+        "technicalIndex": 1.44
       },
       {
         "group": "CHAVE UNICA",
@@ -3098,6 +2987,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 14,
         "positionLabel": "14º",
+        "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "points": 13,
+        "played": 10,
+        "wins": 4,
+        "draws": 1,
+        "losses": 5,
+        "goalsFor": 21,
+        "goalsAgainst": 25,
+        "goalDifference": -4,
+        "average": 0.84,
+        "goalsForAverage": 2.1,
+        "goalsAgainstAverage": 2.5,
+        "technicalIndex": 1.3
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 15,
+        "positionLabel": "15º",
         "team": "MX7 DIADEMA",
         "points": 13,
         "played": 10,
@@ -3114,26 +3021,44 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 15,
-        "positionLabel": "15º",
+        "position": 16,
+        "positionLabel": "16º",
         "team": "INST. BONS DE BOLA",
         "points": 11,
-        "played": 9,
+        "played": 10,
         "wins": 3,
         "draws": 2,
-        "losses": 4,
-        "goalsFor": 24,
-        "goalsAgainst": 24,
-        "goalDifference": 0,
-        "average": 1,
-        "goalsForAverage": 2.67,
-        "goalsAgainstAverage": 2.67,
-        "technicalIndex": 1.22
+        "losses": 5,
+        "goalsFor": 26,
+        "goalsAgainst": 29,
+        "goalDifference": -3,
+        "average": 0.9,
+        "goalsForAverage": 2.6,
+        "goalsAgainstAverage": 2.9,
+        "technicalIndex": 1.1
       },
       {
         "group": "CHAVE UNICA",
-        "position": 16,
-        "positionLabel": "16º",
+        "position": 17,
+        "positionLabel": "17º",
+        "team": "OCIAN PRAIA CLUBE",
+        "points": 11,
+        "played": 10,
+        "wins": 2,
+        "draws": 5,
+        "losses": 3,
+        "goalsFor": 19,
+        "goalsAgainst": 26,
+        "goalDifference": -7,
+        "average": 0.73,
+        "goalsForAverage": 1.9,
+        "goalsAgainstAverage": 2.6,
+        "technicalIndex": 1.1
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 18,
+        "positionLabel": "18º",
         "team": "ADC MERCEDES BENZ",
         "points": 10,
         "played": 8,
@@ -3150,26 +3075,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 17,
-        "positionLabel": "17º",
-        "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "points": 10,
-        "played": 9,
-        "wins": 3,
-        "draws": 1,
-        "losses": 5,
-        "goalsFor": 19,
-        "goalsAgainst": 23,
-        "goalDifference": -4,
-        "average": 0.83,
-        "goalsForAverage": 2.11,
-        "goalsAgainstAverage": 2.56,
-        "technicalIndex": 1.11
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 18,
-        "positionLabel": "18º",
+        "position": 19,
+        "positionLabel": "19º",
         "team": "S.E.R. CAIEIRAS",
         "points": 10,
         "played": 10,
@@ -3186,26 +3093,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 19,
-        "positionLabel": "19º",
-        "team": "OCIAN PRAIA CLUBE",
-        "points": 8,
-        "played": 9,
-        "wins": 1,
-        "draws": 5,
-        "losses": 3,
-        "goalsFor": 14,
-        "goalsAgainst": 24,
-        "goalDifference": -10,
-        "average": 0.58,
-        "goalsForAverage": 1.56,
-        "goalsAgainstAverage": 2.67,
-        "technicalIndex": 0.89
+        "position": 20,
+        "positionLabel": "20º",
+        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "points": 9,
+        "played": 10,
+        "wins": 3,
+        "draws": 0,
+        "losses": 7,
+        "goalsFor": 16,
+        "goalsAgainst": 29,
+        "goalDifference": -12,
+        "average": 0.55,
+        "goalsForAverage": 1.6,
+        "goalsAgainstAverage": 2.9,
+        "technicalIndex": 0.9
       },
       {
         "group": "CHAVE UNICA",
-        "position": 20,
-        "positionLabel": "20º",
+        "position": 21,
+        "positionLabel": "21º",
         "team": "G.D.R. 7 DE SETEMBRO",
         "points": 7,
         "played": 9,
@@ -3219,24 +3126,6 @@ export const fpfsCategories = [
         "goalsForAverage": 1.78,
         "goalsAgainstAverage": 2.56,
         "technicalIndex": 0.78
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 21,
-        "positionLabel": "21º",
-        "team": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "points": 6,
-        "played": 9,
-        "wins": 2,
-        "draws": 0,
-        "losses": 7,
-        "goalsFor": 13,
-        "goalsAgainst": 25,
-        "goalDifference": -12,
-        "average": 0.52,
-        "goalsForAverage": 1.44,
-        "goalsAgainstAverage": 2.78,
-        "technicalIndex": 0.67
       },
       {
         "group": "CHAVE UNICA",
@@ -3261,87 +3150,40 @@ export const fpfsCategories = [
         "position": 23,
         "positionLabel": "23º",
         "team": "A.D. SUZANO",
-        "points": 5,
-        "played": 9,
+        "points": 6,
+        "played": 10,
         "wins": 1,
-        "draws": 2,
+        "draws": 3,
         "losses": 6,
-        "goalsFor": 15,
-        "goalsAgainst": 28,
+        "goalsFor": 17,
+        "goalsAgainst": 30,
         "goalDifference": -13,
-        "average": 0.54,
-        "goalsForAverage": 1.67,
-        "goalsAgainstAverage": 3.11,
-        "technicalIndex": 0.56
+        "average": 0.57,
+        "goalsForAverage": 1.7,
+        "goalsAgainstAverage": 3,
+        "technicalIndex": 0.6
       },
       {
         "group": "CHAVE UNICA",
         "position": 24,
         "positionLabel": "24º",
         "team": "AA WIMPRO GUARULHOS",
-        "points": 0,
-        "played": 5,
-        "wins": 0,
+        "points": 3,
+        "played": 6,
+        "wins": 1,
         "draws": 0,
         "losses": 5,
-        "goalsFor": 4,
-        "goalsAgainst": 22,
+        "goalsFor": 7,
+        "goalsAgainst": 23,
         "goalDifference": -18,
-        "average": 0.18,
-        "goalsForAverage": 0.8,
-        "goalsAgainstAverage": 4.4,
-        "technicalIndex": 0
+        "average": 0.3,
+        "goalsForAverage": 1.17,
+        "goalsAgainstAverage": 3.83,
+        "technicalIndex": 0.5
       }
     ],
-    "upcomingGames": [
-      {
-        "date": "2026-05-24",
-        "time": "17h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "A.D. SUZANO",
-        "summaryUrl": null,
-        "opponentStanding": {
-          "group": "CHAVE UNICA",
-          "position": 6,
-          "positionLabel": "6º",
-          "team": "CHUTE FUTSAL",
-          "points": 16,
-          "played": 9,
-          "wins": 5,
-          "draws": 1,
-          "losses": 3,
-          "goalsFor": 21,
-          "goalsAgainst": 17,
-          "goalDifference": 4,
-          "average": 1.24,
-          "goalsForAverage": 2.33,
-          "goalsAgainstAverage": 1.89,
-          "technicalIndex": 1.78
-        },
-        "opponentLastGame": {
-          "date": "2026-05-16",
-          "time": "11h30",
-          "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-          "home": "S.E.R. CAIEIRAS",
-          "away": "CHUTE FUTSAL",
-          "homeGoals": 3,
-          "awayGoals": 3,
-          "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140050"
-        }
-      }
-    ],
+    "upcomingGames": [],
     "recentGames": [
-      {
-        "date": "2026-04-18",
-        "time": "18h00",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 1,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140023"
-      },
       {
         "date": "2026-04-26",
         "time": "17h30",
@@ -3381,49 +3223,19 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140002"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139987"
       }
     ],
     "allRecentGames": [
-      {
-        "date": "2026-05-02",
-        "time": "11h30",
-        "venue": "GINÁSIO ERNESTO DIOGO DE FARIA",
-        "home": "S.E.R. CAIEIRAS",
-        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "homeGoals": 1,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139951"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "11h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "OCIAN PRAIA CLUBE",
-        "homeGoals": 7,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139933"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "12h00",
-        "venue": "GINÁSIO DO JABAQUARA",
-        "home": "GR GREMETAL",
-        "away": "MX7 DIADEMA",
-        "homeGoals": 3,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140078"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "17h30",
-        "venue": "GINÁSIO ARENA BATEBOLA SPORTS",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "homeGoals": 6,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142157"
-      },
       {
         "date": "2026-05-02",
         "time": "17h30",
@@ -3433,16 +3245,6 @@ export const fpfsCategories = [
         "homeGoals": 4,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139943"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "17h30",
-        "venue": "GINASIO TOCA DO TIGRE",
-        "home": "ADEF/COTIA",
-        "away": "METALÚRGICOS DE JUNDIAÍ",
-        "homeGoals": 3,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140110"
       },
       {
         "date": "2026-05-02",
@@ -3467,6 +3269,16 @@ export const fpfsCategories = [
       {
         "date": "2026-05-03",
         "time": "17h30",
+        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
+        "home": "AA WIMPRO GUARULHOS",
+        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "homeGoals": 0,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142129"
+      },
+      {
+        "date": "2026-05-03",
+        "time": "17h30",
         "venue": "BATALHA SPORT CENTER",
         "home": "CLUBE BATALHA",
         "away": "CHUTE FUTSAL",
@@ -3475,14 +3287,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140008"
       },
       {
-        "date": "2026-05-03",
-        "time": "17h30",
-        "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
-        "home": "AA WIMPRO GUARULHOS",
-        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "homeGoals": 0,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142129"
+        "date": "2026-05-09",
+        "time": "11h30",
+        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
+        "home": "A. UNIÃO MAUÁ",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 6,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140103"
       },
       {
         "date": "2026-05-09",
@@ -3493,6 +3305,16 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 0,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140062"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "11h30",
+        "venue": "GINÁSIO POLIESPORTIVO JOÃO CARLOS DE CAMARGO",
+        "home": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
+        "away": "ADEF/COTIA",
+        "homeGoals": 1,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139948"
       },
       {
         "date": "2026-05-09",
@@ -3513,26 +3335,6 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 4,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140045"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "11h30",
-        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
-        "home": "A. UNIÃO MAUÁ",
-        "away": "INST. BONS DE BOLA",
-        "homeGoals": 6,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140103"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "11h30",
-        "venue": "GINÁSIO POLIESPORTIVO JOÃO CARLOS DE CAMARGO",
-        "home": "ASSOCIAÇÃO ESPORTIVA FUTMAX",
-        "away": "ADEF/COTIA",
-        "homeGoals": 1,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139948"
       },
       {
         "date": "2026-05-09",
@@ -3577,16 +3379,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-10",
         "time": "17h30",
-        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
-        "home": "CHUTE FUTSAL",
-        "away": "SANTO ANDRÉ FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139924"
-      },
-      {
-        "date": "2026-05-10",
-        "time": "17h30",
         "venue": "GINASIO POLIESPORTIVO SACADURA",
         "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
         "away": "A.D. SUZANO",
@@ -3595,14 +3387,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140056"
       },
       {
-        "date": "2026-05-16",
-        "time": "11h30",
-        "venue": "GINÁSIO SAJEA",
-        "home": "SANTO ANDRÉ FUTSAL",
-        "away": "ADC MARVEL",
-        "homeGoals": 1,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139975"
+        "date": "2026-05-10",
+        "time": "17h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "SANTO ANDRÉ FUTSAL",
+        "homeGoals": 3,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139924"
       },
       {
         "date": "2026-05-16",
@@ -3616,6 +3408,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-16",
+        "time": "11h30",
+        "venue": "GINÁSIO SAJEA",
+        "home": "SANTO ANDRÉ FUTSAL",
+        "away": "ADC MARVEL",
+        "homeGoals": 1,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139975"
+      },
+      {
+        "date": "2026-05-16",
         "time": "12h00",
         "venue": "GINÁSIO DO JABAQUARA",
         "home": "GR GREMETAL",
@@ -3623,16 +3425,6 @@ export const fpfsCategories = [
         "homeGoals": 4,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139949"
-      },
-      {
-        "date": "2026-05-16",
-        "time": "17h30",
-        "venue": "GINASIO TOCA DO TIGRE",
-        "home": "ADEF/COTIA",
-        "away": "AE FRIBURGO",
-        "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139903"
       },
       {
         "date": "2026-05-16",
@@ -3656,6 +3448,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-16",
+        "time": "17h30",
+        "venue": "GINASIO TOCA DO TIGRE",
+        "home": "ADEF/COTIA",
+        "away": "AE FRIBURGO",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139903"
+      },
+      {
+        "date": "2026-05-16",
         "time": "18h00",
         "venue": "GINÁSIO DO SESC - SUZANO",
         "home": "A.D. SUZANO",
@@ -3663,6 +3465,16 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140002"
+      },
+      {
+        "date": "2026-05-17",
+        "time": "11h30",
+        "venue": "GINÁSIO MUNICIPAL MANÉ GARRINCHA",
+        "home": "MX7 DIADEMA",
+        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
+        "homeGoals": 1,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140108"
       },
       {
         "date": "2026-05-17",
@@ -3676,13 +3488,13 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-17",
-        "time": "11h30",
-        "venue": "GINÁSIO MUNICIPAL MANÉ GARRINCHA",
-        "home": "MX7 DIADEMA",
-        "away": "SPORT BENFICA DE MOGI DAS CRUZES",
-        "homeGoals": 1,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140108"
+        "time": "17h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "CTC VILA EMA",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140052"
       },
       {
         "date": "2026-05-17",
@@ -3705,14 +3517,24 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139921"
       },
       {
-        "date": "2026-05-17",
-        "time": "17h30",
-        "venue": "GINASIO SOL - SOL",
-        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
-        "away": "CTC VILA EMA",
+        "date": "2026-05-23",
+        "time": "11h30",
+        "venue": "GINASIO ARENA UNILUS",
+        "home": "ADC MARVEL",
+        "away": "S.E.R. CAIEIRAS",
         "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140052"
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139929"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "11h30",
+        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
+        "home": "A. UNIÃO MAUÁ",
+        "away": "ADEF/COTIA",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140064"
       },
       {
         "date": "2026-05-23",
@@ -3736,26 +3558,6 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-23",
-        "time": "11h30",
-        "venue": "GINÁSIO GRÊMIO ESPORTIVO MAUAENSE - FABRICA DE ARTES",
-        "home": "A. UNIÃO MAUÁ",
-        "away": "ADEF/COTIA",
-        "homeGoals": 3,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140064"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "11h30",
-        "venue": "GINASIO ARENA UNILUS",
-        "home": "ADC MARVEL",
-        "away": "S.E.R. CAIEIRAS",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139929"
-      },
-      {
-        "date": "2026-05-23",
         "time": "12h00",
         "venue": "GINÁSIO METALURGICOS JUNDIAÍ VARZEA E C. LIMPO PTA",
         "home": "METALÚRGICOS DE JUNDIAÍ",
@@ -3763,6 +3565,16 @@ export const fpfsCategories = [
         "homeGoals": 3,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139963"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "17h30",
+        "venue": "GINÁSIO DO CTC VILA EMA",
+        "home": "CTC VILA EMA",
+        "away": "CLUBE BATALHA",
+        "homeGoals": 4,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139985"
       },
       {
         "date": "2026-05-23",
@@ -3775,19 +3587,59 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140063"
       },
       {
-        "date": "2026-05-23",
+        "date": "2026-05-24",
+        "time": "12h30",
+        "venue": "GINÁSIO OCIAN PRAIA CLUBE",
+        "home": "OCIAN PRAIA CLUBE",
+        "away": "INST. BONS DE BOLA",
+        "homeGoals": 5,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139956"
+      },
+      {
+        "date": "2026-05-24",
         "time": "17h30",
-        "venue": "GINÁSIO DO CTC VILA EMA",
-        "home": "CTC VILA EMA",
-        "away": "CLUBE BATALHA",
-        "homeGoals": 4,
+        "venue": "GINÁSIO ACADÊMICOS DA CIDADE DUTRA",
+        "home": "AE FRIBURGO",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 1,
         "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139985"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=145157"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h30",
+        "venue": "GINÁSIO ARENA CHUTE PARADA INGLESA",
+        "home": "CHUTE FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139987"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h30",
+        "venue": "GINASIO POLIESPORTIVO SACADURA",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "homeGoals": 1,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=142146"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h30",
+        "venue": "GINASIO SOL - SOL",
+        "home": "ASSOCIAÇÃO DESPORTIVA NANDO GRANA",
+        "away": "GR GREMETAL",
+        "homeGoals": 2,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139926"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-10%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:32.593Z"
+    "checkedAt": "2026-05-24T22:30:35.640Z"
   },
   {
     "id": 899,
@@ -3847,6 +3699,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 3,
         "positionLabel": "3º",
+        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "points": 16,
+        "played": 7,
+        "wins": 5,
+        "draws": 1,
+        "losses": 1,
+        "goalsFor": 35,
+        "goalsAgainst": 19,
+        "goalDifference": 15,
+        "average": 1.84,
+        "goalsForAverage": 5,
+        "goalsAgainstAverage": 2.71,
+        "technicalIndex": 2.29
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 4,
+        "positionLabel": "4º",
         "team": "SÃO PAULO FC - B",
         "points": 16,
         "played": 8,
@@ -3863,26 +3733,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 4,
-        "positionLabel": "4º",
+        "position": 5,
+        "positionLabel": "5º",
         "team": "C.A. TABUCA JRS",
         "points": 15,
-        "played": 7,
+        "played": 8,
         "wins": 5,
         "draws": 0,
-        "losses": 2,
-        "goalsFor": 34,
-        "goalsAgainst": 18,
+        "losses": 3,
+        "goalsFor": 36,
+        "goalsAgainst": 21,
         "goalDifference": 16,
-        "average": 1.89,
-        "goalsForAverage": 4.86,
-        "goalsAgainstAverage": 2.57,
-        "technicalIndex": 2.14
+        "average": 1.71,
+        "goalsForAverage": 4.5,
+        "goalsAgainstAverage": 2.63,
+        "technicalIndex": 1.88
       },
       {
         "group": "CHAVE UNICA",
-        "position": 5,
-        "positionLabel": "5º",
+        "position": 6,
+        "positionLabel": "6º",
         "team": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
         "points": 15,
         "played": 8,
@@ -3899,8 +3769,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 6,
-        "positionLabel": "6º",
+        "position": 7,
+        "positionLabel": "7º",
         "team": "PULO FUTSAL CAMPINAS",
         "points": 14,
         "played": 8,
@@ -3917,8 +3787,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 7,
-        "positionLabel": "7º",
+        "position": 8,
+        "positionLabel": "8º",
         "team": "ITAQUÁ FUTSAL",
         "points": 14,
         "played": 7,
@@ -3935,8 +3805,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
+        "position": 9,
+        "positionLabel": "9º",
         "team": "STADIUM FUTSAL",
         "points": 14,
         "played": 7,
@@ -3950,24 +3820,6 @@ export const fpfsCategories = [
         "goalsForAverage": 3.57,
         "goalsAgainstAverage": 2.57,
         "technicalIndex": 2
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
-        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "points": 13,
-        "played": 6,
-        "wins": 4,
-        "draws": 1,
-        "losses": 1,
-        "goalsFor": 33,
-        "goalsAgainst": 18,
-        "goalDifference": 15,
-        "average": 1.83,
-        "goalsForAverage": 5.5,
-        "goalsAgainstAverage": 3,
-        "technicalIndex": 2.17
       },
       {
         "group": "CHAVE UNICA",
@@ -3992,18 +3844,18 @@ export const fpfsCategories = [
         "position": 11,
         "positionLabel": "11º",
         "team": "PROSPERE / HORTOLANDIA",
-        "points": 9,
-        "played": 6,
-        "wins": 3,
+        "points": 12,
+        "played": 7,
+        "wins": 4,
         "draws": 0,
         "losses": 3,
-        "goalsFor": 17,
-        "goalsAgainst": 18,
+        "goalsFor": 20,
+        "goalsAgainst": 20,
         "goalDifference": -1,
-        "average": 0.94,
-        "goalsForAverage": 2.83,
-        "goalsAgainstAverage": 3,
-        "technicalIndex": 1.5
+        "average": 1,
+        "goalsForAverage": 2.86,
+        "goalsAgainstAverage": 2.86,
+        "technicalIndex": 1.71
       },
       {
         "group": "CHAVE UNICA",
@@ -4011,17 +3863,17 @@ export const fpfsCategories = [
         "positionLabel": "12º",
         "team": "TAUBATÉ UMBRO FUTSAL",
         "points": 9,
-        "played": 7,
+        "played": 8,
         "wins": 3,
         "draws": 0,
-        "losses": 4,
-        "goalsFor": 13,
-        "goalsAgainst": 16,
+        "losses": 5,
+        "goalsFor": 14,
+        "goalsAgainst": 18,
         "goalDifference": -3,
-        "average": 0.81,
-        "goalsForAverage": 1.86,
-        "goalsAgainstAverage": 2.29,
-        "technicalIndex": 1.29
+        "average": 0.78,
+        "goalsForAverage": 1.75,
+        "goalsAgainstAverage": 2.25,
+        "technicalIndex": 1.13
       },
       {
         "group": "CHAVE UNICA",
@@ -4214,8 +4066,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 3,
-          "positionLabel": "3º",
+          "position": 4,
+          "positionLabel": "4º",
           "team": "SÃO PAULO FC - B",
           "points": 16,
           "played": 8,
@@ -4286,8 +4138,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 6,
-          "positionLabel": "6º",
+          "position": 7,
+          "positionLabel": "7º",
           "team": "PULO FUTSAL CAMPINAS",
           "points": 14,
           "played": 8,
@@ -4451,26 +4303,6 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-04-18",
-        "time": "12h15",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 6,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139171"
-      },
-      {
-        "date": "2026-04-18",
-        "time": "12h15",
-        "venue": "GINÁSIO MARCILIO GUERRA",
-        "home": "IMPACTO F.C.",
-        "away": "STADIUM FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139069"
-      },
-      {
-        "date": "2026-04-18",
         "time": "12h45",
         "venue": "GINÁSIO DA TOPOLANDIA - AMARO BUARQUE SAMPAIO",
         "home": "LIGA SEBASTIANENSE DE FUTSAL | LISFUTS/SÃO SEBASTIÃO",
@@ -4592,22 +4424,22 @@ export const fpfsCategories = [
       {
         "date": "2026-04-26",
         "time": "18h15",
-        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
-        "home": "SÃO PAULO FC - B",
-        "away": "A.D.C. INTER MOGI",
-        "homeGoals": 3,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139070"
-      },
-      {
-        "date": "2026-04-26",
-        "time": "18h15",
         "venue": "GINASIO MUNICIPAL DE ESPORTES VICTOR SAVALA",
         "home": "PROSPERE / HORTOLANDIA",
         "away": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
         "homeGoals": 1,
         "awayGoals": 7,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139066"
+      },
+      {
+        "date": "2026-04-26",
+        "time": "18h15",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "A.D.C. INTER MOGI",
+        "homeGoals": 3,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139070"
       },
       {
         "date": "2026-05-02",
@@ -4662,6 +4494,26 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "18h15",
+        "venue": "GINASIO POLIESPORTIVO JOSE CARLOS MILER DA SILVEIRA (TUTA)",
+        "home": "A.D.C. INTER MOGI",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "homeGoals": 2,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139155"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "18h15",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139087"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "18h15",
         "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
         "home": "SELECIONADOS FUTSAL",
         "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
@@ -4680,24 +4532,24 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139018"
       },
       {
-        "date": "2026-05-02",
-        "time": "18h15",
-        "venue": "GINASIO POLIESPORTIVO JOSE CARLOS MILER DA SILVEIRA (TUTA)",
-        "home": "A.D.C. INTER MOGI",
-        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139155"
+        "date": "2026-05-09",
+        "time": "12h15",
+        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
+        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "homeGoals": 1,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139021"
       },
       {
-        "date": "2026-05-02",
-        "time": "18h15",
-        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
-        "home": "LAUSANNE PAULISTA FC - B",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 3,
+        "date": "2026-05-09",
+        "time": "12h15",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 2,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139087"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139038"
       },
       {
         "date": "2026-05-09",
@@ -4731,23 +4583,13 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-09",
-        "time": "12h15",
-        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
-        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "homeGoals": 1,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139021"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "12h15",
-        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
-        "home": "TAUBATÉ UMBRO FUTSAL",
-        "away": "A.D. SUZANO",
-        "homeGoals": 2,
+        "time": "18h15",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "LAUSANNE PAULISTA FC - B",
+        "homeGoals": 6,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139038"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139034"
       },
       {
         "date": "2026-05-09",
@@ -4770,14 +4612,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139062"
       },
       {
-        "date": "2026-05-09",
-        "time": "18h15",
-        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
-        "home": "C.A. TABUCA JRS",
-        "away": "LAUSANNE PAULISTA FC - B",
-        "homeGoals": 6,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139034"
+        "date": "2026-05-23",
+        "time": "12h15",
+        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
+        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "away": "PULO FUTSAL CAMPINAS",
+        "homeGoals": 4,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139023"
       },
       {
         "date": "2026-05-23",
@@ -4788,16 +4630,6 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 4,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139117"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "12h15",
-        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
-        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "away": "PULO FUTSAL CAMPINAS",
-        "homeGoals": 4,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139023"
       },
       {
         "date": "2026-05-23",
@@ -4822,6 +4654,16 @@ export const fpfsCategories = [
       {
         "date": "2026-05-23",
         "time": "18h15",
+        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
+        "home": "SELECIONADOS FUTSAL",
+        "away": "ITAQUÁ FUTSAL",
+        "homeGoals": 0,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139037"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "18h15",
         "venue": "GINÁSIO CYRO GILBERTO SAVOY",
         "home": "LAUSANNE PAULISTA FC - B",
         "away": "STADIUM FUTSAL",
@@ -4830,19 +4672,29 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139055"
       },
       {
-        "date": "2026-05-23",
+        "date": "2026-05-24",
         "time": "18h15",
-        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
-        "home": "SELECIONADOS FUTSAL",
-        "away": "ITAQUÁ FUTSAL",
-        "homeGoals": 0,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139037"
+        "venue": "GINÁSIO PRESIDENTE CIRO I",
+        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "away": "TAUBATÉ UMBRO FUTSAL",
+        "homeGoals": 2,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139123"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "18h15",
+        "venue": "GINÁSIO MUNICIPAL VICTOR SAVALA - HORTOLANDIA",
+        "home": "PROSPERE / HORTOLANDIA",
+        "away": "C.A. TABUCA JRS",
+        "homeGoals": 3,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139129"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-12%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:32.973Z"
+    "checkedAt": "2026-05-24T22:30:36.163Z"
   },
   {
     "id": 897,
@@ -4920,6 +4772,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 4,
         "positionLabel": "4º",
+        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "points": 15,
+        "played": 7,
+        "wins": 5,
+        "draws": 0,
+        "losses": 2,
+        "goalsFor": 17,
+        "goalsAgainst": 15,
+        "goalDifference": 2,
+        "average": 1.13,
+        "goalsForAverage": 2.43,
+        "goalsAgainstAverage": 2.14,
+        "technicalIndex": 2.14
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 5,
+        "positionLabel": "5º",
         "team": "PULO FUTSAL CAMPINAS",
         "points": 15,
         "played": 8,
@@ -4936,8 +4806,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 5,
-        "positionLabel": "5º",
+        "position": 6,
+        "positionLabel": "6º",
         "team": "SELECIONADOS FUTSAL",
         "points": 15,
         "played": 8,
@@ -4954,26 +4824,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 6,
-        "positionLabel": "6º",
+        "position": 7,
+        "positionLabel": "7º",
         "team": "TAUBATÉ UMBRO FUTSAL",
         "points": 14,
-        "played": 7,
+        "played": 8,
         "wins": 4,
         "draws": 2,
-        "losses": 1,
-        "goalsFor": 24,
-        "goalsAgainst": 9,
+        "losses": 2,
+        "goalsFor": 27,
+        "goalsAgainst": 12,
         "goalDifference": 15,
-        "average": 2.67,
-        "goalsForAverage": 3.43,
-        "goalsAgainstAverage": 1.29,
-        "technicalIndex": 2
+        "average": 2.25,
+        "goalsForAverage": 3.38,
+        "goalsAgainstAverage": 1.5,
+        "technicalIndex": 1.75
       },
       {
         "group": "CHAVE UNICA",
-        "position": 7,
-        "positionLabel": "7º",
+        "position": 8,
+        "positionLabel": "8º",
         "team": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
         "points": 13,
         "played": 8,
@@ -4990,26 +4860,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
-        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "position": 9,
+        "positionLabel": "9º",
+        "team": "C.A. TABUCA JRS",
         "points": 12,
-        "played": 6,
+        "played": 8,
         "wins": 4,
         "draws": 0,
-        "losses": 2,
-        "goalsFor": 14,
-        "goalsAgainst": 12,
-        "goalDifference": 2,
-        "average": 1.17,
-        "goalsForAverage": 2.33,
-        "goalsAgainstAverage": 2,
-        "technicalIndex": 2
+        "losses": 4,
+        "goalsFor": 16,
+        "goalsAgainst": 18,
+        "goalDifference": -3,
+        "average": 0.89,
+        "goalsForAverage": 2,
+        "goalsAgainstAverage": 2.25,
+        "technicalIndex": 1.5
       },
       {
         "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
+        "position": 10,
+        "positionLabel": "10º",
         "team": "LIGA SEBASTIANENSE DE FUTSAL | LISFUTS/SÃO SEBASTIÃO",
         "points": 12,
         "played": 8,
@@ -5026,26 +4896,26 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 10,
-        "positionLabel": "10º",
+        "position": 11,
+        "positionLabel": "11º",
         "team": "PROSPERE / HORTOLANDIA",
         "points": 10,
-        "played": 6,
+        "played": 7,
         "wins": 3,
         "draws": 1,
-        "losses": 2,
-        "goalsFor": 16,
-        "goalsAgainst": 9,
+        "losses": 3,
+        "goalsFor": 18,
+        "goalsAgainst": 12,
         "goalDifference": 7,
-        "average": 1.78,
-        "goalsForAverage": 2.67,
-        "goalsAgainstAverage": 1.5,
-        "technicalIndex": 1.67
+        "average": 1.5,
+        "goalsForAverage": 2.57,
+        "goalsAgainstAverage": 1.71,
+        "technicalIndex": 1.43
       },
       {
         "group": "CHAVE UNICA",
-        "position": 11,
-        "positionLabel": "11º",
+        "position": 12,
+        "positionLabel": "12º",
         "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
         "points": 10,
         "played": 7,
@@ -5062,8 +4932,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 12,
-        "positionLabel": "12º",
+        "position": 13,
+        "positionLabel": "13º",
         "team": "MOGI DAS CRUZES ESPORTE CLUBE - MOGI DAS CRUZES EC",
         "points": 10,
         "played": 8,
@@ -5077,24 +4947,6 @@ export const fpfsCategories = [
         "goalsForAverage": 2.5,
         "goalsAgainstAverage": 3,
         "technicalIndex": 1.25
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 13,
-        "positionLabel": "13º",
-        "team": "C.A. TABUCA JRS",
-        "points": 9,
-        "played": 7,
-        "wins": 3,
-        "draws": 0,
-        "losses": 4,
-        "goalsFor": 13,
-        "goalsAgainst": 16,
-        "goalDifference": -3,
-        "average": 0.81,
-        "goalsForAverage": 1.86,
-        "goalsAgainstAverage": 2.29,
-        "technicalIndex": 1.29
       },
       {
         "group": "CHAVE UNICA",
@@ -5341,8 +5193,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 4,
-          "positionLabel": "4º",
+          "position": 5,
+          "positionLabel": "5º",
           "team": "PULO FUTSAL CAMPINAS",
           "points": 15,
           "played": 8,
@@ -5377,8 +5229,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 11,
-          "positionLabel": "11º",
+          "position": 12,
+          "positionLabel": "12º",
           "team": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
           "points": 10,
           "played": 7,
@@ -5496,26 +5348,6 @@ export const fpfsCategories = [
     "allRecentGames": [
       {
         "date": "2026-04-18",
-        "time": "09h45",
-        "venue": "GINÁSIO CHEIDIT JAFET",
-        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "away": "LAUSANNE PAULISTA FC - B",
-        "homeGoals": 2,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138783"
-      },
-      {
-        "date": "2026-04-18",
-        "time": "09h45",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 1,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138791"
-      },
-      {
-        "date": "2026-04-18",
         "time": "10h15",
         "venue": "GINÁSIO DA TOPOLANDIA - AMARO BUARQUE SAMPAIO",
         "home": "LIGA SEBASTIANENSE DE FUTSAL | LISFUTS/SÃO SEBASTIÃO",
@@ -5523,6 +5355,16 @@ export const fpfsCategories = [
         "homeGoals": 4,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138649"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "15h45",
+        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ITAQUÁ FUTSAL",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138714"
       },
       {
         "date": "2026-04-18",
@@ -5545,16 +5387,6 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138683"
       },
       {
-        "date": "2026-04-18",
-        "time": "15h45",
-        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
-        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "away": "ITAQUÁ FUTSAL",
-        "homeGoals": 2,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138714"
-      },
-      {
         "date": "2026-04-25",
         "time": "09h45",
         "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
@@ -5563,16 +5395,6 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 6,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138660"
-      },
-      {
-        "date": "2026-04-25",
-        "time": "09h45",
-        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
-        "home": "TAUBATÉ UMBRO FUTSAL",
-        "away": "IMPACTO F.C.",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138779"
       },
       {
         "date": "2026-04-25",
@@ -5596,13 +5418,13 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-04-25",
-        "time": "15h45",
-        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
-        "home": "C.A. TABUCA JRS",
-        "away": "A.D. SUZANO",
-        "homeGoals": 3,
+        "time": "09h45",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "IMPACTO F.C.",
+        "homeGoals": 2,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138734"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138779"
       },
       {
         "date": "2026-04-25",
@@ -5613,6 +5435,16 @@ export const fpfsCategories = [
         "homeGoals": 5,
         "awayGoals": 2,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138786"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "15h45",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "A.D. SUZANO",
+        "homeGoals": 3,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138734"
       },
       {
         "date": "2026-04-26",
@@ -5657,12 +5489,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "09h45",
-        "venue": "GINASIO PAULO JOSE DA SILVA - PAULÃO",
-        "home": "IMPACTO F.C.",
-        "away": "AA WIMPRO GUARULHOS",
-        "homeGoals": 3,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138758"
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "STADIUM FUTSAL",
+        "homeGoals": 0,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138753"
       },
       {
         "date": "2026-05-02",
@@ -5677,22 +5509,22 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "09h45",
+        "venue": "GINASIO PAULO JOSE DA SILVA - PAULÃO",
+        "home": "IMPACTO F.C.",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 3,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138758"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "09h45",
         "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
         "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
         "away": "SÃO PAULO FC - B",
         "homeGoals": 2,
         "awayGoals": 6,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138736"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "09h45",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "STADIUM FUTSAL",
-        "homeGoals": 0,
-        "awayGoals": 6,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138753"
       },
       {
         "date": "2026-05-02",
@@ -5717,32 +5549,22 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "15h45",
-        "venue": "GINASIO POLIESPORTIVO JOSE CARLOS MILER DA SILVEIRA (TUTA)",
-        "home": "A.D.C. INTER MOGI",
-        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "homeGoals": 4,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138775"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "15h45",
-        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
-        "home": "SELECIONADOS FUTSAL",
-        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138805"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "15h45",
         "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
         "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
         "away": "ITAQUÁ FUTSAL",
         "homeGoals": 3,
         "awayGoals": 6,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138638"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "15h45",
+        "venue": "GINASIO POLIESPORTIVO JOSE CARLOS MILER DA SILVEIRA (TUTA)",
+        "home": "A.D.C. INTER MOGI",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "homeGoals": 4,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138775"
       },
       {
         "date": "2026-05-02",
@@ -5755,24 +5577,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138707"
       },
       {
-        "date": "2026-05-09",
-        "time": "09h45",
-        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
-        "home": "TAUBATÉ UMBRO FUTSAL",
-        "away": "A.D. SUZANO",
-        "homeGoals": 1,
+        "date": "2026-05-02",
+        "time": "15h45",
+        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
+        "home": "SELECIONADOS FUTSAL",
+        "away": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "homeGoals": 2,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138658"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "09h45",
-        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
-        "home": "SÃO PAULO FC - B",
-        "away": "IMPACTO F.C.",
-        "homeGoals": 7,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138651"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138805"
       },
       {
         "date": "2026-05-09",
@@ -5787,12 +5599,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-09",
         "time": "09h45",
-        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
-        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "homeGoals": 2,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138641"
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "IMPACTO F.C.",
+        "homeGoals": 7,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138651"
       },
       {
         "date": "2026-05-09",
@@ -5806,13 +5618,23 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-09",
-        "time": "15h45",
-        "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "SELECIONADOS FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138723"
+        "time": "09h45",
+        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
+        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "homeGoals": 2,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138641"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "09h45",
+        "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
+        "home": "TAUBATÉ UMBRO FUTSAL",
+        "away": "A.D. SUZANO",
+        "homeGoals": 1,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138658"
       },
       {
         "date": "2026-05-09",
@@ -5835,14 +5657,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138654"
       },
       {
-        "date": "2026-05-23",
-        "time": "09h45",
-        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
-        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "away": "PULO FUTSAL CAMPINAS",
-        "homeGoals": 1,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138643"
+        "date": "2026-05-09",
+        "time": "15h45",
+        "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "SELECIONADOS FUTSAL",
+        "homeGoals": 3,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138723"
       },
       {
         "date": "2026-05-23",
@@ -5853,6 +5675,16 @@ export const fpfsCategories = [
         "homeGoals": 7,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138737"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "09h45",
+        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
+        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "away": "PULO FUTSAL CAMPINAS",
+        "homeGoals": 1,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138643"
       },
       {
         "date": "2026-05-23",
@@ -5893,11 +5725,31 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138657"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h45",
+        "venue": "GINÁSIO PRESIDENTE CIRO I",
+        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "away": "TAUBATÉ UMBRO FUTSAL",
+        "homeGoals": 2,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138743"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "15h45",
+        "venue": "GINÁSIO MUNICIPAL VICTOR SAVALA - HORTOLANDIA",
+        "home": "PROSPERE / HORTOLANDIA",
+        "away": "C.A. TABUCA JRS",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138749"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-14%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:33.366Z"
+    "checkedAt": "2026-05-24T22:30:36.855Z"
   },
   {
     "id": 898,
@@ -5923,35 +5775,35 @@ export const fpfsCategories = [
         "positionLabel": "1º",
         "team": "C.A. TABUCA JRS",
         "points": 21,
-        "played": 7,
+        "played": 8,
         "wins": 7,
         "draws": 0,
-        "losses": 0,
-        "goalsFor": 36,
-        "goalsAgainst": 10,
+        "losses": 1,
+        "goalsFor": 40,
+        "goalsAgainst": 11,
         "goalDifference": 26,
-        "average": 3.6,
-        "goalsForAverage": 5.14,
-        "goalsAgainstAverage": 1.43,
-        "technicalIndex": 3
+        "average": 3.64,
+        "goalsForAverage": 5,
+        "goalsAgainstAverage": 1.38,
+        "technicalIndex": 2.63
       },
       {
         "group": "CHAVE UNICA",
         "position": 2,
         "positionLabel": "2º",
-        "team": "TAUBATÉ UMBRO FUTSAL",
-        "points": 17,
+        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "points": 18,
         "played": 7,
-        "wins": 5,
-        "draws": 2,
-        "losses": 0,
-        "goalsFor": 19,
-        "goalsAgainst": 6,
-        "goalDifference": 13,
-        "average": 3.17,
-        "goalsForAverage": 2.71,
-        "goalsAgainstAverage": 0.86,
-        "technicalIndex": 2.43
+        "wins": 6,
+        "draws": 0,
+        "losses": 1,
+        "goalsFor": 26,
+        "goalsAgainst": 23,
+        "goalDifference": 0,
+        "average": 1.13,
+        "goalsForAverage": 3.71,
+        "goalsAgainstAverage": 3.29,
+        "technicalIndex": 2.57
       },
       {
         "group": "CHAVE UNICA",
@@ -6029,6 +5881,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 7,
         "positionLabel": "7º",
+        "team": "TAUBATÉ UMBRO FUTSAL",
+        "points": 14,
+        "played": 8,
+        "wins": 4,
+        "draws": 2,
+        "losses": 2,
+        "goalsFor": 22,
+        "goalsAgainst": 12,
+        "goalDifference": 13,
+        "average": 1.83,
+        "goalsForAverage": 2.75,
+        "goalsAgainstAverage": 1.5,
+        "technicalIndex": 1.75
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 8,
+        "positionLabel": "8º",
         "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
         "points": 13,
         "played": 8,
@@ -6045,8 +5915,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 8,
-        "positionLabel": "8º",
+        "position": 9,
+        "positionLabel": "9º",
         "team": "STADIUM FUTSAL",
         "points": 12,
         "played": 7,
@@ -6060,24 +5930,6 @@ export const fpfsCategories = [
         "goalsForAverage": 4.29,
         "goalsAgainstAverage": 3.29,
         "technicalIndex": 1.71
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 9,
-        "positionLabel": "9º",
-        "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "points": 12,
-        "played": 6,
-        "wins": 4,
-        "draws": 0,
-        "losses": 2,
-        "goalsFor": 20,
-        "goalsAgainst": 20,
-        "goalDifference": 0,
-        "average": 1,
-        "goalsForAverage": 3.33,
-        "goalsAgainstAverage": 3.33,
-        "technicalIndex": 2
       },
       {
         "group": "CHAVE UNICA",
@@ -6228,18 +6080,18 @@ export const fpfsCategories = [
         "position": 18,
         "positionLabel": "18º",
         "team": "PROSPERE / HORTOLANDIA",
-        "points": 3,
-        "played": 6,
-        "wins": 1,
+        "points": 6,
+        "played": 7,
+        "wins": 2,
         "draws": 0,
         "losses": 5,
-        "goalsFor": 14,
-        "goalsAgainst": 23,
+        "goalsFor": 15,
+        "goalsAgainst": 27,
         "goalDifference": -9,
-        "average": 0.61,
-        "goalsForAverage": 2.33,
-        "goalsAgainstAverage": 3.83,
-        "technicalIndex": 0.5
+        "average": 0.56,
+        "goalsForAverage": 2.14,
+        "goalsAgainstAverage": 3.86,
+        "technicalIndex": 0.86
       },
       {
         "group": "CHAVE UNICA",
@@ -6468,8 +6320,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 7,
-          "positionLabel": "7º",
+          "position": 8,
+          "positionLabel": "8º",
           "team": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
           "points": 13,
           "played": 8,
@@ -6551,26 +6403,6 @@ export const fpfsCategories = [
     "allRecentGames": [
       {
         "date": "2026-04-18",
-        "time": "11h00",
-        "venue": "GINÁSIO CHEIDIT JAFET",
-        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "away": "LAUSANNE PAULISTA FC - B",
-        "homeGoals": 5,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138973"
-      },
-      {
-        "date": "2026-04-18",
-        "time": "11h00",
-        "venue": "GINÁSIO MARCILIO GUERRA",
-        "home": "IMPACTO F.C.",
-        "away": "STADIUM FUTSAL",
-        "homeGoals": 1,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138879"
-      },
-      {
-        "date": "2026-04-18",
         "time": "11h30",
         "venue": "GINÁSIO DA TOPOLANDIA - AMARO BUARQUE SAMPAIO",
         "home": "LIGA SEBASTIANENSE DE FUTSAL | LISFUTS/SÃO SEBASTIÃO",
@@ -6578,6 +6410,16 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 4,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138839"
+      },
+      {
+        "date": "2026-04-18",
+        "time": "17h00",
+        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "ITAQUÁ FUTSAL",
+        "homeGoals": 1,
+        "awayGoals": 7,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138904"
       },
       {
         "date": "2026-04-18",
@@ -6600,26 +6442,6 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138873"
       },
       {
-        "date": "2026-04-18",
-        "time": "17h00",
-        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
-        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "away": "ITAQUÁ FUTSAL",
-        "homeGoals": 1,
-        "awayGoals": 7,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138904"
-      },
-      {
-        "date": "2026-04-25",
-        "time": "11h00",
-        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
-        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "away": "MOGI DAS CRUZES ESPORTE CLUBE - MOGI DAS CRUZES EC",
-        "homeGoals": 2,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138842"
-      },
-      {
         "date": "2026-04-25",
         "time": "11h00",
         "venue": "GINÁSIO DE ESPORTES VILA APARECIDA",
@@ -6638,6 +6460,16 @@ export const fpfsCategories = [
         "homeGoals": 5,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138850"
+      },
+      {
+        "date": "2026-04-25",
+        "time": "11h00",
+        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
+        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "away": "MOGI DAS CRUZES ESPORTE CLUBE - MOGI DAS CRUZES EC",
+        "homeGoals": 2,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138842"
       },
       {
         "date": "2026-04-25",
@@ -6712,16 +6544,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "11h00",
-        "venue": "GINÁSIO CHEIDIT JAFET",
-        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "away": "C.A. TABUCA JRS",
-        "homeGoals": 3,
-        "awayGoals": 9,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138825"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "11h00",
         "venue": "GINASIO PAULO JOSE DA SILVA - PAULÃO",
         "home": "IMPACTO F.C.",
         "away": "AA WIMPRO GUARULHOS",
@@ -6738,6 +6560,16 @@ export const fpfsCategories = [
         "homeGoals": 0,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138926"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "11h00",
+        "venue": "GINÁSIO CHEIDIT JAFET",
+        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "away": "C.A. TABUCA JRS",
+        "homeGoals": 3,
+        "awayGoals": 9,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138825"
       },
       {
         "date": "2026-05-02",
@@ -6782,12 +6614,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "17h00",
-        "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "ITAQUÁ FUTSAL",
-        "homeGoals": 3,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138828"
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 4,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138897"
       },
       {
         "date": "2026-05-02",
@@ -6802,12 +6634,12 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "17h00",
-        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
-        "home": "LAUSANNE PAULISTA FC - B",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 4,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138897"
+        "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
+        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
+        "away": "ITAQUÁ FUTSAL",
+        "homeGoals": 3,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138828"
       },
       {
         "date": "2026-05-09",
@@ -6818,16 +6650,6 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138978"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "11h00",
-        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
-        "home": "SÃO PAULO FC - B",
-        "away": "IMPACTO F.C.",
-        "homeGoals": 6,
-        "awayGoals": 2,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138841"
       },
       {
         "date": "2026-05-09",
@@ -6861,13 +6683,13 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-09",
-        "time": "17h00",
-        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
-        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
-        "away": "MOGI DAS CRUZES ESPORTE CLUBE - MOGI DAS CRUZES EC",
-        "homeGoals": 7,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138872"
+        "time": "11h00",
+        "venue": "GINÁSIO DR. ANTONIO LEME NUNES GALVÃO",
+        "home": "SÃO PAULO FC - B",
+        "away": "IMPACTO F.C.",
+        "homeGoals": 6,
+        "awayGoals": 2,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138841"
       },
       {
         "date": "2026-05-09",
@@ -6890,14 +6712,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138913"
       },
       {
-        "date": "2026-05-23",
-        "time": "11h00",
-        "venue": "GINASIO PAULO JOSE DA SILVA - PAULÃO",
-        "home": "IMPACTO F.C.",
-        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "homeGoals": 5,
-        "awayGoals": 7,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138927"
+        "date": "2026-05-09",
+        "time": "17h00",
+        "venue": "GINÁSIO NOÊMIA ASSUMPÇÃO",
+        "home": "ASSOCIAÇÃO DESPORTIVA SANTO ANDRE FUTSAL",
+        "away": "MOGI DAS CRUZES ESPORTE CLUBE - MOGI DAS CRUZES EC",
+        "homeGoals": 7,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138872"
       },
       {
         "date": "2026-05-23",
@@ -6908,6 +6730,16 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 5,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138833"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "11h00",
+        "venue": "GINASIO PAULO JOSE DA SILVA - PAULÃO",
+        "home": "IMPACTO F.C.",
+        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "homeGoals": 5,
+        "awayGoals": 7,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138927"
       },
       {
         "date": "2026-05-23",
@@ -6948,11 +6780,31 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 6,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138865"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h00",
+        "venue": "GINÁSIO PRESIDENTE CIRO I",
+        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "away": "TAUBATÉ UMBRO FUTSAL",
+        "homeGoals": 5,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138933"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "17h00",
+        "venue": "GINÁSIO MUNICIPAL VICTOR SAVALA - HORTOLANDIA",
+        "home": "PROSPERE / HORTOLANDIA",
+        "away": "C.A. TABUCA JRS",
+        "homeGoals": 0,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138939"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-16%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:33.821Z"
+    "checkedAt": "2026-05-24T22:30:37.381Z"
   },
   {
     "id": 896,
@@ -7012,6 +6864,24 @@ export const fpfsCategories = [
         "group": "CHAVE UNICA",
         "position": 3,
         "positionLabel": "3º",
+        "team": "C.A. TABUCA JRS",
+        "points": 19,
+        "played": 8,
+        "wins": 6,
+        "draws": 1,
+        "losses": 1,
+        "goalsFor": 42,
+        "goalsAgainst": 17,
+        "goalDifference": 25,
+        "average": 2.47,
+        "goalsForAverage": 5.25,
+        "goalsAgainstAverage": 2.13,
+        "technicalIndex": 2.38
+      },
+      {
+        "group": "CHAVE UNICA",
+        "position": 4,
+        "positionLabel": "4º",
         "team": "SÃO PAULO FC - B",
         "points": 19,
         "played": 8,
@@ -7028,8 +6898,8 @@ export const fpfsCategories = [
       },
       {
         "group": "CHAVE UNICA",
-        "position": 4,
-        "positionLabel": "4º",
+        "position": 5,
+        "positionLabel": "5º",
         "team": "PULO FUTSAL CAMPINAS",
         "points": 18,
         "played": 8,
@@ -7043,24 +6913,6 @@ export const fpfsCategories = [
         "goalsForAverage": 3.88,
         "goalsAgainstAverage": 1.75,
         "technicalIndex": 2.25
-      },
-      {
-        "group": "CHAVE UNICA",
-        "position": 5,
-        "positionLabel": "5º",
-        "team": "C.A. TABUCA JRS",
-        "points": 16,
-        "played": 7,
-        "wins": 5,
-        "draws": 1,
-        "losses": 1,
-        "goalsFor": 36,
-        "goalsAgainst": 16,
-        "goalDifference": 20,
-        "average": 2.25,
-        "goalsForAverage": 5.14,
-        "goalsAgainstAverage": 2.29,
-        "technicalIndex": 2.29
       },
       {
         "group": "CHAVE UNICA",
@@ -7104,53 +6956,53 @@ export const fpfsCategories = [
         "positionLabel": "8º",
         "team": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
         "points": 14,
-        "played": 7,
+        "played": 8,
         "wins": 4,
         "draws": 2,
-        "losses": 1,
-        "goalsFor": 30,
-        "goalsAgainst": 22,
-        "goalDifference": 8,
-        "average": 1.36,
-        "goalsForAverage": 4.29,
-        "goalsAgainstAverage": 3.14,
-        "technicalIndex": 2
+        "losses": 2,
+        "goalsFor": 32,
+        "goalsAgainst": 25,
+        "goalDifference": 7,
+        "average": 1.28,
+        "goalsForAverage": 4,
+        "goalsAgainstAverage": 3.13,
+        "technicalIndex": 1.75
       },
       {
         "group": "CHAVE UNICA",
         "position": 9,
         "positionLabel": "9º",
-        "team": "PROSPERE / HORTOLANDIA",
-        "points": 13,
-        "played": 7,
+        "team": "TAUBATÉ UMBRO FUTSAL",
+        "points": 14,
+        "played": 8,
         "wins": 4,
-        "draws": 1,
+        "draws": 2,
         "losses": 2,
-        "goalsFor": 21,
-        "goalsAgainst": 20,
-        "goalDifference": 1,
-        "average": 1.05,
-        "goalsForAverage": 3,
-        "goalsAgainstAverage": 2.86,
-        "technicalIndex": 1.86
+        "goalsFor": 20,
+        "goalsAgainst": 15,
+        "goalDifference": 5,
+        "average": 1.33,
+        "goalsForAverage": 2.5,
+        "goalsAgainstAverage": 1.88,
+        "technicalIndex": 1.75
       },
       {
         "group": "CHAVE UNICA",
         "position": 10,
         "positionLabel": "10º",
-        "team": "TAUBATÉ UMBRO FUTSAL",
-        "points": 11,
-        "played": 7,
-        "wins": 3,
-        "draws": 2,
-        "losses": 2,
-        "goalsFor": 17,
-        "goalsAgainst": 13,
-        "goalDifference": 4,
-        "average": 1.31,
-        "goalsForAverage": 2.43,
-        "goalsAgainstAverage": 1.86,
-        "technicalIndex": 1.57
+        "team": "PROSPERE / HORTOLANDIA",
+        "points": 13,
+        "played": 8,
+        "wins": 4,
+        "draws": 1,
+        "losses": 3,
+        "goalsFor": 22,
+        "goalsAgainst": 26,
+        "goalDifference": -4,
+        "average": 0.85,
+        "goalsForAverage": 2.75,
+        "goalsAgainstAverage": 3.25,
+        "technicalIndex": 1.63
       },
       {
         "group": "CHAVE UNICA",
@@ -7343,8 +7195,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 3,
-          "positionLabel": "3º",
+          "position": 4,
+          "positionLabel": "4º",
           "team": "SÃO PAULO FC - B",
           "points": 19,
           "played": 8,
@@ -7415,8 +7267,8 @@ export const fpfsCategories = [
         "summaryUrl": null,
         "opponentStanding": {
           "group": "CHAVE UNICA",
-          "position": 4,
-          "positionLabel": "4º",
+          "position": 5,
+          "positionLabel": "5º",
           "team": "PULO FUTSAL CAMPINAS",
           "points": 18,
           "played": 8,
@@ -7569,36 +7421,6 @@ export const fpfsCategories = [
     ],
     "allRecentGames": [
       {
-        "date": "2026-04-18",
-        "time": "14h30",
-        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
-        "home": "SELECIONADOS FUTSAL",
-        "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "homeGoals": 3,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138509"
-      },
-      {
-        "date": "2026-04-18",
-        "time": "14h30",
-        "venue": "GINASIO POLIESPORTIVO ORLANDO PEIXINHO (CRUZEIRINHO)",
-        "home": "ASSOCIAÇÃO ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM",
-        "away": "PULO FUTSAL CAMPINAS",
-        "homeGoals": 0,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138493"
-      },
-      {
-        "date": "2026-04-25",
-        "time": "08h30",
-        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
-        "home": "PULO FUTSAL CAMPINAS",
-        "away": "SELECIONADOS FUTSAL",
-        "homeGoals": 2,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138514"
-      },
-      {
         "date": "2026-04-25",
         "time": "08h30",
         "venue": "GINÁSIO DO SINDICATO DOS METALÚRGICOS DE GUARULHOS",
@@ -7630,6 +7452,16 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-04-25",
+        "time": "08h30",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "SELECIONADOS FUTSAL",
+        "homeGoals": 2,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138514"
+      },
+      {
+        "date": "2026-04-25",
         "time": "14h30",
         "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
         "home": "C.A. TABUCA JRS",
@@ -7651,16 +7483,6 @@ export const fpfsCategories = [
       {
         "date": "2026-04-26",
         "time": "08h30",
-        "venue": "GINÁSIO DE ESPORTES SUMIYOSHI NAKAHARADA",
-        "home": "ITAQUÁ FUTSAL",
-        "away": "LAUSANNE PAULISTA FC - B",
-        "homeGoals": 3,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138498"
-      },
-      {
-        "date": "2026-04-26",
-        "time": "08h30",
         "venue": "GINÁSIO POLIESPORTIVO DOMINGOS PITERI",
         "home": "STADIUM FUTSAL",
         "away": "LIGA SEBASTIANENSE DE FUTSAL | LISFUTS/SÃO SEBASTIÃO",
@@ -7670,13 +7492,13 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-04-26",
-        "time": "14h30",
-        "venue": "GINASIO MUNICIPAL DE ESPORTES VICTOR SAVALA",
-        "home": "PROSPERE / HORTOLANDIA",
-        "away": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
-        "homeGoals": 1,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138496"
+        "time": "08h30",
+        "venue": "GINÁSIO DE ESPORTES SUMIYOSHI NAKAHARADA",
+        "home": "ITAQUÁ FUTSAL",
+        "away": "LAUSANNE PAULISTA FC - B",
+        "homeGoals": 3,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138498"
       },
       {
         "date": "2026-04-26",
@@ -7687,6 +7509,16 @@ export const fpfsCategories = [
         "homeGoals": 1,
         "awayGoals": 1,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138500"
+      },
+      {
+        "date": "2026-04-26",
+        "time": "14h30",
+        "venue": "GINASIO MUNICIPAL DE ESPORTES VICTOR SAVALA",
+        "home": "PROSPERE / HORTOLANDIA",
+        "away": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "homeGoals": 1,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138496"
       },
       {
         "date": "2026-05-02",
@@ -7701,22 +7533,22 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "08h30",
-        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
-        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "away": "SÃO PAULO FC - B",
-        "homeGoals": 2,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138546"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "08h30",
         "venue": "GINÁSIO CHEIDIT JAFET",
         "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
         "away": "C.A. TABUCA JRS",
         "homeGoals": 5,
         "awayGoals": 5,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138445"
+      },
+      {
+        "date": "2026-05-02",
+        "time": "08h30",
+        "venue": "GINASIO DE ESPORTES FLORENCIO PEREIRA - SARKIZAO",
+        "home": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "away": "SÃO PAULO FC - B",
+        "homeGoals": 2,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138546"
       },
       {
         "date": "2026-05-02",
@@ -7751,16 +7583,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-02",
         "time": "14h30",
-        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
-        "home": "LAUSANNE PAULISTA FC - B",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 4,
-        "awayGoals": 5,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138517"
-      },
-      {
-        "date": "2026-05-02",
-        "time": "14h30",
         "venue": "GINASIO POLIESPORTIVO JOSE CARLOS MILER DA SILVEIRA (TUTA)",
         "home": "A.D.C. INTER MOGI",
         "away": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
@@ -7789,24 +7611,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138448"
       },
       {
-        "date": "2026-05-09",
-        "time": "08h30",
-        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
-        "home": "PULO FUTSAL CAMPINAS",
-        "away": "A.D.C. INTER MOGI",
-        "homeGoals": 6,
-        "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138598"
-      },
-      {
-        "date": "2026-05-09",
-        "time": "08h30",
-        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
-        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
-        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
-        "homeGoals": 1,
-        "awayGoals": 4,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138451"
+        "date": "2026-05-02",
+        "time": "14h30",
+        "venue": "GINÁSIO CYRO GILBERTO SAVOY",
+        "home": "LAUSANNE PAULISTA FC - B",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 4,
+        "awayGoals": 5,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138517"
       },
       {
         "date": "2026-05-09",
@@ -7840,13 +7652,23 @@ export const fpfsCategories = [
       },
       {
         "date": "2026-05-09",
-        "time": "14h30",
-        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
-        "home": "C.A. TABUCA JRS",
-        "away": "LAUSANNE PAULISTA FC - B",
-        "homeGoals": 5,
+        "time": "08h30",
+        "venue": "GINÁSIO SIDNEY BAUEMAN ESTEVAM - EMBU GUAÇU",
+        "home": "ASSOCIAÇÃO PEQUENO MESTRE | A. PEQUENO MESTRE",
+        "away": "ASSOCIAÇÃO DESPORTIVA PRUDENTE | A.D. PRUDENTE",
+        "homeGoals": 1,
+        "awayGoals": 4,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138451"
+      },
+      {
+        "date": "2026-05-09",
+        "time": "08h30",
+        "venue": "GINÁSIO MUNICIPAL ROGÊ FERREIRA",
+        "home": "PULO FUTSAL CAMPINAS",
+        "away": "A.D.C. INTER MOGI",
+        "homeGoals": 6,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138464"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138598"
       },
       {
         "date": "2026-05-09",
@@ -7869,14 +7691,14 @@ export const fpfsCategories = [
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138492"
       },
       {
-        "date": "2026-05-10",
-        "time": "08h30",
-        "venue": "GINÁSIO DE ESPORTES SUMIYOSHI NAKAHARADA",
-        "home": "ITAQUÁ FUTSAL",
-        "away": "PROSPERE / HORTOLANDIA",
-        "homeGoals": 1,
+        "date": "2026-05-09",
+        "time": "14h30",
+        "venue": "GINÁSIO CIE - PIETRA MEDEIROS",
+        "home": "C.A. TABUCA JRS",
+        "away": "LAUSANNE PAULISTA FC - B",
+        "homeGoals": 5,
         "awayGoals": 1,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138583"
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138464"
       },
       {
         "date": "2026-05-10",
@@ -7889,14 +7711,14 @@ export const fpfsCategories = [
         "summaryUrl": null
       },
       {
-        "date": "2026-05-23",
+        "date": "2026-05-10",
         "time": "08h30",
-        "venue": "GINÁSIO DO SESC - SUZANO",
-        "home": "A.D. SUZANO",
-        "away": "AA WIMPRO GUARULHOS",
-        "homeGoals": 0,
-        "awayGoals": 0,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138449"
+        "venue": "GINÁSIO DE ESPORTES SUMIYOSHI NAKAHARADA",
+        "home": "ITAQUÁ FUTSAL",
+        "away": "PROSPERE / HORTOLANDIA",
+        "homeGoals": 1,
+        "awayGoals": 1,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138583"
       },
       {
         "date": "2026-05-23",
@@ -7917,6 +7739,16 @@ export const fpfsCategories = [
         "homeGoals": 4,
         "awayGoals": 7,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138547"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "08h30",
+        "venue": "GINÁSIO DO SESC - SUZANO",
+        "home": "A.D. SUZANO",
+        "away": "AA WIMPRO GUARULHOS",
+        "homeGoals": 0,
+        "awayGoals": 0,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138449"
       },
       {
         "date": "2026-05-23",
@@ -7941,16 +7773,6 @@ export const fpfsCategories = [
       {
         "date": "2026-05-23",
         "time": "14h30",
-        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
-        "home": "SELECIONADOS FUTSAL",
-        "away": "ITAQUÁ FUTSAL",
-        "homeGoals": 1,
-        "awayGoals": 3,
-        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138467"
-      },
-      {
-        "date": "2026-05-23",
-        "time": "14h30",
         "venue": "GINÁSIO CYRO GILBERTO SAVOY",
         "home": "LAUSANNE PAULISTA FC - B",
         "away": "STADIUM FUTSAL",
@@ -7967,10 +7789,40 @@ export const fpfsCategories = [
         "homeGoals": 2,
         "awayGoals": 3,
         "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138503"
+      },
+      {
+        "date": "2026-05-23",
+        "time": "14h30",
+        "venue": "GINASIO CONDE II / ARENA SELECIONADOS",
+        "home": "SELECIONADOS FUTSAL",
+        "away": "ITAQUÁ FUTSAL",
+        "homeGoals": 1,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138467"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINÁSIO MUNICIPAL VICTOR SAVALA - HORTOLANDIA",
+        "home": "PROSPERE / HORTOLANDIA",
+        "away": "C.A. TABUCA JRS",
+        "homeGoals": 1,
+        "awayGoals": 6,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138559"
+      },
+      {
+        "date": "2026-05-24",
+        "time": "14h30",
+        "venue": "GINÁSIO PRESIDENTE CIRO I",
+        "home": "CLUBE ATLÉTICO YPIRANGA | C.A. YPIRANGA",
+        "away": "TAUBATÉ UMBRO FUTSAL",
+        "homeGoals": 2,
+        "awayGoals": 3,
+        "summaryUrl": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=138553"
       }
     ],
     "youtubeSearchUrl": "https://www.youtube.com/results?search_query=AD%20Suzano%20Sub-18%20futsal%202026",
     "source": "FPFS Súmula Online",
-    "checkedAt": "2026-05-24T10:56:34.171Z"
+    "checkedAt": "2026-05-24T22:30:37.840Z"
   }
 ];
