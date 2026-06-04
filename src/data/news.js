@@ -3,13 +3,13 @@ export const newsWeek = '2026-06-01';
 export const newsItems = [
   {
     "id": "auto-2026-06-04-1",
-    "title": "AD Suzano Sub-7 vence Adc Marvel por 2 x 1 e atualiza campanha no Paulista A2",
+    "title": "AD Suzano Sub-7 vence Associação PAULISTA FUTEBOL Clube MOOCA por 7 x 5 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
     "source": "FPFS Súmula Online",
-    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139351",
-    "summary": "O Sub-7 teve vitória por 2 x 1 contra Adc Marvel, em partida registrada pela Súmula Online da FPFS no dia 30/05/2026.",
-    "impact": "Com o resultado, o AD Suzano aparece com 25 pontos em 11 jogos, 42 gols marcados e saldo +19.",
+    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139205",
+    "summary": "O Sub-7 teve vitória por 7 x 5 contra Associação PAULISTA FUTEBOL Clube MOOCA, em partida registrada pela Súmula Online da FPFS no dia 04/06/2026.",
+    "impact": "Com o resultado, o AD Suzano aparece com 28 pontos em 12 jogos, 49 gols marcados e saldo +21.",
     "date": "2026-06-04"
   },
   {
