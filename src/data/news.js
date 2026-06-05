@@ -2,7 +2,7 @@ export const newsWeek = '2026-06-01';
 
 export const newsItems = [
   {
-    "id": "auto-2026-06-04-1",
+    "id": "auto-2026-06-05-1",
     "title": "AD Suzano Sub-7 vence Associação PAULISTA FUTEBOL Clube MOOCA por 7 x 5 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,10 +10,10 @@ export const newsItems = [
     "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139205",
     "summary": "O Sub-7 teve vitória por 7 x 5 contra Associação PAULISTA FUTEBOL Clube MOOCA, em partida registrada pela Súmula Online da FPFS no dia 04/06/2026.",
     "impact": "Com o resultado, o AD Suzano aparece com 28 pontos em 12 jogos, 49 gols marcados e saldo +21.",
-    "date": "2026-06-04"
+    "date": "2026-06-05"
   },
   {
-    "id": "auto-2026-06-04-2",
+    "id": "auto-2026-06-05-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano - Prefeitura de Itaquaquecetuba",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -23,7 +23,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-06-04-3",
+    "id": "auto-2026-06-05-3",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
