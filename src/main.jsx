@@ -21,6 +21,7 @@ import {
 import { motion } from 'motion/react';
 import packageInfo from '../package.json';
 import suzanoLogo from './assets/ad-suzano-logo.png';
+import { ClubSiteExperience } from './clubSite';
 import { categories } from './data/categories';
 import { federationScheduleSource, initiationA2BaseSchedule } from './data/federationSchedule';
 import { fpfsCategories } from './data/fpfsCategories';
@@ -49,6 +50,18 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 
 const appVersion = packageInfo.version;
 const supporterPlaylistUrl = 'https://youtube.com/playlist?list=PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM&si=nvwTyHLvLWB9V88c';
+
+function parseAppHash(hash = '') {
+  const cleanHash = String(hash).replace(/^#\/?/, '').trim();
+  if (cleanHash.startsWith('portal')) {
+    return {
+      mode: 'portal',
+      path: cleanHash.replace(/^portal\/?/, '') || 'home',
+    };
+  }
+
+  return { mode: 'analysis', path: '' };
+}
 
 function normalizeFpfsGame(game) {
   return {
@@ -112,6 +125,7 @@ function nextThreeCategoryGames(category, fpfsData, today = new Date()) {
 }
 
 function App() {
+  const [appRoute, setAppRoute] = useState(() => parseAppHash(window.location.hash));
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
@@ -143,6 +157,16 @@ function App() {
       active = false;
     };
   }, []);
+
+  React.useEffect(() => {
+    const syncRoute = () => setAppRoute(parseAppHash(window.location.hash));
+    window.addEventListener('hashchange', syncRoute);
+    return () => window.removeEventListener('hashchange', syncRoute);
+  }, []);
+
+  if (appRoute.mode === 'portal') {
+    return <ClubSiteExperience path={appRoute.path} />;
+  }
 
   return (
     <main className="app-shell">
@@ -617,7 +641,7 @@ function categorySportsNews(category, latest, next, record) {
           : `${category.label} bate ${opponent} por ${score} e soma pontos importantes`
         : goalsFor === goalsAgainst
           ? `${category.label} fica no ${score} com ${opponent} e segue vivo na briga`
-          : `${category.label} perde por ${score} para ${opponent}, mas mant�m campanha em pauta`;
+          : `${category.label} perde por ${score} para ${opponent}, mas mant�m campanha em pauta`;
 
     return {
       source: 'Rodada FPFS',
@@ -1493,6 +1517,9 @@ function Hero({ category, record, nextMatch, hasData, weather, weatherError }) {
           relações entre adversários e evolução coletiva da categoria.
         </p>
         <div className="hero-actions">
+          <a className="enter-now-button" href="#/portal/home">
+            Entre agora
+          </a>
           <a className="supporter-chant-button" href={supporterPlaylistUrl} target="_blank" rel="noreferrer">
             <Youtube size={20} />
             Grito da torcida
