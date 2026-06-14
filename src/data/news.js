@@ -3,13 +3,13 @@ export const newsWeek = '2026-06-08';
 export const newsItems = [
   {
     "id": "auto-2026-06-14-1",
-    "title": "AD Suzano Sub-7 empata com Ctc Vila Ema por 2 x 2 e atualiza campanha no Paulista A2",
+    "title": "AD Suzano Sub-7 empata com Associação Desportiva NANDO GRANA por 3 x 3 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
     "source": "FPFS Súmula Online",
-    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139271",
-    "summary": "O Sub-7 teve empate por 2 x 2 contra Ctc Vila Ema, em partida registrada pela Súmula Online da FPFS no dia 06/06/2026.",
-    "impact": "Com o resultado, o AD Suzano aparece com 29 pontos em 13 jogos, 51 gols marcados e saldo +21.",
+    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139317",
+    "summary": "O Sub-7 teve empate por 3 x 3 contra Associação Desportiva NANDO GRANA, em partida registrada pela Súmula Online da FPFS no dia 14/06/2026.",
+    "impact": "Com o resultado, o AD Suzano aparece com 30 pontos em 14 jogos, 54 gols marcados e saldo +21.",
     "date": "2026-06-14"
   },
   {
