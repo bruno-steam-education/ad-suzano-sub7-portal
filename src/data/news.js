@@ -2,7 +2,7 @@ export const newsWeek = '2026-06-15';
 
 export const newsItems = [
   {
-    "id": "auto-2026-06-17-1",
+    "id": "auto-2026-06-18-1",
     "title": "AD Suzano Sub-7 empata com Associação Desportiva NANDO GRANA por 3 x 3 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,20 +10,10 @@ export const newsItems = [
     "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139317",
     "summary": "O Sub-7 teve empate por 3 x 3 contra Associação Desportiva NANDO GRANA, em partida registrada pela Súmula Online da FPFS no dia 14/06/2026.",
     "impact": "Com o resultado, o AD Suzano aparece com 30 pontos em 14 jogos, 54 gols marcados e saldo +21.",
-    "date": "2026-06-17"
+    "date": "2026-06-18"
   },
   {
-    "id": "auto-2026-06-17-2",
-    "title": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano - Prefeitura de Itaquaquecetuba",
-    "category": "AD Suzano",
-    "date": "2026-03-11",
-    "source": "Prefeitura de Itaquaquecetuba",
-    "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQY0FPdUZCS0dVQmQ1dk90UERQYjR6UmhHdVpCV28wUHd5MGJhWmhya0szc09UcnVzWTV2UmVwYVhuTm0wVi1TRzNQZzZuU0JrRDhScVZpZndxbVRWdW9fRnhvODQ3bWg5aWl2OWEyb0NPZlJ0ek9SMXF3UGNTTXhvQlJaZnN0WGExWDJuRGpybzVlaEdTaGVGWDBReENRNFZlSkZFS3pTdjdJckpaMk5fOTZZZk9KS254RGZkWmliQnRGRUtTcXdGUURtMllMOEZUdExQZ1dn?oc=5",
-    "summary": "Itaquá Futsal estreia no Campeonato Paulista de Futsal 2026 com clássico regional contra a AD Suzano Prefeitura de Itaquaquecetuba",
-    "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
-  },
-  {
-    "id": "auto-2026-06-17-3",
+    "id": "auto-2026-06-18-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
