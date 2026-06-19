@@ -2,7 +2,7 @@ export const newsWeek = '2026-06-15';
 
 export const newsItems = [
   {
-    "id": "auto-2026-06-18-1",
+    "id": "auto-2026-06-19-1",
     "title": "AD Suzano Sub-7 empata com Associação Desportiva NANDO GRANA por 3 x 3 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,10 +10,10 @@ export const newsItems = [
     "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139317",
     "summary": "O Sub-7 teve empate por 3 x 3 contra Associação Desportiva NANDO GRANA, em partida registrada pela Súmula Online da FPFS no dia 14/06/2026.",
     "impact": "Com o resultado, o AD Suzano aparece com 30 pontos em 14 jogos, 54 gols marcados e saldo +21.",
-    "date": "2026-06-18"
+    "date": "2026-06-19"
   },
   {
-    "id": "auto-2026-06-18-2",
+    "id": "auto-2026-06-19-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
