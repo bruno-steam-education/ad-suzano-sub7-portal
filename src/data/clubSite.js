@@ -1,7 +1,7 @@
 // Arquivo gerado por scripts/sync-club-site.mjs.
 // Fonte: https://adsuzano.com.br
 export const clubSiteData = {
-  "syncedAt": "2026-06-11T10:51:11.262Z",
+  "syncedAt": "2026-07-10T19:26:07.796Z",
   "source": "https://adsuzano.com.br",
   "topLinks": [
     {
@@ -120,25 +120,25 @@ export const clubSiteData = {
     "intro": "Confira os lances das partidas, entrevistas exclusivas, tudo o que rola nos bastidores e muito mais.",
     "videos": [
       {
-        "title": "Vídeo • há 2 meses Amistoso Sub 09 - AD Suzano x River do Bélem",
+        "title": "Vídeo • há 3 meses Amistoso Sub 09 - AD Suzano x River do Bélem",
         "url": "https://adsuzano.com.br/videos/18"
       },
       {
-        "title": "Vídeo • há 2 meses Amistoso - Sub 10 AD Suzano x River do Bélem",
+        "title": "Vídeo • há 3 meses Amistoso - Sub 10 AD Suzano x River do Bélem",
         "url": "https://adsuzano.com.br/videos/17"
       }
     ],
     "photos": [
       {
-        "title": "Foto • há 2 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
+        "title": "Foto • há 3 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
         "url": "https://adsuzano.com.br/fotos/16"
       },
       {
-        "title": "Foto • há 2 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
+        "title": "Foto • há 3 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
         "url": "https://adsuzano.com.br/fotos/15"
       },
       {
-        "title": "Foto • há 2 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
+        "title": "Foto • há 3 meses AD Suzano x Benfica - Campeonato Paulista Iniciação A2 2026",
         "url": "https://adsuzano.com.br/fotos/14"
       }
     ],
@@ -3034,6 +3034,1038 @@ export const clubSiteData = {
         ]
       },
       {
+        "label": "Sub-08",
+        "url": "https://adsuzano.com.br/atletas/modalidade/2/categoria/2",
+        "players": [
+          {
+            "name": "Mateus Varjão",
+            "url": "https://adsuzano.com.br/atletas/3413",
+            "detail": {
+              "name": "Mateus de Aquino Varjão",
+              "url": "https://adsuzano.com.br/atletas/3413",
+              "image": "https://ui-avatars.com/api/?name=Mateus+de+Aquino+Varj%C3%A3o+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Kauan Silva",
+            "url": "https://adsuzano.com.br/atletas/3411",
+            "detail": {
+              "name": "Kauan Gonçalves Ferreira da Silva",
+              "url": "https://adsuzano.com.br/atletas/3411",
+              "image": "https://ui-avatars.com/api/?name=Kauan+Gon%C3%A7alves+Ferreira+da+Silva+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Lucca Cerqueira",
+            "url": "https://adsuzano.com.br/atletas/3420",
+            "detail": {
+              "name": "Lucca Santos Cerqueira",
+              "url": "https://adsuzano.com.br/atletas/3420",
+              "image": "https://ui-avatars.com/api/?name=Lucca+Santos+Cerqueira+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Joaquim Ramos",
+            "url": "https://adsuzano.com.br/atletas/3412",
+            "detail": {
+              "name": "Joaquim Guimarães Ramos",
+              "url": "https://adsuzano.com.br/atletas/3412",
+              "image": "https://ui-avatars.com/api/?name=Joaquim+Guimar%C3%A3es+Ramos+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Juan Santos",
+            "url": "https://adsuzano.com.br/atletas/3419",
+            "detail": {
+              "name": "Juan Vitor Santos",
+              "url": "https://adsuzano.com.br/atletas/3419",
+              "image": "https://ui-avatars.com/api/?name=Juan+Vitor+Santos+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Bernardo Rodrigues",
+            "url": "https://adsuzano.com.br/atletas/3408",
+            "detail": {
+              "name": "Bernardo dos Santos Rodrigues",
+              "url": "https://adsuzano.com.br/atletas/3408",
+              "image": "https://ui-avatars.com/api/?name=Bernardo+dos+Santos+Rodrigues+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "João Jesus",
+            "url": "https://adsuzano.com.br/atletas/3549",
+            "detail": {
+              "name": "João Miguel Pereira de Jesus",
+              "url": "https://adsuzano.com.br/atletas/3549",
+              "image": "https://ui-avatars.com/api/?name=Jo%C3%A3o+Miguel+Pereira+de+Jesus+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Diego Sebastião",
+            "url": "https://adsuzano.com.br/atletas/3418",
+            "detail": {
+              "name": "Diego Miguel Soares Sebastião",
+              "url": "https://adsuzano.com.br/atletas/3418",
+              "image": "https://ui-avatars.com/api/?name=Diego+Miguel+Soares+Sebasti%C3%A3o+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Heitor Bomfim",
+            "url": "https://adsuzano.com.br/atletas/3417",
+            "detail": {
+              "name": "Heitor Leão Bomfim",
+              "url": "https://adsuzano.com.br/atletas/3417",
+              "image": "https://ui-avatars.com/api/?name=Heitor+Le%C3%A3o+Bomfim+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Chiemena Ezeaba",
+            "url": "https://adsuzano.com.br/atletas/3552",
+            "detail": {
+              "name": "Chiemena Richmond Gustavo Van Der Ezeaba",
+              "url": "https://adsuzano.com.br/atletas/3552",
+              "image": "https://ui-avatars.com/api/?name=Chiemena+Richmond+Gustavo+Van+Der+Ezeaba&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Davi Souza",
+            "url": "https://adsuzano.com.br/atletas/3532",
+            "detail": {
+              "name": "Davi Lima de Souza",
+              "url": "https://adsuzano.com.br/atletas/3532",
+              "image": "https://ui-avatars.com/api/?name=Davi+Lima+de+Souza&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Caio Rodrigues",
+            "url": "https://adsuzano.com.br/atletas/3409",
+            "detail": {
+              "name": "Caio Sales Rodrigues",
+              "url": "https://adsuzano.com.br/atletas/3409",
+              "image": "https://ui-avatars.com/api/?name=Caio+Sales+Rodrigues+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Bryan Araujo",
+            "url": "https://adsuzano.com.br/atletas/3415",
+            "detail": {
+              "name": "Bryan Lucas de Sousa Araujo",
+              "url": "https://adsuzano.com.br/atletas/3415",
+              "image": "https://ui-avatars.com/api/?name=Bryan+Lucas+de+Sousa+Araujo+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Breno Santos",
+            "url": "https://adsuzano.com.br/atletas/3416",
+            "detail": {
+              "name": "Breno Marques dos Santos",
+              "url": "https://adsuzano.com.br/atletas/3416",
+              "image": "https://ui-avatars.com/api/?name=Breno+Marques+dos+Santos+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Salomão Martins",
+            "url": "https://adsuzano.com.br/atletas/3533",
+            "detail": {
+              "name": "Salomão Barbosa Martins",
+              "url": "https://adsuzano.com.br/atletas/3533",
+              "image": "https://ui-avatars.com/api/?name=Salom%C3%A3o+Barbosa+Martins&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Henry Santos",
+            "url": "https://adsuzano.com.br/atletas/3421",
+            "detail": {
+              "name": "Henry Luís Teodoro dos Santos",
+              "url": "https://adsuzano.com.br/atletas/3421",
+              "image": "https://ui-avatars.com/api/?name=Henry+Lu%C3%ADs+Teodoro+dos+Santos+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Samuel Maia",
+            "url": "https://adsuzano.com.br/atletas/3410",
+            "detail": {
+              "name": "Samuel da Rocha Maia",
+              "url": "https://adsuzano.com.br/atletas/3410",
+              "image": "https://ui-avatars.com/api/?name=Samuel+da+Rocha+Maia+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Benjamim Santana",
+            "url": "https://adsuzano.com.br/atletas/3414",
+            "detail": {
+              "name": "Benjamim Calebe Lopes Santana",
+              "url": "https://adsuzano.com.br/atletas/3414",
+              "image": "https://ui-avatars.com/api/?name=Benjamim+Calebe+Lopes+Santana+&color=7F9CF5&background=EBF4FF",
+              "age": "",
+              "season": "",
+              "stats": [
+                {
+                  "label": "Jogos",
+                  "value": "0"
+                },
+                {
+                  "label": "Gols",
+                  "value": "0"
+                },
+                {
+                  "label": "Assistências",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Amarelo",
+                  "value": "0"
+                },
+                {
+                  "label": "Cartão Vermelho",
+                  "value": "0"
+                },
+                {
+                  "label": "Finalizações",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Certos",
+                  "value": "0"
+                },
+                {
+                  "label": "Passes Errados",
+                  "value": "0"
+                },
+                {
+                  "label": "Desarmes",
+                  "value": "0"
+                },
+                {
+                  "label": "Roubadas de Bola",
+                  "value": "0"
+                },
+                {
+                  "label": "Média de Gols",
+                  "value": "0.00"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
         "label": "Sub-09",
         "url": "https://adsuzano.com.br/atletas/modalidade/2/categoria/3",
         "players": [
@@ -4127,1038 +5159,6 @@ export const clubSiteData = {
               "name": "Antônio Henrique Januário Lima",
               "url": "https://adsuzano.com.br/atletas/3543",
               "image": "https://ui-avatars.com/api/?name=Ant%C3%B4nio+Henrique+Janu%C3%A1rio+Lima&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "label": "Sub-08",
-        "url": "https://adsuzano.com.br/atletas/modalidade/2/categoria/2",
-        "players": [
-          {
-            "name": "Mateus Varjão",
-            "url": "https://adsuzano.com.br/atletas/3413",
-            "detail": {
-              "name": "Mateus de Aquino Varjão",
-              "url": "https://adsuzano.com.br/atletas/3413",
-              "image": "https://ui-avatars.com/api/?name=Mateus+de+Aquino+Varj%C3%A3o+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Kauan Silva",
-            "url": "https://adsuzano.com.br/atletas/3411",
-            "detail": {
-              "name": "Kauan Gonçalves Ferreira da Silva",
-              "url": "https://adsuzano.com.br/atletas/3411",
-              "image": "https://ui-avatars.com/api/?name=Kauan+Gon%C3%A7alves+Ferreira+da+Silva+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Lucca Cerqueira",
-            "url": "https://adsuzano.com.br/atletas/3420",
-            "detail": {
-              "name": "Lucca Santos Cerqueira",
-              "url": "https://adsuzano.com.br/atletas/3420",
-              "image": "https://ui-avatars.com/api/?name=Lucca+Santos+Cerqueira+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Joaquim Ramos",
-            "url": "https://adsuzano.com.br/atletas/3412",
-            "detail": {
-              "name": "Joaquim Guimarães Ramos",
-              "url": "https://adsuzano.com.br/atletas/3412",
-              "image": "https://ui-avatars.com/api/?name=Joaquim+Guimar%C3%A3es+Ramos+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Juan Santos",
-            "url": "https://adsuzano.com.br/atletas/3419",
-            "detail": {
-              "name": "Juan Vitor Santos",
-              "url": "https://adsuzano.com.br/atletas/3419",
-              "image": "https://ui-avatars.com/api/?name=Juan+Vitor+Santos+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Bernardo Rodrigues",
-            "url": "https://adsuzano.com.br/atletas/3408",
-            "detail": {
-              "name": "Bernardo dos Santos Rodrigues",
-              "url": "https://adsuzano.com.br/atletas/3408",
-              "image": "https://ui-avatars.com/api/?name=Bernardo+dos+Santos+Rodrigues+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "João Jesus",
-            "url": "https://adsuzano.com.br/atletas/3549",
-            "detail": {
-              "name": "João Miguel Pereira de Jesus",
-              "url": "https://adsuzano.com.br/atletas/3549",
-              "image": "https://ui-avatars.com/api/?name=Jo%C3%A3o+Miguel+Pereira+de+Jesus+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Diego Sebastião",
-            "url": "https://adsuzano.com.br/atletas/3418",
-            "detail": {
-              "name": "Diego Miguel Soares Sebastião",
-              "url": "https://adsuzano.com.br/atletas/3418",
-              "image": "https://ui-avatars.com/api/?name=Diego+Miguel+Soares+Sebasti%C3%A3o+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Heitor Bomfim",
-            "url": "https://adsuzano.com.br/atletas/3417",
-            "detail": {
-              "name": "Heitor Leão Bomfim",
-              "url": "https://adsuzano.com.br/atletas/3417",
-              "image": "https://ui-avatars.com/api/?name=Heitor+Le%C3%A3o+Bomfim+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Chiemena Ezeaba",
-            "url": "https://adsuzano.com.br/atletas/3552",
-            "detail": {
-              "name": "Chiemena Richmond Gustavo Van Der Ezeaba",
-              "url": "https://adsuzano.com.br/atletas/3552",
-              "image": "https://ui-avatars.com/api/?name=Chiemena+Richmond+Gustavo+Van+Der+Ezeaba&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Davi Souza",
-            "url": "https://adsuzano.com.br/atletas/3532",
-            "detail": {
-              "name": "Davi Lima de Souza",
-              "url": "https://adsuzano.com.br/atletas/3532",
-              "image": "https://ui-avatars.com/api/?name=Davi+Lima+de+Souza&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Caio Rodrigues",
-            "url": "https://adsuzano.com.br/atletas/3409",
-            "detail": {
-              "name": "Caio Sales Rodrigues",
-              "url": "https://adsuzano.com.br/atletas/3409",
-              "image": "https://ui-avatars.com/api/?name=Caio+Sales+Rodrigues+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Bryan Araujo",
-            "url": "https://adsuzano.com.br/atletas/3415",
-            "detail": {
-              "name": "Bryan Lucas de Sousa Araujo",
-              "url": "https://adsuzano.com.br/atletas/3415",
-              "image": "https://ui-avatars.com/api/?name=Bryan+Lucas+de+Sousa+Araujo+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Breno Santos",
-            "url": "https://adsuzano.com.br/atletas/3416",
-            "detail": {
-              "name": "Breno Marques dos Santos",
-              "url": "https://adsuzano.com.br/atletas/3416",
-              "image": "https://ui-avatars.com/api/?name=Breno+Marques+dos+Santos+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Salomão Martins",
-            "url": "https://adsuzano.com.br/atletas/3533",
-            "detail": {
-              "name": "Salomão Barbosa Martins",
-              "url": "https://adsuzano.com.br/atletas/3533",
-              "image": "https://ui-avatars.com/api/?name=Salom%C3%A3o+Barbosa+Martins&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Henry Santos",
-            "url": "https://adsuzano.com.br/atletas/3421",
-            "detail": {
-              "name": "Henry Luís Teodoro dos Santos",
-              "url": "https://adsuzano.com.br/atletas/3421",
-              "image": "https://ui-avatars.com/api/?name=Henry+Lu%C3%ADs+Teodoro+dos+Santos+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Samuel Maia",
-            "url": "https://adsuzano.com.br/atletas/3410",
-            "detail": {
-              "name": "Samuel da Rocha Maia",
-              "url": "https://adsuzano.com.br/atletas/3410",
-              "image": "https://ui-avatars.com/api/?name=Samuel+da+Rocha+Maia+&color=7F9CF5&background=EBF4FF",
-              "age": "",
-              "season": "",
-              "stats": [
-                {
-                  "label": "Jogos",
-                  "value": "0"
-                },
-                {
-                  "label": "Gols",
-                  "value": "0"
-                },
-                {
-                  "label": "Assistências",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Amarelo",
-                  "value": "0"
-                },
-                {
-                  "label": "Cartão Vermelho",
-                  "value": "0"
-                },
-                {
-                  "label": "Finalizações",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Certos",
-                  "value": "0"
-                },
-                {
-                  "label": "Passes Errados",
-                  "value": "0"
-                },
-                {
-                  "label": "Desarmes",
-                  "value": "0"
-                },
-                {
-                  "label": "Roubadas de Bola",
-                  "value": "0"
-                },
-                {
-                  "label": "Média de Gols",
-                  "value": "0.00"
-                }
-              ]
-            }
-          },
-          {
-            "name": "Benjamim Santana",
-            "url": "https://adsuzano.com.br/atletas/3414",
-            "detail": {
-              "name": "Benjamim Calebe Lopes Santana",
-              "url": "https://adsuzano.com.br/atletas/3414",
-              "image": "https://ui-avatars.com/api/?name=Benjamim+Calebe+Lopes+Santana+&color=7F9CF5&background=EBF4FF",
               "age": "",
               "season": "",
               "stats": [
