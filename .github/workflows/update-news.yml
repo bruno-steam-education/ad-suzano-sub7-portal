@@ -39,6 +39,14 @@ jobs:
           npm run update:news
           npm run audit:robots
 
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
       - name: Commit data changes
         run: |
           git config user.name "ad-suzano-news-bot"
@@ -48,16 +56,8 @@ jobs:
             echo "No FPFS or news changes to commit."
           else
             git commit -m "Update FPFS and category news"
-            git push
+            git push || echo "Warning: Direct push to main branch failed (possibly due to branch protection rules). The site has been successfully built and deployed with the latest data, but changes were not saved back to the git history."
           fi
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
 
   deploy:
     environment:
