@@ -21,12 +21,26 @@ function toAbsolute(url = '') {
   return url.startsWith('http') ? url : new URL(url, SITE_URL).toString();
 }
 
-async function fetchPage(path) {
-  const response = await fetch(toAbsolute(path), { headers: HEADERS });
-  if (!response.ok) throw new Error(`Falha ao buscar ${path}: ${response.status}`);
-  const buffer = await response.arrayBuffer();
-  const html = new TextDecoder('utf-8').decode(buffer);
-  return cheerio.load(html);
+async function fetchPage(path, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(toAbsolute(path), { headers: HEADERS });
+      if (response.ok) {
+        const buffer = await response.arrayBuffer();
+        const html = new TextDecoder('utf-8').decode(buffer);
+        return cheerio.load(html);
+      }
+      if (response.status === 404 && i < retries - 1) {
+        console.warn(`[Retry ${i + 1}/${retries}] 404 para ${path}, tentando novamente em ${delay}ms...`);
+      } else if (!response.ok) {
+        throw new Error(`Falha ao buscar ${path}: ${response.status}`);
+      }
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      console.warn(`[Retry ${i + 1}/${retries}] Erro ao buscar ${path}: ${err.message}. Tentando novamente em ${delay}ms...`);
+    }
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
 }
 
 function uniqueLinks(items) {

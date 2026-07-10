@@ -33,9 +33,10 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Update FPFS and category news
+      - name: Update FPFS, club site, and category news
         run: |
           npm run update:fpfs
+          npm run sync:club-site
           npm run update:news
           npm run audit:robots
 
@@ -51,11 +52,11 @@ jobs:
         run: |
           git config user.name "ad-suzano-news-bot"
           git config user.email "actions@github.com"
-          git add src/data/news.js src/data/fpfsCategories.js
+          git add src/data/news.js src/data/fpfsCategories.js src/data/clubSite.js
           if git diff --cached --quiet; then
-            echo "No FPFS or news changes to commit."
+            echo "No FPFS, news or club site changes to commit."
           else
-            git commit -m "Update FPFS and category news"
+            git commit -m "Update FPFS, news, and club site data"
             git push || echo "Warning: Direct push to main branch failed (possibly due to branch protection rules). The site has been successfully built and deployed with the latest data, but changes were not saved back to the git history."
           fi
 
