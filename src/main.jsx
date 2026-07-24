@@ -38,6 +38,7 @@ import {
   suzanoMatches,
   suzanoRecord,
 } from './utils/analysis';
+import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader';
 import './styles.css';
 
 registerServiceWorker();
@@ -186,6 +187,7 @@ function App() {
       />
       {hasFullSub7View ? (
         <>
+          <CategoryEfficiencyHeader category={activeCategory} />
           <NewsBanner />
 
           <section className="content-grid">
@@ -255,6 +257,7 @@ function CategoryDashboard({ category, fpfsData }) {
 
   return (
     <section className="category-shell">
+      <CategoryEfficiencyHeader category={category} />
       <div className="category-main">
         <section className="panel category-intro">
           <div className="section-title">
@@ -351,6 +354,7 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 
   return (
     <>
+      <CategoryEfficiencyHeader category={category} />
       <section className="category-overview">
         <section className="panel category-intro">
           <div className="section-title">
