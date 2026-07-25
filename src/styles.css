@@ -2531,6 +2531,38 @@ input {
   margin: 0;
 }
 
+/* Category Meta Explanation */
+.category-meta-explanation {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+}
+
+.category-meta-explanation .help-icon {
+  color: #38bdf8;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.category-meta-explanation strong {
+  display: block;
+  font-size: 13px;
+  color: #7dd3fc;
+  margin-bottom: 4px;
+}
+
+.category-meta-explanation p {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin: 0;
+}
+
 /* Accordion */
 .efficiency-accordion {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
