@@ -11,16 +11,18 @@ import { fpfsCategories } from '../data/fpfsCategories';
  * rebaixadas para a série A3 e as duas primeiras equipes classificadas da série A3 terão acesso
  * a série A2 na temporada seguinte."
  *
- * Ou seja: o acesso/descenso NÃO é decidido pela tabela de uma categoria isolada — é decidido
- * pela soma da pontuação de TODAS as categorias de Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao
- * Sub-18) do clube, comparada com a soma dos demais clubes da série. A FPFS não publica essa
- * classificação combinada entre clubes, então não é possível afirmar uma posição exata (ex:
- * "18º de 20") sem esse dado oficial. Por isso este módulo usa apenas números reais e verificáveis:
+ * PONTO CENTRAL (relido e confirmado no regulamento): quem sobe ou cai é o CLUBE inteiro — a
+ * soma da pontuação de TODAS as categorias de Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao
+ * Sub-18) — nunca uma categoria isolada. O regulamento não define uma fórmula para "quantos
+ * pontos por categoria", nem publica a classificação combinada entre clubes (não temos os dados
+ * agregados dos adversários). Por isso este módulo:
  *
- * 1) Por categoria: posição, pontos e distância para o líder são tirados diretamente da tabela
- *    oficial (fpfsCategories[].standings), que já vem da Súmula Online da FPFS.
- * 2) No agregado do clube: soma-se a pontuação e os jogos de todas as categorias para calcular o
- *    índice de aproveitamento real do AD Suzano — sem inventar posição ou pontuação de adversário.
+ * 1) Calcula UMA ÚNICA leitura de risco/título para o CLUBE (mesma em todas as categorias —
+ *    não faz sentido a categoria A ter "3% de chance de cair" e a categoria B ter "40%": o que
+ *    cai ou sobe é o clube inteiro).
+ * 2) Calcula, por categoria, apenas a COTA DE CONTRIBUIÇÃO (quantos pontos essa categoria
+ *    precisa somar para ajudar o clube) — isso sim varia por categoria, pois cada uma tem jogos
+ *    e situação diferentes.
  */
 
 const BASE_LABELS = ['Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
@@ -80,26 +82,15 @@ function getRealCategoryData(label) {
     leaderTeam: leader?.team ?? null,
     pointsBehindLeader,
     isLeader,
-    isEliminatedFromTitle: maxPossiblePoints < leaderPoints,
   };
 }
 
 /**
- * Metas reais de pontos (mínimo / ideal / perfeito) e risco de queda dentro do próprio grupo da
- * categoria, usando a tabela oficial completa (todos os adversários reais, com pontos reais).
- *
- * - Mínimo: pontos necessários para igualar HOJE a equipe que ocupa a última posição seguraí
- *   (2 últimas colocações = zona de risco, espelhando o critério de acesso/descenso do Art. 135º).
- *   Considera a pontuação ATUAL do rival da zona de risco (ele também tem jogos a fazer, por isso
- *   é um piso, não uma garantia).
- * - Ideal: pontos para alcançar a equipe do meio da tabela (posição intermediária do grupo).
- * - Perfeito: pontos para alcançar o líder e brigar pelo título do grupo.
- *
- * Risco de queda: quanto do "mínimo" ainda falta dividido pelos pontos que ainda serão disputados
- * pela própria equipe. 100% quando é matematicamente impossível alcançar o piso de segurança mesmo
- * vencendo tudo que resta (o rival da zona de risco só pode SOMAR pontos, nunca perder os que já tem).
+ * Referências reais da tabela de cada categoria (linha de segurança, meio de tabela), usadas
+ * apenas como blocos de construção do referencial AGREGADO do clube — não geram uma % própria
+ * por categoria (isso violaria o Art. 135º, que trata o clube como uma unidade só).
  */
-function computeSafetyTargets(cat) {
+function computeCategoryBenchmarks(cat) {
   const { standings, totalTeams } = cat;
   if (!standings || totalTeams < 4) return null;
 
@@ -110,60 +101,91 @@ function computeSafetyTargets(cat) {
   const midTeam = standings[midIndex];
   if (!safetyTeam || !midTeam) return null;
 
-  const safetyLinePoints = safetyTeam.points;
-  const midTablePoints = midTeam.points;
-
-  const pointsNeededMinimo = Math.max(0, safetyLinePoints + 1 - cat.points);
-  const pointsNeededIdeal = Math.max(0, midTablePoints - cat.points);
-  const pointsNeededPerfeito = cat.pointsBehindLeader;
-
-  const isRelegationMathematicallyLocked = cat.maxPossiblePoints < safetyLinePoints + 1;
-
-  let chanceDeQueda;
-  if (isRelegationMathematicallyLocked) {
-    chanceDeQueda = 100;
-  } else if (pointsNeededMinimo === 0) {
-    // Já está acima da linha de segurança hoje; risco residual cai conforme a folga cresce.
-    const margin = cat.points - safetyLinePoints;
-    chanceDeQueda = Math.max(3, 22 - margin * 3);
-  } else {
-    const ratio = pointsNeededMinimo / Math.max(1, cat.remainingPoints);
-    chanceDeQueda = 30 + ratio * 65;
-  }
-  chanceDeQueda = Math.max(0, Math.min(100, Math.round(chanceDeQueda)));
-
   return {
-    safetyLinePoints,
+    safetyLinePoints: safetyTeam.points,
     safetyTeamName: safetyTeam.team,
-    midTablePoints,
+    midTablePoints: midTeam.points,
     midTeamName: midTeam.team,
-    pointsNeededMinimo,
-    pointsNeededIdeal,
-    pointsNeededPerfeito,
-    isRelegationMathematicallyLocked,
-    chanceDeQueda,
   };
 }
 
 /**
- * Chance de título (1º lugar) da categoria dentro do seu próprio grupo (Chave Única da Série A2).
- * Fórmula transparente: compara quanto falta para alcançar o líder (pointsBehindLeader) com o
- * total de pontos que ainda serão disputados (remainingPoints). Quanto menor essa razão, maior a
- * chance. É uma estimativa (não uma probabilidade estatística oficial), sempre 0% quando é
- * matematicamente impossível alcançar o líder mesmo vencendo tudo que resta.
+ * Situação ÚNICA do clube (mesma para todas as categorias) — risco de queda, chance de acesso e
+ * pontos mínimo/ideal/perfeito, tudo agregando as 8 categorias de Iniciação/Base.
+ *
+ * Referenciais agregados = soma, entre as 8 categorias, dos pontos REAIS de três equipes de
+ * referência em cada grupo (linha de segurança, meio de tabela, líder). É a forma mais honesta de
+ * simular "quanto o clube precisaria somar" sem ter acesso à classificação combinada oficial entre
+ * clubes (que a FPFS não publica).
  */
-function computeTitleChance(cat) {
-  if (!cat) return 0;
-  if (cat.isEliminatedFromTitle) return 0;
-  if (cat.isLeader) {
-    // Líder: favorito, mas a chance cresce com a vantagem de pontos sobre o 2º colocado.
-    return 60;
-  }
-  if (cat.remainingPoints === 0) return 0;
+function computeClubStatus(allCategoriesData, allBenchmarks) {
+  const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
+  const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
+  const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
+  const clubRemainingPoints = clubRemainingGames * 3;
+  const clubMaxPossiblePoints = clubPoints + clubRemainingPoints;
+  const clubPossiblePointsSoFar = clubPlayed * 3;
+  const clubEfficiencyPercent = clubPossiblePointsSoFar > 0
+    ? Math.round((clubPoints / clubPossiblePointsSoFar) * 1000) / 10
+    : 0;
 
-  const gapRatio = cat.pointsBehindLeader / cat.remainingPoints; // 0 = alcançável folgado, 1 = precisa vencer tudo
-  const raw = Math.round((1 - gapRatio) * 55);
-  return Math.max(1, Math.min(55, raw));
+  const clubSafetyBenchmarkPoints = allBenchmarks.reduce((sum, b) => sum + (b?.safetyLinePoints ?? 0), 0);
+  const clubMidBenchmarkPoints = allBenchmarks.reduce((sum, b) => sum + (b?.midTablePoints ?? 0), 0);
+  const clubTitleBenchmarkPoints = allCategoriesData.reduce((sum, c) => sum + c.leaderPoints, 0);
+
+  const clubShortfallToSafety = Math.max(0, clubSafetyBenchmarkPoints - clubPoints);
+  const clubShortfallToIdeal = Math.max(0, clubMidBenchmarkPoints - clubPoints);
+  const clubShortfallToTitle = Math.max(0, clubTitleBenchmarkPoints - clubPoints);
+
+  const isClubRelegationMathLocked = clubMaxPossiblePoints < clubSafetyBenchmarkPoints;
+  const isClubTitleMathLocked = clubMaxPossiblePoints < clubTitleBenchmarkPoints;
+
+  let clubChanceDeQueda;
+  if (isClubRelegationMathLocked) {
+    clubChanceDeQueda = 100;
+  } else if (clubShortfallToSafety === 0) {
+    const marginRatio = (clubPoints - clubSafetyBenchmarkPoints) / Math.max(1, clubSafetyBenchmarkPoints);
+    clubChanceDeQueda = Math.max(2, 20 - marginRatio * 60);
+  } else {
+    const ratio = clubShortfallToSafety / Math.max(1, clubRemainingPoints);
+    clubChanceDeQueda = 25 + ratio * 70;
+  }
+  clubChanceDeQueda = Math.max(0, Math.min(100, Math.round(clubChanceDeQueda)));
+
+  let clubChanceDeTitulo;
+  if (isClubTitleMathLocked) {
+    clubChanceDeTitulo = 0;
+  } else {
+    const ratio = clubShortfallToTitle / Math.max(1, clubRemainingPoints);
+    clubChanceDeTitulo = Math.max(1, Math.round((1 - ratio) * 45));
+  }
+  clubChanceDeTitulo = Math.max(0, Math.min(100, clubChanceDeTitulo));
+
+  const clubChanceDePermanecer = 100 - clubChanceDeQueda;
+  const clubSafetyMarginPoints = Math.max(0, clubPoints - clubSafetyBenchmarkPoints);
+
+  return {
+    clubPoints,
+    clubPlayed,
+    clubRemainingGames,
+    clubRemainingPoints,
+    clubMaxPossiblePoints,
+    clubEfficiencyPercent,
+
+    clubSafetyBenchmarkPoints,
+    clubMidBenchmarkPoints,
+    clubTitleBenchmarkPoints,
+    clubShortfallToSafety,
+    clubShortfallToIdeal,
+    clubShortfallToTitle,
+    clubSafetyMarginPoints,
+    isClubRelegationMathLocked,
+    isClubTitleMathLocked,
+
+    clubChanceDeQueda,
+    clubChanceDeTitulo,
+    clubChanceDePermanecer,
+  };
 }
 
 export function calculateCategoryEfficiency(categoryObj) {
@@ -178,60 +200,42 @@ export function calculateCategoryEfficiency(categoryObj) {
     };
   }
 
-  const chanceDeCampeao = computeTitleChance(cat);
-  const winsNeededForTitle = cat.pointsBehindLeader > 0 ? Math.ceil(cat.pointsBehindLeader / 3) : 0;
-  const safety = computeSafetyTargets(cat);
+  const benchmarks = computeCategoryBenchmarks(cat);
 
   // -----------------------------------------------------------------
-  // Agregado real do clube (soma de todas as 8 categorias de Iniciação/Base)
+  // Situação única do clube (Art. 135º: o que cai ou sobe é o AD Suzano inteiro, não a categoria)
   // -----------------------------------------------------------------
   const allCategoriesData = ALL_LABELS.map(getRealCategoryData).filter(Boolean);
-  const allSafetyData = allCategoriesData.map((c) => ({ c, safety: computeSafetyTargets(c) }));
-  const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
-  const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
-  const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
-  const clubRemainingPoints = clubRemainingGames * 3;
-  const clubMaxPossiblePoints = clubPoints + clubRemainingPoints;
-  const clubPossiblePointsSoFar = clubPlayed * 3;
-  const clubEfficiencyPercent = clubPossiblePointsSoFar > 0
-    ? Math.round((clubPoints / clubPossiblePointsSoFar) * 1000) / 10
+  const allBenchmarks = allCategoriesData.map(computeCategoryBenchmarks);
+  const club = computeClubStatus(allCategoriesData, allBenchmarks);
+
+  const categoryShareOfClubPoints = club.clubPoints > 0
+    ? Math.round((cat.points / club.clubPoints) * 1000) / 10
     : 0;
 
-  // Quanto a categoria já contribuiu e ainda pode contribuir para o índice do clube.
-  const categoryShareOfClubPoints = clubPoints > 0 ? Math.round((cat.points / clubPoints) * 1000) / 10 : 0;
-
   // -----------------------------------------------------------------
-  // Cota coletiva (Art. 135º: acesso/descenso é do CLUBE, não de uma categoria isolada — todas
-  // as categorias ajudam, mesmo as que já estão bem na própria tabela).
-  //
-  // Referencial real de segurança do clube = soma das "linhas de segurança" REAIS de cada uma das
-  // 8 categorias (o ponto de corte real de cada grupo, tirado da tabela oficial). Se o clube ainda
-  // não alcançou essa soma, o que falta é dividido entre as categorias, proporcional aos jogos que
-  // cada uma ainda tem pela frente (quem tem mais jogos consegue contribuir mais).
+  // Cota de contribuição desta categoria (isso sim varia por categoria: cada uma tem jogos e
+  // situação diferentes, mas todas ajudam o MESMO objetivo coletivo do clube).
   // -----------------------------------------------------------------
-  const clubSafetyBenchmarkPoints = allSafetyData.reduce((sum, x) => sum + (x.safety?.safetyLinePoints ?? 0), 0);
-  const clubShortfallToSafety = Math.max(0, clubSafetyBenchmarkPoints - clubPoints);
-
-  let categoryCollectiveMinimo;
-  if (clubShortfallToSafety > 0 && clubRemainingGames > 0) {
-    categoryCollectiveMinimo = Math.round(clubShortfallToSafety * (cat.remainingGames / clubRemainingGames));
+  let categoryMinimo;
+  if (club.clubShortfallToSafety > 0 && club.clubRemainingGames > 0) {
+    categoryMinimo = Math.round(club.clubShortfallToSafety * (cat.remainingGames / club.clubRemainingGames));
   } else if (cat.remainingGames > 0 && cat.played > 0) {
-    // O clube já bate o referencial agregado de segurança: mesmo assim, ninguém fica de fora —
-    // cada categoria deve ao menos sustentar o próprio ritmo atual (pts por jogo) nos jogos que restam,
-    // para não puxar o índice coletivo do clube para baixo.
-    categoryCollectiveMinimo = Math.round(cat.remainingGames * (cat.points / cat.played));
+    // O clube já bate o referencial agregado de segurança: mesmo assim ninguém fica de fora —
+    // cada categoria sustenta ao menos o próprio ritmo atual (pts/jogo) nos jogos restantes.
+    categoryMinimo = Math.round(cat.remainingGames * (cat.points / cat.played));
   } else {
-    categoryCollectiveMinimo = 0;
+    categoryMinimo = 0;
   }
 
-  const pointsNeededMinimo = safety
-    ? Math.max(safety.pointsNeededMinimo, categoryCollectiveMinimo)
-    : categoryCollectiveMinimo;
+  const categoryIdeal = club.clubRemainingGames > 0
+    ? Math.round(club.clubShortfallToIdeal * (cat.remainingGames / club.clubRemainingGames))
+    : 0;
+  const categoryPerfeito = club.clubRemainingGames > 0
+    ? Math.round(club.clubShortfallToTitle * (cat.remainingGames / club.clubRemainingGames))
+    : 0;
 
-  // Risco de queda continua medindo só a posição REAL desta categoria na própria tabela (não
-  // conflita com a cota coletiva — ajudar o clube é uma responsabilidade extra, não um sinal de
-  // que a categoria está mal posicionada no seu próprio grupo).
-  const chanceDeQueda = safety?.chanceDeQueda ?? null;
+  const winsNeededMinimo = categoryMinimo > 0 ? Math.ceil(categoryMinimo / 3) : 0;
 
   return {
     categoryLabel: label,
@@ -240,7 +244,7 @@ export function calculateCategoryEfficiency(categoryObj) {
     isInitiation: INITIATION_LABELS.includes(label),
     isBase: BASE_LABELS.includes(label),
 
-    // Dados reais da categoria (tabela oficial FPFS)
+    // Dados reais da categoria (tabela oficial FPFS) — apenas contexto, sem gerar % própria
     categoryPosition: cat.position,
     categoryTotalTeams: cat.totalTeams,
     categoryPlayed: cat.played,
@@ -248,68 +252,56 @@ export function calculateCategoryEfficiency(categoryObj) {
     categoryGoalDiff: cat.goalDifference,
     categoryRemainingGames: cat.remainingGames,
     categoryRemainingPoints: cat.remainingPoints,
-    categoryMaxPossiblePoints: cat.maxPossiblePoints,
     leaderPoints: cat.leaderPoints,
     leaderTeam: cat.leaderTeam,
     pointsBehindLeader: cat.pointsBehindLeader,
     isLeader: cat.isLeader,
-    isEliminatedFromTitle: cat.isEliminatedFromTitle,
+    safetyLinePoints: benchmarks?.safetyLinePoints ?? null,
+    safetyTeamName: benchmarks?.safetyTeamName ?? null,
+    midTablePoints: benchmarks?.midTablePoints ?? null,
+    midTeamName: benchmarks?.midTeamName ?? null,
 
-    // Chance real de título do grupo desta categoria (estimativa transparente, não oficial)
-    chanceDeCampeao,
-    winsNeededForTitle,
+    // -----------------------------------------------------------------
+    // SITUAÇÃO ÚNICA DO CLUBE (igual em todas as categorias — Art. 135º)
+    // -----------------------------------------------------------------
+    clubPoints: club.clubPoints,
+    clubPlayed: club.clubPlayed,
+    clubRemainingGames: club.clubRemainingGames,
+    clubRemainingPoints: club.clubRemainingPoints,
+    clubEfficiencyPercent: club.clubEfficiencyPercent,
+    clubSafetyBenchmarkPoints: club.clubSafetyBenchmarkPoints,
+    clubMidBenchmarkPoints: club.clubMidBenchmarkPoints,
+    clubTitleBenchmarkPoints: club.clubTitleBenchmarkPoints,
+    clubShortfallToSafety: club.clubShortfallToSafety,
+    clubShortfallToIdeal: club.clubShortfallToIdeal,
+    clubShortfallToTitle: club.clubShortfallToTitle,
+    clubSafetyMarginPoints: club.clubSafetyMarginPoints,
+    isClubRelegationMathLocked: club.isClubRelegationMathLocked,
+    isClubTitleMathLocked: club.isClubTitleMathLocked,
+    chanceDeQueda: club.clubChanceDeQueda,
+    chanceDeCampeao: club.clubChanceDeTitulo,
+    chanceDePermanecer: club.clubChanceDePermanecer,
 
-    // Metas reais de pontos e risco de queda no grupo (Art. 135º usa a soma do clube, mas aqui
-    // usamos a tabela real desta categoria como referência objetiva e verificável)
-    hasSafetyData: Boolean(safety),
-    safetyLinePoints: safety?.safetyLinePoints ?? null,
-    safetyTeamName: safety?.safetyTeamName ?? null,
-    midTablePoints: safety?.midTablePoints ?? null,
-    midTeamName: safety?.midTeamName ?? null,
-    ownGroupPointsNeededMinimo: safety?.pointsNeededMinimo ?? null,
-    pointsNeededMinimo,
-    pointsNeededIdeal: safety?.pointsNeededIdeal ?? null,
-    pointsNeededPerfeito: safety?.pointsNeededPerfeito ?? null,
-    isRelegationMathematicallyLocked: safety?.isRelegationMathematicallyLocked ?? false,
-    chanceDeQueda,
-
-    // Cota coletiva (Art. 135º é do clube, não da categoria isolada) — números para a fórmula
-    clubSafetyBenchmarkPoints,
-    clubShortfallToSafety,
-    categoryCollectiveMinimo,
-
-    // Índice real agregado do clube (soma das 8 categorias) — base do Ranking de Eficiência Anual
-    clubPoints,
-    clubPlayed,
-    clubRemainingGames,
-    clubRemainingPoints,
-    clubMaxPossiblePoints,
-    clubEfficiencyPercent,
+    // Cota de contribuição desta categoria (varia por categoria — números de responsabilidade,
+    // não de probabilidade)
     categoryShareOfClubPoints,
+    pointsNeededMinimo: categoryMinimo,
+    pointsNeededIdeal: categoryIdeal,
+    pointsNeededPerfeito: categoryPerfeito,
+    winsNeededMinimo,
 
     // Textos explicativos
-    categoryReasoning: cat.isEliminatedFromTitle
-      ? `O ${label} está matematicamente sem chances de título no próprio grupo: mesmo vencendo todos os ${cat.remainingGames} jogos restantes (+${cat.remainingPoints} pts), não alcançaria o líder ${cat.leaderTeam ?? ''} (${cat.leaderPoints} pts).`
-      : cat.isLeader
-        ? `O ${label} está na liderança do seu grupo com ${cat.points} pts. Para manter a ponta, a comissão deve sustentar o ritmo nos ${cat.remainingGames} jogos restantes.`
-        : `O ${label} está a ${cat.pointsBehindLeader} pts do líder (${cat.leaderTeam ?? 'líder do grupo'}), com ${cat.remainingGames} jogos e ${cat.remainingPoints} pts ainda em disputo. Precisaria de pelo menos ${winsNeededForTitle} vitória${winsNeededForTitle === 1 ? '' : 's'} a mais que o rival para brigar pela liderança.`,
+    categoryReasoning: `O ${label} soma ${cat.points} pts em ${cat.played} jogos (${categoryShareOfClubPoints}% dos pontos do clube). Nos ${cat.remainingGames} jogos restantes, a cota real desta categoria para ajudar o AD Suzano é de pelo menos +${categoryMinimo} pts.`,
 
-    realismAlert: `Leitura baseada em dados reais (${label}): posição ${cat.position}º de ${cat.totalTeams} no grupo, ${cat.points} pts em ${cat.played} jogos. Chance estimada de título do grupo: ${chanceDeCampeao}%. Isso não define sozinho o acesso/descenso do clube (Art. 135º), que depende da soma de todas as categorias de Iniciação e Base frente aos demais clubes da Série A2 — dado que a FPFS não publica publicamente.`,
+    realismAlert: `O AD Suzano (soma das 8 categorias de Iniciação/Base) tem ${club.clubPoints} pts em ${club.clubPlayed} jogos, ${club.clubEfficiencyPercent}% de aproveitamento. Risco de queda do CLUBE: ${club.clubChanceDeQueda}%. Chance de acesso do CLUBE: ${club.clubChanceDeTitulo}%. Essa leitura é do clube inteiro (Art. 135º) — a mesma em todas as categorias, porque quem sobe ou cai é o AD Suzano como um todo, nunca uma categoria isolada.`,
 
-    // Linha explícita de meta de pontos (mínimo / ideal / perfeito) para o treinador
-    pointsTargetSentence: safety
-      ? `O ${label} precisa fazer no mínimo +${pointsNeededMinimo} pts nos jogos restantes (o maior valor entre escapar da própria zona de risco do grupo e a cota coletiva para ajudar o clube, Art. 135º), ideal +${safety.pointsNeededIdeal} pts (alcançar ${safety.midTeamName}, ${safety.midTablePoints} pts, meio de tabela) e perfeito +${safety.pointsNeededPerfeito} pts (alcançar o líder ${cat.leaderTeam ?? ''}, ${cat.leaderPoints} pts, e brigar pelo título).`
-      : null,
+    pointsTargetSentence: `O ${label} precisa fazer no mínimo +${categoryMinimo} pts (cota real de ajuda ao clube nos ${cat.remainingGames} jogos restantes), ideal +${categoryIdeal} pts, e perfeito +${categoryPerfeito} pts para puxar o clube rumo ao acesso.`,
 
-    // Linha explícita de risco: separa risco REAL na própria tabela da cota coletiva do clube,
-    // para não misturar "está em risco no grupo" com "precisa ajudar o clube" (são coisas diferentes).
-    relegationRiskSentence: safety
-      ? safety.isRelegationMathematicallyLocked
-        ? `O ${label} já não alcança mais matematicamente a linha de segurança do grupo (${safety.safetyLinePoints} pts de ${safety.safetyTeamName}) mesmo vencendo todos os jogos restantes: risco de queda de 100% na própria tabela.`
-        : safety.pointsNeededMinimo > 0
-          ? `Ficando abaixo do mínimo de +${safety.pointsNeededMinimo} pts na própria tabela, a chance de queda do ${label} para a zona de risco do grupo é de ${chanceDeQueda}%.`
-          : `O ${label} está seguro na própria tabela hoje (risco real de queda no grupo: ${chanceDeQueda}%). Mesmo assim, para cumprir a cota coletiva do Art. 135º e ajudar o clube, precisa somar pelo menos +${pointsNeededMinimo} pts nos jogos restantes.`
-      : null,
+    relegationRiskSentence: club.isClubRelegationMathLocked
+      ? `O AD Suzano já não alcança mais matematicamente o referencial de segurança (${club.clubSafetyBenchmarkPoints} pts agregados) mesmo vencendo tudo que resta: risco de queda de 100%.`
+      : club.clubShortfallToSafety > 0
+        ? `Ficando abaixo da cota mínima do clube (+${club.clubShortfallToSafety} pts que ainda faltam), o risco de queda do AD Suzano é de ${club.clubChanceDeQueda}%.`
+        : `O AD Suzano já está ${club.clubSafetyMarginPoints} pts acima do referencial de segurança agregado (${club.clubPoints} pts vs. ${club.clubSafetyBenchmarkPoints} pts necessários), por isso o risco de queda do clube hoje é baixo: ${club.clubChanceDeQueda}%. Essa % é do clube inteiro (Art. 135º) — o ${label} ainda contribui com sua cota de +${categoryMinimo} pts para manter essa folga.`,
   };
 }
 
@@ -320,21 +312,11 @@ export function calculateCategoryEfficiency(categoryObj) {
  */
 export function calculateClubEfficiencyIndex() {
   const allCategoriesData = ALL_LABELS.map(getRealCategoryData).filter(Boolean);
-  const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
-  const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
-  const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
-  const clubRemainingPoints = clubRemainingGames * 3;
-  const clubPossiblePointsSoFar = clubPlayed * 3;
-  const clubEfficiencyPercent = clubPossiblePointsSoFar > 0
-    ? Math.round((clubPoints / clubPossiblePointsSoFar) * 1000) / 10
-    : 0;
+  const allBenchmarks = allCategoriesData.map(computeCategoryBenchmarks);
+  const club = computeClubStatus(allCategoriesData, allBenchmarks);
 
   return {
     categories: allCategoriesData,
-    clubPoints,
-    clubPlayed,
-    clubRemainingGames,
-    clubRemainingPoints,
-    clubEfficiencyPercent,
+    ...club,
   };
 }

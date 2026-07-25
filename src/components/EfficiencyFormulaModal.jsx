@@ -29,7 +29,12 @@ function buildPrintableHtml(data) {
   <h1>Memória de Cálculo — Ranking de Eficiência Anual (Art. 135º FPFS)</h1>
   <div class="subtitle">${data.categoryTitle} · Gerado em ${new Date().toLocaleDateString('pt-BR')} a partir da tabela oficial FPFS (Súmula Online)</div>
 
-  <h2>1. Situação Real na Tabela</h2>
+  <p class="note"><strong>Importante:</strong> o Art. 135º define que o acesso/descenso é do CLUBE inteiro
+  (soma das 8 categorias de Iniciação/Base), nunca de uma categoria isolada. Por isso a % de risco e de
+  acesso abaixo é a mesma em qualquer categoria — o que muda por categoria é apenas a cota de pontos que
+  ela precisa contribuir.</p>
+
+  <h2>1. Situação Real do ${data.categoryLabel} na Tabela</h2>
   <table>
     ${rows([
       ['Posição no grupo', `${data.categoryPosition}º de ${data.categoryTotalTeams} equipes`],
@@ -37,65 +42,41 @@ function buildPrintableHtml(data) {
       ['Saldo de gols', `${data.categoryGoalDiff >= 0 ? '+' : ''}${data.categoryGoalDiff}`],
       ['Jogos restantes', `${data.categoryRemainingGames} jogos (${data.categoryRemainingPoints} pts em disputa)`],
       ['Líder do grupo', `${data.leaderTeam ?? '—'} com ${data.leaderPoints} pts`],
+      ['Linha de segurança do grupo', `${data.safetyTeamName ?? '—'} com ${data.safetyLinePoints ?? '—'} pts`],
     ])}
   </table>
 
-  <h2>2. Chance de Título do Grupo</h2>
-  <div class="formula-box">gapRatio = pontos_atrás_do_líder / pontos_ainda_em_disputa
-           = ${data.pointsBehindLeader} / ${data.categoryRemainingPoints}
-           = ${data.categoryRemainingPoints > 0 ? (data.pointsBehindLeader / data.categoryRemainingPoints).toFixed(3) : '—'}
-
-chance = (1 − gapRatio) × 55%, limitada entre 1% e 55%
-        (55% quando já é líder, 0% quando é matematicamente impossível)
-
-chance de título do ${data.categoryLabel} = ${data.chanceDeCampeao}%</div>
-  <p class="note">A chance é 0% quando o total de pontos possíveis do time (pontos atuais + pontos em disputa) fica abaixo dos pontos do líder — ou seja, mesmo vencendo tudo, não alcança.</p>
-
-  <h2>3. Metas de Pontos (Mínimo / Ideal / Perfeito)</h2>
-  <table>
-    ${rows([
-      ['Linha de segurança do grupo', `${data.safetyTeamName ?? '—'} com ${data.safetyLinePoints ?? '—'} pts (equipe logo acima da zona de risco)`],
-      ['Mínimo (própria tabela)', `+${data.ownGroupPointsNeededMinimo ?? 0} pts para igualar a linha de segurança`],
-      ['Cota coletiva (Art. 135º)', `+${data.categoryCollectiveMinimo ?? 0} pts (ver seção 4)`],
-      ['MÍNIMO FINAL', `+${data.pointsNeededMinimo} pts = MAIOR valor entre os dois acima`],
-      ['Meio de tabela', `${data.midTeamName ?? '—'} com ${data.midTablePoints ?? '—'} pts`],
-      ['Ideal', `+${data.pointsNeededIdeal ?? 0} pts para alcançar o meio de tabela`],
-      ['Perfeito', `+${data.pointsNeededPerfeito ?? 0} pts para alcançar o líder e brigar pelo título`],
-    ])}
-  </table>
-
-  <h2>4. Risco de Queda e Cota Coletiva (Art. 135º)</h2>
-  <p class="note">O Art. 135º do RGC define que o acesso/descenso é do <strong>clube</strong> (soma de todas as 8 categorias de Iniciação/Base), não de uma categoria isolada — "se uma categoria cair, caem todas". Por isso, mesmo categorias bem posicionadas na própria tabela têm uma cota mínima real para ajudar o clube.</p>
-  <div class="formula-box">Referencial de segurança do clube =
-  soma das linhas de segurança REAIS das 8 categorias
+  <h2>2. Situação Única do Clube (Art. 135º)</h2>
+  <div class="formula-box">Referencial de segurança do clube = soma das linhas de segurança das 8 categorias
   = ${data.clubSafetyBenchmarkPoints} pts
+Falta no clube = max(0, ${data.clubSafetyBenchmarkPoints} − ${data.clubPoints}) = ${data.clubShortfallToSafety} pts
 
-Quanto falta no clube = max(0, ${data.clubSafetyBenchmarkPoints} − ${data.clubPoints}) = ${data.clubShortfallToSafety} pts
+Referencial de acesso do clube = soma dos pontos dos líderes das 8 categorias
+  = ${data.clubTitleBenchmarkPoints} pts
+Falta no clube = max(0, ${data.clubTitleBenchmarkPoints} − ${data.clubPoints}) = ${data.clubShortfallToTitle} pts
 
-Cota do ${data.categoryLabel} = quanto_falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube)
-                  = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames} / ${data.clubRemainingGames})
-                  = ${data.categoryCollectiveMinimo} pts
-
-(quando o clube já bate o referencial agregado, a cota vira "manter o próprio ritmo atual"
-nos jogos restantes, para não puxar o índice do clube para baixo)</div>
-  <table>
-    ${rows([
-      ['Risco de queda calculado', `${data.chanceDeQueda ?? '—'}% (0% se já muito seguro, 100% se matematicamente impossível escapar)`],
-    ])}
-  </table>
-
-  <h2>5. Índice de Eficiência do Clube (8 categorias)</h2>
-  <div class="formula-box">índice = pontos_do_clube / (jogos_disputados_do_clube × 3) × 100
-        = ${data.clubPoints} / (${data.clubPlayed} × 3) × 100
-        = ${data.clubEfficiencyPercent}%</div>
+RISCO DE QUEDA DO CLUBE = ${data.chanceDeQueda}%
+CHANCE DE ACESSO DO CLUBE = ${data.chanceDeCampeao}%</div>
   <table>
     ${rows([
       ['Pontos do clube', `${data.clubPoints} pts`],
-      ['Jogos disputados', `${data.clubPlayed} jogos`],
-      ['Jogos restantes', `${data.clubRemainingGames} jogos (${data.clubRemainingPoints} pts em disputa)`],
-      ['Contribuição desta categoria', `${data.categoryShareOfClubPoints}% dos pontos do clube`],
+      ['Jogos disputados (clube)', `${data.clubPlayed} jogos`],
+      ['Jogos restantes (clube)', `${data.clubRemainingGames} jogos (${data.clubRemainingPoints} pts em disputa)`],
+      ['Índice de aproveitamento', `${data.clubEfficiencyPercent}%`],
     ])}
   </table>
+
+  <h2>3. Cota de Contribuição do ${data.categoryLabel}</h2>
+  <div class="formula-box">Cota do ${data.categoryLabel} = falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube)
+
+Mínimo  = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
+Ideal   = ${data.clubShortfallToIdeal} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
+Perfeito= ${data.clubShortfallToTitle} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts</div>
+  <p class="note">
+    Quando o clube já bate o referencial agregado de segurança (falta = 0), a cota mínima passa a ser
+    "sustentar o próprio ritmo atual (pts por jogo)" nos jogos restantes, para que a categoria não puxe o
+    índice do clube para baixo.
+  </p>
 
   <div class="footer">
     Fonte dos dados: FPFS Súmula Online (eventos.admfutsal.com.br), temporada 2026, Paulista A2.
@@ -130,43 +111,33 @@ export function EfficiencyFormulaModal({ data, onClose }) {
         </div>
 
         <div className="formula-modal-body">
-          <section>
-            <h4>1. Chance de Título do Grupo</h4>
-            <pre className="formula-code">{`gapRatio = pts_atrás_do_líder / pts_em_disputa
-         = ${data.pointsBehindLeader} / ${data.categoryRemainingPoints}
-         = ${data.categoryRemainingPoints > 0 ? (data.pointsBehindLeader / data.categoryRemainingPoints).toFixed(3) : '—'}
-
-chance = (1 − gapRatio) × 55%  →  ${data.chanceDeCampeao}%`}</pre>
-          </section>
+          <p className="formula-note">
+            O Art. 135º trata o clube como uma unidade só — por isso a % de risco/acesso abaixo é a
+            mesma em qualquer categoria. O que muda por categoria é a cota de pontos a contribuir.
+          </p>
 
           <section>
-            <h4>2. Mínimo / Ideal / Perfeito</h4>
-            <pre className="formula-code">{`Linha de segurança do grupo: ${data.safetyTeamName ?? '—'} (${data.safetyLinePoints ?? '—'} pts)
-Mínimo na própria tabela:    +${data.ownGroupPointsNeededMinimo ?? 0} pts
-Cota coletiva (Art. 135º):   +${data.categoryCollectiveMinimo ?? 0} pts
-MÍNIMO FINAL = maior dos dois = +${data.pointsNeededMinimo} pts
-
-Meio de tabela: ${data.midTeamName ?? '—'} (${data.midTablePoints ?? '—'} pts) → Ideal +${data.pointsNeededIdeal ?? 0} pts
-Líder: ${data.leaderTeam ?? '—'} (${data.leaderPoints ?? '—'} pts) → Perfeito +${data.pointsNeededPerfeito ?? 0} pts`}</pre>
-          </section>
-
-          <section>
-            <h4>3. Cota Coletiva do Clube (Art. 135º)</h4>
-            <pre className="formula-code">{`Referencial de segurança do clube = soma das linhas de segurança das 8 categorias
-  = ${data.clubSafetyBenchmarkPoints} pts
+            <h4>1. Situação Única do Clube</h4>
+            <pre className="formula-code">{`Referencial de segurança (soma das 8 categorias) = ${data.clubSafetyBenchmarkPoints} pts
 Falta no clube = max(0, ${data.clubSafetyBenchmarkPoints} − ${data.clubPoints}) = ${data.clubShortfallToSafety} pts
+RISCO DE QUEDA DO CLUBE = ${data.chanceDeQueda}%
 
-Cota do ${data.categoryLabel} = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames} / ${data.clubRemainingGames})
-                = ${data.categoryCollectiveMinimo} pts`}</pre>
-            <p className="formula-note">
-              Art. 135º: o acesso/descenso é do clube inteiro (soma das 8 categorias de Iniciação/Base),
-              não de uma categoria isolada — por isso toda categoria tem uma cota real de ajuda, mesmo
-              as que já estão bem posicionadas na própria tabela.
-            </p>
+Referencial de acesso (soma dos líderes) = ${data.clubTitleBenchmarkPoints} pts
+Falta no clube = max(0, ${data.clubTitleBenchmarkPoints} − ${data.clubPoints}) = ${data.clubShortfallToTitle} pts
+CHANCE DE ACESSO DO CLUBE = ${data.chanceDeCampeao}%`}</pre>
           </section>
 
           <section>
-            <h4>4. Índice do Clube</h4>
+            <h4>2. Cota de Contribuição do {data.categoryLabel}</h4>
+            <pre className="formula-code">{`Cota = falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube)
+
+Mínimo   = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
+Ideal    = ${data.clubShortfallToIdeal} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
+Perfeito = ${data.clubShortfallToTitle} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts`}</pre>
+          </section>
+
+          <section>
+            <h4>3. Índice do Clube</h4>
             <pre className="formula-code">{`índice = pontos_clube / (jogos_disputados × 3) × 100
        = ${data.clubPoints} / (${data.clubPlayed} × 3) × 100
        = ${data.clubEfficiencyPercent}%`}</pre>

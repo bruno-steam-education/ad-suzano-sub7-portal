@@ -22,8 +22,7 @@ export function CategoryEfficiencyHeader({ category }) {
     return null;
   }
 
-  const isTitleImpossible = data.isEliminatedFromTitle;
-  const isHighRisk = data.hasSafetyData && data.chanceDeQueda >= 50;
+  const isHighRisk = data.chanceDeQueda >= 50;
 
   return (
     <section className="panel efficiency-header-card" aria-label="Ranking de Eficiência FPFS">
@@ -35,7 +34,7 @@ export function CategoryEfficiencyHeader({ category }) {
             FPFS Regulamento Art. 135º
           </span>
           <span className="efficiency-rule-chip">
-            Ranking de Eficiência Anual ({data.isInitiation ? 'Iniciação Sub-7 ao Sub-10' : 'Base Sub-12 ao Sub-18'})
+            Ranking de Eficiência Anual do CLUBE (Iniciação Sub-7 ao Sub-18)
           </span>
         </div>
         <div className="efficiency-club-rank">
@@ -45,50 +44,52 @@ export function CategoryEfficiencyHeader({ category }) {
         </div>
       </div>
 
-      {/* Grid Principal de Status */}
+      <p className="efficiency-club-notice">
+        <Info size={13} /> Os números abaixo são do <strong>AD Suzano inteiro</strong>, iguais em
+        todas as categorias — o Art. 135º diz que quem sobe ou cai é o clube como um todo, nunca
+        uma categoria isolada.
+      </p>
+
+      {/* Grid Principal de Status — sempre do CLUBE, nunca de uma categoria isolada */}
       <div className="efficiency-main-grid">
-        {/* Card Chance de Título do Grupo */}
-        <div className={`efficiency-stat-box access-box ${isTitleImpossible ? 'highlight-impossible' : ''}`}>
+        {/* Card Chance de Acesso do Clube */}
+        <div className={`efficiency-stat-box access-box ${data.isClubTitleMathLocked ? 'highlight-impossible' : ''}`}>
           <div className="stat-box-header">
             <span className="stat-box-tag gold">
-              <Trophy size={16} /> Título do Grupo
+              <Trophy size={16} /> Acesso do Clube
             </span>
             <strong className="stat-percent gold-text">{data.chanceDeCampeao}%</strong>
           </div>
-          <h3>Chance de Ser Campeão do Grupo</h3>
+          <h3>Chance de Acesso do AD Suzano</h3>
           <div className="stat-box-details">
             <div>
-              <span>Líder do grupo:</span>
-              <strong>{data.leaderTeam ?? '—'} ({data.leaderPoints} pts)</strong>
+              <span>Referencial agregado:</span>
+              <strong>{data.clubTitleBenchmarkPoints} pts</strong>
             </div>
             <div>
-              <span>Distância para o líder:</span>
-              <strong className="gold-text">
-                {data.isLeader ? 'Está na liderança' : `+${data.pointsBehindLeader} pts`}
-              </strong>
+              <span>Falta no clube:</span>
+              <strong className="gold-text">+{data.clubShortfallToTitle} pts</strong>
             </div>
           </div>
         </div>
 
-        {/* Card Risco de Queda no Grupo */}
+        {/* Card Risco de Queda do Clube */}
         <div className={`efficiency-stat-box risk-box ${isHighRisk ? 'highlight-risk' : ''}`}>
           <div className="stat-box-header">
             <span className="stat-box-tag red">
-              <ShieldAlert size={16} /> Risco de Queda
+              <ShieldAlert size={16} /> Risco de Queda do Clube
             </span>
-            <strong className="stat-percent red-text">
-              {data.hasSafetyData ? `${data.chanceDeQueda}%` : '—'}
-            </strong>
+            <strong className="stat-percent red-text">{data.chanceDeQueda}%</strong>
           </div>
-          <h3>Posição {data.categoryPosition}º de {data.categoryTotalTeams} no Grupo</h3>
+          <h3>Permanência do AD Suzano</h3>
           <div className="stat-box-details">
             <div>
-              <span>Pontos na tabela:</span>
-              <strong>{data.categoryPoints} pts</strong>
+              <span>Referencial de segurança:</span>
+              <strong>{data.clubSafetyBenchmarkPoints} pts</strong>
             </div>
             <div>
-              <span>Saldo de gols:</span>
-              <strong className="warning-text">{data.categoryGoalDiff >= 0 ? '+' : ''}{data.categoryGoalDiff}</strong>
+              <span>Falta no clube:</span>
+              <strong className="warning-text">+{data.clubShortfallToSafety} pts</strong>
             </div>
           </div>
         </div>
@@ -115,51 +116,44 @@ export function CategoryEfficiencyHeader({ category }) {
         </div>
       </div>
 
-      {/* Metas Explícitas de Pontos: Mínimo / Ideal / Perfeito */}
-      {data.hasSafetyData && (
-        <div className="points-target-banner">
-          <div className="points-target-heading">
-            <Target size={18} className="target-icon" />
-            <strong>Metas de Pontos do {data.categoryLabel} nos {data.categoryRemainingGames} Jogos Restantes</strong>
-            <button type="button" className="formula-open-btn" onClick={() => setShowFormula(true)}>
-              <Calculator size={14} /> Ver Fórmula de Cálculo
-            </button>
+      {/* Cota de Contribuição desta Categoria (isso sim varia por categoria) */}
+      <div className="points-target-banner">
+        <div className="points-target-heading">
+          <Target size={18} className="target-icon" />
+          <strong>Cota de Contribuição do {data.categoryLabel} nos {data.categoryRemainingGames} Jogos Restantes</strong>
+          <button type="button" className="formula-open-btn" onClick={() => setShowFormula(true)}>
+            <Calculator size={14} /> Ver Fórmula de Cálculo
+          </button>
+        </div>
+        <div className="points-target-grid">
+          <div className="points-target-item tier-minimo">
+            <span className="tier-label">Mínimo</span>
+            <strong className="tier-value">+{data.pointsNeededMinimo} pts</strong>
+            <p>Cota real desta categoria para o clube alcançar o referencial de segurança ({data.clubSafetyBenchmarkPoints} pts agregados).</p>
           </div>
-          <div className="points-target-grid">
-            <div className="points-target-item tier-minimo">
-              <span className="tier-label">Mínimo</span>
-              <strong className="tier-value">+{data.pointsNeededMinimo} pts</strong>
-              <p>
-                Cota real para ajudar o clube a não cair (Art. 135º é coletivo: o maior valor entre
-                escapar da própria zona de risco no grupo e a cota proporcional junto às outras 7 categorias).
-              </p>
-            </div>
-            <div className="points-target-item tier-ideal">
-              <span className="tier-label">Ideal</span>
-              <strong className="tier-value">+{data.pointsNeededIdeal} pts</strong>
-              <p>Para alcançar o meio de tabela, igualando {data.midTeamName} ({data.midTablePoints} pts).</p>
-            </div>
-            <div className="points-target-item tier-perfeito">
-              <span className="tier-label">Perfeito</span>
-              <strong className="tier-value">+{data.pointsNeededPerfeito} pts</strong>
-              <p>Para alcançar o líder {data.leaderTeam} ({data.leaderPoints} pts) e brigar pelo título.</p>
-            </div>
+          <div className="points-target-item tier-ideal">
+            <span className="tier-label">Ideal</span>
+            <strong className="tier-value">+{data.pointsNeededIdeal} pts</strong>
+            <p>Cota desta categoria para o clube alcançar o meio de tabela agregado ({data.clubMidBenchmarkPoints} pts).</p>
+          </div>
+          <div className="points-target-item tier-perfeito">
+            <span className="tier-label">Perfeito</span>
+            <strong className="tier-value">+{data.pointsNeededPerfeito} pts</strong>
+            <p>Cota desta categoria para o clube brigar pelo acesso ({data.clubTitleBenchmarkPoints} pts agregados).</p>
           </div>
         </div>
-      )}
+      </div>
 
       {showFormula && <EfficiencyFormulaModal data={data} onClose={() => setShowFormula(false)} />}
 
-      {/* Banner Explícito de Risco de Queda */}
-      {data.relegationRiskSentence && (
-        <div className="relegation-risk-banner">
-          <ShieldAlert size={20} className="risk-icon" />
-          <div>
-            <strong>Risco de Queda no Grupo</strong>
-            <p>{data.relegationRiskSentence}</p>
-          </div>
+      {/* Banner Explícito de Risco de Queda (do clube) */}
+      <div className="relegation-risk-banner">
+        <ShieldAlert size={20} className="risk-icon" />
+        <div>
+          <strong>Risco de Queda do AD Suzano (Art. 135º)</strong>
+          <p>{data.relegationRiskSentence}</p>
         </div>
-      )}
+      </div>
 
       {/* Banner Alerta Realista */}
       <div className="realism-alert-box">
@@ -191,13 +185,9 @@ export function CategoryEfficiencyHeader({ category }) {
           </div>
 
           <div className="coach-target-item promote-target">
-            <span className="target-label">PARA BRIGAR PELO TÍTULO DO GRUPO:</span>
+            <span className="target-label">COTA MÍNIMA PARA AJUDAR O CLUBE:</span>
             <strong className="target-value">
-              {isTitleImpossible
-                ? 'Matematicamente descartado'
-                : data.isLeader
-                  ? 'Manter o ritmo atual'
-                  : `Vencer ao menos ${data.winsNeededForTitle} jogo${data.winsNeededForTitle === 1 ? '' : 's'} a mais que o rival`}
+              +{data.pointsNeededMinimo} pts ({data.winsNeededMinimo} vitória{data.winsNeededMinimo === 1 ? '' : 's'} ou combinações)
             </strong>
             <p>{data.categoryReasoning}</p>
           </div>
@@ -222,39 +212,32 @@ export function CategoryEfficiencyHeader({ category }) {
               <strong>Artigo 135º do Regulamento Geral de Competições FPFS 2026:</strong> Nas categorias de
               Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao Sub-18), o acesso e descenso entre as séries A1,
               A2 e A3 é apurado pelo <em>Ranking de Eficiência Anual do clube</em> — a soma da pontuação de
-              todas as categorias, não a tabela de uma categoria isolada. As duas últimas colocações da
-              série caem e as duas primeiras sobem na temporada seguinte.
+              todas as categorias. As duas últimas colocações da série caem e as duas primeiras sobem na
+              temporada seguinte, e isso vale para o clube inteiro, não para uma categoria isolada.
             </p>
             <ul>
               <li>
-                <strong>Por que usamos a tabela da própria categoria para as metas de pontos:</strong> a
-                classificação combinada entre clubes (a que decide oficialmente o Art. 135º) não é publicada
-                pela FPFS. Por isso calculamos mínimo/ideal/perfeito comparando o {data.categoryLabel} com
-                adversários reais e verificáveis dentro do seu próprio grupo — a mesma lógica de "2 últimas
-                caem, 2 primeiras sobem" aplicada à tabela que temos disponível.
+                <strong>Por que a % de risco/acesso é igual em todas as categorias:</strong> porque o Art. 135º
+                trata o clube como uma unidade só. Mostrar percentuais diferentes por categoria (uma com 3%,
+                outra com 40%) contradiz a regra — por isso unificamos em um único número, o mesmo em
+                qualquer aba do site.
               </li>
               <li>
-                <strong>Cota coletiva (Art. 135º):</strong> a queda e o acesso são do clube inteiro, não de
-                uma categoria isolada — "se uma categoria cair, caem todas". Por isso o mínimo de cada
-                categoria nunca é zero enquanto houver jogos: mesmo quem está bem na própria tabela recebe
-                uma cota proporcional para ajudar a manter o índice agregado do clube. Toque em "Ver Fórmula
-                de Cálculo" para ver a conta completa desta categoria.
+                <strong>Por que a classificação oficial exata não aparece:</strong> a FPFS não publica a
+                classificação combinada entre clubes. Por isso usamos referenciais REAIS construídos a partir
+                da própria tabela de cada categoria (linha de segurança, meio de tabela e líder de cada
+                grupo, somados nas 8 categorias) — é a aproximação mais honesta possível sem esse dado
+                oficial. Toque em "Ver Fórmula de Cálculo" para a conta completa.
+              </li>
+              <li>
+                <strong>Cota de contribuição por categoria:</strong> o que falta no clube é dividido entre as
+                8 categorias, proporcional aos jogos que cada uma ainda tem pela frente — por isso o
+                {' '}{data.categoryLabel} tem uma cota própria de pontos, mesmo com a % de risco sendo do clube.
               </li>
               <li>
                 <strong>Índice do clube:</strong> soma de pontos ({data.clubPoints}) dividida pelo total de
                 pontos possíveis nos jogos já disputados ({data.clubPlayed} jogos × 3 pts) = {data.clubEfficiencyPercent}%
                 de aproveitamento real.
-              </li>
-              <li>
-                <strong>Chance de título e risco de queda:</strong> calculados comparando quantos pontos
-                faltam para o líder (título) ou para a linha de segurança (risco) com o total de pontos
-                ainda em disputa nos jogos restantes. São estimativas transparentes, não probabilidades
-                estatísticas oficiais da FPFS.
-              </li>
-              <li>
-                <strong>Pontos a Disputar:</strong> cada jogo vale 3 pontos. No {data.categoryLabel}, restam{' '}
-                {data.categoryRemainingGames} jogos ({data.categoryRemainingPoints} pts). No clube inteiro
-                (8 categorias), restam {data.clubRemainingGames} jogos ({data.clubRemainingPoints} pts).
               </li>
             </ul>
           </div>
