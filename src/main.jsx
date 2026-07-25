@@ -257,7 +257,6 @@ function CategoryDashboard({ category, fpfsData }) {
 
   return (
     <section className="category-shell">
-      <CategoryEfficiencyHeader category={category} />
       <div className="category-main">
         <section className="panel category-intro">
           <div className="section-title">
@@ -287,6 +286,8 @@ function CategoryDashboard({ category, fpfsData }) {
             </div>
           </div>
         </section>
+
+        <CategoryEfficiencyHeader category={category} />
 
         <CategoryGamesPanel
           title="Próximos jogos"
@@ -354,7 +355,6 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 
   return (
     <>
-      <CategoryEfficiencyHeader category={category} />
       <section className="category-overview">
         <section className="panel category-intro">
           <div className="section-title">
@@ -384,6 +384,8 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
             </div>
           </div>
         </section>
+
+        <CategoryEfficiencyHeader category={category} />
       </section>
 
       <section className="content-grid category-complete-grid">
