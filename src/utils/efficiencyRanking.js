@@ -186,6 +186,7 @@ export function calculateCategoryEfficiency(categoryObj) {
   // Agregado real do clube (soma de todas as 8 categorias de Iniciação/Base)
   // -----------------------------------------------------------------
   const allCategoriesData = ALL_LABELS.map(getRealCategoryData).filter(Boolean);
+  const allSafetyData = allCategoriesData.map((c) => ({ c, safety: computeSafetyTargets(c) }));
   const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
   const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
   const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
@@ -198,6 +199,39 @@ export function calculateCategoryEfficiency(categoryObj) {
 
   // Quanto a categoria já contribuiu e ainda pode contribuir para o índice do clube.
   const categoryShareOfClubPoints = clubPoints > 0 ? Math.round((cat.points / clubPoints) * 1000) / 10 : 0;
+
+  // -----------------------------------------------------------------
+  // Cota coletiva (Art. 135º: acesso/descenso é do CLUBE, não de uma categoria isolada — todas
+  // as categorias ajudam, mesmo as que já estão bem na própria tabela).
+  //
+  // Referencial real de segurança do clube = soma das "linhas de segurança" REAIS de cada uma das
+  // 8 categorias (o ponto de corte real de cada grupo, tirado da tabela oficial). Se o clube ainda
+  // não alcançou essa soma, o que falta é dividido entre as categorias, proporcional aos jogos que
+  // cada uma ainda tem pela frente (quem tem mais jogos consegue contribuir mais).
+  // -----------------------------------------------------------------
+  const clubSafetyBenchmarkPoints = allSafetyData.reduce((sum, x) => sum + (x.safety?.safetyLinePoints ?? 0), 0);
+  const clubShortfallToSafety = Math.max(0, clubSafetyBenchmarkPoints - clubPoints);
+
+  let categoryCollectiveMinimo;
+  if (clubShortfallToSafety > 0 && clubRemainingGames > 0) {
+    categoryCollectiveMinimo = Math.round(clubShortfallToSafety * (cat.remainingGames / clubRemainingGames));
+  } else if (cat.remainingGames > 0 && cat.played > 0) {
+    // O clube já bate o referencial agregado de segurança: mesmo assim, ninguém fica de fora —
+    // cada categoria deve ao menos sustentar o próprio ritmo atual (pts por jogo) nos jogos que restam,
+    // para não puxar o índice coletivo do clube para baixo.
+    categoryCollectiveMinimo = Math.round(cat.remainingGames * (cat.points / cat.played));
+  } else {
+    categoryCollectiveMinimo = 0;
+  }
+
+  const pointsNeededMinimo = safety
+    ? Math.max(safety.pointsNeededMinimo, categoryCollectiveMinimo)
+    : categoryCollectiveMinimo;
+
+  // Risco de queda continua medindo só a posição REAL desta categoria na própria tabela (não
+  // conflita com a cota coletiva — ajudar o clube é uma responsabilidade extra, não um sinal de
+  // que a categoria está mal posicionada no seu próprio grupo).
+  const chanceDeQueda = safety?.chanceDeQueda ?? null;
 
   return {
     categoryLabel: label,
@@ -232,11 +266,17 @@ export function calculateCategoryEfficiency(categoryObj) {
     safetyTeamName: safety?.safetyTeamName ?? null,
     midTablePoints: safety?.midTablePoints ?? null,
     midTeamName: safety?.midTeamName ?? null,
-    pointsNeededMinimo: safety?.pointsNeededMinimo ?? null,
+    ownGroupPointsNeededMinimo: safety?.pointsNeededMinimo ?? null,
+    pointsNeededMinimo,
     pointsNeededIdeal: safety?.pointsNeededIdeal ?? null,
     pointsNeededPerfeito: safety?.pointsNeededPerfeito ?? null,
     isRelegationMathematicallyLocked: safety?.isRelegationMathematicallyLocked ?? false,
-    chanceDeQueda: safety?.chanceDeQueda ?? null,
+    chanceDeQueda,
+
+    // Cota coletiva (Art. 135º é do clube, não da categoria isolada) — números para a fórmula
+    clubSafetyBenchmarkPoints,
+    clubShortfallToSafety,
+    categoryCollectiveMinimo,
 
     // Índice real agregado do clube (soma das 8 categorias) — base do Ranking de Eficiência Anual
     clubPoints,
@@ -258,14 +298,17 @@ export function calculateCategoryEfficiency(categoryObj) {
 
     // Linha explícita de meta de pontos (mínimo / ideal / perfeito) para o treinador
     pointsTargetSentence: safety
-      ? `O ${label} precisa fazer no mínimo +${safety.pointsNeededMinimo} pts (igualar ${safety.safetyTeamName}, ${safety.safetyLinePoints} pts, fora da zona de risco), ideal +${safety.pointsNeededIdeal} pts (alcançar ${safety.midTeamName}, ${safety.midTablePoints} pts, meio de tabela) e perfeito +${safety.pointsNeededPerfeito} pts (alcançar o líder ${cat.leaderTeam ?? ''}, ${cat.leaderPoints} pts, e brigar pelo título).`
+      ? `O ${label} precisa fazer no mínimo +${pointsNeededMinimo} pts nos jogos restantes (o maior valor entre escapar da própria zona de risco do grupo e a cota coletiva para ajudar o clube, Art. 135º), ideal +${safety.pointsNeededIdeal} pts (alcançar ${safety.midTeamName}, ${safety.midTablePoints} pts, meio de tabela) e perfeito +${safety.pointsNeededPerfeito} pts (alcançar o líder ${cat.leaderTeam ?? ''}, ${cat.leaderPoints} pts, e brigar pelo título).`
       : null,
 
-    // Linha explícita de risco: "com menos pontos que o mínimo, a chance de queda é de XX%"
+    // Linha explícita de risco: separa risco REAL na própria tabela da cota coletiva do clube,
+    // para não misturar "está em risco no grupo" com "precisa ajudar o clube" (são coisas diferentes).
     relegationRiskSentence: safety
       ? safety.isRelegationMathematicallyLocked
-        ? `O ${label} já não alcança mais matematicamente a linha de segurança do grupo (${safety.safetyLinePoints} pts de ${safety.safetyTeamName}) mesmo vencendo todos os jogos restantes: risco de queda de 100%.`
-        : `Ficando abaixo do mínimo de +${safety.pointsNeededMinimo} pts, a chance de queda do ${label} para a zona de risco do grupo é de ${safety.chanceDeQueda}%.`
+        ? `O ${label} já não alcança mais matematicamente a linha de segurança do grupo (${safety.safetyLinePoints} pts de ${safety.safetyTeamName}) mesmo vencendo todos os jogos restantes: risco de queda de 100% na própria tabela.`
+        : safety.pointsNeededMinimo > 0
+          ? `Ficando abaixo do mínimo de +${safety.pointsNeededMinimo} pts na própria tabela, a chance de queda do ${label} para a zona de risco do grupo é de ${chanceDeQueda}%.`
+          : `O ${label} está seguro na própria tabela hoje (risco real de queda no grupo: ${chanceDeQueda}%). Mesmo assim, para cumprir a cota coletiva do Art. 135º e ajudar o clube, precisa somar pelo menos +${pointsNeededMinimo} pts nos jogos restantes.`
       : null,
   };
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   AlertTriangle,
+  Calculator,
   ChevronDown,
   ChevronUp,
   HelpCircle,
@@ -10,9 +11,11 @@ import {
   Trophy,
 } from 'lucide-react';
 import { calculateCategoryEfficiency } from '../utils/efficiencyRanking';
+import { EfficiencyFormulaModal } from './EfficiencyFormulaModal';
 
 export function CategoryEfficiencyHeader({ category }) {
   const [showDetails, setShowDetails] = useState(false);
+  const [showFormula, setShowFormula] = useState(false);
   const data = calculateCategoryEfficiency(category);
 
   if (!data.hasData) {
@@ -118,12 +121,18 @@ export function CategoryEfficiencyHeader({ category }) {
           <div className="points-target-heading">
             <Target size={18} className="target-icon" />
             <strong>Metas de Pontos do {data.categoryLabel} nos {data.categoryRemainingGames} Jogos Restantes</strong>
+            <button type="button" className="formula-open-btn" onClick={() => setShowFormula(true)}>
+              <Calculator size={14} /> Ver Fórmula de Cálculo
+            </button>
           </div>
           <div className="points-target-grid">
             <div className="points-target-item tier-minimo">
               <span className="tier-label">Mínimo</span>
               <strong className="tier-value">+{data.pointsNeededMinimo} pts</strong>
-              <p>Para escapar da zona de risco, igualando {data.safetyTeamName} ({data.safetyLinePoints} pts).</p>
+              <p>
+                Cota real para ajudar o clube a não cair (Art. 135º é coletivo: o maior valor entre
+                escapar da própria zona de risco no grupo e a cota proporcional junto às outras 7 categorias).
+              </p>
             </div>
             <div className="points-target-item tier-ideal">
               <span className="tier-label">Ideal</span>
@@ -138,6 +147,8 @@ export function CategoryEfficiencyHeader({ category }) {
           </div>
         </div>
       )}
+
+      {showFormula && <EfficiencyFormulaModal data={data} onClose={() => setShowFormula(false)} />}
 
       {/* Banner Explícito de Risco de Queda */}
       {data.relegationRiskSentence && (
@@ -221,6 +232,13 @@ export function CategoryEfficiencyHeader({ category }) {
                 pela FPFS. Por isso calculamos mínimo/ideal/perfeito comparando o {data.categoryLabel} com
                 adversários reais e verificáveis dentro do seu próprio grupo — a mesma lógica de "2 últimas
                 caem, 2 primeiras sobem" aplicada à tabela que temos disponível.
+              </li>
+              <li>
+                <strong>Cota coletiva (Art. 135º):</strong> a queda e o acesso são do clube inteiro, não de
+                uma categoria isolada — "se uma categoria cair, caem todas". Por isso o mínimo de cada
+                categoria nunca é zero enquanto houver jogos: mesmo quem está bem na própria tabela recebe
+                uma cota proporcional para ajudar a manter o índice agregado do clube. Toque em "Ver Fórmula
+                de Cálculo" para ver a conta completa desta categoria.
               </li>
               <li>
                 <strong>Índice do clube:</strong> soma de pontos ({data.clubPoints}) dividida pelo total de

@@ -2578,11 +2578,147 @@ input {
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .points-target-heading strong {
   font-size: 15px;
   color: #f8fafc;
+  flex: 1;
+}
+
+.formula-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(59, 111, 208, 0.16);
+  border: 1px solid rgba(110, 161, 242, 0.35);
+  color: var(--eff-blue-bright);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.formula-open-btn:hover {
+  background: rgba(59, 111, 208, 0.28);
+}
+
+/* Modal de Fórmula de Cálculo */
+.formula-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 12, 31, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.formula-modal {
+  background: linear-gradient(150deg, #0b1f42 0%, #091a38 100%);
+  border: 1px solid rgba(110, 161, 242, 0.25);
+  border-radius: 16px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  color: #f8fafc;
+}
+
+.formula-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.formula-modal-header strong {
+  font-size: 15px;
+}
+
+.formula-modal-close {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: #cbd5e1;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formula-modal-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.formula-modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  display: grid;
+  gap: 18px;
+}
+
+.formula-modal-body h4 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--eff-blue-bright, #6ea1f2);
+  margin: 0 0 8px;
+}
+
+.formula-code {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: "SF Mono", "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.formula-note {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+
+.formula-modal-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formula-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--red), #a8161f);
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(217, 35, 50, 0.35);
+}
+
+.formula-download-btn:hover {
+  filter: brightness(1.08);
 }
 
 .points-target-grid {
