@@ -216,24 +216,36 @@ export function calculateCategoryEfficiency(categoryObj) {
   // -----------------------------------------------------------------
   // Cota de contribuição desta categoria (isso sim varia por categoria: cada uma tem jogos e
   // situação diferentes, mas todas ajudam o MESMO objetivo coletivo do clube).
+  //
+  // IMPORTANTE: nenhuma cota pode passar do que a categoria consegue matematicamente fazer nos
+  // jogos que restam (remainingPoints = jogos restantes × 3). Uma categoria com 3 jogos nunca
+  // pode ter cota de +10 pts — o teto real é +9 (3 vitórias). Por isso tudo abaixo é limitado por
+  // Math.min(cat.remainingPoints, ...).
   // -----------------------------------------------------------------
-  let categoryMinimo;
+  let categoryMinimoRaw;
   if (club.clubShortfallToSafety > 0 && club.clubRemainingGames > 0) {
-    categoryMinimo = Math.round(club.clubShortfallToSafety * (cat.remainingGames / club.clubRemainingGames));
+    categoryMinimoRaw = Math.round(club.clubShortfallToSafety * (cat.remainingGames / club.clubRemainingGames));
   } else if (cat.remainingGames > 0 && cat.played > 0) {
     // O clube já bate o referencial agregado de segurança: mesmo assim ninguém fica de fora —
     // cada categoria sustenta ao menos o próprio ritmo atual (pts/jogo) nos jogos restantes.
-    categoryMinimo = Math.round(cat.remainingGames * (cat.points / cat.played));
+    categoryMinimoRaw = Math.round(cat.remainingGames * (cat.points / cat.played));
   } else {
-    categoryMinimo = 0;
+    categoryMinimoRaw = 0;
   }
 
-  const categoryIdeal = club.clubRemainingGames > 0
+  const categoryIdealRaw = club.clubRemainingGames > 0
     ? Math.round(club.clubShortfallToIdeal * (cat.remainingGames / club.clubRemainingGames))
     : 0;
-  const categoryPerfeito = club.clubRemainingGames > 0
+  const categoryPerfeitoRaw = club.clubRemainingGames > 0
     ? Math.round(club.clubShortfallToTitle * (cat.remainingGames / club.clubRemainingGames))
     : 0;
+
+  // Teto real: o que a categoria consegue matematicamente nos jogos restantes.
+  const categoryMinimo = Math.min(cat.remainingPoints, categoryMinimoRaw);
+  // Ideal e perfeito nunca podem ficar abaixo do mínimo (a ordem tem que fazer sentido) nem
+  // acima do teto real.
+  const categoryIdeal = Math.min(cat.remainingPoints, Math.max(categoryMinimo, categoryIdealRaw));
+  const categoryPerfeito = Math.min(cat.remainingPoints, Math.max(categoryIdeal, categoryPerfeitoRaw));
 
   const winsNeededMinimo = categoryMinimo > 0 ? Math.ceil(categoryMinimo / 3) : 0;
 
@@ -295,7 +307,9 @@ export function calculateCategoryEfficiency(categoryObj) {
 
     realismAlert: `O AD Suzano (soma das 8 categorias de Iniciação/Base) tem ${club.clubPoints} pts em ${club.clubPlayed} jogos, ${club.clubEfficiencyPercent}% de aproveitamento. Risco de queda do CLUBE: ${club.clubChanceDeQueda}%. Chance de acesso do CLUBE: ${club.clubChanceDeTitulo}%. Essa leitura é do clube inteiro (Art. 135º) — a mesma em todas as categorias, porque quem sobe ou cai é o AD Suzano como um todo, nunca uma categoria isolada.`,
 
-    pointsTargetSentence: `O ${label} precisa fazer no mínimo +${categoryMinimo} pts (cota real de ajuda ao clube nos ${cat.remainingGames} jogos restantes), ideal +${categoryIdeal} pts, e perfeito +${categoryPerfeito} pts para puxar o clube rumo ao acesso.`,
+    pointsTargetSentence: club.isClubTitleMathLocked
+      ? `O ${label} precisa fazer no mínimo +${categoryMinimo} pts (cota real de ajuda ao clube nos ${cat.remainingGames} jogos restantes) e ideal +${categoryIdeal} pts. O acesso já está matematicamente fora de alcance para o clube — o foco real é a permanência.`
+      : `O ${label} precisa fazer no mínimo +${categoryMinimo} pts (cota real de ajuda ao clube nos ${cat.remainingGames} jogos restantes), ideal +${categoryIdeal} pts, e perfeito +${categoryPerfeito} pts para puxar o clube rumo ao acesso.`,
 
     relegationRiskSentence: club.isClubRelegationMathLocked
       ? `O AD Suzano já não alcança mais matematicamente o referencial de segurança (${club.clubSafetyBenchmarkPoints} pts agregados) mesmo vencendo tudo que resta: risco de queda de 100%.`

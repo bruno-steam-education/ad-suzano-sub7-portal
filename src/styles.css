@@ -2475,6 +2475,13 @@ input {
   color: #f1f5f9;
 }
 
+.stat-box-footnote {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #64748b;
+}
+
 /* Coaching Directive Banner */
 .coach-directive-banner {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));

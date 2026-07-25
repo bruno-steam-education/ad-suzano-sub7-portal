@@ -67,15 +67,17 @@ CHANCE DE ACESSO DO CLUBE = ${data.chanceDeCampeao}%</div>
   </table>
 
   <h2>3. Cota de Contribuição do ${data.categoryLabel}</h2>
-  <div class="formula-box">Cota do ${data.categoryLabel} = falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube)
+  <div class="formula-box">Cota do ${data.categoryLabel} = MIN( pontos_possíveis_na_categoria , falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube) )
+  pontos_possíveis_na_categoria = ${data.categoryRemainingGames} jogos × 3 = ${data.categoryRemainingPoints} pts (teto real — não dá pra passar disso)
 
-Mínimo  = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
-Ideal   = ${data.clubShortfallToIdeal} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
-Perfeito= ${data.clubShortfallToTitle} × (${data.categoryRemainingGames} / ${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts</div>
+Mínimo   = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToSafety} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
+Ideal    = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToIdeal} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
+Perfeito = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToTitle} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts</div>
   <p class="note">
     Quando o clube já bate o referencial agregado de segurança (falta = 0), a cota mínima passa a ser
     "sustentar o próprio ritmo atual (pts por jogo)" nos jogos restantes, para que a categoria não puxe o
-    índice do clube para baixo.
+    índice do clube para baixo. Nenhuma cota nunca passa do teto real (jogos restantes × 3 pts).
+    ${data.isClubTitleMathLocked ? `<br/><strong>Acesso matematicamente fora de alcance:</strong> mesmo toda categoria fazendo o máximo possível, o clube não chega aos ${data.clubTitleBenchmarkPoints} pts necessários (máximo possível do clube: ${data.clubPoints + data.clubRemainingPoints} pts). O "Perfeito" aqui é só o teto real desta categoria, não uma meta alcançável para o título.` : ''}
   </p>
 
   <div class="footer">
@@ -129,11 +131,20 @@ CHANCE DE ACESSO DO CLUBE = ${data.chanceDeCampeao}%`}</pre>
 
           <section>
             <h4>2. Cota de Contribuição do {data.categoryLabel}</h4>
-            <pre className="formula-code">{`Cota = falta_no_clube × (jogos_restantes_categoria / jogos_restantes_clube)
+            <pre className="formula-code">{`Cota = MIN(teto_real, falta_no_clube × jogos_restantes_categoria / jogos_restantes_clube)
+teto_real = ${data.categoryRemainingGames} jogos × 3 = ${data.categoryRemainingPoints} pts
 
-Mínimo   = ${data.clubShortfallToSafety} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
-Ideal    = ${data.clubShortfallToIdeal} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
-Perfeito = ${data.clubShortfallToTitle} × (${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts`}</pre>
+Mínimo   = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToSafety} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededMinimo} pts
+Ideal    = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToIdeal} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededIdeal} pts
+Perfeito = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToTitle} × ${data.categoryRemainingGames}/${data.clubRemainingGames}) = ${data.pointsNeededPerfeito} pts`}</pre>
+            {data.isClubTitleMathLocked && (
+              <p className="formula-note">
+                Acesso matematicamente fora de alcance para o clube: mesmo todas as categorias no
+                máximo, o clube não chega aos {data.clubTitleBenchmarkPoints} pts necessários (máximo
+                possível: {data.clubPoints + data.clubRemainingPoints} pts). "Perfeito" aqui é o teto
+                real desta categoria, não uma meta alcançável de título.
+              </p>
+            )}
           </section>
 
           <section>

@@ -87,11 +87,23 @@ export function CategoryEfficiencyHeader({ category }) {
               <span>Referencial de segurança:</span>
               <strong>{data.clubSafetyBenchmarkPoints} pts</strong>
             </div>
-            <div>
-              <span>Falta no clube:</span>
-              <strong className="warning-text">+{data.clubShortfallToSafety} pts</strong>
-            </div>
+            {data.clubShortfallToSafety > 0 ? (
+              <div>
+                <span>Falta no clube:</span>
+                <strong className="warning-text">+{data.clubShortfallToSafety} pts</strong>
+              </div>
+            ) : (
+              <div>
+                <span>Folga do clube:</span>
+                <strong className="warning-text">+{data.clubSafetyMarginPoints} pts</strong>
+              </div>
+            )}
           </div>
+          <p className="stat-box-footnote">
+            {data.clubShortfallToSafety > 0
+              ? 'O risco cai conforme o clube fecha essa distância.'
+              : `O risco nunca chega a 0% — é um piso mínimo de imprevisibilidade (jogo é jogo), mesmo com ${data.clubSafetyMarginPoints} pts de folga.`}
+          </p>
         </div>
 
         {/* Card Pontos a Disputar */}
@@ -138,8 +150,14 @@ export function CategoryEfficiencyHeader({ category }) {
           </div>
           <div className="points-target-item tier-perfeito">
             <span className="tier-label">Perfeito</span>
-            <strong className="tier-value">+{data.pointsNeededPerfeito} pts</strong>
-            <p>Cota desta categoria para o clube brigar pelo acesso ({data.clubTitleBenchmarkPoints} pts agregados).</p>
+            <strong className="tier-value">
+              {data.isClubTitleMathLocked ? 'Máximo possível' : `+${data.pointsNeededPerfeito} pts`}
+            </strong>
+            <p>
+              {data.isClubTitleMathLocked
+                ? `+${data.pointsNeededPerfeito} pts é o máximo que o ${data.categoryLabel} pode somar aqui — mesmo TODAS as categorias fazendo o máximo, o clube não alcança mais o acesso (${data.clubTitleBenchmarkPoints} pts agregados são matematicamente inatingíveis). O foco real é a permanência.`
+                : `Cota desta categoria para o clube brigar pelo acesso (${data.clubTitleBenchmarkPoints} pts agregados).`}
+            </p>
           </div>
         </div>
       </div>
