@@ -2337,9 +2337,55 @@ input {
   background: linear-gradient(160deg, rgba(34, 197, 94, 0.08), rgba(15, 23, 42, 0.7));
 }
 
+.efficiency-stat-box.highlight-impossible {
+  border-color: rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.4);
+}
+
 .efficiency-stat-box.highlight-risk {
   border-color: rgba(239, 68, 68, 0.4);
   background: linear-gradient(160deg, rgba(239, 68, 68, 0.08), rgba(15, 23, 42, 0.7));
+}
+
+.stat-box-tag.gray {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+}
+
+.gray-text {
+  color: #94a3b8;
+}
+
+/* Realism Alert Box */
+.realism-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(239, 68, 68, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.realism-alert-box .alert-icon {
+  color: #f59e0b;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.realism-alert-box strong {
+  display: block;
+  font-size: 14px;
+  color: #fef08a;
+  margin-bottom: 4px;
+}
+
+.realism-alert-box p {
+  font-size: 13px;
+  color: #e2e8f0;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .stat-box-header {

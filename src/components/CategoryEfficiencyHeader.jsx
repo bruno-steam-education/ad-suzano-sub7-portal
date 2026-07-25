@@ -17,8 +17,8 @@ export function CategoryEfficiencyHeader({ category }) {
   const [showDetails, setShowDetails] = useState(false);
   const data = calculateCategoryEfficiency(category);
 
-  const isHighRisk = data.chanceDeCair >= 30;
-  const isHighAccess = data.chanceDeSubir >= 40;
+  const isHighRisk = data.chanceDeCair >= 25;
+  const isAccessImpossible = data.chanceDeSubir <= 5;
 
   return (
     <section className="panel efficiency-header-card" aria-label="Ranking de Eficiência FPFS">
@@ -29,7 +29,7 @@ export function CategoryEfficiencyHeader({ category }) {
             FPFS Regulamento Art. 135º
           </span>
           <span className="efficiency-rule-chip">
-            Ranking de Eficiência Anual (Se um sobe, sobem todos; se cai, caem todos)
+            Ranking de Eficiência Anual ({data.isInitiation ? 'Iniciação Sub-7 ao Sub-10' : 'Base Sub-12 ao Sub-18'})
           </span>
         </div>
         <div className="efficiency-club-rank">
@@ -41,12 +41,12 @@ export function CategoryEfficiencyHeader({ category }) {
 
       <div className="efficiency-main-grid">
         {/* Card Chance de Subir */}
-        <div className={`efficiency-stat-box access-box ${isHighAccess ? 'highlight-access' : ''}`}>
+        <div className={`efficiency-stat-box access-box ${isAccessImpossible ? 'highlight-impossible' : ''}`}>
           <div className="stat-box-header">
-            <span className="stat-box-tag green">
+            <span className="stat-box-tag gray">
               <ArrowUpRight size={16} /> Acesso A1
             </span>
-            <strong className="stat-percent green-text">{data.chanceDeSubir}%</strong>
+            <strong className="stat-percent gray-text">{data.chanceDeSubir}%</strong>
           </div>
           <h3>Chance de Subir</h3>
           <div className="stat-box-details">
@@ -56,7 +56,7 @@ export function CategoryEfficiencyHeader({ category }) {
             </div>
             <div>
               <span>Faltam no Clube:</span>
-              <strong className="accent-text">+{data.pointsNeededToPromote} pts</strong>
+              <strong className="gray-text">+{data.pointsNeededToPromote} pts</strong>
             </div>
           </div>
         </div>
@@ -93,8 +93,8 @@ export function CategoryEfficiencyHeader({ category }) {
           <h3>Nesta Categoria ({data.categoryLabel})</h3>
           <div className="stat-box-details">
             <div>
-              <span>Jogos da Categoria:</span>
-              <strong>{data.categoryRemainingGames} restantes</strong>
+              <span>Jogos Restantes ({data.categoryLabel}):</span>
+              <strong>{data.categoryRemainingGames} jogos</strong>
             </div>
             <div>
               <span>Total no Clube:</span>
@@ -104,13 +104,22 @@ export function CategoryEfficiencyHeader({ category }) {
         </div>
       </div>
 
+      {/* Banner Alerta Realista */}
+      <div className="realism-alert-box">
+        <AlertTriangle size={20} className="alert-icon" />
+        <div>
+          <strong>Análise Estatística 100% Realista (Art. 135º)</strong>
+          <p>{data.realismAlert}</p>
+        </div>
+      </div>
+
       {/* Caixa de Diretriz para o Treinador */}
       <div className="coach-directive-banner">
         <div className="coach-directive-title">
           <Target size={18} className="target-icon" />
           <div>
             <strong>Meta do Treinador do {data.categoryLabel}</strong>
-            <span>Pontuação necessária nesta categoria para blindar o clube</span>
+            <span>Metas mínimas para buscar nos {data.categoryRemainingGames} jogos restantes</span>
           </div>
         </div>
 
@@ -123,7 +132,7 @@ export function CategoryEfficiencyHeader({ category }) {
 
           <div className="coach-target-item promote-target">
             <span className="target-label">Para SUBIR (Acesso A1):</span>
-            <strong className="target-value">Fazer no mínimo +{data.categoryTargetToPromote} pontos</strong>
+            <strong className="target-value">Fazer +{data.categoryTargetToPromote} pontos (Praticamente nulo)</strong>
             <p>{data.coachingAdviceToPromote}</p>
           </div>
         </div>
@@ -144,12 +153,12 @@ export function CategoryEfficiencyHeader({ category }) {
         {showDetails && (
           <div className="efficiency-accordion-content">
             <p>
-              <strong>Artigo 135º do Regulamento da FPFS:</strong> O acesso e descenso das equipes de Iniciação e Base (Sub-7 a Sub-10 e Base) é apurado pelo <em>Ranking de Eficiência Anual</em>, que soma e tira a média de rendimento de todas as categorias do clube. Por isso, a pontuação conquistada por esta categoria ({data.categoryLabel}) entra diretamente no saldo geral do AD Suzano.
+              <strong>Artigo 135º do Regulamento da FPFS:</strong> Nas categorias de Iniciação (Sub-7 a Sub-10) e Base (Sub-12 a Sub-18), o acesso e descenso é regido unicamente pelo <em>Ranking de Eficiência Anual do Clube</em>. Se uma categoria cair, caem todas; se uma subir, sobem todas.
             </p>
             <ul>
-              <li><strong>Pontos a Disputar:</strong> Cada jogo vale 3 pontos. Com {data.categoryRemainingGames} jogos restantes no {data.categoryLabel}, há {data.categoryRemainingPoints} pontos em jogo.</li>
-              <li><strong>Cálculo para Não Cair:</strong> O AD Suzano está em {data.clubPosition}º lugar com {data.clubPoints} pontos. Para sair da faixa de perigo (19º e 20º lugares), o clube precisa somar mais +{data.pointsNeededToStay} pontos no geral.</li>
-              <li><strong>Cálculo para Subir:</strong> As duas primeiras colocações da Série A2 sobem para a Série A1. A meta projetada de acesso é de {data.targetAccessPoints} pontos no total do clube.</li>
+              <li><strong>Pontos a Disputar:</strong> Cada jogo vale 3 pontos. No {data.categoryLabel}, restam {data.categoryRemainingGames} jogos ({data.categoryRemainingPoints} pts). No clube inteiro, restam {data.clubRemainingMatches} jogos ({data.clubRemainingPoints} pts).</li>
+              <li><strong>Cálculo para Não Cair:</strong> O AD Suzano está em {data.clubPosition}º lugar com {data.clubPoints} pontos. Para garantir a permanência no 17º ou 18º lugar (fora do Z2), o clube precisa somar no mínimo +{data.pointsNeededToStay} pontos no acumulado das categorias.</li>
+              <li><strong>Cálculo para Subir:</strong> A meta de acesso para a Série A1 é de {data.targetAccessPoints} pontos. Como o clube precisaria de um aproveitamento atípico de 47% nos jogos restantes, a chance de subir é de apenas 2%. Foco total na permanência.</li>
             </ul>
           </div>
         )}
