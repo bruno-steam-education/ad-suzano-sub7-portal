@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
   AlertTriangle,
-  ArrowUpRight,
-  Calculator,
   ChevronDown,
   ChevronUp,
   HelpCircle,
@@ -17,8 +15,14 @@ export function CategoryEfficiencyHeader({ category }) {
   const [showDetails, setShowDetails] = useState(false);
   const data = calculateCategoryEfficiency(category);
 
-  const isHighRisk = data.chanceDeCair >= 25;
-  const isAccessImpossible = data.chanceDeSubir <= 5;
+  if (!data.hasData) {
+    return null;
+  }
+
+  const isTitleImpossible = data.isEliminatedFromTitle;
+  const isBottomHalf = data.categoryPosition && data.categoryTotalTeams
+    ? data.categoryPosition > data.categoryTotalTeams / 2
+    : false;
 
   return (
     <section className="panel efficiency-header-card" aria-label="Ranking de Eficiência FPFS">
@@ -34,52 +38,56 @@ export function CategoryEfficiencyHeader({ category }) {
           </span>
         </div>
         <div className="efficiency-club-rank">
-          <span>Posição Atual do AD Suzano</span>
-          <strong>{data.clubPosition}º lugar</strong>
-          <small>{data.clubPoints} pts · {data.clubPlayed} jg</small>
+          <span>Índice Real do AD Suzano (soma das 8 categorias)</span>
+          <strong>{data.clubEfficiencyPercent}% de aproveitamento</strong>
+          <small>{data.clubPoints} pts · {data.clubPlayed} jg disputados</small>
         </div>
       </div>
 
       {/* Grid Principal de Status */}
       <div className="efficiency-main-grid">
-        {/* Card Chance de Subir */}
-        <div className={`efficiency-stat-box access-box ${isAccessImpossible ? 'highlight-impossible' : ''}`}>
+        {/* Card Chance de Título do Grupo */}
+        <div className={`efficiency-stat-box access-box ${isTitleImpossible ? 'highlight-impossible' : ''}`}>
           <div className="stat-box-header">
             <span className="stat-box-tag gray">
-              <ArrowUpRight size={16} /> Acesso A1
+              <Trophy size={16} /> Título do Grupo
             </span>
-            <strong className="stat-percent gray-text">{data.chanceDeSubir}%</strong>
+            <strong className="stat-percent gray-text">{data.chanceDeCampeao}%</strong>
           </div>
-          <h3>Chance de Subir</h3>
+          <h3>Chance de Ser Campeão do Grupo</h3>
           <div className="stat-box-details">
             <div>
-              <span>Meta do Clube:</span>
-              <strong>{data.targetAccessPoints} pts</strong>
+              <span>Líder do grupo:</span>
+              <strong>{data.leaderTeam ?? '—'} ({data.leaderPoints} pts)</strong>
             </div>
             <div>
-              <span>Faltam no Clube:</span>
-              <strong className="gray-text">+{data.pointsNeededToPromote} pts</strong>
+              <span>Distância para o líder:</span>
+              <strong className="gray-text">
+                {data.isLeader ? 'Está na liderança' : `+${data.pointsBehindLeader} pts`}
+              </strong>
             </div>
           </div>
         </div>
 
-        {/* Card Chance de Cair */}
-        <div className={`efficiency-stat-box risk-box ${isHighRisk ? 'highlight-risk' : ''}`}>
+        {/* Card Situação Real no Grupo */}
+        <div className={`efficiency-stat-box risk-box ${isBottomHalf ? 'highlight-risk' : ''}`}>
           <div className="stat-box-header">
             <span className="stat-box-tag red">
-              <ShieldAlert size={16} /> Risco Rebaixamento
+              <ShieldAlert size={16} /> Posição Real
             </span>
-            <strong className="stat-percent red-text">{data.chanceDeCair}%</strong>
+            <strong className="stat-percent red-text">
+              {data.categoryPosition ? `${data.categoryPosition}º` : '—'}
+            </strong>
           </div>
-          <h3>Chance de Cair</h3>
+          <h3>Situação no Grupo ({data.categoryTotalTeams} equipes)</h3>
           <div className="stat-box-details">
             <div>
-              <span>Segurança Mínima:</span>
-              <strong>{data.targetSafetyPoints} pts</strong>
+              <span>Pontos na tabela:</span>
+              <strong>{data.categoryPoints} pts</strong>
             </div>
             <div>
-              <span>Faltam no Clube p/ Não Cair:</span>
-              <strong className="warning-text">+{data.pointsNeededToStay} pts</strong>
+              <span>Saldo de gols:</span>
+              <strong className="warning-text">{data.categoryGoalDiff >= 0 ? '+' : ''}{data.categoryGoalDiff}</strong>
             </div>
           </div>
         </div>
@@ -88,7 +96,7 @@ export function CategoryEfficiencyHeader({ category }) {
         <div className="efficiency-stat-box games-box">
           <div className="stat-box-header">
             <span className="stat-box-tag blue">
-              <Calculator size={16} /> A Disputar
+              <Target size={16} /> A Disputar
             </span>
             <strong className="stat-percent blue-text">{data.categoryRemainingPoints} pts</strong>
           </div>
@@ -99,8 +107,8 @@ export function CategoryEfficiencyHeader({ category }) {
               <strong>{data.categoryRemainingGames} jogos</strong>
             </div>
             <div>
-              <span>Total no Clube:</span>
-              <strong>{data.clubRemainingPoints} pts ({data.clubRemainingMatches} jg)</strong>
+              <span>Total no Clube (8 categorias):</span>
+              <strong>{data.clubRemainingPoints} pts ({data.clubRemainingGames} jg)</strong>
             </div>
           </div>
         </div>
@@ -110,40 +118,40 @@ export function CategoryEfficiencyHeader({ category }) {
       <div className="realism-alert-box">
         <AlertTriangle size={20} className="alert-icon" />
         <div>
-          <strong>Análise Estatística 100% Realista (Art. 135º)</strong>
+          <strong>Análise Baseada em Dados Reais (Art. 135º)</strong>
           <p>{data.realismAlert}</p>
         </div>
       </div>
 
-      {/* Caixa de Diretriz e Explicação Transparente da Meta do Treinador */}
+      {/* Caixa de Diretriz e Explicação Transparente */}
       <div className="coach-directive-banner">
         <div className="coach-directive-title">
           <Target size={18} className="target-icon" />
           <div>
-            <strong>Meta Específica do Treinador do {data.categoryLabel}</strong>
-            <span>Cota calculada para esta categoria nos {data.categoryRemainingGames} jogos restantes</span>
+            <strong>Situação Real do {data.categoryLabel}</strong>
+            <span>Calculada a partir da tabela oficial FPFS nos {data.categoryRemainingGames} jogos restantes</span>
           </div>
         </div>
 
         <div className="coach-targets-grid">
           <div className="coach-target-item stay-target">
-            <span className="target-label">COTA DO {data.categoryLabel} PARA NÃO CAIR:</span>
-            <strong className="target-value">Fazer no mínimo +{data.categoryTargetToStay} pontos</strong>
-            <p>{data.coachingAdviceToStay}</p>
+            <span className="target-label">CONTRIBUIÇÃO PARA O ÍNDICE DO CLUBE:</span>
+            <strong className="target-value">{data.categoryShareOfClubPoints}% dos pontos do clube</strong>
+            <p>
+              O {data.categoryLabel} já somou {data.categoryPoints} dos {data.clubPoints} pontos que o AD Suzano
+              acumulou nas 8 categorias de Iniciação/Base até agora.
+            </p>
           </div>
 
           <div className="coach-target-item promote-target">
-            <span className="target-label">COTA PARA SUBIR (ACESSO A1):</span>
-            <strong className="target-value">Fazer +{data.categoryTargetToPromote} pontos (Descartado)</strong>
-            <p>{data.coachingAdviceToPromote}</p>
-          </div>
-        </div>
-
-        {/* Caixa de Explicação do Porquê desta Meta */}
-        <div className="category-meta-explanation">
-          <HelpCircle size={16} className="help-icon" />
-          <div>
-            <strong>Por que a meta do {data.categoryLabel} é de +{data.categoryTargetToStay} pontos?</strong>
+            <span className="target-label">PARA BRIGAR PELO TÍTULO DO GRUPO:</span>
+            <strong className="target-value">
+              {isTitleImpossible
+                ? 'Matematicamente descartado'
+                : data.isLeader
+                  ? 'Manter o ritmo atual'
+                  : `Vencer ao menos ${data.winsNeededForTitle} jogo${data.winsNeededForTitle === 1 ? '' : 's'} a mais que o rival`}
+            </strong>
             <p>{data.categoryReasoning}</p>
           </div>
         </div>
@@ -164,12 +172,34 @@ export function CategoryEfficiencyHeader({ category }) {
         {showDetails && (
           <div className="efficiency-accordion-content">
             <p>
-              <strong>Artigo 135º do Regulamento da FPFS:</strong> Nas categorias de Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao Sub-18), o acesso e descenso é apurado pelo <em>Ranking de Eficiência Anual do Clube</em>. Se uma categoria cair, caem todas; se uma subir, sobem todas.
+              <strong>Artigo 135º do Regulamento Geral de Competições FPFS 2026:</strong> Nas categorias de
+              Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao Sub-18), o acesso e descenso entre as séries A1,
+              A2 e A3 é apurado pelo <em>Ranking de Eficiência Anual do clube</em> — a soma da pontuação de
+              todas as categorias, não a tabela de uma categoria isolada. As duas últimas colocações da
+              série caem e as duas primeiras sobem na temporada seguinte.
             </p>
             <ul>
-              <li><strong>Metas Específicas por Categoria:</strong> A necessidade do clube (+18 pts) não é dividida de forma cega. Categorias mais fortes e com maior histórico (ex: Sub-7 ou Sub-12) recebem uma cota maior para puxar o saldo do AD Suzano, protegendo o clube como um todo.</li>
-              <li><strong>Pontos a Disputar:</strong> Cada jogo vale 3 pontos. No {data.categoryLabel}, restam {data.categoryRemainingGames} jogos ({data.categoryRemainingPoints} pts). No clube inteiro, restam {data.clubRemainingMatches} jogos ({data.clubRemainingPoints} pts).</li>
-              <li><strong>Cálculo para Não Cair:</strong> O AD Suzano está em {data.clubPosition}º lugar com {data.clubPoints} pontos. Para garantir a permanência no 17º ou 18º lugar (fora do Z2), o clube precisa somar no mínimo +{data.pointsNeededToStay} pontos no acumulado das categorias.</li>
+              <li>
+                <strong>Por que não mostramos a posição exata do clube entre A2:</strong> essa classificação
+                combinada depende da pontuação agregada de todos os clubes da série, e a FPFS não publica
+                essa tabela publicamente — só publicamos o que é real e verificável: a tabela de cada
+                categoria e a soma real dos pontos do AD Suzano.
+              </li>
+              <li>
+                <strong>Índice do clube:</strong> soma de pontos ({data.clubPoints}) dividida pelo total de
+                pontos possíveis nos jogos já disputados ({data.clubPlayed} jogos × 3 pts) = {data.clubEfficiencyPercent}%
+                de aproveitamento real.
+              </li>
+              <li>
+                <strong>Chance de título do grupo:</strong> calculada comparando quantos pontos faltam para
+                alcançar o líder da própria categoria com o total de pontos ainda em disputa nos jogos
+                restantes. É uma estimativa, não uma probabilidade estatística oficial da FPFS.
+              </li>
+              <li>
+                <strong>Pontos a Disputar:</strong> cada jogo vale 3 pontos. No {data.categoryLabel}, restam{' '}
+                {data.categoryRemainingGames} jogos ({data.categoryRemainingPoints} pts). No clube inteiro
+                (8 categorias), restam {data.clubRemainingGames} jogos ({data.clubRemainingPoints} pts).
+              </li>
             </ul>
           </div>
         )}

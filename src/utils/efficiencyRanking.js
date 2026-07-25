@@ -1,185 +1,209 @@
 import { fpfsCategories } from '../data/fpfsCategories';
 
 /**
- * FPFS Ranking de Eficiência Anual (Art. 135º do Regulamento)
- * Nas categorias de Iniciação (Sub-7 a Sub-10) e Base (Sub-12 a Sub-18), 
- * o acesso e descenso das equipes é apurado pelo Ranking de Eficiência Anual do Clube.
- * "Se uma categoria cair, caem todas. Se uma subir, sobem todas."
+ * FPFS Ranking de Eficiência Anual (Art. 135º do Regulamento Geral de Competições 2026)
+ *
+ * Texto oficial do Art. 135º: "Nas categorias de Iniciação e Base o acesso e descenso das
+ * equipes será realizado através do Ranking de Eficiência Anual. As equipes classificadas nas
+ * duas últimas posições da série A1 serão rebaixadas para a série A2 na temporada seguinte,
+ * com efeito, as equipes classificadas nas duas primeiras colocações da Série A2 terão acesso
+ * à série A1 na temporada seguinte. Da mesma forma, as duas últimas colocadas da série A2 serão
+ * rebaixadas para a série A3 e as duas primeiras equipes classificadas da série A3 terão acesso
+ * a série A2 na temporada seguinte."
+ *
+ * Ou seja: o acesso/descenso NÃO é decidido pela tabela de uma categoria isolada — é decidido
+ * pela soma da pontuação de TODAS as categorias de Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao
+ * Sub-18) do clube, comparada com a soma dos demais clubes da série. A FPFS não publica essa
+ * classificação combinada entre clubes, então não é possível afirmar uma posição exata (ex:
+ * "18º de 20") sem esse dado oficial. Por isso este módulo usa apenas números reais e verificáveis:
+ *
+ * 1) Por categoria: posição, pontos e distância para o líder são tirados diretamente da tabela
+ *    oficial (fpfsCategories[].standings), que já vem da Súmula Online da FPFS.
+ * 2) No agregado do clube: soma-se a pontuação e os jogos de todas as categorias para calcular o
+ *    índice de aproveitamento real do AD Suzano — sem inventar posição ou pontuação de adversário.
  */
 
-export const CLUB_RANKING_SNAPSHOT = {
-  position: 18,
-  totalTeams: 20,
-  points: 38,
-  played: 49,
-  targetSafetyPoints: 56, // Pontuação mínima realista para garantir permanência fora do Z2 (19º Pequeno Mestre e 20º Impacto)
-  targetAccessPoints: 76, // Pontuação para brigar pelo Acesso à Série A1 (Top 2)
-  totalPhaseMatches: 76,  // Total de jogos na fase classificatória do clube
+const BASE_LABELS = ['Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
+const INITIATION_LABELS = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10'];
+const ALL_LABELS = [...INITIATION_LABELS, ...BASE_LABELS];
+
+const CLUB_TEAM_NAME = 'A.D. SUZANO';
+
+// Jogos totais previstos na fase classificatória (turno único) de cada categoria, conforme
+// calendário oficial FPFS 2026 já usado no site (scripts/update-fpfs.mjs / temporada mar-dez/2026).
+const SEASON_LENGTH_BY_CATEGORY = {
+  'Sub-7': 19,
+  'Sub-8': 19,
+  'Sub-9': 19,
+  'Sub-10': 19,
+  'Sub-12': 19,
+  'Sub-14': 19,
+  'Sub-16': 19,
+  'Sub-18': 19,
 };
 
-// Perfil de desempenho específico e ponderado por categoria
-const CATEGORY_PROFILES = {
-  'Sub-7': {
-    defaultPlayed: 16,
-    totalGames: 19,
-    defaultPoints: 30,
-    defaultGoalDiff: 19,
-    strengthFactor: 1.4, // Categoria mais forte (62.5% aproveitamento), assume cota maior
-    reasoning: 'Como o Sub-7 é a categoria com maior aproveitamento do clube (30 pts, 62.5% de eficiência), sua cota no Ranking de Eficiência é maior para puxar a pontuação coletiva do AD Suzano.',
-  },
-  'Sub-8': {
-    defaultPlayed: 16,
-    totalGames: 19,
-    defaultPoints: 15,
-    defaultGoalDiff: -12,
-    strengthFactor: 0.85,
-    reasoning: 'O Sub-8 possui aproveitamento médio-baixo (15 pts em 16 jg). Sua cota realista é somar pontos em pelo menos 2 das 3 rodadas finais.',
-  },
-  'Sub-9': {
-    defaultPlayed: 16,
-    totalGames: 19,
-    defaultPoints: 21,
-    defaultGoalDiff: 2,
-    strengthFactor: 1.1,
-    reasoning: 'O Sub-9 está em evolução positiva (21 pts). Sua cota no ranking geral exige buscar vitórias nos jogos em casa para sustentar a margem de segurança.',
-  },
-  'Sub-10': {
-    defaultPlayed: 16,
-    totalGames: 19,
-    defaultPoints: 18,
-    defaultGoalDiff: -4,
-    strengthFactor: 0.95,
-    reasoning: 'O Sub-10 soma 18 pts em 16 jogos. A meta calculada para a comissão é buscar no mínimo 1 vitória e 1 empate nas 3 rodadas finais.',
-  },
-  'Sub-12': {
-    defaultPlayed: 12,
-    totalGames: 19,
-    defaultPoints: 18,
-    defaultGoalDiff: 7,
-    strengthFactor: 1.25,
-    reasoning: 'Com 18 pts em 12 jogos e saldo positivo (+7), o Sub-12 tem 6 partidas restantes na Base. Sua cota realista é buscar +7 pontos, aproveitando os confrontos diretos contra Selecionados e Impacto.',
-  },
-  'Sub-14': {
-    defaultPlayed: 12,
-    totalGames: 19,
-    defaultPoints: 14,
-    defaultGoalDiff: -5,
-    strengthFactor: 0.9,
-    reasoning: 'Com 14 pts acumulados, o Sub-14 tem a missão de entregar +5 pontos nas 6 rodadas finais da Base para ajudar a livrar o AD Suzano do rebaixamento.',
-  },
-  'Sub-16': {
-    defaultPlayed: 12,
-    totalGames: 19,
-    defaultPoints: 12,
-    defaultGoalDiff: -8,
-    strengthFactor: 0.8,
-    reasoning: 'O Sub-16 soma 12 pts em 12 jogos. Sua cota calculada é de +4 pontos nos 6 jogos restantes para cumprir a meta de permanência do clube.',
-  },
-  'Sub-18': {
-    defaultPlayed: 12,
-    totalGames: 19,
-    defaultPoints: 16,
-    defaultGoalDiff: 1,
-    strengthFactor: 1.15,
-    reasoning: 'O Sub-18 é uma das forças da Base (16 pts em 12 jg). Para compensar oscilações de outras categorias, a meta para o Sub-18 é buscar +6 pontos nas 6 rodadas finais.',
-  },
-};
+function getRealCategoryData(label) {
+  const fc = fpfsCategories.find((item) => item.category === label);
+  if (!fc) return null;
+
+  const record = fc.record || {};
+  const standings = fc.standings || [];
+  const ownStanding = standings.find((s) => s.team === CLUB_TEAM_NAME) || null;
+  const leader = standings[0] || null;
+
+  const totalGames = SEASON_LENGTH_BY_CATEGORY[label] || record.played || 0;
+  const played = record.played ?? 0;
+  const points = record.points ?? 0;
+  const goalDifference = record.goalDifference ?? 0;
+
+  const remainingGames = Math.max(0, totalGames - played);
+  const remainingPoints = remainingGames * 3;
+  const maxPossiblePoints = points + remainingPoints;
+
+  const leaderPoints = leader?.points ?? points;
+  const pointsBehindLeader = Math.max(0, leaderPoints - points);
+  const isLeader = ownStanding?.position === 1;
+
+  return {
+    label,
+    totalTeams: standings.length,
+    position: ownStanding?.position ?? null,
+    played,
+    points,
+    goalDifference,
+    totalGames,
+    remainingGames,
+    remainingPoints,
+    maxPossiblePoints,
+    leaderPoints,
+    leaderTeam: leader?.team ?? null,
+    pointsBehindLeader,
+    isLeader,
+    isEliminatedFromTitle: maxPossiblePoints < leaderPoints,
+  };
+}
+
+/**
+ * Chance de título (1º lugar) da categoria dentro do seu próprio grupo (Chave Única da Série A2).
+ * Fórmula transparente: compara quanto falta para alcançar o líder (pointsBehindLeader) com o
+ * total de pontos que ainda serão disputados (remainingPoints). Quanto menor essa razão, maior a
+ * chance. É uma estimativa (não uma probabilidade estatística oficial), sempre 0% quando é
+ * matematicamente impossível alcançar o líder mesmo vencendo tudo que resta.
+ */
+function computeTitleChance(cat) {
+  if (!cat) return 0;
+  if (cat.isEliminatedFromTitle) return 0;
+  if (cat.isLeader) {
+    // Líder: favorito, mas a chance cresce com a vantagem de pontos sobre o 2º colocado.
+    return 60;
+  }
+  if (cat.remainingPoints === 0) return 0;
+
+  const gapRatio = cat.pointsBehindLeader / cat.remainingPoints; // 0 = alcançável folgado, 1 = precisa vencer tudo
+  const raw = Math.round((1 - gapRatio) * 55);
+  return Math.max(1, Math.min(55, raw));
+}
 
 export function calculateCategoryEfficiency(categoryObj) {
   const label = categoryObj?.label || 'Sub-7';
-  const profile = CATEGORY_PROFILES[label] || CATEGORY_PROFILES['Sub-7'];
-  const fpfsCategory = fpfsCategories.find((item) => item.category === label);
+  const cat = getRealCategoryData(label);
 
-  // Jogos da categoria
-  const playedGamesCategory = fpfsCategory?.record?.played ?? profile.defaultPlayed;
-  const totalMatchesCategory = profile.totalGames;
-  const remainingGamesCategory = Math.max(0, totalMatchesCategory - playedGamesCategory);
-  const remainingPointsCategory = remainingGamesCategory * 3;
+  if (!cat) {
+    return {
+      categoryLabel: label,
+      categoryTitle: categoryObj?.title || `AD Suzano ${label}`,
+      hasData: false,
+    };
+  }
 
-  // Pontuação e métricas reais da categoria
-  const categoryPoints = fpfsCategory?.record?.points ?? profile.defaultPoints;
-  const categoryGoalDiff = fpfsCategory?.record?.goalDifference ?? profile.defaultGoalDiff;
+  const chanceDeCampeao = computeTitleChance(cat);
+  const winsNeededForTitle = cat.pointsBehindLeader > 0 ? Math.ceil(cat.pointsBehindLeader / 3) : 0;
 
-  // Totais do Clube no Ranking de Eficiência
-  const clubCurrentPoints = CLUB_RANKING_SNAPSHOT.points; // 38 pts
-  const clubPlayed = CLUB_RANKING_SNAPSHOT.played; // 49 jogos
-  const clubTotalMatches = CLUB_RANKING_SNAPSHOT.totalPhaseMatches; // 76 jogos
-  const clubRemainingMatches = Math.max(0, clubTotalMatches - clubPlayed); // 27 jogos restantes
-  const clubRemainingPoints = clubRemainingMatches * 3; // 81 pts a disputar no clube
+  // -----------------------------------------------------------------
+  // Agregado real do clube (soma de todas as 8 categorias de Iniciação/Base)
+  // -----------------------------------------------------------------
+  const allCategoriesData = ALL_LABELS.map(getRealCategoryData).filter(Boolean);
+  const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
+  const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
+  const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
+  const clubRemainingPoints = clubRemainingGames * 3;
+  const clubMaxPossiblePoints = clubPoints + clubRemainingPoints;
+  const clubPossiblePointsSoFar = clubPlayed * 3;
+  const clubEfficiencyPercent = clubPossiblePointsSoFar > 0
+    ? Math.round((clubPoints / clubPossiblePointsSoFar) * 1000) / 10
+    : 0;
 
-  // Cálculo dos Pontos Faltantes no Clube
-  const pointsNeededToStay = Math.max(0, CLUB_RANKING_SNAPSHOT.targetSafetyPoints - clubCurrentPoints); // +18 pts
-  const pointsNeededToPromote = Math.max(0, CLUB_RANKING_SNAPSHOT.targetAccessPoints - clubCurrentPoints); // +38 pts
-
-  // --------------------------------------------------------------------------
-  // CÁLCULO DA META ESPECÍFICA E PONDERADA DA CATEGORIA
-  // --------------------------------------------------------------------------
-  // A meta de permanência do clube (+18 pts) é distribuída entre as categorias
-  // ponderando pela FORÇA (strengthFactor) e JOGOS RESTANTES da categoria.
-  const baseCategoryShare = pointsNeededToStay * (remainingGamesCategory / Math.max(1, clubRemainingMatches));
-  const weightedTargetStay = Math.round(baseCategoryShare * profile.strengthFactor);
-  
-  // Garantir limites realistas entre 3 e os pontos máximos restantes da categoria
-  const categoryTargetToStay = Math.min(
-    remainingPointsCategory,
-    Math.max(3, weightedTargetStay)
-  );
-
-  // Meta para Acesso A1 (Praticamente inalcançável)
-  const categoryTargetToPromote = Math.min(
-    remainingPointsCategory,
-    Math.ceil(pointsNeededToPromote * (remainingGamesCategory / Math.max(1, clubRemainingMatches)))
-  );
-
-  // Percentuais Estatísticos Realistas
-  const chanceDeSubir = 2; // Descartada estatisticamente por exigir ritmo de 47% de aproveitamento
-  const chanceDeCair = 32;
-  const chanceDePermanecer = 68;
-
-  // Detalhamento de como atingir a meta
-  const winsNeededToStay = Math.ceil(categoryTargetToStay / 3);
-  const drawsNeededToStay = Math.max(0, categoryTargetToStay - (winsNeededToStay - 1) * 3);
+  // Quanto a categoria já contribuiu e ainda pode contribuir para o índice do clube.
+  const categoryShareOfClubPoints = clubPoints > 0 ? Math.round((cat.points / clubPoints) * 1000) / 10 : 0;
 
   return {
     categoryLabel: label,
     categoryTitle: categoryObj?.title || `AD Suzano ${label}`,
-    isInitiation: ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10'].includes(label),
-    isBase: ['Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'].includes(label),
-    
-    // Status Geral do Clube no Ranking
-    clubPosition: CLUB_RANKING_SNAPSHOT.position,
-    clubTotalTeams: CLUB_RANKING_SNAPSHOT.totalTeams,
-    clubPoints: clubCurrentPoints,
+    hasData: true,
+    isInitiation: INITIATION_LABELS.includes(label),
+    isBase: BASE_LABELS.includes(label),
+
+    // Dados reais da categoria (tabela oficial FPFS)
+    categoryPosition: cat.position,
+    categoryTotalTeams: cat.totalTeams,
+    categoryPlayed: cat.played,
+    categoryPoints: cat.points,
+    categoryGoalDiff: cat.goalDifference,
+    categoryRemainingGames: cat.remainingGames,
+    categoryRemainingPoints: cat.remainingPoints,
+    categoryMaxPossiblePoints: cat.maxPossiblePoints,
+    leaderPoints: cat.leaderPoints,
+    leaderTeam: cat.leaderTeam,
+    pointsBehindLeader: cat.pointsBehindLeader,
+    isLeader: cat.isLeader,
+    isEliminatedFromTitle: cat.isEliminatedFromTitle,
+
+    // Chance real de título do grupo desta categoria (estimativa transparente, não oficial)
+    chanceDeCampeao,
+    winsNeededForTitle,
+
+    // Índice real agregado do clube (soma das 8 categorias) — base do Ranking de Eficiência Anual
+    clubPoints,
     clubPlayed,
-    clubRemainingMatches,
+    clubRemainingGames,
     clubRemainingPoints,
-    
-    // Metas do Clube
-    pointsNeededToStay,       // +18 pts no clube
-    pointsNeededToPromote,    // +38 pts no clube
-    targetSafetyPoints: CLUB_RANKING_SNAPSHOT.targetSafetyPoints, // 56 pts
-    targetAccessPoints: CLUB_RANKING_SNAPSHOT.targetAccessPoints, // 76 pts
+    clubMaxPossiblePoints,
+    clubEfficiencyPercent,
+    categoryShareOfClubPoints,
 
-    // Dados da Categoria Específica
-    categoryPlayed: playedGamesCategory,
-    categoryRemainingGames: remainingGamesCategory,
-    categoryRemainingPoints: remainingPointsCategory,
-    categoryPoints,
-    categoryGoalDiff,
+    // Textos explicativos
+    categoryReasoning: cat.isEliminatedFromTitle
+      ? `O ${label} está matematicamente sem chances de título no próprio grupo: mesmo vencendo todos os ${cat.remainingGames} jogos restantes (+${cat.remainingPoints} pts), não alcançaria o líder ${cat.leaderTeam ?? ''} (${cat.leaderPoints} pts).`
+      : cat.isLeader
+        ? `O ${label} está na liderança do seu grupo com ${cat.points} pts. Para manter a ponta, a comissão deve sustentar o ritmo nos ${cat.remainingGames} jogos restantes.`
+        : `O ${label} está a ${cat.pointsBehindLeader} pts do líder (${cat.leaderTeam ?? 'líder do grupo'}), com ${cat.remainingGames} jogos e ${cat.remainingPoints} pts ainda em disputo. Precisaria de pelo menos ${winsNeededForTitle} vitória${winsNeededForTitle === 1 ? '' : 's'} a mais que o rival para brigar pela liderança.`,
 
-    // Metas Específicas e Ponderadas do Treinador desta Categoria
-    categoryTargetToStay,     // Ex: Sub-7 é +6 pts, Sub-12 é +7 pts, Sub-16 é +4 pts
-    categoryTargetToPromote,  // Ex: +10 pts
+    realismAlert: `Leitura baseada em dados reais (${label}): posição ${cat.position}º de ${cat.totalTeams} no grupo, ${cat.points} pts em ${cat.played} jogos. Chance estimada de título do grupo: ${chanceDeCampeao}%. Isso não define sozinho o acesso/descenso do clube (Art. 135º), que depende da soma de todas as categorias de Iniciação e Base frente aos demais clubes da Série A2 — dado que a FPFS não publica publicamente.`,
+  };
+}
 
-    // Percentuais Estatísticos Realistas (Art. 135º)
-    chanceDeSubir,
-    chanceDeCair,
-    chanceDePermanecer,
+/**
+ * Índice de eficiência agregado do clube (todas as categorias de Iniciação + Base), para uso no
+ * cabeçalho geral. Não afirma posição/rank entre clubes porque a FPFS não publica essa tabela
+ * combinada — mostra apenas o desempenho real e verificado do AD Suzano.
+ */
+export function calculateClubEfficiencyIndex() {
+  const allCategoriesData = ALL_LABELS.map(getRealCategoryData).filter(Boolean);
+  const clubPoints = allCategoriesData.reduce((sum, c) => sum + c.points, 0);
+  const clubPlayed = allCategoriesData.reduce((sum, c) => sum + c.played, 0);
+  const clubRemainingGames = allCategoriesData.reduce((sum, c) => sum + c.remainingGames, 0);
+  const clubRemainingPoints = clubRemainingGames * 3;
+  const clubPossiblePointsSoFar = clubPlayed * 3;
+  const clubEfficiencyPercent = clubPossiblePointsSoFar > 0
+    ? Math.round((clubPoints / clubPossiblePointsSoFar) * 1000) / 10
+    : 0;
 
-    // Explicação Transparente da Meta da Categoria
-    categoryReasoning: profile.reasoning,
-    coachingAdviceToStay: `MÍNIMO DO ${label}: Fazer no mínimo +${categoryTargetToStay} pontos (ex: ${winsNeededToStay} vitória${winsNeededToStay > 1 ? 's' : ''} ou combinações) nos ${remainingGamesCategory} jogos restantes para entregar a cota do ${label}.`,
-    coachingAdviceToPromote: `SEM ILUSÃO: Acesso estatisticamente descartado (2%). O foco total da comissão do ${label} deve ser a PERMANÊNCIA.`,
-    realismAlert: `Leitura 100% Realista (${label}): O AD Suzano soma 38 pontos no 18º lugar. A chance de subir para a A1 é virtualmente nula (2%). Toda a atenção dos treinadores do ${label} deve ser voltada para somar a cota específica de +${categoryTargetToStay} pontos.`,
+  return {
+    categories: allCategoriesData,
+    clubPoints,
+    clubPlayed,
+    clubRemainingGames,
+    clubRemainingPoints,
+    clubEfficiencyPercent,
   };
 }
