@@ -2237,11 +2237,16 @@ input {
    Efficiency Header & Risk/Access Calculation (FPFS Art. 135º)
    ========================================================================== */
 .efficiency-header-card {
+  --eff-blue: #3b6fd0;
+  --eff-blue-bright: #6ea1f2;
+  --eff-red: var(--red);
+  --eff-red-bright: #f4707c;
+  --eff-gold: #f0b429;
   margin-top: 20px;
   margin-bottom: 24px;
   padding: 24px;
-  background: linear-gradient(145deg, #091a38 0%, #0d254e 100%);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: linear-gradient(145deg, #071a3d 0%, var(--blue) 100%);
+  border: 1px solid rgba(110, 161, 242, 0.22);
   border-radius: 20px;
   color: #f8fafc;
   box-shadow: 0 20px 40px rgba(4, 12, 31, 0.45);
@@ -2270,14 +2275,14 @@ input {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, var(--red), #a8161f);
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(217, 35, 50, 0.35);
 }
 
 .efficiency-rule-chip {
@@ -2333,8 +2338,8 @@ input {
 }
 
 .efficiency-stat-box.highlight-access {
-  border-color: rgba(34, 197, 94, 0.4);
-  background: linear-gradient(160deg, rgba(34, 197, 94, 0.08), rgba(15, 23, 42, 0.7));
+  border-color: rgba(240, 180, 41, 0.45);
+  background: linear-gradient(160deg, rgba(240, 180, 41, 0.1), rgba(15, 23, 42, 0.7));
 }
 
 .efficiency-stat-box.highlight-impossible {
@@ -2343,8 +2348,8 @@ input {
 }
 
 .efficiency-stat-box.highlight-risk {
-  border-color: rgba(239, 68, 68, 0.4);
-  background: linear-gradient(160deg, rgba(239, 68, 68, 0.08), rgba(15, 23, 42, 0.7));
+  border-color: rgba(217, 35, 50, 0.45);
+  background: linear-gradient(160deg, rgba(217, 35, 50, 0.1), rgba(15, 23, 42, 0.7));
 }
 
 .stat-box-tag.gray {
@@ -2405,19 +2410,19 @@ input {
   border-radius: 8px;
 }
 
-.stat-box-tag.green {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
+.stat-box-tag.gold {
+  background: rgba(240, 180, 41, 0.15);
+  color: var(--eff-gold);
 }
 
 .stat-box-tag.red {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
+  background: rgba(217, 35, 50, 0.18);
+  color: var(--eff-red-bright);
 }
 
 .stat-box-tag.blue {
-  background: rgba(56, 189, 248, 0.15);
-  color: #38bdf8;
+  background: rgba(59, 111, 208, 0.2);
+  color: var(--eff-blue-bright);
 }
 
 .stat-percent {
@@ -2426,11 +2431,11 @@ input {
   line-height: 1;
 }
 
-.green-text { color: #4ade80; }
-.red-text { color: #f87171; }
-.blue-text { color: #38bdf8; }
-.warning-text { color: #fbbf24; }
-.accent-text { color: #34d399; }
+.gold-text { color: var(--eff-gold); }
+.red-text { color: var(--eff-red-bright); }
+.blue-text { color: var(--eff-blue-bright); }
+.warning-text { color: var(--eff-gold); }
+.accent-text { color: var(--eff-blue-bright); }
 
 .efficiency-stat-box h3 {
   font-size: 15px;
@@ -2501,11 +2506,11 @@ input {
 }
 
 .coach-target-item.stay-target {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--eff-blue-bright);
 }
 
 .coach-target-item.promote-target {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--eff-gold);
 }
 
 .target-label {
@@ -2538,13 +2543,13 @@ input {
   gap: 12px;
   margin-top: 16px;
   padding: 14px;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(59, 111, 208, 0.1);
+  border: 1px solid rgba(110, 161, 242, 0.25);
   border-radius: 12px;
 }
 
 .category-meta-explanation .help-icon {
-  color: #38bdf8;
+  color: var(--eff-blue-bright);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -2552,13 +2557,105 @@ input {
 .category-meta-explanation strong {
   display: block;
   font-size: 13px;
-  color: #7dd3fc;
+  color: var(--eff-blue-bright);
   margin-bottom: 4px;
 }
 
 .category-meta-explanation p {
   font-size: 13px;
   color: #cbd5e1;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Metas de Pontos (mínimo / ideal / perfeito) */
+.points-target-banner {
+  margin-bottom: 18px;
+}
+
+.points-target-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.points-target-heading strong {
+  font-size: 15px;
+  color: #f8fafc;
+}
+
+.points-target-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.points-target-item {
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 3px solid var(--tier-color, var(--eff-blue-bright));
+}
+
+.points-target-item.tier-minimo { --tier-color: var(--eff-red-bright); }
+.points-target-item.tier-ideal { --tier-color: var(--eff-blue-bright); }
+.points-target-item.tier-perfeito { --tier-color: var(--eff-gold); }
+
+.points-target-item .tier-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--tier-color, var(--eff-blue-bright));
+  margin-bottom: 6px;
+}
+
+.points-target-item .tier-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.points-target-item p {
+  font-size: 12.5px;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Banner explícito de risco de queda */
+.relegation-risk-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(217, 35, 50, 0.16), rgba(217, 35, 50, 0.06));
+  border: 1px solid rgba(217, 35, 50, 0.4);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.relegation-risk-banner .risk-icon {
+  color: var(--eff-red-bright);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.relegation-risk-banner strong {
+  display: block;
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.relegation-risk-banner p {
+  font-size: 13.5px;
+  color: #fecdd3;
   line-height: 1.5;
   margin: 0;
 }
@@ -2576,7 +2673,7 @@ input {
   gap: 10px;
   background: transparent;
   border: none;
-  color: #38bdf8;
+  color: var(--eff-blue-bright);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -2610,7 +2707,8 @@ input {
 
 @media (max-width: 768px) {
   .efficiency-main-grid,
-  .coach-targets-grid {
+  .coach-targets-grid,
+  .points-target-grid {
     grid-template-columns: 1fr;
   }
 }

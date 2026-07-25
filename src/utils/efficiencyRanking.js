@@ -66,6 +66,7 @@ function getRealCategoryData(label) {
 
   return {
     label,
+    standings,
     totalTeams: standings.length,
     position: ownStanding?.position ?? null,
     played,
@@ -80,6 +81,67 @@ function getRealCategoryData(label) {
     pointsBehindLeader,
     isLeader,
     isEliminatedFromTitle: maxPossiblePoints < leaderPoints,
+  };
+}
+
+/**
+ * Metas reais de pontos (mínimo / ideal / perfeito) e risco de queda dentro do próprio grupo da
+ * categoria, usando a tabela oficial completa (todos os adversários reais, com pontos reais).
+ *
+ * - Mínimo: pontos necessários para igualar HOJE a equipe que ocupa a última posição seguraí
+ *   (2 últimas colocações = zona de risco, espelhando o critério de acesso/descenso do Art. 135º).
+ *   Considera a pontuação ATUAL do rival da zona de risco (ele também tem jogos a fazer, por isso
+ *   é um piso, não uma garantia).
+ * - Ideal: pontos para alcançar a equipe do meio da tabela (posição intermediária do grupo).
+ * - Perfeito: pontos para alcançar o líder e brigar pelo título do grupo.
+ *
+ * Risco de queda: quanto do "mínimo" ainda falta dividido pelos pontos que ainda serão disputados
+ * pela própria equipe. 100% quando é matematicamente impossível alcançar o piso de segurança mesmo
+ * vencendo tudo que resta (o rival da zona de risco só pode SOMAR pontos, nunca perder os que já tem).
+ */
+function computeSafetyTargets(cat) {
+  const { standings, totalTeams } = cat;
+  if (!standings || totalTeams < 4) return null;
+
+  const safetyIndex = totalTeams - 3; // posição logo acima da zona de risco (últimas 2 colocações)
+  const midIndex = Math.max(0, Math.floor(totalTeams / 2) - 1);
+
+  const safetyTeam = standings[safetyIndex];
+  const midTeam = standings[midIndex];
+  if (!safetyTeam || !midTeam) return null;
+
+  const safetyLinePoints = safetyTeam.points;
+  const midTablePoints = midTeam.points;
+
+  const pointsNeededMinimo = Math.max(0, safetyLinePoints + 1 - cat.points);
+  const pointsNeededIdeal = Math.max(0, midTablePoints - cat.points);
+  const pointsNeededPerfeito = cat.pointsBehindLeader;
+
+  const isRelegationMathematicallyLocked = cat.maxPossiblePoints < safetyLinePoints + 1;
+
+  let chanceDeQueda;
+  if (isRelegationMathematicallyLocked) {
+    chanceDeQueda = 100;
+  } else if (pointsNeededMinimo === 0) {
+    // Já está acima da linha de segurança hoje; risco residual cai conforme a folga cresce.
+    const margin = cat.points - safetyLinePoints;
+    chanceDeQueda = Math.max(3, 22 - margin * 3);
+  } else {
+    const ratio = pointsNeededMinimo / Math.max(1, cat.remainingPoints);
+    chanceDeQueda = 30 + ratio * 65;
+  }
+  chanceDeQueda = Math.max(0, Math.min(100, Math.round(chanceDeQueda)));
+
+  return {
+    safetyLinePoints,
+    safetyTeamName: safetyTeam.team,
+    midTablePoints,
+    midTeamName: midTeam.team,
+    pointsNeededMinimo,
+    pointsNeededIdeal,
+    pointsNeededPerfeito,
+    isRelegationMathematicallyLocked,
+    chanceDeQueda,
   };
 }
 
@@ -118,6 +180,7 @@ export function calculateCategoryEfficiency(categoryObj) {
 
   const chanceDeCampeao = computeTitleChance(cat);
   const winsNeededForTitle = cat.pointsBehindLeader > 0 ? Math.ceil(cat.pointsBehindLeader / 3) : 0;
+  const safety = computeSafetyTargets(cat);
 
   // -----------------------------------------------------------------
   // Agregado real do clube (soma de todas as 8 categorias de Iniciação/Base)
@@ -162,6 +225,19 @@ export function calculateCategoryEfficiency(categoryObj) {
     chanceDeCampeao,
     winsNeededForTitle,
 
+    // Metas reais de pontos e risco de queda no grupo (Art. 135º usa a soma do clube, mas aqui
+    // usamos a tabela real desta categoria como referência objetiva e verificável)
+    hasSafetyData: Boolean(safety),
+    safetyLinePoints: safety?.safetyLinePoints ?? null,
+    safetyTeamName: safety?.safetyTeamName ?? null,
+    midTablePoints: safety?.midTablePoints ?? null,
+    midTeamName: safety?.midTeamName ?? null,
+    pointsNeededMinimo: safety?.pointsNeededMinimo ?? null,
+    pointsNeededIdeal: safety?.pointsNeededIdeal ?? null,
+    pointsNeededPerfeito: safety?.pointsNeededPerfeito ?? null,
+    isRelegationMathematicallyLocked: safety?.isRelegationMathematicallyLocked ?? false,
+    chanceDeQueda: safety?.chanceDeQueda ?? null,
+
     // Índice real agregado do clube (soma das 8 categorias) — base do Ranking de Eficiência Anual
     clubPoints,
     clubPlayed,
@@ -179,6 +255,18 @@ export function calculateCategoryEfficiency(categoryObj) {
         : `O ${label} está a ${cat.pointsBehindLeader} pts do líder (${cat.leaderTeam ?? 'líder do grupo'}), com ${cat.remainingGames} jogos e ${cat.remainingPoints} pts ainda em disputo. Precisaria de pelo menos ${winsNeededForTitle} vitória${winsNeededForTitle === 1 ? '' : 's'} a mais que o rival para brigar pela liderança.`,
 
     realismAlert: `Leitura baseada em dados reais (${label}): posição ${cat.position}º de ${cat.totalTeams} no grupo, ${cat.points} pts em ${cat.played} jogos. Chance estimada de título do grupo: ${chanceDeCampeao}%. Isso não define sozinho o acesso/descenso do clube (Art. 135º), que depende da soma de todas as categorias de Iniciação e Base frente aos demais clubes da Série A2 — dado que a FPFS não publica publicamente.`,
+
+    // Linha explícita de meta de pontos (mínimo / ideal / perfeito) para o treinador
+    pointsTargetSentence: safety
+      ? `O ${label} precisa fazer no mínimo +${safety.pointsNeededMinimo} pts (igualar ${safety.safetyTeamName}, ${safety.safetyLinePoints} pts, fora da zona de risco), ideal +${safety.pointsNeededIdeal} pts (alcançar ${safety.midTeamName}, ${safety.midTablePoints} pts, meio de tabela) e perfeito +${safety.pointsNeededPerfeito} pts (alcançar o líder ${cat.leaderTeam ?? ''}, ${cat.leaderPoints} pts, e brigar pelo título).`
+      : null,
+
+    // Linha explícita de risco: "com menos pontos que o mínimo, a chance de queda é de XX%"
+    relegationRiskSentence: safety
+      ? safety.isRelegationMathematicallyLocked
+        ? `O ${label} já não alcança mais matematicamente a linha de segurança do grupo (${safety.safetyLinePoints} pts de ${safety.safetyTeamName}) mesmo vencendo todos os jogos restantes: risco de queda de 100%.`
+        : `Ficando abaixo do mínimo de +${safety.pointsNeededMinimo} pts, a chance de queda do ${label} para a zona de risco do grupo é de ${safety.chanceDeQueda}%.`
+      : null,
   };
 }
 

@@ -20,9 +20,7 @@ export function CategoryEfficiencyHeader({ category }) {
   }
 
   const isTitleImpossible = data.isEliminatedFromTitle;
-  const isBottomHalf = data.categoryPosition && data.categoryTotalTeams
-    ? data.categoryPosition > data.categoryTotalTeams / 2
-    : false;
+  const isHighRisk = data.hasSafetyData && data.chanceDeQueda >= 50;
 
   return (
     <section className="panel efficiency-header-card" aria-label="Ranking de Eficiência FPFS">
@@ -49,10 +47,10 @@ export function CategoryEfficiencyHeader({ category }) {
         {/* Card Chance de Título do Grupo */}
         <div className={`efficiency-stat-box access-box ${isTitleImpossible ? 'highlight-impossible' : ''}`}>
           <div className="stat-box-header">
-            <span className="stat-box-tag gray">
+            <span className="stat-box-tag gold">
               <Trophy size={16} /> Título do Grupo
             </span>
-            <strong className="stat-percent gray-text">{data.chanceDeCampeao}%</strong>
+            <strong className="stat-percent gold-text">{data.chanceDeCampeao}%</strong>
           </div>
           <h3>Chance de Ser Campeão do Grupo</h3>
           <div className="stat-box-details">
@@ -62,24 +60,24 @@ export function CategoryEfficiencyHeader({ category }) {
             </div>
             <div>
               <span>Distância para o líder:</span>
-              <strong className="gray-text">
+              <strong className="gold-text">
                 {data.isLeader ? 'Está na liderança' : `+${data.pointsBehindLeader} pts`}
               </strong>
             </div>
           </div>
         </div>
 
-        {/* Card Situação Real no Grupo */}
-        <div className={`efficiency-stat-box risk-box ${isBottomHalf ? 'highlight-risk' : ''}`}>
+        {/* Card Risco de Queda no Grupo */}
+        <div className={`efficiency-stat-box risk-box ${isHighRisk ? 'highlight-risk' : ''}`}>
           <div className="stat-box-header">
             <span className="stat-box-tag red">
-              <ShieldAlert size={16} /> Posição Real
+              <ShieldAlert size={16} /> Risco de Queda
             </span>
             <strong className="stat-percent red-text">
-              {data.categoryPosition ? `${data.categoryPosition}º` : '—'}
+              {data.hasSafetyData ? `${data.chanceDeQueda}%` : '—'}
             </strong>
           </div>
-          <h3>Situação no Grupo ({data.categoryTotalTeams} equipes)</h3>
+          <h3>Posição {data.categoryPosition}º de {data.categoryTotalTeams} no Grupo</h3>
           <div className="stat-box-details">
             <div>
               <span>Pontos na tabela:</span>
@@ -113,6 +111,44 @@ export function CategoryEfficiencyHeader({ category }) {
           </div>
         </div>
       </div>
+
+      {/* Metas Explícitas de Pontos: Mínimo / Ideal / Perfeito */}
+      {data.hasSafetyData && (
+        <div className="points-target-banner">
+          <div className="points-target-heading">
+            <Target size={18} className="target-icon" />
+            <strong>Metas de Pontos do {data.categoryLabel} nos {data.categoryRemainingGames} Jogos Restantes</strong>
+          </div>
+          <div className="points-target-grid">
+            <div className="points-target-item tier-minimo">
+              <span className="tier-label">Mínimo</span>
+              <strong className="tier-value">+{data.pointsNeededMinimo} pts</strong>
+              <p>Para escapar da zona de risco, igualando {data.safetyTeamName} ({data.safetyLinePoints} pts).</p>
+            </div>
+            <div className="points-target-item tier-ideal">
+              <span className="tier-label">Ideal</span>
+              <strong className="tier-value">+{data.pointsNeededIdeal} pts</strong>
+              <p>Para alcançar o meio de tabela, igualando {data.midTeamName} ({data.midTablePoints} pts).</p>
+            </div>
+            <div className="points-target-item tier-perfeito">
+              <span className="tier-label">Perfeito</span>
+              <strong className="tier-value">+{data.pointsNeededPerfeito} pts</strong>
+              <p>Para alcançar o líder {data.leaderTeam} ({data.leaderPoints} pts) e brigar pelo título.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Banner Explícito de Risco de Queda */}
+      {data.relegationRiskSentence && (
+        <div className="relegation-risk-banner">
+          <ShieldAlert size={20} className="risk-icon" />
+          <div>
+            <strong>Risco de Queda no Grupo</strong>
+            <p>{data.relegationRiskSentence}</p>
+          </div>
+        </div>
+      )}
 
       {/* Banner Alerta Realista */}
       <div className="realism-alert-box">
@@ -180,10 +216,11 @@ export function CategoryEfficiencyHeader({ category }) {
             </p>
             <ul>
               <li>
-                <strong>Por que não mostramos a posição exata do clube entre A2:</strong> essa classificação
-                combinada depende da pontuação agregada de todos os clubes da série, e a FPFS não publica
-                essa tabela publicamente — só publicamos o que é real e verificável: a tabela de cada
-                categoria e a soma real dos pontos do AD Suzano.
+                <strong>Por que usamos a tabela da própria categoria para as metas de pontos:</strong> a
+                classificação combinada entre clubes (a que decide oficialmente o Art. 135º) não é publicada
+                pela FPFS. Por isso calculamos mínimo/ideal/perfeito comparando o {data.categoryLabel} com
+                adversários reais e verificáveis dentro do seu próprio grupo — a mesma lógica de "2 últimas
+                caem, 2 primeiras sobem" aplicada à tabela que temos disponível.
               </li>
               <li>
                 <strong>Índice do clube:</strong> soma de pontos ({data.clubPoints}) dividida pelo total de
@@ -191,9 +228,10 @@ export function CategoryEfficiencyHeader({ category }) {
                 de aproveitamento real.
               </li>
               <li>
-                <strong>Chance de título do grupo:</strong> calculada comparando quantos pontos faltam para
-                alcançar o líder da própria categoria com o total de pontos ainda em disputa nos jogos
-                restantes. É uma estimativa, não uma probabilidade estatística oficial da FPFS.
+                <strong>Chance de título e risco de queda:</strong> calculados comparando quantos pontos
+                faltam para o líder (título) ou para a linha de segurança (risco) com o total de pontos
+                ainda em disputa nos jogos restantes. São estimativas transparentes, não probabilidades
+                estatísticas oficiais da FPFS.
               </li>
               <li>
                 <strong>Pontos a Disputar:</strong> cada jogo vale 3 pontos. No {data.categoryLabel}, restam{' '}
