@@ -1,0 +1,25 @@
+{
+  "name": "AD Suzano Sub-7",
+  "short_name": "AD Sub-7",
+  "description": "Portal de inteligência de jogo do AD Suzano Sub-7.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f7fb",
+  "theme_color": "#071a3d",
+  "icons": [
+    {
+      "src": "./ad-suzano-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./ad-suzano-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
