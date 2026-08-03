@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Activity,
   ArrowLeft,
   ArrowRight,
   BadgeInfo,
@@ -109,8 +110,8 @@ export function ClubSiteExperience({ path = 'home' }) {
       <section className="club-frame">
         <div className="club-breadcrumb">
           <a href="#/analise">
-            <ArrowLeft size={16} />
-            Voltar para a análise
+            <Activity size={16} />
+            Acessar Ambiente de Análises Táticas
           </a>
           <span>{activeLabel}</span>
         </div>
@@ -156,8 +157,11 @@ function ClubUtilityBar() {
           ))}
         </nav>
         <div className="club-utility-actions">
-          <a href={pageUrl('operacao')}>Operação digital</a>
-          <a href={clubSiteData.registration.url} target="_blank" rel="noreferrer">Login</a>
+          <a className="club-utility-analysis" href="#/analise">
+            <Activity size={14} />
+            <span>Ambiente de Análises</span>
+          </a>
+          <a href={clubSiteData.registration.url} target="_blank" rel="noreferrer">Matrícula Escolinha</a>
         </div>
       </div>
     </div>
@@ -172,7 +176,7 @@ function ClubHeader({ activePage, links }) {
           <img src={suzanoLogo} alt="AD Suzano" />
           <div>
             <strong>AD Suzano</strong>
-            <span>Portal institucional</span>
+            <span>Site Oficial • Futsal</span>
           </div>
         </a>
         <nav className="club-main-nav">
@@ -188,10 +192,15 @@ function ClubHeader({ activePage, links }) {
             </a>
           ))}
         </nav>
-        <a className="club-search-link" href={pageUrl('pesquisar')}>
-          <Search size={18} />
-          Pesquisar
-        </a>
+        <div className="club-header-actions">
+          <a className="club-nav-analysis-cta" href="#/analise">
+            <Activity size={16} />
+            <span>Ambiente de Análises</span>
+          </a>
+          <a className="club-search-link" href={pageUrl('pesquisar')}>
+            <Search size={18} />
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -201,27 +210,135 @@ function ClubHomePage() {
   return (
     <div className="club-page">
       <section className="club-home-hero">
-        <div>
-          <span>Espelho institucional</span>
-          <h1>AD Suzano TV</h1>
-          <p>{clubSiteData.home.intro}</p>
+        <div className="club-hero-left">
+          <div className="club-hero-badge">
+            <Shield size={16} />
+            <span>Associação Desportiva Suzano • Futsal Paulista A2</span>
+          </div>
+          <h1>Tradição, Raça e Formação em Suzano</h1>
+          <p>
+            Seja bem-vindo ao site oficial da AD Suzano. Acompanhe nossas equipes no Campeonato Paulista,
+            conheça nossa comissão técnica, elencos de base e escolinha oficial de futsal.
+          </p>
           <div className="club-home-actions">
-            <a className="club-primary-cta" href={pageUrl('videos')}>Ver vídeos</a>
-            <a className="club-secondary-cta" href={pageUrl('fotos')}>Explorar fotos</a>
+            <a className="club-analysis-hero-btn" href="#/analise">
+              <Activity size={20} />
+              <span>Ambiente de Análises Táticas</span>
+            </a>
+            <a className="club-primary-cta" href={pageUrl('atletas')}>
+              <Users size={18} />
+              <span>Ver Elencos</span>
+            </a>
+            <a className="club-secondary-cta" href={clubSiteData.registration.url} target="_blank" rel="noreferrer">
+              <Medal size={18} />
+              <span>Escolinha de Futsal</span>
+            </a>
           </div>
         </div>
         <div className="club-highlight-card">
-          <strong>Nova camada digital</strong>
+          <div className="club-crest-showcase">
+            <img src={suzanoLogo} alt="AD Suzano Futsal Crest" />
+          </div>
+          <strong>AD Suzano Futsal</strong>
           <p>
-            A análise esportiva continua como porta de entrada. O site institucional
-            passa a viver ao lado dela, com sincronização preparada e operação separada.
+            Representando o município de Suzano com excelência, ética esportiva e compromisso com o desenvolvimento de atletas desde a Iniciação até a Base.
           </p>
-          <a href={pageUrl('operacao')}>
-            Ver plano de alimentação
+          <a className="club-analysis-link-card" href="#/analise">
+            <span>Acessar Painel de Jogos e Tabelas FPFS</span>
             <ArrowRight size={16} />
           </a>
         </div>
       </section>
+
+      <section className="club-stats-strip">
+        <div className="club-stat-box">
+          <strong>8 Categorias</strong>
+          <span>Iniciação e Base (Sub-7 ao Sub-18)</span>
+        </div>
+        <div className="club-stat-box">
+          <strong>FPFS A2</strong>
+          <span>Divisão Especial de Futsal Paulista</span>
+        </div>
+        <div className="club-stat-box">
+          <strong>Suzano-SP</strong>
+          <span>Ginásio Municipal & Centro de Treinamento</span>
+        </div>
+        <div className="club-stat-box">
+          <strong>Escolinha Oficial</strong>
+          <span>Formação Cidadã e Atletas do Futuro</span>
+        </div>
+      </section>
+
+      <ClubSection
+        eyebrow="Quem Somos"
+        title="História e Identidade da AD Suzano"
+        actionHref={pageUrl('sobre')}
+        actionLabel="Saiba mais sobre o clube"
+      >
+        <div className="club-about-summary-grid">
+          <article className="club-about-text-card">
+            <h3>Nossa Missão no Esporte</h3>
+            <p>
+              A Associação Desportiva Suzano é referência no futsal paulista, unindo alta performance competitiva no Campeonato Paulista A2
+              com um trabalho sólido de formação humana e cidadã para centenas de jovens atletas.
+            </p>
+            <div className="club-about-bullets">
+              <div>
+                <Shield size={16} />
+                <span>Tradição no Campeonato Paulista da FPFS</span>
+              </div>
+              <div>
+                <Users size={16} />
+                <span>Comissão técnica qualificada e multidisciplinar</span>
+              </div>
+              <div>
+                <Medal size={16} />
+                <span>Escolinha oficial para iniciação esportiva infantil</span>
+              </div>
+            </div>
+          </article>
+          <article className="club-about-info-card">
+            <div className="info-item">
+              <Phone size={18} />
+              <div>
+                <small>Contato Oficial</small>
+                <strong>(11) 98207-0735</strong>
+              </div>
+            </div>
+            <div className="info-item">
+              <Shield size={18} />
+              <div>
+                <small>CNPJ Institucional</small>
+                <strong>17.823.783/0001-06</strong>
+              </div>
+            </div>
+            <div className="info-item">
+              <MapPin size={18} />
+              <div>
+                <small>Município</small>
+                <strong>Suzano - São Paulo</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+      </ClubSection>
+
+      <ClubSection
+        eyebrow="Elencos"
+        title="Nossas Categorias no Paulista A2"
+        actionHref={pageUrl('atletas')}
+        actionLabel="Ver atletas cadastrados"
+      >
+        <div className="club-category-showcase-grid">
+          {['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'].map((cat) => (
+            <a className="club-category-card" key={cat} href={pageUrl('atletas')}>
+              <Shield size={20} />
+              <strong>{cat}</strong>
+              <span>Paulista A2 FPFS</span>
+            </a>
+          ))}
+        </div>
+      </ClubSection>
 
       <ClubSection
         eyebrow="Vídeos"
@@ -241,7 +358,7 @@ function ClubHomePage() {
 
       <ClubSection
         eyebrow="Fotos"
-        title="Galeria"
+        title="Galeria de Fotos"
         actionHref={pageUrl('fotos')}
         actionLabel="Mais fotos"
       >
@@ -255,7 +372,7 @@ function ClubHomePage() {
         </div>
       </ClubSection>
 
-      <ClubSection eyebrow="Patrocinadores" title="Parceiros ativos">
+      <ClubSection eyebrow="Patrocinadores" title="Parceiros Oficiais do Clube">
         <div className="club-sponsor-grid">
           {clubSiteData.home.sponsorImages.map((item) => (
             <article className="club-sponsor-card" key={item.name}>

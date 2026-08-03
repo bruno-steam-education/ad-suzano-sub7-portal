@@ -57,18 +57,24 @@ const supporterPlaylistUrl = 'https://youtube.com/playlist?list=PLgwEymErdv_CKVw
 function StaffAccessBar({ isAuthenticated, onOpenModal, onLogout }) {
   return (
     <div className="staff-access-bar">
-      <div className={`staff-access-status ${isAuthenticated ? 'authenticated' : 'public'}`}>
-        {isAuthenticated ? (
-          <>
-            <Shield size={16} />
-            <span>Área Técnica Liberada • Comissão AD Suzano</span>
-          </>
-        ) : (
-          <>
-            <Activity size={16} />
-            <span>Visão Pública • Torcida & Imprensa</span>
-          </>
-        )}
+      <div className="staff-access-left">
+        <a className="staff-back-club-btn" href="#/portal/home">
+          <ChevronRight style={{ transform: 'rotate(180deg)' }} size={16} />
+          <span>Voltar ao Site Oficial AD Suzano</span>
+        </a>
+        <div className={`staff-access-status ${isAuthenticated ? 'authenticated' : 'public'}`}>
+          {isAuthenticated ? (
+            <>
+              <Shield size={16} />
+              <span>Área Técnica Liberada • Comissão AD Suzano</span>
+            </>
+          ) : (
+            <>
+              <Activity size={16} />
+              <span>Painel de Análise Tática</span>
+            </>
+          )}
+        </div>
       </div>
       <div>
         {isAuthenticated ? (
@@ -88,6 +94,10 @@ function StaffAccessBar({ isAuthenticated, onOpenModal, onLogout }) {
 
 function parseAppHash(hash = '') {
   const cleanHash = String(hash).replace(/^#\/?/, '').trim();
+  if (cleanHash === 'analise' || cleanHash === 'analysis') {
+    return { mode: 'analysis', path: '' };
+  }
+
   if (cleanHash.startsWith('portal')) {
     return {
       mode: 'portal',
@@ -95,7 +105,8 @@ function parseAppHash(hash = '') {
     };
   }
 
-  return { mode: 'analysis', path: '' };
+  // Padrão: Site Oficial da AD Suzano
+  return { mode: 'portal', path: 'home' };
 }
 
 function normalizeFpfsGame(game) {
