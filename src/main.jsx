@@ -39,6 +39,8 @@ import {
   suzanoRecord,
 } from './utils/analysis';
 import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader';
+import { AccessModal } from './components/AccessModal';
+import { ProtectedSection } from './components/ProtectedSection';
 import './styles.css';
 
 registerServiceWorker();
@@ -51,6 +53,38 @@ const fmtDate = new Intl.DateTimeFormat('pt-BR', {
 
 const appVersion = packageInfo.version;
 const supporterPlaylistUrl = 'https://youtube.com/playlist?list=PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM&si=nvwTyHLvLWB9V88c';
+
+function StaffAccessBar({ isAuthenticated, onOpenModal, onLogout }) {
+  return (
+    <div className="staff-access-bar">
+      <div className={`staff-access-status ${isAuthenticated ? 'authenticated' : 'public'}`}>
+        {isAuthenticated ? (
+          <>
+            <Shield size={16} />
+            <span>Área Técnica Liberada • Comissão AD Suzano</span>
+          </>
+        ) : (
+          <>
+            <Activity size={16} />
+            <span>Visão Pública • Torcida & Imprensa</span>
+          </>
+        )}
+      </div>
+      <div>
+        {isAuthenticated ? (
+          <button className="staff-access-btn logout-btn" type="button" onClick={onLogout}>
+            <span>Sair / Bloquear</span>
+          </button>
+        ) : (
+          <button className="staff-access-btn login-btn" type="button" onClick={onOpenModal}>
+            <Shield size={14} />
+            <span>Acesso Comissão Técnica</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function parseAppHash(hash = '') {
   const cleanHash = String(hash).replace(/^#\/?/, '').trim();
@@ -130,6 +164,11 @@ function App() {
   const [activeCategoryId, setActiveCategoryId] = useState('sub7');
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('ad-suzano-staff-auth') === 'true';
+  });
+  const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
+
   const record = useMemo(() => suzanoRecord(), []);
   const upcoming = useMemo(() => nextMatches(new Date()), []);
   const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
@@ -143,6 +182,19 @@ function App() {
   const sub7CampaignMatches = sub7FpfsRecent.length ? sub7FpfsRecent : suzanoMatches();
   const sub7DisplayRecord = activeFpfs?.record ?? record;
   const activeCategoryNextMatch = hasFullSub7View ? sub7NextSuzano[0] : nextThreeCategoryGames(activeCategory, activeFpfs)[0];
+
+  const handleLoginSuccess = () => {
+    sessionStorage.setItem('ad-suzano-staff-auth', 'true');
+    setIsAuthenticated(true);
+    setIsAccessModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('ad-suzano-staff-auth');
+    setIsAuthenticated(false);
+  };
+
+  const openAccessModal = () => setIsAccessModalOpen(true);
 
   React.useEffect(() => {
     let active = true;
@@ -171,6 +223,16 @@ function App() {
 
   return (
     <main className="app-shell">
+      <StaffAccessBar
+        isAuthenticated={isAuthenticated}
+        onOpenModal={openAccessModal}
+        onLogout={handleLogout}
+      />
+      <AccessModal
+        isOpen={isAccessModalOpen}
+        onClose={() => setIsAccessModalOpen(false)}
+        onSuccess={handleLoginSuccess}
+      />
       <Hero
         category={activeCategory}
         record={hasFullSub7View ? sub7DisplayRecord : activeFpfs?.record}
@@ -187,16 +249,49 @@ function App() {
       />
       {hasFullSub7View ? (
         <>
-          <CategoryEfficiencyHeader category={activeCategory} />
+          <ProtectedSection
+            isAuthenticated={isAuthenticated}
+            onOpenModal={openAccessModal}
+            title="Cota de Eficiência por Categoria"
+            description="Metas de pontos e cálculo de cota de contribuição do Art. 135 do RGC reservadas à Comissão Técnica da AD Suzano."
+          >
+            <CategoryEfficiencyHeader category={activeCategory} />
+          </ProtectedSection>
+
           <NewsBanner />
 
           <section className="content-grid">
             <div className="main-flow">
-              <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, { ...activeFpfs, upcomingGames: sub7NextSuzano })} />
+              <ProtectedSection
+                isAuthenticated={isAuthenticated}
+                onOpenModal={openAccessModal}
+                title="Inteligência de Jogo & Robô de Previsão"
+                description="Percentual de chance de vitória, análise detalhada de adversários e estatísticas táticas reservadas à Comissão Técnica da AD Suzano."
+              >
+                <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, { ...activeFpfs, upcomingGames: sub7NextSuzano })} />
+              </ProtectedSection>
+
               <CategoryStandingsMirror category={activeCategory} fpfsData={activeFpfs} />
-              <TitleProjection />
-              <AccessProjection />
-              <WeeklyDesk />
+
+              <ProtectedSection
+                isAuthenticated={isAuthenticated}
+                onOpenModal={openAccessModal}
+                title="Projeção Agregada de Título e Acesso"
+                description="Leitura de risco de queda, chance de acesso acumulada do clube e teto matemático reservados à Comissão Técnica."
+              >
+                <TitleProjection />
+                <AccessProjection />
+              </ProtectedSection>
+
+              <ProtectedSection
+                isAuthenticated={isAuthenticated}
+                onOpenModal={openAccessModal}
+                title="Mesa Semanal da Comissão Técnica"
+                description="Boletim e diretrizes técnicas reservadas ao staff da AD Suzano."
+              >
+                <WeeklyDesk />
+              </ProtectedSection>
+
               <Campaign matches={sub7CampaignMatches} />
             </div>
 
@@ -207,7 +302,12 @@ function App() {
           </section>
         </>
       ) : (
-        <CompleteCategoryDashboard category={activeCategory} fpfsData={activeFpfs} />
+        <CompleteCategoryDashboard
+          category={activeCategory}
+          fpfsData={activeFpfs}
+          isAuthenticated={isAuthenticated}
+          onOpenModal={openAccessModal}
+        />
       )}
       <AppFooter />
     </main>
@@ -347,7 +447,7 @@ function CategoryDashboard({ category, fpfsData }) {
   );
 }
 
-function CompleteCategoryDashboard({ category, fpfsData }) {
+function CompleteCategoryDashboard({ category, fpfsData, isAuthenticated, onOpenModal }) {
   const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
   const record = fpfsData?.record;
   const upcomingGames = nextThreeCategoryGames(category, fpfsData);
@@ -385,17 +485,50 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
           </div>
         </section>
 
-        <CategoryEfficiencyHeader category={category} />
+        <ProtectedSection
+          isAuthenticated={isAuthenticated}
+          onOpenModal={onOpenModal}
+          title={`Cota de Eficiência ${category.label}`}
+          description={`Metas de pontos e cálculo de cota de contribuição do Art. 135 do RGC reservadas à Comissão Técnica.`}
+        >
+          <CategoryEfficiencyHeader category={category} />
+        </ProtectedSection>
       </section>
 
       <section className="content-grid category-complete-grid">
         <div className="main-flow">
           <CategoryNewsPanel category={category} />
-          <CategoryNextGamesV2 category={category} games={upcomingGames} robot={robot} />
+
+          <ProtectedSection
+            isAuthenticated={isAuthenticated}
+            onOpenModal={onOpenModal}
+            title={`Inteligência de Jogo & Robô ${category.label}`}
+            description={`Probabilidade de vitória, estatísticas de média de gols e análise de adversários da categoria ${category.label} reservadas à Comissão Técnica.`}
+          >
+            <CategoryNextGamesV2 category={category} games={upcomingGames} robot={robot} />
+          </ProtectedSection>
+
           <CategoryStandingsMirror category={category} fpfsData={fpfsData} />
-          <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
-          <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
-          <CategoryWeeklyDesk category={category} />
+
+          <ProtectedSection
+            isAuthenticated={isAuthenticated}
+            onOpenModal={onOpenModal}
+            title={`Projeções de Título e Acesso ${category.label}`}
+            description={`Leitura de risco de queda e chance de acesso reservadas à Comissão Técnica.`}
+          >
+            <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
+            <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
+          </ProtectedSection>
+
+          <ProtectedSection
+            isAuthenticated={isAuthenticated}
+            onOpenModal={onOpenModal}
+            title="Mesa Semanal da Comissão Técnica"
+            description="Observações técnicas e boletim tático da comissão."
+          >
+            <CategoryWeeklyDesk category={category} />
+          </ProtectedSection>
+
           <CategoryGamesPanel
             title="Últimos resultados"
             games={fpfsData?.recentGames ?? []}
@@ -407,7 +540,16 @@ function CompleteCategoryDashboard({ category, fpfsData }) {
 
         <aside className="side-flow">
           <CategorySchedulePlaceholder category={category} games={upcomingGames} />
-          <CategoryRobotAudit category={category} robot={robot} />
+
+          <ProtectedSection
+            isAuthenticated={isAuthenticated}
+            onOpenModal={onOpenModal}
+            title="Auditoria do Robô"
+            description="Métricas de integridade tática reservadas ao staff."
+          >
+            <CategoryRobotAudit category={category} robot={robot} />
+          </ProtectedSection>
+
           <CategoryYouTubePanel category={category} fpfsData={fpfsData} />
           <CategoryDataPanel category={category} fpfsData={fpfsData} hasSuzanoGames={hasSuzanoGames} />
         </aside>
