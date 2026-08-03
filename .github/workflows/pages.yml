@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,18 +33,26 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload artifact
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+
+      - name: Upload artifact for GitHub Actions deployment
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-  deploy:
+  deploy-actions:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-and-deploy
+    continue-on-error: true
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages API
         id: deployment
         uses: actions/deploy-pages@v4
+
