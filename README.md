@@ -1,6 +1,8 @@
-# AD Suzano Sub-7 Portal
+# AD Suzano Sub-7 & Base Portal • Site Oficial & Painel de Análises
 
-Portal em React para acompanhar o AD Suzano Sub-7 no Campeonato Paulista de Futsal A2.
+> 🤖 **Guia para IAs e Desenvolvedores**: Confira o arquivo [VIBE-CODING-GUIDE.md](file:///c:/Programas/AD%20Suzano/VIBE-CODING-GUIDE.md) para o manual completo de arquitetura, automações, proteção por senha (`suzano2026`) e instrução de deploy no GitHub Pages.
+
+Portal em React para acompanhar o AD Suzano no Campeonato Paulista de Futsal A2.
 
 ## Rodar localmente
 
