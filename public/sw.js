@@ -19,15 +19,25 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (!url.protocol.startsWith('http')) return;
 
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        if (response && response.status === 200 && response.type === 'basic') {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+        }
         return response;
       })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./'))),
+      .catch(async () => {
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
+        const appShellFallback = await caches.match('./');
+        if (appShellFallback) return appShellFallback;
+        return new Response('Offline', { status: 503, statusText: 'Offline' });
+      }),
   );
 });
 

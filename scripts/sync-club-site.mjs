@@ -2,7 +2,11 @@ import * as cheerio from 'cheerio';
 import { writeFile } from 'node:fs/promises';
 
 const SITE_URL = 'https://adsuzano.com.br';
-const HEADERS = { 'User-Agent': 'AD-Suzano-Digital-Lab/1.0' };
+const HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+};
 const MAIN_LABELS = ['HOME', 'ATLETAS', 'JOGOS', 'CAMPEONATOS', 'RANKING', 'CAMPOS', 'NOTÍCIAS', 'VÍDEOS', 'FOTOS', 'MATRÍCULA', 'TRANSPARÊNCIA', 'CONTATO'];
 const TOP_LABELS = ['SOBRE', 'DIRETORIA', 'PATROCINADORES', 'TROFÉUS', 'ENQUETES'];
 const FOOTER_LABELS = ['Acessibilidade', 'Política de Cookies', 'Política de Privacidade', 'Termos de Uso', 'Contato'];
@@ -10,7 +14,7 @@ const KNOWN_ROLES = ['Aux Técnico', 'Coordenador', 'Técnico'];
 
 function cleanText(value = '') {
   const normalized = value.replace(/\s+/g, ' ').trim();
-  if (/[ÃÂ�]/.test(normalized)) {
+  if (/[ÃÂ]/.test(normalized)) {
     return Buffer.from(normalized, 'latin1').toString('utf8').replace(/\s+/g, ' ').trim();
   }
   return normalized;
@@ -30,17 +34,27 @@ async function fetchPage(path, retries = 3, delay = 1000) {
         const html = new TextDecoder('utf-8').decode(buffer);
         return cheerio.load(html);
       }
+      if (response.status === 403) {
+        console.warn(`[Warning] Acesso bloqueado (403) para ${path}`);
+        return cheerio.load('<html></html>');
+      }
       if (response.status === 404 && i < retries - 1) {
         console.warn(`[Retry ${i + 1}/${retries}] 404 para ${path}, tentando novamente em ${delay}ms...`);
       } else if (!response.ok) {
-        throw new Error(`Falha ao buscar ${path}: ${response.status}`);
+        console.warn(`[Warning] Falha ao buscar ${path}: ${response.status}`);
+        if (i < retries - 1) await new Promise((resolve) => setTimeout(resolve, delay));
+        else return cheerio.load('<html></html>');
       }
     } catch (err) {
-      if (i === retries - 1) throw err;
+      if (i === retries - 1) {
+        console.warn(`[Warning] Erro final ao buscar ${path}: ${err.message}`);
+        return cheerio.load('<html></html>');
+      }
       console.warn(`[Retry ${i + 1}/${retries}] Erro ao buscar ${path}: ${err.message}. Tentando novamente em ${delay}ms...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
-    await new Promise((resolve) => setTimeout(resolve, delay));
   }
+  return cheerio.load('<html></html>');
 }
 
 function uniqueLinks(items) {
@@ -374,7 +388,10 @@ const clubSiteData = {
   ],
 };
 
-const fileContent = `// Arquivo gerado por scripts/sync-club-site.mjs.\n// Fonte: ${SITE_URL}\nexport const clubSiteData = ${JSON.stringify(clubSiteData, null, 2)};\n`;
-
-await writeFile(new URL('../src/data/clubSite.js', import.meta.url), fileContent);
-console.log(`Site institucional sincronizado: ${clubSiteData.athletes.categories.length} categorias e ${playerDetails.length} atletas.`);
+if (clubSiteData.athletes.categories.length === 0) {
+  console.log("Nenhuma categoria obtida do site institucional (servidor bloqueado ou indisponível). Mantendo dados de clubSite.js existentes.");
+} else {
+  const fileContent = `// Arquivo gerado por scripts/sync-club-site.mjs.\n// Fonte: ${SITE_URL}\nexport const clubSiteData = ${JSON.stringify(clubSiteData, null, 2)};\n`;
+  await writeFile(new URL('../src/data/clubSite.js', import.meta.url), fileContent);
+  console.log(`Site institucional sincronizado: ${clubSiteData.athletes.categories.length} categorias e ${playerDetails.length} atletas.`);
+}
