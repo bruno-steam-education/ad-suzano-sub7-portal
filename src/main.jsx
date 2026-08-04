@@ -11,6 +11,7 @@ import {
   Goal,
   MapPin,
   Navigation,
+  Newspaper,
   Shield,
   Sparkles,
   SunMedium,
@@ -1565,75 +1566,120 @@ function NewsBanner() {
     .filter((item) => item.category === 'AD Suzano' || item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7')
     .slice(0, 10);
   const lead = mainNews.find((item) => item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7') ?? mainNews[0] ?? newsItems[0];
+  if (!lead) return null;
+
   const orderedNews = [lead, ...mainNews.filter((item) => item.id !== lead.id)];
-  const featureItems = orderedNews.slice(1, 4);
-  const tickerItems = orderedNews.slice(4);
+  const featureItems = orderedNews.slice(1, 5);
+  const topics = [...new Set(orderedNews.map((item) => item.category))];
 
   return (
-    <section className="news-band" aria-labelledby="news-title">
-      <div className="news-heading">
-        <div>
-          <span>Últimas notícias</span>
-          <h2 id="news-title">Radar semanal AD Suzano</h2>
+    <section className="newsroom" aria-labelledby="news-title">
+      <header className="newsroom-header">
+        <div className="newsroom-brand">
+          <span className="newsroom-icon" aria-hidden="true"><Newspaper size={22} /></span>
+          <div>
+            <span>AD Suzano Notícias</span>
+            <h2 id="news-title">Radar da semana</h2>
+          </div>
         </div>
-        <strong>{orderedNews.length} notícias na semana de {formatShortDate(newsWeek)}</strong>
-      </div>
+        <div className="newsroom-edition">
+          <span><i aria-hidden="true" /> Boletim atualizado</span>
+          <strong>{orderedNews.length} {orderedNews.length === 1 ? 'notícia' : 'notícias'} · semana de {formatShortDate(newsWeek)}</strong>
+        </div>
+      </header>
 
-      <div className="news-layout">
+      <nav className="newsroom-topics" aria-label="Editorias do radar">
+        <strong>Últimas</strong>
+        {topics.map((topic) => <span key={topic}>{topic}</span>)}
+        <span>Paulista A2</span>
+        <span>FPFS</span>
+      </nav>
+
+      <div className="newsroom-layout">
         <motion.article
-          className="lead-news"
+          className="newsroom-lead"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.45 }}
         >
-          <div className="news-tag">{lead.category}</div>
-          <h3>{lead.title}</h3>
-          <p>{lead.summary}</p>
-          <div className="news-impact">{lead.impact}</div>
-          <NewsLink item={lead} />
+          <div className="newsroom-lead-visual" aria-hidden="true">
+            <span>Notícia em destaque</span>
+            <img src={suzanoLogo} alt="" />
+            <strong>AD SUZANO<br />FUTSAL</strong>
+          </div>
+          <div className="newsroom-lead-copy">
+            <div className="newsroom-meta">
+              <span>{lead.category}</span>
+              <time dateTime={lead.date}>{formatEditorialDate(lead.date)}</time>
+              <small>{lead.source}</small>
+            </div>
+            <h3>{lead.title}</h3>
+            <p>{lead.summary}</p>
+            <div className="newsroom-impact">
+              <span>Em números</span>
+              <strong>{lead.impact}</strong>
+            </div>
+            <NewsLink item={lead} featured />
+          </div>
         </motion.article>
 
-        <div className="news-stack">
+        <aside className="newsroom-stream" aria-label="Outras notícias da semana">
+          <div className="newsroom-stream-title">
+            <div>
+              <span>Agora no radar</span>
+              <h3>Mais notícias</h3>
+            </div>
+            <strong>{String(featureItems.length).padStart(2, '0')}</strong>
+          </div>
           {featureItems.map((item) => (
             <motion.article
-              className="mini-news"
+              className="newsroom-brief"
               key={item.id}
               whileHover={{ x: 4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
-              <div>
-                <span>{item.category}</span>
-                <h3>{item.title}</h3>
+              <div className="newsroom-brief-thumb" aria-hidden="true">
+                <img src={suzanoLogo} alt="" />
               </div>
-              <p>{item.summary}</p>
-              <NewsLink item={item} />
+              <div className="newsroom-brief-copy">
+                <div className="newsroom-meta">
+                  <span>{item.category}</span>
+                  <time dateTime={item.date}>{formatEditorialDate(item.date)}</time>
+                </div>
+                <h4>{item.title}</h4>
+                <p>{item.summary}</p>
+                <NewsLink item={item} />
+              </div>
             </motion.article>
           ))}
-        </div>
+          {featureItems.length === 0 ? (
+            <div className="newsroom-empty">
+              <Newspaper size={24} />
+              <strong>Próxima atualização em preparação</strong>
+              <span>O radar automático publicará as novas chamadas aqui.</span>
+            </div>
+          ) : null}
+        </aside>
       </div>
 
-      <div className="news-rail">
-        {tickerItems.map((item) => (
-          <article className="rail-news" key={item.id}>
-            <span>{item.category}</span>
-            <strong>{item.title}</strong>
-            <small>{item.source}</small>
-          </article>
-        ))}
-      </div>
+      <footer className="newsroom-footer">
+        <strong>Informação oficial e cobertura regional</strong>
+        <span>Resultados conferidos na súmula · notícias com fonte identificada</span>
+      </footer>
     </section>
   );
 }
 
-function NewsLink({ item }) {
+function NewsLink({ item, featured = false }) {
   if (!item.url) {
     return <span className="source-chip">{item.source}</span>;
   }
 
   return (
-    <a className="source-chip" href={item.url} target="_blank" rel="noreferrer">
-      {item.source}
+    <a className={`source-chip${featured ? ' source-chip-featured' : ''}`} href={item.url} target="_blank" rel="noreferrer">
+      {featured ? 'Ler matéria completa' : 'Ler notícia'}
+      <ChevronRight size={15} aria-hidden="true" />
     </a>
   );
 }
@@ -1666,6 +1712,13 @@ function RouteButtons({ query }) {
 
 function formatShortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T12:00:00`));
+}
+
+function formatEditorialDate(value) {
+  if (!value) return 'Data não informada';
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })
+    .format(new Date(`${value}T12:00:00`))
+    .replace('.', '');
 }
 
 function Hero({ category, record, nextMatch, hasData, weather, weatherError }) {
