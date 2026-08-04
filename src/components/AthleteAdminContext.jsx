@@ -136,6 +136,7 @@ export function AthleteAdminProvider({ children }) {
     staff,
     isAdmin: Boolean(session && staff),
     isCoordinator: staff?.role === 'coordinator',
+    isAdministrator: staff?.role === 'administrator',
     loading,
     error,
     profilesById: mapByAthleteId(snapshot.profiles),

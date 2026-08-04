@@ -1308,7 +1308,7 @@ function StaffLoginModal({ open, onClose }) {
         <span className="athlete-admin-modal-icon"><LockKeyhole size={25} /></span>
         <small>ÁREA RESTRITA</small>
         <h2 id="staff-login-title">Equipe AD Suzano</h2>
-        <p>Escolha seu perfil. A Coordenação também acessa o controle financeiro.</p>
+        <p>Escolha seu perfil. Coordenação e Administração possuem acesso financeiro.</p>
         <form onSubmit={submit}>
           <div className="staff-account-choice" role="radiogroup" aria-label="Perfil de acesso">
             <button type="button" role="radio" aria-checked={account === 'technical'} className={account === 'technical' ? 'is-active' : ''} onClick={() => setAccount('technical')}>
@@ -1316,6 +1316,9 @@ function StaffLoginModal({ open, onClose }) {
             </button>
             <button type="button" role="radio" aria-checked={account === 'coordinator'} className={account === 'coordinator' ? 'is-active' : ''} onClick={() => setAccount('coordinator')}>
               <Shield size={18} /><span><strong>Coordenação</strong><small>Comissão e financeiro</small></span>
+            </button>
+            <button type="button" role="radio" aria-checked={account === 'administrator'} className={account === 'administrator' ? 'is-active' : ''} onClick={() => setAccount('administrator')}>
+              <LockKeyhole size={18} /><span><strong>Administrador</strong><small>Visão geral e relatórios</small></span>
             </button>
           </div>
           <label htmlFor="staff-password">Senha de acesso</label>
@@ -1467,7 +1470,7 @@ function AthleteEditModal({ player, category, onClose }) {
 }
 
 function ClubAthletesPage({ categories }) {
-  const { isAdmin, isCoordinator, logout, archiveAthlete, profilesById, loading, error } = useAthleteAdmin();
+  const { isAdmin, isCoordinator, isAdministrator, logout, archiveAthlete, profilesById, loading, error } = useAthleteAdmin();
   const [loginOpen, setLoginOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [feedback, setFeedback] = useState('');
@@ -1527,7 +1530,7 @@ function ClubAthletesPage({ categories }) {
           <div className="athlete-admin-entry">
             {isAdmin ? (
               <>
-                <span><LockKeyhole size={16} /> {isCoordinator ? 'Modo Coordenação ativo' : 'Modo Comissão Técnica ativo'}</span>
+                <span><LockKeyhole size={16} /> {isAdministrator ? 'Modo Administrador ativo' : isCoordinator ? 'Modo Coordenação ativo' : 'Modo Comissão Técnica ativo'}</span>
                 <button type="button" onClick={logout}><LogOut size={16} /> Sair</button>
               </>
             ) : (

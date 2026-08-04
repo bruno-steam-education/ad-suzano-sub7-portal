@@ -56,10 +56,12 @@ function downloadCsv(filename, rows) {
 }
 
 export default function StaffOperationsPanel({ categories }) {
-  const { isAdmin, isCoordinator, staff } = useAthleteAdmin();
+  const { isAdmin, isCoordinator, isAdministrator, staff } = useAthleteAdmin();
+  const canAccessFinance = isCoordinator || isAdministrator;
+  const firstCategoryLabel = categories[0]?.label ?? 'Sub-7';
   const [data, setData] = useState(EMPTY_DATA);
   const [activeModule, setActiveModule] = useState('dashboard');
-  const [category, setCategory] = useState(categories[0]?.label ?? 'Sub-7');
+  const [category, setCategory] = useState(firstCategoryLabel);
   const [month, setMonth] = useState(monthInput());
   const [selectedSessionId, setSelectedSessionId] = useState('');
   const [selectedEventId, setSelectedEventId] = useState('');
@@ -86,13 +88,22 @@ export default function StaffOperationsPanel({ categories }) {
 
   useEffect(() => { load(); }, [load]);
   useEffect(() => {
-    if (!isCoordinator && activeModule === 'finance') setActiveModule('attendance');
-  }, [activeModule, isCoordinator]);
+    if (!canAccessFinance && activeModule === 'finance') setActiveModule('attendance');
+  }, [activeModule, canAccessFinance]);
+  useEffect(() => {
+    setCategory((current) => {
+      if (isAdministrator && current === firstCategoryLabel) return 'Todas';
+      if (!isAdministrator && current === 'Todas') return firstCategoryLabel;
+      return current;
+    });
+  }, [firstCategoryLabel, isAdministrator]);
 
   const selectedCategory = categories.find((item) => item.label === category) ?? categories[0];
-  const athletes = selectedCategory?.athletes ?? [];
-  const monthSessions = data.sessions.filter((session) => session.category === category && session.session_date.startsWith(month));
-  const monthEvents = data.financialEvents.filter((event) => event.category === category && event.event_date.startsWith(month));
+  const athletes = category === 'Todas'
+    ? categories.flatMap((item) => item.athletes.map((athlete) => ({ ...athlete, category: item.label })))
+    : (selectedCategory?.athletes ?? []).map((athlete) => ({ ...athlete, category }));
+  const monthSessions = data.sessions.filter((session) => (category === 'Todas' || session.category === category) && session.session_date.startsWith(month));
+  const monthEvents = data.financialEvents.filter((event) => (category === 'Todas' || event.category === category) && event.event_date.startsWith(month));
   const selectedSession = monthSessions.find((session) => session.id === selectedSessionId) ?? monthSessions[0] ?? null;
   const selectedEvent = monthEvents.find((event) => event.id === selectedEventId) ?? monthEvents[0] ?? null;
 
@@ -106,7 +117,8 @@ export default function StaffOperationsPanel({ categories }) {
 
   const dashboard = useMemo(() => {
     const athleteRows = athletes.map((athlete) => {
-      const statuses = monthSessions.map((session) => attendanceMap.get(`${session.id}:${athlete.id}`)?.status ?? 'unmarked');
+      const athleteSessions = monthSessions.filter((session) => session.category === athlete.category);
+      const statuses = athleteSessions.map((session) => attendanceMap.get(`${session.id}:${athlete.id}`)?.status ?? 'unmarked');
       const present = statuses.filter((status) => status === 'present').length;
       const absent = statuses.filter((status) => status === 'absent').length;
       const justified = statuses.filter((status) => status === 'justified').length;
@@ -121,7 +133,7 @@ export default function StaffOperationsPanel({ categories }) {
       unmarked: sum.unmarked + athlete.unmarked,
     }), { present: 0, absent: 0, justified: 0, unmarked: 0 });
     const marked = totals.present + totals.absent + totals.justified;
-    const payments = monthEvents.flatMap((event) => athletes.map((athlete) => ({
+    const payments = monthEvents.flatMap((event) => athletes.filter((athlete) => athlete.category === event.category).map((athlete) => ({
       event,
       status: paymentMap.get(`${event.id}:${athlete.id}`)?.status ?? 'pending',
     })));
@@ -136,13 +148,25 @@ export default function StaffOperationsPanel({ categories }) {
       pendingCents,
       paidCount: payments.filter((item) => item.status === 'paid').length,
       pendingCount: payments.filter((item) => item.status === 'pending').length,
+      categoryRows: categories.map((item) => {
+        const rows = athleteRows.filter((athlete) => athlete.category === item.label);
+        const summary = rows.reduce((sum, athlete) => ({
+          present: sum.present + athlete.present,
+          absent: sum.absent + athlete.absent,
+          justified: sum.justified + athlete.justified,
+          unmarked: sum.unmarked + athlete.unmarked,
+        }), { present: 0, absent: 0, justified: 0, unmarked: 0 });
+        const markedRecords = summary.present + summary.absent + summary.justified;
+        return { category: item.label, athletes: item.athletes.length, sessions: monthSessions.filter((session) => session.category === item.label).length, ...summary, rate: markedRecords ? Math.round((summary.present / markedRecords) * 100) : null };
+      }),
     };
-  }, [athletes, attendanceMap, monthEvents, monthSessions, paymentMap]);
+  }, [athletes, attendanceMap, categories, monthEvents, monthSessions, paymentMap]);
 
   if (!isAdmin) return null;
 
   const createSession = async (event) => {
     event.preventDefault();
+    if (category === 'Todas') return;
     setLoading(true);
     setError('');
     try {
@@ -197,6 +221,21 @@ export default function StaffOperationsPanel({ categories }) {
   };
 
   const exportAttendance = () => {
+    if (category === 'Todas') {
+      const rows = [['Categoria', 'Atleta', 'Chamadas', 'Presenças', 'Faltas', 'Justificadas', 'Sem marcação', 'Frequência']];
+      dashboard.athleteRows.forEach((athlete) => rows.push([
+        athlete.category,
+        athlete.name,
+        athlete.marked + athlete.unmarked,
+        athlete.present,
+        athlete.absent,
+        athlete.justified,
+        athlete.unmarked,
+        athlete.rate === null ? '—' : `${athlete.rate}%`,
+      ]));
+      downloadCsv(`frequencia-geral-${month}.csv`, rows);
+      return;
+    }
     const rows = [['Atleta', ...monthSessions.map((session) => `${formatDate(session.session_date)} - ${session.title}`), 'Presenças', 'Faltas', 'Justificadas', 'Frequência']];
     athletes.forEach((athlete) => {
       const statuses = monthSessions.map((session) => attendanceMap.get(`${session.id}:${athlete.id}`)?.status ?? 'unmarked');
@@ -211,6 +250,7 @@ export default function StaffOperationsPanel({ categories }) {
 
   const createFinanceEvent = async (event) => {
     event.preventDefault();
+    if (category === 'Todas') return;
     const amountCents = Math.round(Number(financeForm.amount.replace(',', '.')) * 100);
     if (!financeForm.title.trim() || !Number.isFinite(amountCents) || amountCents < 0) return;
     setLoading(true);
@@ -265,6 +305,21 @@ export default function StaffOperationsPanel({ categories }) {
   };
 
   const exportFinance = () => {
+    if (category === 'Todas') {
+      const rows = [['Categoria', 'Atleta', 'Eventos', 'Pagos', 'Pendentes', 'Isentos', 'Total pago', 'Total pendente']];
+      dashboard.athleteRows.forEach((athlete) => {
+        const athleteEvents = monthEvents.filter((event) => event.category === athlete.category);
+        const payments = athleteEvents.map((event) => ({ event, payment: paymentMap.get(`${event.id}:${athlete.id}`) }));
+        const paidCount = payments.filter(({ payment }) => payment?.status === 'paid').length;
+        const pendingCount = payments.filter(({ payment }) => (payment?.status ?? 'pending') === 'pending').length;
+        const waivedCount = payments.filter(({ payment }) => payment?.status === 'waived').length;
+        const paid = payments.reduce((sum, { event, payment }) => sum + (payment?.status === 'paid' ? event.amount_cents : 0), 0);
+        const pending = payments.reduce((sum, { event, payment }) => sum + ((payment?.status ?? 'pending') === 'pending' ? event.amount_cents : 0), 0);
+        rows.push([athlete.category, athlete.name, athleteEvents.length, paidCount, pendingCount, waivedCount, formatMoney(paid), formatMoney(pending)]);
+      });
+      downloadCsv(`financeiro-geral-${month}.csv`, rows);
+      return;
+    }
     const rows = [['Atleta', ...monthEvents.map((event) => `${formatDate(event.event_date)} - ${event.title} (${formatMoney(event.amount_cents)})`), 'Total pago', 'Total pendente']];
     athletes.forEach((athlete) => {
       const payments = monthEvents.map((event) => paymentMap.get(`${event.id}:${athlete.id}`));
@@ -291,20 +346,20 @@ export default function StaffOperationsPanel({ categories }) {
     <section className="staff-operations" aria-labelledby="staff-operations-title">
       <header className="staff-operations-head">
         <div>
-          <span>{isCoordinator ? 'COORDENAÇÃO' : 'COMISSÃO TÉCNICA'} · ÁREA PROTEGIDA</span>
+          <span>{isAdministrator ? 'ADMINISTRAÇÃO' : isCoordinator ? 'COORDENAÇÃO' : 'COMISSÃO TÉCNICA'} · ÁREA PROTEGIDA</span>
           <h2 id="staff-operations-title">Central da Equipe</h2>
           <p>Olá, {staff?.display_name || 'equipe'}. Presenças e pagamentos são salvos automaticamente.</p>
         </div>
-        <div className="staff-operations-role"><Users size={18} />{isCoordinator ? 'Acesso completo' : 'Frequência dos atletas'}</div>
+        <div className="staff-operations-role"><Users size={18} />{isAdministrator ? 'Visão geral do clube' : isCoordinator ? 'Acesso completo' : 'Frequência dos atletas'}</div>
       </header>
 
       <div className="staff-operations-toolbar">
-        <div className={`staff-module-tabs${isCoordinator ? ' has-finance' : ''}`} role="tablist" aria-label="Módulos administrativos">
+        <div className={`staff-module-tabs${canAccessFinance ? ' has-finance' : ''}`} role="tablist" aria-label="Módulos administrativos">
           <button type="button" className={activeModule === 'dashboard' ? 'is-active' : ''} onClick={() => setActiveModule('dashboard')}><BarChart3 size={18} /> Dashboard</button>
           <button type="button" className={activeModule === 'attendance' ? 'is-active' : ''} onClick={() => setActiveModule('attendance')}><CalendarCheck size={18} /> Frequência</button>
-          {isCoordinator ? <button type="button" className={activeModule === 'finance' ? 'is-active' : ''} onClick={() => setActiveModule('finance')}><CircleDollarSign size={18} /> Financeiro</button> : null}
+          {canAccessFinance ? <button type="button" className={activeModule === 'finance' ? 'is-active' : ''} onClick={() => setActiveModule('finance')}><CircleDollarSign size={18} /> Financeiro</button> : null}
         </div>
-        <label>Categoria<select value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select></label>
+        <label>Categoria<select value={category} onChange={(event) => setCategory(event.target.value)}>{isAdministrator ? <option>Todas</option> : null}{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select></label>
         <label>Mês<input type="month" value={month} onChange={(event) => setMonth(event.target.value)} /></label>
       </div>
 
@@ -314,21 +369,33 @@ export default function StaffOperationsPanel({ categories }) {
       {activeModule === 'dashboard' ? (
         <div className="staff-module-panel staff-dashboard">
           <div className="staff-dashboard-title">
-            <div><strong>Visão mensal do {category}</strong><span>Indicadores calculados com os registros de {month}</span></div>
+            <div><strong>{category === 'Todas' ? 'Visão geral de todas as categorias' : `Visão mensal do ${category}`}</strong><span>Indicadores calculados com os registros de {month}</span></div>
             <div className="staff-dashboard-exports">
               <button type="button" className="staff-secondary-action" onClick={exportAttendance} disabled={!monthSessions.length}><Download size={17} /> Frequência CSV</button>
-              {isCoordinator ? <button type="button" className="staff-secondary-action" onClick={exportFinance} disabled={!monthEvents.length}><Download size={17} /> Financeiro CSV</button> : null}
+              {canAccessFinance ? <button type="button" className="staff-secondary-action" onClick={exportFinance} disabled={!monthEvents.length}><Download size={17} /> Financeiro CSV</button> : null}
             </div>
           </div>
 
           <div className="staff-dashboard-kpis">
             <article><span>Frequência geral</span><strong>{dashboard.rate === null ? '—' : `${dashboard.rate}%`}</strong><small>{dashboard.present} presenças em {dashboard.marked} marcações</small></article>
-            <article><span>Chamadas no mês</span><strong>{monthSessions.length}</strong><small>{athletes.length} atletas no {category}</small></article>
+            <article><span>Chamadas no mês</span><strong>{monthSessions.length}</strong><small>{athletes.length} atletas {category === 'Todas' ? `em ${categories.length} categorias` : `no ${category}`}</small></article>
             <article><span>Faltas</span><strong>{dashboard.absent}</strong><small>{dashboard.justified} justificadas</small></article>
             <article className={dashboard.unmarked ? 'has-warning' : ''}><span>Sem marcação</span><strong>{dashboard.unmarked}</strong><small>{!monthSessions.length ? 'Nenhuma chamada no mês' : dashboard.unmarked ? 'Requer conferência' : 'Tudo conferido'}</small></article>
-            {isCoordinator ? <article><span>Recebido no mês</span><strong>{formatMoney(dashboard.receivedCents)}</strong><small>{dashboard.paidCount} pagamento(s)</small></article> : null}
-            {isCoordinator ? <article className={dashboard.pendingCents ? 'has-warning' : ''}><span>Pendente</span><strong>{formatMoney(dashboard.pendingCents)}</strong><small>{dashboard.pendingCount} cobrança(s)</small></article> : null}
+            {canAccessFinance ? <article><span>Recebido no mês</span><strong>{formatMoney(dashboard.receivedCents)}</strong><small>{dashboard.paidCount} pagamento(s)</small></article> : null}
+            {canAccessFinance ? <article className={dashboard.pendingCents ? 'has-warning' : ''}><span>Pendente</span><strong>{formatMoney(dashboard.pendingCents)}</strong><small>{dashboard.pendingCount} cobrança(s)</small></article> : null}
           </div>
+
+          {category === 'Todas' ? (
+            <section className="staff-dashboard-categories" aria-labelledby="category-summary-title">
+              <div className="staff-dashboard-section-head"><strong id="category-summary-title">Resumo por categoria</strong><span>Todas as equipes no mesmo relatório</span></div>
+              <div className="staff-dashboard-table-wrap">
+                <table>
+                  <thead><tr><th>Categoria</th><th>Atletas</th><th>Chamadas</th><th>Presenças</th><th>Faltas</th><th>Just.</th><th>Pendentes</th><th>Frequência</th></tr></thead>
+                  <tbody>{dashboard.categoryRows.map((row) => <tr key={row.category}><th>{row.category}</th><td>{row.athletes}</td><td>{row.sessions}</td><td>{row.present}</td><td>{row.absent}</td><td>{row.justified}</td><td>{row.unmarked}</td><td><strong>{row.rate === null ? '—' : `${row.rate}%`}</strong></td></tr>)}</tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
 
           <div className="staff-dashboard-grid">
             <section className="staff-dashboard-breakdown" aria-labelledby="attendance-breakdown-title">
@@ -349,8 +416,8 @@ export default function StaffOperationsPanel({ categories }) {
               <div className="staff-dashboard-section-head"><strong id="attendance-ranking-title">Frequência por atleta</strong><span>Ordenado pelo aproveitamento mensal</span></div>
               <div className="staff-dashboard-table-wrap">
                 <table>
-                  <thead><tr><th>Atleta</th><th>Presenças</th><th>Faltas</th><th>Just.</th><th>Frequência</th></tr></thead>
-                  <tbody>{dashboard.athleteRows.map((athlete) => <tr key={athlete.id}><th>{athlete.name}</th><td>{athlete.present}</td><td>{athlete.absent}</td><td>{athlete.justified}</td><td><strong>{athlete.rate === null ? '—' : `${athlete.rate}%`}</strong>{athlete.unmarked ? <small>{athlete.unmarked} pendente(s)</small> : null}</td></tr>)}</tbody>
+                  <thead><tr><th>Atleta</th>{category === 'Todas' ? <th>Categoria</th> : null}<th>Presenças</th><th>Faltas</th><th>Just.</th><th>Frequência</th></tr></thead>
+                  <tbody>{dashboard.athleteRows.map((athlete) => <tr key={`${athlete.category}:${athlete.id}`}><th>{athlete.name}</th>{category === 'Todas' ? <td>{athlete.category}</td> : null}<td>{athlete.present}</td><td>{athlete.absent}</td><td>{athlete.justified}</td><td><strong>{athlete.rate === null ? '—' : `${athlete.rate}%`}</strong>{athlete.unmarked ? <small>{athlete.unmarked} pendente(s)</small> : null}</td></tr>)}</tbody>
                 </table>
               </div>
             </section>
@@ -362,9 +429,9 @@ export default function StaffOperationsPanel({ categories }) {
           <div className="staff-module-actions">
             <div><strong>Chamadas de {month}</strong><span>{monthSessions.length} registro(s) no mês</span></div>
             <button type="button" className="staff-secondary-action" onClick={exportAttendance} disabled={!monthSessions.length}><Download size={17} /> Relatório mensal</button>
-            <button type="button" className="staff-primary-action" onClick={() => setAttendanceFormOpen((open) => !open)}><Plus size={17} /> Nova chamada</button>
+            <button type="button" className="staff-primary-action" onClick={() => setAttendanceFormOpen((open) => !open)} disabled={category === 'Todas'} title={category === 'Todas' ? 'Selecione uma categoria para criar a chamada' : undefined}><Plus size={17} /> Nova chamada</button>
           </div>
-          {attendanceFormOpen ? (
+          {attendanceFormOpen && category !== 'Todas' ? (
             <form className="staff-inline-form" onSubmit={createSession}>
               <label>Data<input type="date" value={attendanceForm.sessionDate} onChange={(event) => setAttendanceForm((current) => ({ ...current, sessionDate: event.target.value }))} required /></label>
               <label>Atividade<input value={attendanceForm.title} onChange={(event) => setAttendanceForm((current) => ({ ...current, title: event.target.value }))} placeholder="Treino, jogo, avaliação..." required /></label>
@@ -372,7 +439,12 @@ export default function StaffOperationsPanel({ categories }) {
               <button type="submit" className="staff-primary-action"><FilePlus2 size={17} /> Criar chamada</button>
             </form>
           ) : null}
-          {monthSessions.length ? (
+          {category === 'Todas' ? (
+            <div className="staff-global-overview">
+              <strong>Frequência consolidada</strong>
+              <span>Use o Dashboard para comparar todas as categorias ou exporte o relatório geral. Para criar ou editar uma chamada, selecione um Sub.</span>
+            </div>
+          ) : monthSessions.length ? (
             <>
               <div className="staff-record-selector">
                 {monthSessions.map((session) => <button type="button" key={session.id} className={selectedSession?.id === session.id ? 'is-active' : ''} onClick={() => setSelectedSessionId(session.id)}><strong>{formatDate(session.session_date)}</strong><span>{session.title}</span></button>)}
@@ -409,9 +481,9 @@ export default function StaffOperationsPanel({ categories }) {
           <div className="staff-module-actions">
             <div><strong>Eventos e jogos de {month}</strong><span>{monthEvents.length} cobrança(s) no mês</span></div>
             <button type="button" className="staff-secondary-action" onClick={exportFinance} disabled={!monthEvents.length}><Download size={17} /> Relatório financeiro</button>
-            <button type="button" className="staff-primary-action" onClick={() => setFinanceFormOpen((open) => !open)}><Plus size={17} /> Novo evento</button>
+            <button type="button" className="staff-primary-action" onClick={() => setFinanceFormOpen((open) => !open)} disabled={category === 'Todas'} title={category === 'Todas' ? 'Selecione uma categoria para criar o evento' : undefined}><Plus size={17} /> Novo evento</button>
           </div>
-          {financeFormOpen ? (
+          {financeFormOpen && category !== 'Todas' ? (
             <form className="staff-inline-form finance-event-form" onSubmit={createFinanceEvent}>
               <label>Data<input type="date" value={financeForm.eventDate} onChange={(event) => setFinanceForm((current) => ({ ...current, eventDate: event.target.value }))} required /></label>
               <label>Evento<input value={financeForm.title} onChange={(event) => setFinanceForm((current) => ({ ...current, title: event.target.value }))} placeholder="Jogo, amistoso, torneio..." required /></label>
@@ -420,7 +492,12 @@ export default function StaffOperationsPanel({ categories }) {
               <button type="submit" className="staff-primary-action"><FilePlus2 size={17} /> Criar cobrança</button>
             </form>
           ) : null}
-          {monthEvents.length ? (
+          {category === 'Todas' ? (
+            <div className="staff-global-overview">
+              <strong>Financeiro consolidado</strong>
+              <span>O Dashboard apresenta recebido e pendente de todo o clube. Exporte o CSV geral ou selecione um Sub para alterar pagamentos e cobranças.</span>
+            </div>
+          ) : monthEvents.length ? (
             <>
               <div className="staff-record-selector finance-selector">
                 {monthEvents.map((event) => <button type="button" key={event.id} className={selectedEvent?.id === event.id ? 'is-active' : ''} onClick={() => setSelectedEventId(event.id)}><strong>{event.title}</strong><span>{formatDate(event.event_date)} · {formatMoney(event.amount_cents)}</span></button>)}

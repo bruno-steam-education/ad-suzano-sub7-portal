@@ -46,6 +46,7 @@ export function onStaffAuthChange(callback) {
 const STAFF_ACCOUNTS = {
   technical: 'comissao@adsuzano.com.br',
   coordinator: 'coordenacao@adsuzano.com.br',
+  administrator: 'administrador@adsuzano.com.br',
 };
 
 export async function getStaffIdentity() {
