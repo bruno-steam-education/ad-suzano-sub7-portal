@@ -14,7 +14,7 @@ const KNOWN_ROLES = ['Aux Técnico', 'Coordenador', 'Técnico'];
 
 function cleanText(value = '') {
   const normalized = value.replace(/\s+/g, ' ').trim();
-  if (/[ÃÂ]/.test(normalized)) {
+  if (/Ã[\u0080-\u00BF]|Â[\u0080-\u00BF]|â[\u0080-\u00BF]/.test(normalized)) {
     return Buffer.from(normalized, 'latin1').toString('utf8').replace(/\s+/g, ' ').trim();
   }
   return normalized;

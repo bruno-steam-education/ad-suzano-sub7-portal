@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   Activity,
@@ -28,16 +28,14 @@ import { federationScheduleSource, initiationA2BaseSchedule } from './data/feder
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
 import { youthLeagueCategories, youthLeagueCompetition } from './data/youthLeagueCategories';
-import { weeklyNotice, weeklySchedule, weeklyScheduleWeek } from './data/schedule';
+import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { contextualResults, sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
 import {
   championshipProjection,
   mondayAnalysisDate,
-  nextMatches,
   predictMatch,
-  suzanoMatches,
   suzanoRecord,
 } from './utils/analysis';
 import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader';
@@ -183,19 +181,10 @@ function App() {
   });
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
 
-  const record = useMemo(() => suzanoRecord(), []);
-  const upcoming = useMemo(() => nextMatches(new Date()), []);
-  const nextSuzano = upcoming.filter((match) => match.home === teamName || match.away === teamName);
   const activeCategory = categories.find((category) => category.id === activeCategoryId) ?? categories[0];
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
   const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
-  const hasFullSub7View = activeCategory.id === 'sub7';
-  const sub7FpfsMatches = nextThreeCategoryGames(activeCategory, activeFpfs);
-  const sub7FpfsRecent = activeFpfs?.recentGames?.map(normalizeFpfsGame) ?? [];
-  const sub7NextSuzano = sub7FpfsMatches.length ? sub7FpfsMatches : nextSuzano;
-  const sub7CampaignMatches = sub7FpfsRecent.length ? sub7FpfsRecent : suzanoMatches();
-  const sub7DisplayRecord = activeFpfs?.record ?? record;
-  const activeCategoryNextMatch = hasFullSub7View ? sub7NextSuzano[0] : nextThreeCategoryGames(activeCategory, activeFpfs)[0];
+  const activeCategoryNextMatch = nextThreeCategoryGames(activeCategory, activeFpfs)[0];
 
   const handleLoginSuccess = () => {
     sessionStorage.setItem('ad-suzano-staff-auth', 'true');
@@ -256,14 +245,14 @@ function App() {
       />
       <Hero
         category={activeCategory}
-        record={hasFullSub7View ? sub7DisplayRecord : activeFpfs?.record}
+        record={activeFpfs?.record}
         nextMatch={activeCategoryNextMatch}
-        hasData={hasFullSub7View || hasFpfsCategoryData}
+        hasData={hasFpfsCategoryData}
         weather={weather}
         weatherError={weatherError}
       />
       <InstallAppPrompt />
-      <WeeklyAppNotice />
+      <WeeklyAppNotice category={activeCategory} nextMatch={activeCategoryNextMatch} />
       <CategoryNav
         activeCategoryId={activeCategoryId}
         onSelect={setActiveCategoryId}
@@ -281,68 +270,12 @@ function App() {
           activeCategoryLabel={activeCategory.label}
         />
       </ProtectedSection>
-      {hasFullSub7View ? (
-        <>
-          <ProtectedSection
-            isAuthenticated={isAuthenticated}
-            onOpenModal={openAccessModal}
-            title="Cota de Eficiência por Categoria"
-            description="Metas de pontos e cálculo de cota de contribuição do Art. 135 do RGC reservadas à Comissão Técnica da AD Suzano."
-          >
-            <CategoryEfficiencyHeader category={activeCategory} />
-          </ProtectedSection>
-
-          <NewsBanner />
-
-          <section className="content-grid">
-            <div className="main-flow">
-              <ProtectedSection
-                isAuthenticated={isAuthenticated}
-                onOpenModal={openAccessModal}
-                title="Inteligência de Jogo & Robô de Previsão"
-                description="Percentual de chance de vitória, análise detalhada de adversários e estatísticas táticas reservadas à Comissão Técnica da AD Suzano."
-              >
-                <CategoryNextGamesV2 category={activeCategory} games={sub7NextSuzano} robot={categoryRobot(activeCategory, { ...activeFpfs, upcomingGames: sub7NextSuzano })} />
-              </ProtectedSection>
-
-              <CategoryStandingsMirror category={activeCategory} fpfsData={activeFpfs} />
-
-              <ProtectedSection
-                isAuthenticated={isAuthenticated}
-                onOpenModal={openAccessModal}
-                title="Projeção Agregada de Título e Acesso"
-                description="Leitura de risco de queda, chance de acesso acumulada do clube e teto matemático reservados à Comissão Técnica."
-              >
-                <TitleProjection />
-                <AccessProjection />
-              </ProtectedSection>
-
-              <ProtectedSection
-                isAuthenticated={isAuthenticated}
-                onOpenModal={openAccessModal}
-                title="Mesa Semanal da Comissão Técnica"
-                description="Boletim e diretrizes técnicas reservadas ao staff da AD Suzano."
-              >
-                <WeeklyDesk />
-              </ProtectedSection>
-
-              <Campaign matches={sub7CampaignMatches} />
-            </div>
-
-            <aside className="side-flow">
-              <WeeklySchedule compact />
-              <DataPanel />
-            </aside>
-          </section>
-        </>
-      ) : (
-        <CompleteCategoryDashboard
-          category={activeCategory}
-          fpfsData={activeFpfs}
-          isAuthenticated={isAuthenticated}
-          onOpenModal={openAccessModal}
-        />
-      )}
+      <CompleteCategoryDashboard
+        category={activeCategory}
+        fpfsData={activeFpfs}
+        isAuthenticated={isAuthenticated}
+        onOpenModal={openAccessModal}
+      />
         <AppFooter />
       </main>
     </>
@@ -376,109 +309,12 @@ function CategoryNav({ activeCategoryId, onSelect }) {
               onClick={() => onSelect(category.id)}
             >
               <span>{category.label}</span>
-              <small>{category.id === 'sub7' ? 'Completo' : hasFpfsData ? 'Dados FPFS' : category.status}</small>
+              <small>{hasFpfsData ? 'Completo' : category.status}</small>
             </button>
           );
         })}
       </div>
     </nav>
-  );
-}
-
-function CategoryDashboard({ category, fpfsData }) {
-  const hasSuzanoGames = Boolean(fpfsData?.recentGames?.length || fpfsData?.upcomingGames?.length);
-  const record = fpfsData?.record;
-  const upcomingGames = nextThreeCategoryGames(category, fpfsData);
-
-  return (
-    <section className="category-shell">
-      <div className="category-main">
-        <section className="panel category-intro">
-          <div className="section-title">
-            <div>
-              <span>{category.competition}</span>
-              <h2>{category.title}</h2>
-            </div>
-            <Shield size={22} />
-          </div>
-          <p>
-            {hasSuzanoGames
-              ? `Dados carregados da Súmula Online da FPFS para ${category.label}, temporada 2026, Paulista A2.`
-              : `${category.description} A FPFS foi consultada, mas ainda não localizamos jogos do AD Suzano nesta categoria.`}
-          </p>
-          <div className="category-readiness">
-            <div>
-              <strong>{record?.points ?? 0} pontos</strong>
-              <span>{record?.played ?? 0} jogos localizados na Súmula Online.</span>
-            </div>
-            <div>
-              <strong>{record?.goalsFor ?? 0} gols feitos</strong>
-              <span>Saldo {record?.goalDifference && record.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 0} na base FPFS.</span>
-            </div>
-            <div>
-              <strong>{upcomingGames.length} próximos jogos</strong>
-              <span>Atualização automática via eventos.admfutsal.com.br.</span>
-            </div>
-          </div>
-        </section>
-
-        <CategoryEfficiencyHeader category={category} />
-
-        <CategoryGamesPanel
-          title="Próximos jogos"
-          games={upcomingGames}
-          emptyText="Nenhum próximo jogo do AD Suzano encontrado nesta categoria pela Súmula Online."
-        />
-
-        <CategoryGamesPanel
-          title="Últimos resultados"
-          games={fpfsData?.recentGames ?? []}
-          emptyText="Nenhum resultado do AD Suzano encontrado nesta categoria pela Súmula Online."
-        />
-
-        <section className="panel empty-panel">
-          <div className="section-title">
-            <div>
-              <span>YouTube</span>
-              <h2>Busca de vídeos da categoria</h2>
-            </div>
-            <Sparkles size={22} />
-          </div>
-          <p>
-            O portal também deixa pronta uma busca por vídeos públicos do YouTube
-            relacionados ao AD Suzano, futsal, 2026 e {category.label}.
-          </p>
-          <a className="youtube-link" href={fpfsData?.youtubeSearchUrl} target="_blank" rel="noreferrer">
-            Buscar vídeos no YouTube
-          </a>
-        </section>
-      </div>
-
-      <aside className="category-side">
-        <section className="panel data-panel">
-          <div className="section-title">
-            <div>
-              <span>Fonte primária</span>
-              <h2>FPFS</h2>
-            </div>
-            <Sparkles size={22} />
-          </div>
-          <p>
-            Temporada 2026, Campeonato Paulista, Divisão A2, categoria {category.label}.
-            {hasSuzanoGames
-              ? ' Dados carregados da tabela e dos jogos oficiais da Súmula Online.'
-              : ' A FPFS foi consultada, mas não retornou jogos do AD Suzano para esta categoria nesta divisão.'}
-            {' '}A estrutura do Sub-7 segue mais completa por conter agenda, notícias e leituras próprias adicionais.
-          </p>
-          {fpfsData && (
-            <>
-              <a href={fpfsData.gamesUrl} target="_blank" rel="noreferrer">Jogos na Súmula Online</a>
-              <a href={fpfsData.url} target="_blank" rel="noreferrer">Classificação na FPFS</a>
-            </>
-          )}
-        </section>
-      </aside>
-    </section>
   );
 }
 
@@ -530,10 +366,10 @@ function CompleteCategoryDashboard({ category, fpfsData, isAuthenticated, onOpen
         </ProtectedSection>
       </section>
 
+      <NewsBanner category={category} />
+
       <section className="content-grid category-complete-grid">
         <div className="main-flow">
-          <CategoryNewsPanel category={category} />
-
           <ProtectedSection
             isAuthenticated={isAuthenticated}
             onOpenModal={onOpenModal}
@@ -824,7 +660,7 @@ function categorySportsNews(category, latest, next, record) {
           : `${category.label} bate ${opponent} por ${score} e soma pontos importantes`
         : goalsFor === goalsAgainst
           ? `${category.label} fica no ${score} com ${opponent} e segue vivo na briga`
-          : `${category.label} perde por ${score} para ${opponent}, mas mant�m campanha em pauta`;
+          : `${category.label} perde por ${score} para ${opponent}, mas mantém campanha em pauta`;
 
     return {
       source: 'Rodada FPFS',
@@ -853,95 +689,6 @@ function categorySportsNews(category, latest, next, record) {
     summary: 'Ainda não há notícia externa específica nem novo jogo confirmado para destacar nesta categoria.',
     impact: 'Assim que a Súmula Online publicar jogos ou resultados, o radar passa a abrir com a manchete da rodada.',
   };
-}
-
-function CategoryNewsPanel({ category }) {
-  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
-  const latest = fpfsData?.recentGames?.at(-1);
-  const next = fpfsData?.upcomingGames?.[0];
-  const record = fpfsData?.record;
-  const categoryNews = newsItems.filter(
-    (item) => item.category === category.label || item.scope === `AD Suzano ${category.label}`,
-  );
-  const leadNews = categoryNews[0];
-  const extraNews = categoryNews.slice(1, 3);
-  const fallbackNews = categorySportsNews(category, latest, next, record);
-
-  return (
-    <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
-      <div className="news-heading">
-        <div>
-          <span>Últimas notícias</span>
-          <h2 id={`news-${category.id}`}>Radar {category.label}</h2>
-        </div>
-        <strong>
-          {categoryNews.length
-            ? `${categoryNews.length} notícias para ${category.label}`
-            : 'Atualizado pela Súmula Online da FPFS'}
-        </strong>
-      </div>
-      <div className="category-empty-news">
-        <div className="news-tag">{leadNews?.source ?? fallbackNews.source}</div>
-        <h3>
-          {leadNews
-            ? leadNews.title
-            : fallbackNews.title}
-        </h3>
-        <p>
-          {leadNews?.summary ?? fallbackNews.summary}
-        </p>
-        <div className="news-impact">
-          {leadNews?.impact ?? fallbackNews.impact}
-        </div>
-        {extraNews.length > 0 && (
-          <div className="category-news-list">
-            {extraNews.map((item) => (
-              <span key={item.id}>{item.title}</span>
-            ))}
-          </div>
-        )}
-        <a className="source-chip" href={leadNews?.url ?? fpfsData?.gamesUrl} target="_blank" rel="noreferrer">
-          {leadNews?.url ? 'Abrir fonte' : 'FPFS Súmula Online'}
-        </a>
-      </div>
-    </section>
-  );
-}
-
-function CategoryNewsPlaceholder({ category }) {
-  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
-  const latest = fpfsData?.recentGames?.at(-1);
-  const next = fpfsData?.upcomingGames?.[0];
-  const record = fpfsData?.record;
-
-  return (
-    <section className="news-band category-news-band" aria-labelledby={`news-${category.id}`}>
-      <div className="news-heading">
-        <div>
-          <span>Últimas notícias</span>
-          <h2 id={`news-${category.id}`}>Radar {category.label}</h2>
-        </div>
-        <strong>Boletim pesquisado na Súmula Online da FPFS</strong>
-      </div>
-      <div className="category-empty-news">
-        <div className="news-tag">{category.label}</div>
-        <h3>
-          {latest
-            ? `${category.label}: último jogo oficial foi ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}`
-            : next
-              ? `${category.label}: próximo jogo oficial será ${next.home} x ${next.away}`
-              : `AD Suzano ${category.label}: sem nova publicação específica localizada`}
-        </h3>
-        <p>
-          {record?.played
-            ? `Campanha localizada na FPFS: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
-            : 'A pesquisa pública não encontrou jogos oficiais do AD Suzano nesta categoria no A2 2026.'}
-        </p>
-        {next && <div className="news-impact">Próximo compromisso: {formatShortDate(next.date)} às {next.time || 'horário a confirmar'}, em {next.venue}.</div>}
-        <a className="source-chip" href={fpfsData?.gamesUrl} target="_blank" rel="noreferrer">FPFS Súmula Online</a>
-      </div>
-    </section>
-  );
 }
 
 function CategoryStandingsMirror({ category, fpfsData }) {
@@ -1494,12 +1241,20 @@ function CategoryGamesPanel({ title, games, emptyText, showRoutes = false }) {
   );
 }
 
-function WeeklyAppNotice() {
+function WeeklyAppNotice({ category, nextMatch }) {
+  const opponent = nextMatch
+    ? teamDisplayName(isSuzanoName(nextMatch.home) ? nextMatch.away : nextMatch.home)
+    : null;
+
   return (
-    <section className="weekly-app-notice" aria-label="Aviso da semana Sub-7">
+    <section className="weekly-app-notice" aria-label={`Aviso da semana ${category.label}`}>
       <div>
-        <strong>{weeklyNotice.title}</strong>
-        <span>{weeklyNotice.body}</span>
+        <strong>Agenda {category.label} atualizada</strong>
+        <span>
+          {nextMatch
+            ? `Próximo compromisso contra ${opponent}, em ${formatShortDate(nextMatch.date)}, às ${nextMatch.time || 'horário a confirmar'}.`
+            : `Campanha, resultados e indicadores do ${category.label} sincronizados com as fontes oficiais.`}
+        </span>
       </div>
     </section>
   );
@@ -1575,30 +1330,52 @@ function InstallAppPrompt() {
   );
 }
 
-function NewsBanner() {
-  const mainNews = newsItems
-    .filter((item) => item.category === 'AD Suzano' || item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7')
-    .slice(0, 10);
-  const lead = mainNews.find((item) => item.category === 'Sub-7' || item.scope === 'AD Suzano Sub-7') ?? mainNews[0] ?? newsItems[0];
-  if (!lead) return null;
-
-  const orderedNews = [lead, ...mainNews.filter((item) => item.id !== lead.id)];
+function NewsBanner({ category }) {
+  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
+  const latest = fpfsData?.recentGames?.at(-1);
+  const next = nextThreeCategoryGames(category, fpfsData)[0];
+  const generated = categorySportsNews(category, latest, next, fpfsData?.record);
+  const categoryNews = newsItems.filter(
+    (item) => item.category === category.label || item.scope === `AD Suzano ${category.label}`,
+  );
+  const generalNews = newsItems.filter((item) => item.category === 'AD Suzano');
+  const generatedLead = {
+    id: `radar-${category.id}`,
+    category: category.label,
+    date: latest?.date ?? next?.date ?? fpfsData?.checkedAt?.slice(0, 10) ?? newsWeek,
+    source: generated.source,
+    title: generated.title,
+    summary: generated.summary,
+    impact: generated.impact,
+    url: latest?.summaryUrl ?? fpfsData?.gamesUrl,
+  };
+  const lead = categoryNews[0] ?? generatedLead;
+  const orderedNews = [
+    lead,
+    ...categoryNews.slice(1),
+    ...generalNews,
+  ].filter((item, index, items) => items.findIndex((candidate) => candidate.id === item.id) === index);
   const featureItems = orderedNews.slice(1, 5);
-  const topics = [...new Set(orderedNews.map((item) => item.category))];
+  const topics = [category.label, 'AD Suzano'];
+  const radarDate = orderedNews
+    .map((item) => item.date)
+    .filter(Boolean)
+    .sort()
+    .at(-1) ?? newsWeek;
 
   return (
-    <section className="newsroom" aria-labelledby="news-title">
+    <section className="newsroom" aria-labelledby={`news-title-${category.id}`}>
       <header className="newsroom-header">
         <div className="newsroom-brand">
           <span className="newsroom-icon" aria-hidden="true"><Newspaper size={22} /></span>
           <div>
             <span>AD Suzano Notícias</span>
-            <h2 id="news-title">Radar da semana</h2>
+            <h2 id={`news-title-${category.id}`}>Radar da semana · {category.label}</h2>
           </div>
         </div>
         <div className="newsroom-edition">
           <span><i aria-hidden="true" /> Boletim atualizado</span>
-          <strong>{orderedNews.length} {orderedNews.length === 1 ? 'notícia' : 'notícias'} · semana de {formatShortDate(newsWeek)}</strong>
+          <strong>{orderedNews.length} {orderedNews.length === 1 ? 'notícia' : 'notícias'} · atualizado em {formatShortDate(radarDate)}</strong>
         </div>
       </header>
 
@@ -1612,7 +1389,7 @@ function NewsBanner() {
       <div className="newsroom-layout">
         <motion.article
           className="newsroom-lead"
-          initial={{ opacity: 0, y: 18 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.45 }}
@@ -1752,9 +1529,6 @@ function Hero({ category, record, nextMatch, hasData, weather, weatherError }) {
           relações entre adversários e evolução coletiva da categoria.
         </p>
         <div className="hero-actions">
-          <a className="enter-now-button" href="#/portal/home">
-            Entre agora
-          </a>
           <a className="supporter-chant-button" href={supporterPlaylistUrl} target="_blank" rel="noreferrer">
             <Youtube size={20} />
             Grito da torcida

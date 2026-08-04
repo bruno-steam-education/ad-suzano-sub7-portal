@@ -199,14 +199,14 @@ const categoryEvergreen = CATEGORY_ORDER.flatMap((category) => [
     source: 'Boletim do portal',
     url: null,
     summary:
-      `O portal consulta diariamente a SÃºmula Online da FPFS, Google News e buscas pÃºblicas relacionadas ao AD Suzano ${category}.`,
+      `O portal consulta diariamente a Súmula Online da FPFS, Google News e buscas públicas relacionadas ao AD Suzano ${category}.`,
     impact: 'Quando não houver notícia externa nova, este bloco mantém a categoria com leitura de dados oficiais e agenda.',
   },
   {
     title: `${category}: radar de jogos, resultados e próximos compromissos`,
     category,
     scope: `AD Suzano ${category}`,
-    source: 'FPFS SÃºmula Online',
+    source: 'FPFS Súmula Online',
     url: 'https://eventos.admfutsal.com.br/',
     summary:
       `A atualização cruza a temporada 2026, Paulista A2, categoria ${category}, com próximos jogos e resultados localizados.`,
@@ -230,7 +230,7 @@ function stripHtml(value = '') {
 }
 
 function repairEncoding(value = '') {
-  if (!/[ÃÂ]/.test(value)) return value;
+  if (!/Ã[\u0080-\u00BF]|Â[\u0080-\u00BF]|â[\u0080-\u00BF]/.test(value)) return value;
 
   return Buffer.from(value, 'latin1').toString('utf8');
 }

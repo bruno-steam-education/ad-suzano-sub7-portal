@@ -158,26 +158,6 @@ input {
   box-shadow: 0 16px 30px rgba(3, 12, 30, 0.2);
 }
 
-.enter-now-button {
-  width: fit-content;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 11px 15px;
-  border-radius: 8px;
-  background: var(--red);
-  color: #fff;
-  font-weight: 950;
-  text-decoration: none;
-  box-shadow: 0 16px 30px rgba(3, 12, 30, 0.2);
-}
-
-.enter-now-button:hover {
-  background: #fff;
-  color: var(--red);
-}
-
 .supporter-chant-button:hover {
   background: var(--red);
   color: #fff;
