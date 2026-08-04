@@ -8,6 +8,9 @@ import {
   Camera,
   CircleHelp,
   FileText,
+  CheckCircle2,
+  Clock3,
+  ExternalLink,
   Image as ImageIcon,
   Mail,
   MapPin,
@@ -32,6 +35,9 @@ import {
 import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { clubSiteData } from './data/clubSite';
+import { fpfsCategories } from './data/fpfsCategories';
+import { youthLeagueCategories } from './data/youthLeagueCategories';
+import { newsItems } from './data/news';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -153,11 +159,11 @@ export function ClubSiteExperience({ path = 'home' }) {
         {route.page === 'sobre' && <ClubAboutPage />}
         {route.page === 'diretoria' && <ClubBoardPage />}
         {route.page === 'patrocinadores' && <ClubSponsorsPage />}
-        {route.page === 'trofeus' && <ClubEmptyPage icon={Trophy} title="Trófeus" text={clubSiteData.trophies.emptyText} />}
-        {route.page === 'enquetes' && <ClubEmptyPage icon={CircleHelp} title="Enquetes" text="Nenhuma enquete ativa no momento." />}
-        {route.page === 'campos' && <ClubFieldsPage />}
-        {route.page === 'transparencia' && <ClubEmptyPage icon={FileText} title="Transparência" text={clubSiteData.transparency.emptyText} />}
-        {route.page === 'noticias' && <ClubEmptyPage icon={BadgeInfo} title="Notícias" text={clubSiteData.news.emptyText} />}
+        {route.page === 'trofeus' && <ClubCampaignsPage />}
+        {route.page === 'enquetes' && <ClubPollsPage />}
+        {route.page === 'campos' && <ClubOfficialFieldsPage />}
+        {route.page === 'transparencia' && <ClubTransparencyPage />}
+        {route.page === 'noticias' && <ClubNewsPage />}
         {route.page === 'videos' && !route.slug && <ClubMediaPage title="Vídeos" icon={PlayCircle} items={clubSiteData.videos.items} />}
         {route.page === 'videos' && route.slug && <ClubContentDetailPage title="Vídeo" icon={PlayCircle} item={clubSiteData.videos.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="videos" />}
         {route.page === 'fotos' && !route.slug && <ClubMediaPage title="Fotos" icon={Camera} items={clubSiteData.photos.items} />}
@@ -165,11 +171,11 @@ export function ClubSiteExperience({ path = 'home' }) {
         {route.page === 'contato' && <ClubContactPage />}
         {route.page === 'pesquisar' && <ClubSearchPage />}
         {route.page === 'matricula' && <ClubRegistrationPage />}
-        {route.page === 'campeonatos' && !route.slug && <ClubChampionshipsPage />}
+        {route.page === 'campeonatos' && !route.slug && <ClubOfficialChampionshipsPage />}
         {route.page === 'campeonatos' && route.slug && <ClubListDetailPage title="Campeonato" item={clubSiteData.championships.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="campeonatos" />}
-        {route.page === 'jogos' && !route.slug && <ClubGamesPage />}
+        {route.page === 'jogos' && !route.slug && <ClubOfficialGamesPage />}
         {route.page === 'jogos' && route.slug && <ClubListDetailPage title="Jogo" item={clubSiteData.games.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="jogos" />}
-        {route.page === 'ranking' && <ClubRankingPage />}
+        {route.page === 'ranking' && <ClubOfficialRankingPage />}
         {route.page === 'operacao' && <ClubOperationsPage />}
         {route.page === 'acessibilidade' && <ClubEmptyPage icon={BadgeInfo} title="Acessibilidade" text="O portal utiliza navegação por teclado, foco visível e textos alternativos nos elementos essenciais." />}
         {route.page === 'cookies' && <ClubEmptyPage icon={FileText} title="Política de Cookies" text="Este portal utiliza apenas armazenamento necessário para preferências locais e acesso ao painel técnico." />}
@@ -482,6 +488,65 @@ function ClubHomePage() {
   );
 }
 
+const portalDateFormatter = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'America/Sao_Paulo',
+});
+
+function formatPortalDate(date = '') {
+  if (!date) return 'Data não informada';
+  return portalDateFormatter.format(new Date(`${date}T12:00:00`));
+}
+
+function formatPortalCheckedAt(date = '') {
+  if (!date) return 'Aguardando atualização';
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'America/Sao_Paulo',
+  }).format(new Date(date));
+}
+
+function suzanoStanding(category) {
+  return category?.standings?.find((standing) => /SUZANO/i.test(standing.team));
+}
+
+function opponentOf(game) {
+  if (!game) return '';
+  return /SUZANO/i.test(game.home) ? game.away : game.home;
+}
+
+function gameResultForSuzano(game) {
+  if (!Number.isFinite(game?.homeGoals) || !Number.isFinite(game?.awayGoals)) return '';
+  const isHome = /SUZANO/i.test(game.home);
+  const goalsFor = isHome ? game.homeGoals : game.awayGoals;
+  const goalsAgainst = isHome ? game.awayGoals : game.homeGoals;
+  const result = goalsFor > goalsAgainst ? 'Vitória' : goalsFor === goalsAgainst ? 'Empate' : 'Derrota';
+  return `${result} · ${goalsFor} x ${goalsAgainst}`;
+}
+
+function uniqueOfficialVenues() {
+  const venueMap = new Map();
+  fpfsCategories.forEach((category) => {
+    [...(category.playedGames ?? []), ...(category.upcomingGames ?? [])].forEach((game) => {
+      const venue = textOnly(game.venue);
+      if (!venue) return;
+      const current = venueMap.get(venue) ?? { name: venue, matches: 0, categories: new Set() };
+      current.matches += 1;
+      current.categories.add(category.category);
+      venueMap.set(venue, current);
+    });
+  });
+  return [...venueMap.values()]
+    .map((venue) => ({ ...venue, categories: [...venue.categories] }))
+    .sort((a, b) => b.matches - a.matches || a.name.localeCompare(b.name, 'pt-BR'));
+}
+
 export function SupporterRadio() {
   const frameRef = useRef(null);
   const [playing, setPlaying] = useState(true);
@@ -677,7 +742,7 @@ function ClubAboutPage() {
 function ClubBoardPage() {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Diretoria" title="Equipe técnica e coordenação" subtitle="Estrutura espelhada do site institucional atual." />
+      <ClubIntroCard eyebrow="Diretoria" title="Equipe técnica e coordenação" subtitle={`${clubSiteData.board.members.length} profissionais cadastrados na estrutura do clube.`} />
       <div className="club-card-grid">
         {clubSiteData.board.members.map((member) => (
           <article className="club-person-card" key={`${member.name}-${member.role}`}>
@@ -694,7 +759,7 @@ function ClubBoardPage() {
 function ClubSponsorsPage() {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Patrocinadores" title="Parceiros e marcas" subtitle="Base pronta para gestão editorial e comercial." />
+      <ClubIntroCard eyebrow="Patrocinadores" title="Parceiros e marcas" subtitle={`${clubSiteData.sponsors.items.length} parceiros cadastrados no portal institucional.`} />
       <div className="club-sponsor-grid">
         {clubSiteData.sponsors.items.map((item) => (
           <article className="club-sponsor-card" key={item.name}>
@@ -741,7 +806,7 @@ function ClubFieldsPage() {
 function ClubMediaPage({ title, icon: Icon, items }) {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow={title} title={title} subtitle="Conteúdo espelhado do site institucional atual." />
+      <ClubIntroCard eyebrow={title} title={title} subtitle={`${items.length} registros disponíveis na galeria institucional.`} />
       <div className="club-card-grid">
         {items.map((item) => (
           <a className="club-media-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
@@ -824,7 +889,7 @@ function ClubContactPage() {
 
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Contato" title="Envie uma mensagem" subtitle="Estrutura visual pronta para integração com formulário real." />
+      <ClubIntroCard eyebrow="Contato" title="Envie uma mensagem" subtitle="Preencha os dados e continue a conversa pelo WhatsApp oficial da AD Suzano." />
       <form className="club-contact-form" onSubmit={handleSubmit}>
         {clubSiteData.contact.fields.map((field) => (
           <label key={field}>
@@ -845,8 +910,13 @@ function ClubContactPage() {
 function ClubSearchPage() {
   const [query, setQuery] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const allPlayers = flattenPlayers();
   const searchableItems = useMemo(() => [
     ...Object.entries(PAGE_LABELS).map(([page, label]) => ({ label, href: pageUrl(page), type: 'Página' })),
+    ...allPlayers.map((player) => ({ label: `${player.name} · ${player.category}`, href: pageUrl(`atletas/${athleteIdFromUrl(player.url)}`), type: 'Atleta' })),
+    ...fpfsCategories.map((category) => ({ label: `${category.category} · Paulista A2`, href: pageUrl('ranking'), type: 'Categoria' })),
+    ...newsItems.map((item) => ({ label: item.title, href: item.url, type: 'Notícia' })),
+    ...uniqueOfficialVenues().map((venue) => ({ label: venue.name, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.name}, SP`)}`, type: 'Ginásio' })),
     ...clubSiteData.home.videos.map((item) => ({ label: item.title, href: internalizeClubUrl(item.url), type: 'Vídeo' })),
     ...clubSiteData.home.photos.map((item) => ({ label: item.title, href: internalizeClubUrl(item.url), type: 'Foto' })),
   ], []);
@@ -854,7 +924,7 @@ function ClubSearchPage() {
 
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Pesquisar" title="Busca institucional" subtitle="Página espelhada com campo pronto para futura indexação." />
+      <ClubIntroCard eyebrow="Pesquisar" title="Busca no portal" subtitle="Encontre páginas, atletas, categorias, notícias, ginásios, vídeos e fotos cadastrados." />
       <form className="club-search-panel" onSubmit={(event) => { event.preventDefault(); setHasSearched(true); }}>
         <input aria-label="Termo de busca" placeholder={clubSiteData.search.placeholder} value={query} onChange={(event) => { setQuery(event.target.value); setHasSearched(false); }} />
         <button type="submit">
@@ -959,7 +1029,7 @@ function ClubRankingPage() {
 function ClubAthletesPage({ categories }) {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Atletas" title="Elenco por categoria" subtitle="Categorias, páginas individuais e base pronta para gestão própria." />
+      <ClubIntroCard eyebrow="Atletas" title="Elenco por categoria" subtitle={`${categories.reduce((total, category) => total + category.players.length, 0)} atletas distribuídos nas categorias de iniciação e base.`} />
       {categories.map((category) => {
         const groups = groupPlayersByInitial(category.players);
         return (
@@ -1025,6 +1095,310 @@ function ClubAthleteDetailPage({ player }) {
           )}
         </article>
       </section>
+    </div>
+  );
+}
+
+function ClubCampaignsPage() {
+  const paulistaGames = fpfsCategories.reduce((total, category) => total + (category.record?.played ?? 0), 0);
+  const youthGames = youthLeagueCategories.reduce((total, category) => total + (category.record?.played ?? 0), 0);
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard
+        eyebrow="Troféus e campanhas"
+        title="Histórico competitivo disponível"
+        subtitle="Campanhas verificadas nas fontes oficiais; títulos só aparecem quando houver registro confirmado."
+      />
+      <div className="club-data-summary-grid">
+        <article className="club-data-summary-card is-live">
+          <Clock3 size={22} />
+          <span>Em andamento</span>
+          <h2>Campeonato Paulista A2</h2>
+          <strong>{fpfsCategories.length} categorias · {paulistaGames} jogos</strong>
+          <p>Campanhas atualizadas pela Súmula Online da FPFS.</p>
+          <a href={pageUrl('ranking')}>Ver classificação por categoria <ArrowRight size={16} /></a>
+        </article>
+        <article className="club-data-summary-card is-finished">
+          <CheckCircle2 size={22} />
+          <span>Encerrada</span>
+          <h2>Copa da Juventude Gold 2026</h2>
+          <strong>{youthLeagueCategories.length} categorias · {youthGames} jogos</strong>
+          <p>Resultados finais preservados no histórico do portal.</p>
+          <a href={youthLeagueCategories[0]?.url} target="_blank" rel="noreferrer">Consultar fonte oficial <ExternalLink size={16} /></a>
+        </article>
+      </div>
+      <div className="club-editorial-note">
+        <Trophy size={20} />
+        <div>
+          <strong>Registro responsável</strong>
+          <p>Nenhum título é atribuído por estimativa. Esta página reúne as campanhas existentes e será ampliada quando documentos oficiais de conquistas forem cadastrados.</p>
+        </div>
+      </div>
+      <div className="club-campaign-grid">
+        {fpfsCategories.map((category) => {
+          const standing = suzanoStanding(category);
+          const record = category.record ?? {};
+          return (
+            <article className="club-campaign-card" key={category.category}>
+              <div><span>Paulista A2</span><strong>{category.category}</strong></div>
+              <b>{standing?.positionLabel ?? '—'}</b>
+              <p>{record.points ?? 0} pontos · {record.played ?? 0} jogos · saldo {record.goalDifference > 0 ? '+' : ''}{record.goalDifference ?? 0}</p>
+              <a href={category.url} target="_blank" rel="noreferrer">Tabela oficial <ExternalLink size={14} /></a>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ClubPollsPage() {
+  const [followedCategory, setFollowedCategory] = useState(() => window.localStorage.getItem('ad-suzano-follow-category') || 'Sub-7');
+  const selectedData = fpfsCategories.find((category) => category.category === followedCategory) ?? fpfsCategories[0];
+  const nextGame = selectedData?.upcomingGames?.[0];
+
+  const selectCategory = (category) => {
+    setFollowedCategory(category);
+    window.localStorage.setItem('ad-suzano-follow-category', category);
+  };
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Enquetes" title="Qual categoria você acompanha?" subtitle="Escolha sua categoria preferida para receber um atalho personalizado neste dispositivo." />
+      <section className="club-surface club-poll-panel">
+        <div className="club-poll-options" role="group" aria-label="Escolher categoria acompanhada">
+          {fpfsCategories.map((category) => (
+            <button
+              type="button"
+              className={followedCategory === category.category ? 'is-selected' : ''}
+              aria-pressed={followedCategory === category.category}
+              onClick={() => selectCategory(category.category)}
+              key={category.category}
+            >
+              {category.category}
+            </button>
+          ))}
+        </div>
+        <div className="club-poll-result" aria-live="polite">
+          <CircleHelp size={24} />
+          <div>
+            <span>Sua categoria</span>
+            <h2>{followedCategory}</h2>
+            {nextGame ? (
+              <p>Próximo jogo em {formatPortalDate(nextGame.date)}, às {nextGame.time}, contra {opponentOf(nextGame)}.</p>
+            ) : (
+              <p>Não há próximo jogo oficial publicado para esta categoria.</p>
+            )}
+          </div>
+          <a className="club-primary-cta" href="#/analise">Abrir análise da categoria</a>
+        </div>
+        <small>A seleção fica salva somente neste aparelho e não é apresentada como pesquisa oficial do clube.</small>
+      </section>
+    </div>
+  );
+}
+
+function ClubOfficialFieldsPage() {
+  const venues = uniqueOfficialVenues();
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Campos" title="Ginásios da temporada 2026" subtitle={`${venues.length} locais encontrados nas partidas oficiais do Paulista A2.`} />
+      <div className="club-venue-grid">
+        {venues.map((venue) => (
+          <article className="club-venue-card" key={venue.name}>
+            <MapPin size={20} />
+            <div>
+              <strong>{venue.name}</strong>
+              <span>{venue.matches} jogos na base · {venue.categories.join(', ')}</span>
+            </div>
+            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue.name}, SP`)}`} target="_blank" rel="noreferrer">
+              Abrir mapa <ExternalLink size={14} />
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ClubTransparencyPage() {
+  const fpfsCheckedAt = fpfsCategories[0]?.checkedAt;
+  const youthCheckedAt = youthLeagueCategories[0]?.checkedAt;
+  const fpfsGames = fpfsCategories.reduce((total, category) => total + (category.playedGames?.length ?? 0), 0);
+  const youthGames = youthLeagueCategories.reduce((total, category) => total + (category.playedGames?.length ?? 0), 0);
+  const rgcUrl = 'https://www.federacaopaulistadefutsal.com.br/novo/wp-content/uploads/2026/02/001_2026-RGC-REGULAMENTO-GERAL-DE-COMPETICOES-2026-2.pdf';
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Transparência" title="Fontes, atualização e critérios" subtitle="Saiba de onde vêm os números publicados no portal e o que não é calculado sem comprovação." />
+      <div className="club-transparency-grid">
+        <a className="club-source-card" href={rgcUrl} target="_blank" rel="noreferrer">
+          <FileText size={22} /><span>Regulamento</span><strong>RGC FPFS 2026</strong><p>Regras gerais e Art. 135 sobre o Ranking de Eficiência Anual.</p><ExternalLink size={15} />
+        </a>
+        <a className="club-source-card" href={fpfsCategories[0]?.url} target="_blank" rel="noreferrer">
+          <BarChart3 size={22} /><span>Fonte primária</span><strong>FPFS Súmula Online</strong><p>{fpfsGames} jogos em oito categorias. Consulta: {formatPortalCheckedAt(fpfsCheckedAt)}.</p><ExternalLink size={15} />
+        </a>
+        <a className="club-source-card" href={youthLeagueCategories[0]?.url} target="_blank" rel="noreferrer">
+          <Medal size={22} /><span>Fonte primária</span><strong>Liga da Juventude</strong><p>{youthGames} jogos preservados. Consulta: {formatPortalCheckedAt(youthCheckedAt)}.</p><ExternalLink size={15} />
+        </a>
+      </div>
+      <section className="club-surface club-method-card">
+        <h2>Compromissos editoriais</h2>
+        <div className="club-method-list">
+          <p><CheckCircle2 size={18} /><span>Jogos sem placar confirmado não entram como resultado.</span></p>
+          <p><CheckCircle2 size={18} /><span>Partidas passadas sem súmula não aparecem na agenda futura.</span></p>
+          <p><CheckCircle2 size={18} /><span>Posição de uma categoria não é apresentada como Ranking Anual do clube.</span></p>
+          <p><CheckCircle2 size={18} /><span>O portal não publica percentual de título, acesso ou vitória sem modelo e fonte suficientes.</span></p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ClubNewsPage() {
+  const matchReports = fpfsCategories.map((category) => {
+    const game = [...(category.playedGames ?? [])].sort((a, b) => a.date.localeCompare(b.date)).at(-1);
+    return game && {
+      id: `match-${category.category}-${game.date}`,
+      title: `${category.category}: ${gameResultForSuzano(game)} contra ${opponentOf(game)}`,
+      category: category.category,
+      date: game.date,
+      source: 'FPFS Súmula Online',
+      url: game.summaryUrl || category.gamesUrl,
+      summary: `Partida realizada em ${formatPortalDate(game.date)}, no ${game.venue}.`,
+      impact: `${category.record.points} pontos em ${category.record.played} jogos, ${category.record.goalsFor} gols marcados e saldo ${category.record.goalDifference > 0 ? '+' : ''}${category.record.goalDifference}.`,
+    };
+  }).filter(Boolean);
+  const externalNews = newsItems.filter((item) => item.source !== 'FPFS Súmula Online');
+  const stories = [...matchReports, ...externalNews].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Notícias" title="Boletim AD Suzano" subtitle={`${stories.length} atualizações formadas por resultados oficiais e notícias com fonte identificada.`} />
+      <div className="club-news-grid">
+        {stories.map((story, index) => (
+          <article className={`club-news-card ${index === 0 ? 'is-featured' : ''}`} key={story.id ?? story.url}>
+            <div className="club-news-meta"><span>{story.category}</span><time>{formatPortalDate(story.date)}</time></div>
+            <h2>{story.title}</h2>
+            <p>{story.summary}</p>
+            {story.impact && <strong>{story.impact}</strong>}
+            <a href={story.url} target="_blank" rel="noreferrer">Abrir fonte · {story.source} <ExternalLink size={14} /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ClubOfficialChampionshipsPage() {
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Campeonatos" title="Competições oficiais de 2026" subtitle="Paulista A2 em andamento e Copa da Juventude encerrada, com campanhas separadas por categoria." />
+      <div className="club-data-summary-grid">
+        <article className="club-data-summary-card is-live">
+          <Clock3 size={22} /><span>Em andamento</span><h2>Campeonato Paulista A2</h2>
+          <strong>{fpfsCategories.length} categorias</strong><p>Sub-7 ao Sub-18, com tabela e agenda atualizadas.</p>
+          <a href={fpfsCategories[0]?.url} target="_blank" rel="noreferrer">Fonte FPFS <ExternalLink size={15} /></a>
+        </article>
+        <article className="club-data-summary-card is-finished">
+          <CheckCircle2 size={22} /><span>Encerrada</span><h2>Copa da Juventude Gold</h2>
+          <strong>{youthLeagueCategories.length} categorias</strong><p>Sub-7 ao Sub-14, com histórico final preservado.</p>
+          <a href={youthLeagueCategories[0]?.url} target="_blank" rel="noreferrer">Fonte Liga da Juventude <ExternalLink size={15} /></a>
+        </article>
+      </div>
+      <div className="club-competition-category-grid">
+        {fpfsCategories.map((category) => {
+          const youth = youthLeagueCategories.find((item) => item.category === category.category);
+          return (
+            <article className="club-competition-category" key={category.category}>
+              <strong>{category.category}</strong>
+              <div><span>Paulista A2</span><b>{category.record.points} pts · {category.record.played} jogos</b></div>
+              <div><span>Copa da Juventude</span><b>{youth ? `${youth.record.points} pts · ${youth.record.played} jogos` : 'Não disputada na base disponível'}</b></div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ClubOfficialGamesPage() {
+  const upcoming = fpfsCategories.flatMap((category) => (category.upcomingGames ?? []).map((game) => ({ ...game, category: category.category, sourceUrl: category.gamesUrl })))
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+  const recent = fpfsCategories.flatMap((category) => [...(category.playedGames ?? [])]
+    .sort((a, b) => b.date.localeCompare(a.date)).slice(0, 2)
+    .map((game) => ({ ...game, category: category.category, sourceUrl: category.gamesUrl })))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Jogos" title="Central de partidas" subtitle={`${upcoming.length} jogos futuros confirmados e os dois resultados mais recentes de cada categoria.`} />
+      <ClubSection eyebrow="Agenda oficial" title="Próximos jogos">
+        <div className="club-games-grid">
+          {upcoming.map((game) => (
+            <article className="club-game-card" key={`${game.category}-${game.date}-${game.time}`}>
+              <div className="club-game-date"><strong>{formatPortalDate(game.date)}</strong><span>{game.time}</span></div>
+              <div><span>{game.category} · Paulista A2</span><h3>{game.home} <b>x</b> {game.away}</h3><p><MapPin size={14} /> {game.venue}</p></div>
+              <a href={game.sourceUrl} target="_blank" rel="noreferrer" aria-label={`Abrir agenda oficial ${game.category}`}><ExternalLink size={17} /></a>
+            </article>
+          ))}
+        </div>
+      </ClubSection>
+      <ClubSection eyebrow="Súmulas oficiais" title="Resultados recentes">
+        <div className="club-results-list">
+          {recent.map((game) => (
+            <a href={game.summaryUrl || game.sourceUrl} target="_blank" rel="noreferrer" key={`${game.category}-${game.date}-${game.home}-${game.away}`}>
+              <span>{game.category}</span><time>{formatPortalDate(game.date)}</time><strong>{game.home} {game.homeGoals} x {game.awayGoals} {game.away}</strong><em>{gameResultForSuzano(game)}</em>
+            </a>
+          ))}
+        </div>
+      </ClubSection>
+    </div>
+  );
+}
+
+function ClubOfficialRankingPage() {
+  const ranking = fpfsCategories.map((category) => ({ category, standing: suzanoStanding(category) }))
+    .sort((a, b) => (a.standing?.position ?? 999) - (b.standing?.position ?? 999));
+  const youthRanking = youthLeagueCategories.map((category) => ({ category, standing: suzanoStanding(category) }));
+
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Ranking" title="Desempenho por categoria" subtitle="Posições oficiais da fase atual do Paulista A2; este quadro não representa o Ranking de Eficiência Anual do clube." />
+      <div className="club-ranking-kpis">
+        <div><span>Melhor posição atual</span><strong>{ranking[0]?.category.category} · {ranking[0]?.standing?.positionLabel ?? '—'}</strong></div>
+        <div><span>Categorias monitoradas</span><strong>{ranking.length}</strong></div>
+        <div><span>Última atualização</span><strong>{formatPortalCheckedAt(fpfsCategories[0]?.checkedAt)}</strong></div>
+      </div>
+      <div className="club-table-wrap">
+        <table className="club-table club-ranking-table">
+          <thead><tr><th>Categoria</th><th>Posição</th><th>Pts</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>Saldo</th><th>Aproveit.</th><th>Fonte</th></tr></thead>
+          <tbody>
+            {ranking.map(({ category, standing }) => {
+              const record = category.record;
+              const efficiency = record.played ? Math.round((record.points / (record.played * 3)) * 100) : 0;
+              return (
+                <tr key={category.category}>
+                  <td><strong>{category.category}</strong></td><td>{standing?.positionLabel ?? '—'}</td><td>{record.points}</td><td>{record.played}</td><td>{record.wins}</td><td>{record.draws}</td><td>{record.losses}</td><td>{record.goalsFor}</td><td>{record.goalsAgainst}</td><td className={record.goalDifference >= 0 ? 'is-positive' : 'is-negative'}>{record.goalDifference > 0 ? '+' : ''}{record.goalDifference}</td><td>{efficiency}%</td><td><a href={category.url} target="_blank" rel="noreferrer">FPFS</a></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <ClubSection eyebrow="Competição encerrada" title="Copa da Juventude Gold 2026">
+        <div className="club-campaign-grid">
+          {youthRanking.map(({ category, standing }) => (
+            <article className="club-campaign-card" key={category.category}>
+              <div><span>Copa da Juventude</span><strong>{category.category}</strong></div><b>{standing?.positionLabel ?? '—'}</b>
+              <p>{category.record.points} pontos · {category.record.played} jogos · saldo {category.record.goalDifference > 0 ? '+' : ''}{category.record.goalDifference}</p>
+              <a href={category.url} target="_blank" rel="noreferrer">Classificação final <ExternalLink size={14} /></a>
+            </article>
+          ))}
+        </div>
+      </ClubSection>
+      <div className="club-editorial-note"><FileText size={20} /><div><strong>Importante</strong><p>As posições acima são de cada campeonato e categoria. O acesso entre divisões depende do Ranking de Eficiência Anual regulamentar, que não deve ser confundido com esta tabela.</p></div></div>
     </div>
   );
 }

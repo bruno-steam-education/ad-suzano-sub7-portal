@@ -5510,6 +5510,54 @@ input {
   }
 }
 
+/* Portal data pages: campaigns, fixtures, venues and official rankings. */
+.club-data-summary-grid,.club-transparency-grid,.club-campaign-grid,.club-competition-category-grid,.club-venue-grid,.club-news-grid,.club-games-grid,.club-ranking-kpis{display:grid;gap:16px}
+.club-data-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.club-data-summary-card,.club-source-card,.club-campaign-card,.club-competition-category,.club-venue-card,.club-news-card,.club-game-card,.club-ranking-kpis>div{border:1px solid rgba(13,46,102,.11);border-radius:16px;background:#fff;box-shadow:0 16px 38px rgba(7,26,61,.07)}
+.club-data-summary-card{position:relative;overflow:hidden;display:grid;align-content:start;gap:10px;min-height:260px;padding:26px}
+.club-data-summary-card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--club-red)}
+.club-data-summary-card.is-finished::before{background:#16a37a}
+.club-data-summary-card>span,.club-source-card>span,.club-news-meta span,.club-campaign-card span,.club-competition-category span,.club-poll-result span,.club-ranking-kpis span{color:var(--club-red);font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.club-data-summary-card h2,.club-news-card h2,.club-poll-result h2{margin:0;color:var(--club-navy);font-size:clamp(24px,3vw,36px);line-height:1.02}
+.club-data-summary-card p,.club-source-card p,.club-news-card p,.club-editorial-note p,.club-poll-result p{margin:0;color:#536176;line-height:1.55}
+.club-data-summary-card a,.club-source-card,.club-campaign-card a,.club-venue-card a,.club-news-card a{display:inline-flex;align-items:center;gap:7px;color:var(--club-blue);font-weight:900;text-decoration:none}
+.club-data-summary-card a{margin-top:auto}
+.club-editorial-note{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-left:4px solid var(--club-red);border-radius:12px;background:#eef3f9;color:var(--club-navy)}
+.club-editorial-note strong{display:block;margin-bottom:4px}
+.club-campaign-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.club-campaign-card{display:grid;grid-template-columns:1fr auto;gap:12px;padding:18px}
+.club-campaign-card div,.club-competition-category div{display:grid;gap:4px}
+.club-campaign-card div strong{font-size:21px}.club-campaign-card>b{color:var(--club-blue);font-size:28px}
+.club-campaign-card p,.club-campaign-card a{grid-column:1/-1;margin:0}.club-campaign-card p{color:#536176;font-size:13px}
+.club-poll-panel{display:grid;gap:22px}.club-poll-options{display:grid;grid-template-columns:repeat(8,minmax(78px,1fr));gap:8px}
+.club-poll-options button{min-height:50px;border:1px solid #cad5e5;border-radius:10px;background:#f5f8fc;color:var(--club-navy);font-weight:950;cursor:pointer}
+.club-poll-options button.is-selected{border-color:var(--club-red);background:var(--club-red);color:#fff;box-shadow:0 10px 20px rgba(217,35,50,.2)}
+.club-poll-result{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:22px;border-radius:14px;background:var(--club-navy);color:#fff}
+.club-poll-result h2,.club-poll-result p{color:#fff}.club-poll-panel>small{color:#64748b}
+.club-venue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.club-venue-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:18px}
+.club-venue-card div{display:grid;gap:5px}.club-venue-card div span{color:#64748b;font-size:12px}
+.club-transparency-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.club-source-card{position:relative;display:grid;gap:10px;min-height:240px;padding:22px}
+.club-source-card>svg:last-child{position:absolute;right:18px;top:18px}.club-source-card strong{color:var(--club-navy);font-size:22px}
+.club-method-card{display:grid;gap:16px}.club-method-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.club-method-list p{display:flex;gap:10px;align-items:flex-start;margin:0;padding:14px;border-radius:10px;background:#f2f6fb;color:#334155}.club-method-list svg{flex:0 0 auto;color:#0f9f78}
+.club-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.club-news-card{display:grid;align-content:start;gap:13px;min-height:300px;padding:24px}
+.club-news-card.is-featured{grid-column:1/-1;min-height:340px;background:linear-gradient(135deg,#071a3d,#0d2e66);color:#fff}
+.club-news-card.is-featured h2,.club-news-card.is-featured p,.club-news-card.is-featured strong,.club-news-card.is-featured a{color:#fff}
+.club-news-meta{display:flex;justify-content:space-between;gap:10px;color:#718096;font-size:12px;font-weight:850}
+.club-news-card>strong{padding:12px 14px;border-left:3px solid var(--club-red);background:rgba(13,46,102,.06);color:var(--club-navy)}.club-news-card>a{margin-top:auto}
+.club-competition-category-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.club-competition-category{display:grid;gap:14px;padding:18px}
+.club-competition-category>strong{font-size:26px;color:var(--club-blue)}.club-competition-category div{padding-top:10px;border-top:1px solid #e2e8f0}
+.club-games-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.club-game-card{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:16px;align-items:center;padding:18px}
+.club-game-date{display:grid;gap:4px;padding-right:14px;border-right:1px solid #dbe4ef}.club-game-date strong{color:var(--club-blue)}
+.club-game-card h3{margin:4px 0 8px;font-size:17px}.club-game-card h3 b{color:var(--club-red)}.club-game-card p{display:flex;align-items:center;gap:5px;margin:0;color:#64748b;font-size:12px}
+.club-results-list{display:grid;border:1px solid #dbe4ef;border-radius:14px;overflow:hidden;background:#fff}
+.club-results-list a{display:grid;grid-template-columns:70px 110px minmax(0,1fr) 130px;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid #e7edf5;color:var(--club-navy);text-decoration:none}
+.club-results-list a:last-child{border-bottom:0}.club-results-list span{color:var(--club-red);font-weight:950}.club-results-list time,.club-results-list em{color:#64748b;font-size:12px;font-style:normal}
+.club-ranking-kpis{grid-template-columns:1.2fr .7fr 1.1fr}.club-ranking-kpis>div{display:grid;gap:7px;padding:18px}.club-ranking-kpis strong{color:var(--club-navy);font-size:21px}
+.club-ranking-table .is-positive{color:#087b5b;font-weight:950}.club-ranking-table .is-negative{color:#c92535;font-weight:950}
+@media(max-width:980px){.club-campaign-grid,.club-competition-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.club-transparency-grid{grid-template-columns:1fr}.club-poll-options{grid-template-columns:repeat(4,minmax(72px,1fr))}}
+@media(max-width:720px){.club-data-summary-grid,.club-campaign-grid,.club-competition-category-grid,.club-venue-grid,.club-news-grid,.club-games-grid,.club-ranking-kpis,.club-method-list{grid-template-columns:1fr}.club-poll-options{grid-template-columns:repeat(2,minmax(0,1fr))}.club-poll-result,.club-venue-card,.club-game-card,.club-results-list a{grid-template-columns:1fr}.club-poll-result .club-primary-cta{width:100%}.club-game-date{padding:0 0 10px;border-right:0;border-bottom:1px solid #dbe4ef}.club-news-card.is-featured{grid-column:auto}}
+
 @media (prefers-reduced-motion: reduce) {
   .supporter-radio-kicker i { animation: none; }
 }
