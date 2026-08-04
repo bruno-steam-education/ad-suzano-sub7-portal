@@ -7,6 +7,10 @@ const TITLE_ID = 16;
 const DIVISION_ID = 4;
 const CATEGORY_ORDER = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 
+function saoPauloDateKey() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date());
+}
+
 function cleanText(value = '') {
   return value.replace(/\s+/g, ' ').trim();
 }
@@ -205,8 +209,10 @@ for (const event of events) {
   const standings = await scrapeStandings(event);
   const games = allGames.filter((game) => isSuzanoTeam(game.home) || isSuzanoTeam(game.away));
   const playedGames = games.filter((game) => Number.isFinite(game.homeGoals));
+  const todayKey = saoPauloDateKey();
+  const pendingReviewGames = games.filter((game) => !Number.isFinite(game.homeGoals) && game.date < todayKey);
   const upcomingGames = games
-    .filter((game) => !Number.isFinite(game.homeGoals))
+    .filter((game) => !Number.isFinite(game.homeGoals) && game.date >= todayKey)
     .map((game) => ({
       ...game,
       opponentStanding: findStandingForTeam(standings, opponentForSuzanoGame(game)),
@@ -220,11 +226,16 @@ for (const event of events) {
     record: { ...record, goalDifference },
     standings,
     upcomingGames,
+    pendingReviewGames,
     playedGames,
     recentGames: playedGames.slice(-5),
     allRecentGames: allGames.filter((game) => Number.isFinite(game.homeGoals)).slice(-40),
     youtubeSearchUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(`AD Suzano ${event.category} futsal 2026`)}`,
     source: 'FPFS Súmula Online',
+    dataQuality: {
+      upcomingPastDatesRemoved: pendingReviewGames.length,
+      status: pendingReviewGames.length ? 'review' : 'verified',
+    },
     checkedAt: new Date().toISOString(),
   });
 }

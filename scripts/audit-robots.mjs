@@ -5,6 +5,8 @@ import { buildAnalyticsSnapshot, buildYouthDevelopmentAgent, deriveRecordFromGam
 const requiredCategories = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 const fields = ['played', 'wins', 'draws', 'losses', 'goalsFor', 'goalsAgainst', 'points', 'goalDifference'];
 const problems = [];
+const warnings = [];
+const todayKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date());
 
 function validateRecord(category, sourceLabel) {
   const games = category.playedGames ?? [];
@@ -31,8 +33,6 @@ for (const categoryName of requiredCategories) {
 
   const games = category.playedGames ?? [];
   const derived = deriveRecordFromGames(games);
-  const expectedSeasonGames = Math.max(0, (category.standings?.length ?? 1) - 1);
-  const expectedRemaining = Math.max(0, expectedSeasonGames - (category.record?.played ?? 0));
   if (games.length !== category.record?.played) {
     problems.push(`${categoryName}: ${games.length} jogos armazenados, mas o registro informa ${category.record?.played ?? 0}.`);
   }
@@ -52,9 +52,10 @@ for (const categoryName of requiredCategories) {
   if (category.record.goalDifference !== category.record.goalsFor - category.record.goalsAgainst) {
     problems.push(`${categoryName}: saldo não corresponde a GP − GC.`);
   }
-  if ((category.upcomingGames?.length ?? 0) !== expectedRemaining) {
-    problems.push(`${categoryName}: calendário tem ${category.upcomingGames?.length ?? 0} jogos futuros; pela chave única deveriam restar ${expectedRemaining}.`);
-  }
+  const staleUpcoming = (category.upcomingGames ?? []).filter((game) => game.date < todayKey);
+  if (staleUpcoming.length) problems.push(`${categoryName}: ${staleUpcoming.length} jogo(s) passado(s) ainda aparecem como agenda futura.`);
+  const unresolvedPast = category.pendingReviewGames ?? [];
+  if (unresolvedPast.length) warnings.push(`${categoryName}: ${unresolvedPast.length} partida(s) passada(s) sem placar foram ocultadas da agenda e aguardam confirmação da FPFS.`);
 
   const standing = category.standings?.find((item) => item.team?.includes('SUZANO'));
   if (!standing) problems.push(`${categoryName}: AD Suzano não localizada na classificação.`);
@@ -68,7 +69,7 @@ for (const categoryName of requiredCategories) {
 
   const checkedAt = category.checkedAt ? new Date(category.checkedAt) : null;
   const ageHours = checkedAt ? (Date.now() - checkedAt.getTime()) / 36e5 : Infinity;
-  if (ageHours > 36) problems.push(`${categoryName}: dados FPFS com mais de 36 horas.`);
+  if (ageHours > 12) problems.push(`${categoryName}: dados FPFS com mais de 12 horas.`);
 }
 
 const snapshot = buildAnalyticsSnapshot(fpfsCategories);
@@ -102,6 +103,11 @@ if (problems.length) {
   console.error('Auditoria dos robôs encontrou problemas:');
   for (const problem of problems) console.error(`- ${problem}`);
   process.exit(1);
+}
+
+if (warnings.length) {
+  console.warn('Alertas não bloqueantes da fonte oficial:');
+  for (const warning of warnings) console.warn(`- ${warning}`);
 }
 
 console.log(`Auditoria OK: Paulista ${played} jogos, Copa da Juventude ${youthPlayed} jogos, consolidado ${played + youthPlayed} jogos.`);

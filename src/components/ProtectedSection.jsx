@@ -5,7 +5,7 @@ export function ProtectedSection({
   isAuthenticated,
   onOpenModal,
   title = 'Análise Tática Restrita',
-  description = 'Esta seção contém projeções matemáticas, estatísticas pesadas do robô de inteligência e dados de eficiência reservados à Comissão Técnica da AD Suzano.',
+  description = 'Esta seção contém análises verificadas e dados oficiais reservados à Comissão Técnica da AD Suzano.',
   children,
 }) {
   if (isAuthenticated) {
@@ -26,15 +26,15 @@ export function ProtectedSection({
         <div className="protected-lock-features">
           <div>
             <ShieldAlert size={16} />
-            <span>Probabilidades de Vitória & Robô IA</span>
+            <span>Agenda e Contexto Oficial Pré-Jogo</span>
           </div>
           <div>
             <ShieldAlert size={16} />
-            <span>Projeções Agregadas de Título e Acesso</span>
+            <span>Situação Regulamentar Verificada</span>
           </div>
           <div>
             <ShieldAlert size={16} />
-            <span>Metas da Cota Art. 135 RGC</span>
+            <span>Auditoria de Dados e Art. 135 RGC</span>
           </div>
         </div>
 

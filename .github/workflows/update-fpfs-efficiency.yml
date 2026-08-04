@@ -2,8 +2,8 @@ name: Update FPFS and Copa da Juventude
 
 on:
   schedule:
-    # Executa a cada 6 horas (no topo da hora)
-    - cron: '0 */6 * * *'
+    # Executa a cada 3 horas (no topo da hora)
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -30,6 +30,8 @@ jobs:
           npm run update:fpfs
           npm run update:youth-league
           npm run audit:robots
+          npm run build
+          npm run audit:claims
 
       - name: Commit and push if updated
         run: |

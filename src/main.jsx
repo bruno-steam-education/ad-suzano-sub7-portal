@@ -28,16 +28,8 @@ import { federationScheduleSource, initiationA2BaseSchedule } from './data/feder
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
 import { youthLeagueCategories, youthLeagueCompetition } from './data/youthLeagueCategories';
-import { weeklySchedule, weeklyScheduleWeek } from './data/schedule';
-import { contextualResults, sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
 import { fetchSuzanoWeather } from './services/weather';
-import {
-  championshipProjection,
-  mondayAnalysisDate,
-  predictMatch,
-  suzanoRecord,
-} from './utils/analysis';
 import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader';
 import { AccessModal } from './components/AccessModal';
 import { ProtectedSection } from './components/ProtectedSection';
@@ -359,8 +351,8 @@ function CompleteCategoryDashboard({ category, fpfsData, isAuthenticated, onOpen
         <ProtectedSection
           isAuthenticated={isAuthenticated}
           onOpenModal={onOpenModal}
-          title={`Cota de Eficiência ${category.label}`}
-          description={`Metas de pontos e cálculo de cota de contribuição do Art. 135 do RGC reservadas à Comissão Técnica.`}
+          title={`Regulamento e Ranking Anual ${category.label}`}
+          description="Leitura do Art. 135, classificação oficial e limites do que pode ser calculado com segurança."
         >
           <CategoryEfficiencyHeader category={category} />
         </ProtectedSection>
@@ -373,8 +365,8 @@ function CompleteCategoryDashboard({ category, fpfsData, isAuthenticated, onOpen
           <ProtectedSection
             isAuthenticated={isAuthenticated}
             onOpenModal={onOpenModal}
-            title={`Inteligência de Jogo & Robô ${category.label}`}
-            description={`Probabilidade de vitória, estatísticas de média de gols e análise de adversários da categoria ${category.label} reservadas à Comissão Técnica.`}
+            title={`Contexto Oficial Pré-Jogo ${category.label}`}
+            description={`Agenda, classificação do adversário e indicadores observados da categoria ${category.label}, sem probabilidades inventadas.`}
           >
             <CategoryNextGamesV2 category={category} games={upcomingGames} robot={robot} />
           </ProtectedSection>
@@ -384,11 +376,10 @@ function CompleteCategoryDashboard({ category, fpfsData, isAuthenticated, onOpen
           <ProtectedSection
             isAuthenticated={isAuthenticated}
             onOpenModal={onOpenModal}
-            title={`Projeções de Título e Acesso ${category.label}`}
-            description={`Leitura de risco de queda e chance de acesso reservadas à Comissão Técnica.`}
+            title={`Situação Regulamentar ${category.label}`}
+            description="Posição, campanha e limites do que pode ser concluído a partir das fontes oficiais."
           >
-            <CategoryTitleProjectionV2 category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
-            <CategoryAccessProjection category={category} robot={robot} hasSuzanoGames={hasSuzanoGames} />
+            <VerifiedCompetitionStatus category={category} fpfsData={fpfsData} robot={robot} />
           </ProtectedSection>
 
           <ProtectedSection
@@ -472,11 +463,8 @@ function categoryRobot(category, fpfsData) {
     const goalsAgainst = suzanoHome ? game.awayGoals : game.homeGoals;
     return Number.isFinite(goalsFor) && goalsFor > goalsAgainst;
   }).length;
-  const goalSignal = Math.max(-12, Math.min(14, record.goalDifference ?? 0));
   const attackRate = played ? (record.goalsFor ?? 0) / played : 0;
   const defenseRate = played ? (record.goalsAgainst ?? 0) / played : 0;
-  const titleChance = Math.round(Math.max(6, Math.min(84, 14 + efficiency * 58 + goalSignal * 1.15 + recentWins * 2)));
-  const accessChance = Math.round(Math.max(20, Math.min(72, 18 + efficiency * 38 + goalSignal * 0.9 + recentWins * 2 + 7)));
 
   return {
     category,
@@ -487,8 +475,6 @@ function categoryRobot(category, fpfsData) {
     recentWins,
     attackRate,
     defenseRate,
-    titleChance,
-    accessChance,
     upcomingGames,
     recentGames,
     standings: fpfsData?.standings ?? [],
@@ -542,7 +528,7 @@ function findTeamLastGame(games = [], teamName = '', beforeDate) {
 function formatOpponentStanding(standing) {
   if (!standing) return null;
   const saldo = standing.goalDifference > 0 ? `+${standing.goalDifference}` : standing.goalDifference ?? 0;
-  return `Adversario na tabela: ${teamDisplayName(standing.team)} esta em ${standing.positionLabel ?? `${standing.position}o`} lugar, com ${standing.points ?? 0} pontos, ${standing.played ?? 0} jogos e saldo ${saldo}.`;
+  return `Adversário na tabela: ${teamDisplayName(standing.team)} está em ${standing.positionLabel ?? `${standing.position}º`} lugar, com ${standing.points ?? 0} pontos, ${standing.played ?? 0} jogos e saldo ${saldo}.`;
 }
 
 function formatOpponentLastGame(game, opponent) {
@@ -552,17 +538,10 @@ function formatOpponentLastGame(game, opponent) {
   const goalsAgainst = opponentHome ? game.awayGoals : game.homeGoals;
   const rival = opponentHome ? game.away : game.home;
   const result = goalsFor > goalsAgainst ? 'venceu' : goalsFor === goalsAgainst ? 'empatou' : 'perdeu';
-  return `Ultimo jogo do adversario: ${teamDisplayName(opponent)} ${result} por ${goalsFor} x ${goalsAgainst} contra ${teamDisplayName(rival)}.`;
+  return `Último jogo do adversário: ${teamDisplayName(opponent)} ${result} por ${goalsFor} x ${goalsAgainst} contra ${teamDisplayName(rival)}.`;
 }
 
-function categoryMatchPrediction(category, game, robot, index = 0) {
-  const suzanoHome = isSuzanoName(game.home);
-  const homeBoost = suzanoHome ? 5 : -2;
-  const recentBoost = robot.recentWins * 2.4;
-  const defensePenalty = Math.min(9, robot.defenseRate * 1.5);
-  const attackBoost = Math.min(10, robot.attackRate * 2.1);
-  const slotPenalty = index * 2;
-  const chance = Math.round(Math.max(18, Math.min(84, 34 + robot.efficiency * 34 + homeBoost + recentBoost + attackBoost - defensePenalty - slotPenalty)));
+function categoryMatchContext(category, game, robot) {
   const latest = robot.recentGames.at(-1);
   const latestText = latest
     ? `vem de ${isSuzanoName(latest.home) ? latest.homeGoals : latest.awayGoals} x ${isSuzanoName(latest.home) ? latest.awayGoals : latest.homeGoals} contra ${opponentForCategoryGame(latest)}`
@@ -572,7 +551,6 @@ function categoryMatchPrediction(category, game, robot, index = 0) {
   const opponentLastGame = game.opponentLastGame ?? findTeamLastGame(robot.allRecentGames, opponent, game.date);
 
   return {
-    chance,
     opponent,
     reasons: [
       `${category.label} ${latestText}.`,
@@ -580,65 +558,23 @@ function categoryMatchPrediction(category, game, robot, index = 0) {
       formatOpponentLastGame(opponentLastGame, opponent),
       `Campanha: ${robot.record.points ?? 0} pontos, ${robot.efficiencyLabel} de aproveitamento e saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}.`,
       `Medias: ${robot.attackRate.toFixed(1)} gols feitos e ${robot.defenseRate.toFixed(1)} sofridos por jogo na FPFS.`,
-      ...smartCrossReasons(category, game, robot),
     ].filter(Boolean),
   };
-}
-
-function pendingCategoryProjection(category, robot, index = 0) {
-  const chance = Math.round(Math.max(18, Math.min(78, 30 + robot.efficiency * 34 + Math.max(-8, Math.min(10, robot.record.goalDifference ?? 0)) + robot.recentWins * 2 - index * 3)));
-
-  return {
-    chance,
-    reasons: [
-      `Base do robô ${category.label}: ${robot.record.points ?? 0} pontos em ${robot.record.played ?? 0} jogos e ${robot.efficiencyLabel} de aproveitamento.`,
-      `Saldo ${robot.record.goalDifference > 0 ? `+${robot.record.goalDifference}` : robot.record.goalDifference ?? 0}, com média de ${robot.attackRate.toFixed(1)} gols feitos por jogo.`,
-      'Adversário ainda não publicado pela FPFS; percentual é uma estimativa de força média da categoria.',
-    ],
-  };
-}
-
-function smartCrossReasons(category, game, robot) {
-  if (category.label !== 'Sub-7') return [];
-  const opponent = opponentForCategoryGame(game).toUpperCase();
-  const suzanoWins = robot.recentGames
-    .filter((recent) => {
-      const suzanoHome = isSuzanoName(recent.home);
-      const goalsFor = suzanoHome ? recent.homeGoals : recent.awayGoals;
-      const goalsAgainst = suzanoHome ? recent.awayGoals : recent.homeGoals;
-      return Number.isFinite(goalsFor) && goalsFor > goalsAgainst;
-    })
-    .map((recent) => opponentForCategoryGame(recent).toUpperCase());
-
-  const bridge = contextualResults.find((result) => {
-    const teams = [result.home.toUpperCase(), result.away.toUpperCase()];
-    return teams.some((team) => team.includes(opponent.split(' ')[0])) && suzanoWins.some((wonTeam) => teams.some((team) => team.includes(wonTeam.split(' ')[0])));
-  });
-
-  if (!bridge) return [];
-
-  return [
-    `Cruzamento indireto: ${teamDisplayName(bridge.home)} ${bridge.homeGoals} x ${bridge.awayGoals} ${teamDisplayName(bridge.away)} ajuda a calibrar o confronto.`,
-  ];
-}
-
-function buildThreeGameSlots(games) {
-  const realGames = games.slice(0, 3).map((game, index) => ({ game, index, pending: false }));
-  const missing = Math.max(0, 3 - realGames.length);
-  return [
-    ...realGames,
-    ...Array.from({ length: missing }, (_, offset) => ({ game: null, index: realGames.length + offset, pending: true })),
-  ];
 }
 
 function categoryAudit(robot) {
   const checkedAt = robot.freshness;
   const ageHours = checkedAt ? (Date.now() - checkedAt.getTime()) / 36e5 : Infinity;
+  const record = robot.record;
+  const campaignIsConsistent = Number(record.played ?? 0) === Number(record.wins ?? 0) + Number(record.draws ?? 0) + Number(record.losses ?? 0)
+    && Number(record.points ?? 0) === Number(record.wins ?? 0) * 3 + Number(record.draws ?? 0)
+    && Number(record.goalDifference ?? 0) === Number(record.goalsFor ?? 0) - Number(record.goalsAgainst ?? 0);
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date());
   return [
-    { label: 'Vitórias dos próximos jogos', ok: robot.upcomingGames.slice(0, 3).every((game, index) => categoryMatchPrediction(robot.category, game, robot, index).chance > 0) },
-    { label: 'Chance de título', ok: robot.titleChance > 0 },
-    { label: 'Chance de acesso', ok: robot.accessChance > 0 },
-    { label: 'Fonte FPFS atualizada', ok: ageHours <= 36 },
+    { label: 'Campanha fecha com V + E + D e 3V + E', ok: campaignIsConsistent },
+    { label: 'AD Suzano localizada na classificação', ok: robot.standings.some((standing) => isSuzanoName(standing.team)) },
+    { label: 'Agenda contém apenas datas futuras', ok: robot.upcomingGames.every((game) => game.date >= today) },
+    { label: 'Fonte FPFS consultada nas últimas 12 horas', ok: ageHours <= 12 },
   ];
 }
 
@@ -756,53 +692,22 @@ function CategoryStandingsMirror({ category, fpfsData }) {
 }
 
 function CategoryNextGamesV2({ category, games, robot }) {
-  const slots = buildThreeGameSlots(games);
-
   return (
     <section className="panel">
       <div className="section-title">
         <div>
-          <span>Robô pré-jogo</span>
-          <h2>Próximos 3 confrontos</h2>
+          <span>Agenda oficial verificada</span>
+          <h2>Próximos confrontos</h2>
         </div>
-        <Sparkles size={22} />
+        <Shield size={22} />
       </div>
 
-      <div className="match-list">
-        {slots.map(({ game, index, pending }) => {
-          if (pending) {
-            const projection = pendingCategoryProjection(category, robot, index);
+      {games.length ? (
+        <div className="match-list">
+          {games.slice(0, 3).map((game) => {
+            const context = categoryMatchContext(category, game, robot);
+            const opponentStanding = game.opponentStanding ?? findTeamStanding(robot.standings, context.opponent);
             return (
-              <article className="match-card category-match-card pending-game-slot" key={`${category.id}-pending-${index}`}>
-                <div className="match-date">
-                  <strong>Jogo {index + 1}</strong>
-                  <span>FPFS</span>
-                </div>
-                <div className="match-body">
-                  <div className="teams-line">
-                    <span>Aguardando publicação</span>
-                  </div>
-                  <p>A Súmula Online ainda não liberou este compromisso da categoria.</p>
-                  <ul>
-                    <li>O robô mantém o espaço pronto para análise assim que a FPFS publicar data, local e adversário.</li>
-                    <li>Estimativa base da categoria: {projection.chance}% até a FPFS confirmar o adversário.</li>
-                  </ul>
-                </div>
-                <div className="chance pending-chance">
-                  <span>Chance AD Suzano</span>
-                  <strong>{projection.chance}%</strong>
-                  <small>Base estatística da categoria</small>
-                  <div className="chance-bar">
-                    <i style={{ width: `${projection.chance}%` }} />
-                  </div>
-                </div>
-              </article>
-            );
-          }
-
-          const prediction = categoryMatchPrediction(category, game, robot, index);
-
-          return (
             <article className="match-card category-match-card" key={`${category.id}-${game.date}-${game.home}-${game.away}`}>
               <div className="match-date">
                 <strong>{fmtDate.format(new Date(`${game.date}T12:00:00`))}</strong>
@@ -818,190 +723,86 @@ function CategoryNextGamesV2({ category, games, robot }) {
                 <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
                 <ul>
                   {game.projectedFromPdf && (
-                    <li>Fonte complementar: tabela enviada pela Federacao ({game.sourceFile}).</li>
+                    <li>Fonte complementar: tabela oficial enviada ({game.sourceFile}).</li>
                   )}
-                  {prediction.reasons.map((reason) => (
+                  {context.reasons.map((reason) => (
                     <li key={reason}>{reason}</li>
                   ))}
                 </ul>
               </div>
-              <div className="chance pending-chance">
-                <span>Chance AD Suzano</span>
-                <strong>{prediction.chance}%</strong>
-                <small>Robô {category.label}: campanha, saldo, mando e fase recente</small>
-                <div className="chance-bar">
-                  <i style={{ width: `${prediction.chance}%` }} />
-                </div>
+              <div className="match-verification">
+                <span>Contexto oficial</span>
+                <strong>{opponentStanding?.positionLabel ?? (opponentStanding?.position ? `${opponentStanding.position}º` : 'Sem posição')}</strong>
+                <small>{opponentStanding ? 'posição atual do adversário' : 'classificação não vinculada'}</small>
+                <em>Sem percentual preditivo</em>
               </div>
             </article>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function CategoryNextGames({ category, games }) {
-  return (
-    <section className="panel">
-      <div className="section-title">
-        <div>
-          <span>Análise pré-jogo</span>
-          <h2>Próximos confrontos</h2>
-        </div>
-        <Sparkles size={22} />
-      </div>
-
-      {games.length ? (
-        <div className="match-list">
-          {games.map((game) => (
-            <article className="match-card category-match-card" key={`${category.id}-${game.date}-${game.home}-${game.away}`}>
-              <div className="match-date">
-                <strong>{fmtDate.format(new Date(`${game.date}T12:00:00`))}</strong>
-                <span>{game.time || 'A confirmar'}</span>
-              </div>
-              <div className="match-body">
-                <div className="teams-line">
-                  <span>{game.home}</span>
-                  <b>x</b>
-                  <span>{game.away}</span>
-                </div>
-                <p><MapPin size={15} /> {game.venue}</p>
-                <RouteButtons query={game.venue && game.venue !== 'A DEFINIR' ? `${game.venue}, SP` : null} />
-              </div>
-              <div className="chance pending-chance">
-                <span>Chance AD Suzano</span>
-                <strong>{categoryGameChance(category)}%</strong>
-                <small>Estimativa por aproveitamento e saldo da categoria</small>
-              </div>
-            </article>
-          ))}
+            );
+          })}
         </div>
       ) : (
-        <p className="empty-copy">Nenhum próximo jogo do AD Suzano encontrado nesta categoria pela Súmula Online.</p>
+        <div className="verified-empty-state">
+          <Shield size={22} />
+          <div>
+            <strong>Nenhum compromisso futuro confirmado</strong>
+            <p>O robô não reaproveita jogos passados nem cria adversários. A agenda aparecerá quando a FPFS publicar o confronto.</p>
+          </div>
+        </div>
       )}
     </section>
   );
 }
 
-function categoryGameChance(category) {
-  const fpfsData = fpfsCategories.find((item) => item.category === category.label);
-  const record = fpfsData?.record;
-  if (!record?.played) return 50;
-  const efficiency = record.points / Math.max(1, record.played * 3);
-  const goalSignal = Math.max(-12, Math.min(12, record.goalDifference)) * 1.2;
-  return Math.round(Math.max(18, Math.min(82, 42 + efficiency * 34 + goalSignal)));
-}
-
-function CategoryTitleProjectionV2({ category, robot, hasSuzanoGames }) {
+function VerifiedCompetitionStatus({ category, fpfsData, robot }) {
+  const ownStanding = fpfsData?.standings?.find((standing) => isSuzanoName(standing.team));
+  const leader = fpfsData?.standings?.[0];
   const record = robot.record;
 
   return (
-    <section className="panel title-panel pending-title-panel">
-      <div className="title-odds">
+    <section className="panel verified-competition-status">
+      <div className="section-title">
         <div>
-          <span>Robô estatístico {category.label}</span>
-          <h2>Chance de ser campeão</h2>
-          <p>
-            {hasSuzanoGames
-              ? `Leitura do robô: ${record.points} pontos em ${record.played} jogos, ${robot.efficiencyLabel} de aproveitamento, saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference} e ${robot.recentWins} vitórias nos últimos 4 jogos.`
-              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projeção.'}
-          </p>
+          <span>Somente dados demonstráveis</span>
+          <h2>Situação oficial do {category.label}</h2>
         </div>
-        <div className="odds-ring pending-ring" style={{ '--odds': `${robot.titleChance}%` }}>
-          <strong>{hasSuzanoGames ? `${robot.titleChance}%` : '--'}</strong>
-          <span>Título</span>
-        </div>
+        <Shield size={22} />
       </div>
-      <div className="odds-reasons">
-        <div><ChevronRight size={18} />Aproveitamento atual: {hasSuzanoGames ? robot.efficiencyLabel : 'aguardando dados'}.</div>
-        <div><ChevronRight size={18} />Saldo: {record?.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 'aguardando dados'}.</div>
-        <div><ChevronRight size={18} />Ataque: {hasSuzanoGames ? `${robot.attackRate.toFixed(1)} gols por jogo` : 'aguardando dados'}.</div>
-        <div><ChevronRight size={18} />Fase recente: {hasSuzanoGames ? `${robot.recentWins} vitórias nos últimos 4 jogos` : 'aguardando dados'}.</div>
-      </div>
-    </section>
-  );
-}
 
-function CategoryTitleProjection({ category, record, hasSuzanoGames }) {
-  const efficiency = record?.played ? Math.round((record.points / Math.max(1, record.played * 3)) * 100) : null;
-  const titleChance = categoryTitleChance(record);
-
-  return (
-    <section className="panel title-panel pending-title-panel">
-      <div className="title-odds">
-        <div>
-          <span>Projeção estatística</span>
-          <h2>Chance de ser campeão</h2>
-          <p>
-            {hasSuzanoGames
-              ? `Base oficial localizada para o ${category.label}: ${record.points} pontos em ${record.played} jogos, ${record.goalsFor} gols feitos e saldo ${record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference}.`
-              : 'Aguardando jogos oficiais do AD Suzano nesta categoria para ativar a projeção.'}
-          </p>
-        </div>
-        <div className="odds-ring pending-ring" style={{ '--odds': `${titleChance}%` }}>
-          <strong>{hasSuzanoGames ? `${titleChance}%` : '--'}</strong>
-          <span>Título</span>
-        </div>
+      <div className="verified-status-grid">
+        <article>
+          <span>Classificação atual</span>
+          <strong>{ownStanding?.positionLabel ?? (ownStanding?.position ? `${ownStanding.position}º` : 'Não localizada')}</strong>
+          <p>{record.points ?? 0} pontos em {record.played ?? 0} jogos.</p>
+        </article>
+        <article>
+          <span>Liderança da tabela</span>
+          <strong>{leader ? `${leader.points} pontos` : 'Não localizada'}</strong>
+          <p>{leader ? teamDisplayName(leader.team) : 'Aguardando a classificação oficial.'}</p>
+        </article>
+        <article>
+          <span>Agenda futura confirmada</span>
+          <strong>{robot.upcomingGames.length} {robot.upcomingGames.length === 1 ? 'jogo' : 'jogos'}</strong>
+          <p>Somente partidas com data atual ou futura publicadas na fonte oficial.</p>
+        </article>
       </div>
-      <div className="odds-reasons">
-        <div><ChevronRight size={18} />Cálculo baseado na campanha oficial já localizada na FPFS.</div>
-        <div><ChevronRight size={18} />Aproveitamento atual: {efficiency === null ? 'aguardando dados' : `${efficiency}%`}.</div>
-        <div><ChevronRight size={18} />Saldo atual: {record?.goalDifference > 0 ? `+${record.goalDifference}` : record?.goalDifference ?? 'aguardando dados'}.</div>
-        <div><ChevronRight size={18} />Percentual será refinado quando a classificação completa for incorporada.</div>
-      </div>
-    </section>
-  );
-}
 
-function categoryTitleChance(record) {
-  if (!record?.played) return 0;
-  const efficiency = record.points / Math.max(1, record.played * 3);
-  const goalSignal = Math.max(-15, Math.min(15, record.goalDifference)) * 1.1;
-  return Math.round(Math.max(6, Math.min(78, 18 + efficiency * 52 + goalSignal)));
-}
-
-function CategoryAccessProjection({ category, robot, hasSuzanoGames }) {
-  const record = robot.record;
-
-  return (
-    <section className="panel access-panel category-access-panel">
-      <div className="access-layout">
-        <div className="access-copy">
-          <span>Robô de acesso {category.label}</span>
-          <h2>Chance de subir para a A1</h2>
-          <p>
-            {hasSuzanoGames
-              ? `Projeção por Ranking de Eficiência: Paulista A2 atual, saldo, fase recente e margem disciplinar ainda pendente.`
-              : 'Aguardando dados oficiais para estimar acesso.'}
-          </p>
-        </div>
-        <div className="access-score">
-          <div className="odds-ring access-ring" style={{ '--odds': `${robot.accessChance}%` }}>
-            <strong>{hasSuzanoGames ? `${robot.accessChance}%` : '--'}</strong>
-            <span>Acesso A1</span>
-          </div>
-          <small>{category.label}: cálculo próprio do robô da categoria.</small>
-        </div>
+      <div className="verified-conclusion-grid">
+        <article>
+          <span>Título da categoria</span>
+          <strong>Sem percentual publicado</strong>
+          <p>A posição na fase atual não basta para calcular título sem o regulamento específico completo, fases e critérios de desempate aplicáveis.</p>
+        </article>
+        <article>
+          <span>Acesso do clube à A1</span>
+          <strong>Depende do Ranking Anual</strong>
+          <p>O Art. 135 prevê duas vagas para os dois primeiros clubes da A2. Uma categoria isolada não define o acesso.</p>
+        </article>
       </div>
-      <div className="access-bottom-grid">
-        <div className="access-box">
-          <h3>Por que esse número</h3>
-          <ul>
-            <li>{record.points ?? 0} pontos em {record.played ?? 0} jogos.</li>
-            <li>{robot.efficiencyLabel} de aproveitamento na base FPFS.</li>
-            <li>Saldo {record.goalDifference > 0 ? `+${record.goalDifference}` : record.goalDifference ?? 0} e média de {robot.attackRate.toFixed(1)} gols feitos.</li>
-          </ul>
-        </div>
-        <div className="access-box access-box-red">
-          <h3>Próximos marcos</h3>
-          <ul>
-            <li>Manter aproveitamento acima de 60%.</li>
-            <li>Evitar cartões para não perder pontos disciplinares.</li>
-            <li>Transformar os próximos jogos publicados pela FPFS em pontos.</li>
-          </ul>
-        </div>
-      </div>
+
+      <p className="verified-method-note">
+        O portal deixou de transformar aproveitamento e saldo em probabilidades. Esses números continuam disponíveis como indicadores de campanha,
+        mas não são tratados como chance de vitória, título, acesso ou queda.
+      </p>
     </section>
   );
 }
@@ -1021,7 +822,7 @@ function CategoryRobotAudit({ category, robot }) {
         </div>
         <Sparkles size={22} />
       </div>
-      <p>Última leitura FPFS: {checkedAt}. O robô confere percentuais de vitória, título e acesso antes de publicar.</p>
+      <p>Última leitura FPFS: {checkedAt}. O robô confere integridade, classificação, datas futuras e atualidade da fonte antes de publicar.</p>
       <div className="robot-check-list">
         {checks.map((check) => (
           <div className={check.ok ? 'ok' : 'warn'} key={check.label}>
@@ -1036,32 +837,48 @@ function CategoryRobotAudit({ category, robot }) {
 
 function CategoryWeeklyDesk({ category }) {
   const fpfsData = fpfsCategories.find((item) => item.category === category.label);
-  const next = fpfsData?.upcomingGames?.[0];
-  const latest = fpfsData?.recentGames?.at(-1);
+  const next = nextThreeCategoryGames(category, fpfsData)[0];
+  const recent = (fpfsData?.playedGames ?? fpfsData?.recentGames ?? []).slice(-5);
+  const latest = recent.at(-1);
+  const form = recent.reduce((summary, game) => {
+    const suzanoHome = isSuzanoName(game.home);
+    const goalsFor = suzanoHome ? game.homeGoals : game.awayGoals;
+    const goalsAgainst = suzanoHome ? game.awayGoals : game.homeGoals;
+    summary.goalsFor += goalsFor;
+    summary.goalsAgainst += goalsAgainst;
+    if (goalsFor > goalsAgainst) summary.wins += 1;
+    else if (goalsFor === goalsAgainst) summary.draws += 1;
+    else summary.losses += 1;
+    return summary;
+  }, { wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0 });
+  const checkedAt = fpfsData?.checkedAt
+    ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }).format(new Date(fpfsData.checkedAt))
+    : 'sem horário registrado';
+  const nextOpponent = next ? teamDisplayName(isSuzanoName(next.home) ? next.away : next.home) : null;
 
   return (
     <section className="panel weekly-panel">
       <div className="section-title">
         <div>
-          <span>Segunda-feira</span>
+          <span>Robô FPFS · atualizado em {checkedAt}</span>
           <h2>Mesa de análise semanal</h2>
         </div>
         <CalendarDays size={22} />
       </div>
       <div className="weekly-copy muted-weekly-copy">
-        <strong>{next ? `Semana de preparação para ${next.away.includes('SUZANO') ? next.home : next.away}` : `Leitura semanal do ${category.label}`}</strong>
+        <strong>{next ? `Próximo compromisso: ${category.label} x ${nextOpponent}` : `${category.label}: sem novo compromisso confirmado`}</strong>
         <p>
           {latest
-            ? `Último resultado oficial encontrado: ${latest.home} ${latest.homeGoals} x ${latest.awayGoals} ${latest.away}. A pauta da semana deve partir desse jogo e do próximo compromisso listado pela FPFS.`
-            : 'A pesquisa pública não encontrou resultado recente desta categoria; o espaço segue pronto para receber análise técnica confirmada.'}
+            ? `Último resultado oficial: ${teamDisplayName(latest.home)} ${latest.homeGoals} x ${latest.awayGoals} ${teamDisplayName(latest.away)}, em ${formatShortDate(latest.date)}.`
+            : 'Nenhum resultado oficial foi localizado para formar o recorte semanal.'}
         </p>
       </div>
       <div className="focus-grid">
-        {(next ? [
-          `Próximo jogo: ${formatShortDate(next.date)} às ${next.time || 'horário a confirmar'}`,
-          `Adversário: ${next.away.includes('SUZANO') ? next.home : next.away}`,
-          `Local: ${next.venue}`,
-        ] : ['Foco tático: aguardando dados', 'Ponto de atenção: aguardando dados', 'Meta da semana: aguardando dados']).map((item) => (
+        {[
+          recent.length ? `Últimos ${recent.length}: ${form.wins}V, ${form.draws}E e ${form.losses}D` : 'Recorte recente ainda indisponível',
+          recent.length ? `Gols no recorte: ${form.goalsFor} feitos e ${form.goalsAgainst} sofridos` : 'Gols aguardando resultados oficiais',
+          next ? `Agenda: ${formatShortDate(next.date)}, ${next.time || 'horário a confirmar'}, contra ${nextOpponent}` : 'Agenda: nenhuma partida futura publicada',
+        ].map((item) => (
           <div className="focus-item placeholder-focus" key={item}>
             <ChevronRight size={18} />
             {item}
@@ -1607,50 +1424,6 @@ function Metric({ icon: Icon, label, value }) {
   );
 }
 
-function WeeklySchedule({ compact = false }) {
-  const grouped = weeklySchedule.reduce((acc, item) => {
-    acc[item.date] = acc[item.date] ?? [];
-    acc[item.date].push(item);
-    return acc;
-  }, {});
-
-  return (
-    <section className={`panel schedule-panel ${compact ? 'compact' : ''}`}>
-      <div className="section-title">
-        <div>
-          <span>Agenda da semana</span>
-          <h2>Semana de {formatShortDate(weeklyScheduleWeek)}</h2>
-        </div>
-        <CalendarDays size={22} />
-      </div>
-
-      <div className="schedule-grid">
-        {Object.entries(grouped).map(([date, items]) => (
-          <article className="schedule-day" key={date}>
-            <div className="schedule-date">
-              <strong>{items[0].weekday}</strong>
-              <span>{formatShortDate(date)}</span>
-            </div>
-            <div className="schedule-items">
-              {items.map((item) => (
-                <div className={`schedule-item ${item.tone}`} key={item.id}>
-                  <div className="schedule-type">{iconForSchedule(item.type)} {item.type}</div>
-                  <h3>{item.title}</h3>
-                  <p><Clock size={15} /> {item.time}</p>
-                  <p><MapPin size={15} /> {item.location}</p>
-                  <p className="address-line">{item.address}</p>
-                  <RouteButtons query={item.mapQuery ?? item.address ?? item.location} />
-                  {item.note && <p className="schedule-note">{item.note}</p>}
-                </div>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function iconForSchedule(type) {
   if (type === 'Mental') return <Brain size={16} />;
   if (type === 'Jogo oficial') return <Trophy size={16} />;
@@ -1658,6 +1431,9 @@ function iconForSchedule(type) {
   return <Activity size={16} />;
 }
 
+/* Componentes legados de projeção foram desativados. Mantidos temporariamente
+   apenas no histórico Git; não entram no bundle nem podem voltar à interface. */
+/*
 function TitleProjection() {
   const projection = championshipProjection();
 
@@ -1906,29 +1682,7 @@ function Campaign({ matches }) {
   );
 }
 
-function DataPanel() {
-  return (
-    <section className="panel data-panel">
-      <div className="section-title">
-        <div>
-          <span>Dados</span>
-          <h2>Conexão</h2>
-        </div>
-        <BarChart3 size={22} />
-      </div>
-      <p>
-        Base inicial montada com a tabela pública da FPFS. Para manter o GitHub
-        Pages simples, os dados ficam em arquivos versionados e podem ser
-        atualizados antes de cada rodada.
-      </p>
-      {sourceLinks.map((source) => (
-        <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>
-          {source.label}
-        </a>
-      ))}
-    </section>
-  );
-}
+*/
 
 createRoot(document.getElementById('root')).render(<App />);
 

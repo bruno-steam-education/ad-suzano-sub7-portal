@@ -41,7 +41,7 @@ export function AccessModal({ isOpen, onClose, onSuccess }) {
               <Lock size={28} />
             </div>
             <h3>Área da Comissão Técnica</h3>
-            <p>Digite a senha de acesso para liberar a Inteligência de Jogo e Projeções Táticas da AD Suzano.</p>
+            <p>Digite a senha de acesso para liberar as análises verificadas da Comissão Técnica da AD Suzano.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="access-modal-form">

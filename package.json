@@ -11,6 +11,7 @@
     "update:fpfs": "node scripts/update-fpfs.mjs",
     "update:youth-league": "node scripts/update-youth-league.mjs",
     "audit:robots": "node scripts/audit-robots.mjs",
+    "audit:claims": "node scripts/audit-public-claims.mjs",
     "sync:club-site": "node scripts/sync-club-site.mjs"
   },
   "dependencies": {
