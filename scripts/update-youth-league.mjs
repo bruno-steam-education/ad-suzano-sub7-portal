@@ -118,6 +118,50 @@ function scrapeStandings($) {
   return standings;
 }
 
+function finalPhaseLinks($) {
+  const links = new Map();
+  $('a').each((_, anchor) => {
+    const label = cleanText($(anchor).text());
+    const href = $(anchor).attr('href');
+    if (!href || !/^Final\b/i.test(label)) return;
+    links.set(href, { label, href });
+  });
+  return [...links.values()];
+}
+
+async function scrapeFinalAchievement($, category) {
+  for (const phase of finalPhaseLinks($)) {
+    const phasePage = cheerio.load(await fetchHtml(phase.href));
+    const finalStanding = scrapeStandings(phasePage).find((standing) => isSuzano(standing.team));
+    if (!finalStanding) continue;
+
+    const goalsFor = Number(finalStanding.goalsFor ?? 0);
+    const goalsAgainst = Number(finalStanding.goalsAgainst ?? 0);
+    if (goalsFor === goalsAgainst) {
+      throw new Error(`${category}: a decisão terminou empatada e exige conferência do critério de desempate.`);
+    }
+
+    const champion = goalsFor > goalsAgainst;
+    const series = cleanText(phase.label.replace(/^Final\b/i, '')) || null;
+    return {
+      status: champion ? 'champion' : 'runner-up',
+      label: champion ? 'Campeão' : 'Vice-campeão',
+      series,
+      finalLabel: phase.label,
+      played: Number(finalStanding.played ?? 0),
+      wins: Number(finalStanding.wins ?? 0),
+      draws: Number(finalStanding.draws ?? 0),
+      losses: Number(finalStanding.losses ?? 0),
+      goalsFor,
+      goalsAgainst,
+      scoreLabel: `${goalsFor} x ${goalsAgainst}`,
+      sourceUrl: `${BASE_URL}${phase.href}`,
+    };
+  }
+
+  throw new Error(`${category}: AD Suzano não localizado em nenhuma fase final oficial.`);
+}
+
 function scrapeSuzanoGames($, category, stage) {
   const gamesById = new Map();
   $('ul.lista-partidas > li').each((_, item) => {
@@ -211,6 +255,7 @@ for (const config of CATEGORIES) {
 
   const groupStageGames = scrapeSuzanoGames($, config.category, 'Primeira fase');
   const finalStageGames = scrapeSuzanoGames(teamPage, config.category, 'Fase final');
+  const achievement = await scrapeFinalAchievement($, config.category);
   const playedGames = [...new Map(
     [...groupStageGames, ...finalStageGames].map((game) => [game.id, game]),
   ).values()].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
@@ -231,6 +276,7 @@ for (const config of CATEGORIES) {
     teamUrl: `${BASE_URL}${TEAM_PATH}`,
     record,
     stageRecord,
+    achievement,
     standings,
     playedGames,
     recentGames: playedGames.slice(-5),

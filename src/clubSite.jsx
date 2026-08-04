@@ -516,6 +516,24 @@ function suzanoStanding(category) {
   return category?.standings?.find((standing) => /SUZANO/i.test(standing.team));
 }
 
+function positionText(standing) {
+  return Number.isFinite(standing?.position) ? `${standing.position}ª posição` : 'posição indisponível';
+}
+
+function youthAchievementText(category) {
+  const achievement = category?.achievement;
+  if (!achievement) return 'resultado final em conferência';
+  const series = textOnly(achievement.series);
+  return `${achievement.label}${series ? ` ${series.toLowerCase()}` : ''}`;
+}
+
+function youthDecisionText(category) {
+  const achievement = category?.achievement;
+  if (!achievement) return '';
+  const scope = achievement.played > 1 ? 'placar agregado da decisão' : 'placar da decisão';
+  return `${scope}: ${achievement.scoreLabel}`;
+}
+
 function opponentOf(game) {
   if (!game) return '';
   return /SUZANO/i.test(game.home) ? game.away : game.home;
@@ -1191,6 +1209,45 @@ function ClubAthleteDetailPage({ player }) {
   );
 }
 
+function YouthAchievementsShowcase({ compact = false }) {
+  const champions = youthLeagueCategories.filter((category) => category.achievement?.status === 'champion');
+  const runnersUp = youthLeagueCategories.filter((category) => category.achievement?.status === 'runner-up');
+
+  return (
+    <section className={`club-achievement-showcase ${compact ? 'is-compact' : ''}`}>
+      <div className="club-achievement-heading">
+        <span className="club-achievement-icon"><Trophy size={27} /></span>
+        <div>
+          <span>DESTAQUE DA TEMPORADA</span>
+          <h2>AD Suzano no pódio em todas as seis categorias</h2>
+          <p>Campanha encerrada com três títulos e três vice-campeonatos na Copa da Juventude Gold 2026.</p>
+        </div>
+      </div>
+      <div className="club-achievement-totals" aria-label="Resumo das conquistas">
+        <div className="is-gold"><strong>{champions.length}</strong><span>campeões</span></div>
+        <div className="is-silver"><strong>{runnersUp.length}</strong><span>vice-campeões</span></div>
+        <div><strong>{youthLeagueCategories.length}</strong><span>finais disputadas</span></div>
+      </div>
+      <div className="club-achievement-list">
+        {youthLeagueCategories.map((category) => (
+          <a
+            className={category.achievement?.status === 'champion' ? 'is-champion' : 'is-runner-up'}
+            href={category.achievement?.sourceUrl || category.url}
+            target="_blank"
+            rel="noreferrer"
+            key={category.category}
+          >
+            <Medal size={17} />
+            <span>{category.category}</span>
+            <strong>{youthAchievementText(category)}</strong>
+            <small>{youthDecisionText(category)}</small>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ClubCampaignsPage() {
   const paulistaGames = fpfsCategories.reduce((total, category) => total + (category.record?.played ?? 0), 0);
   const youthGames = youthLeagueCategories.reduce((total, category) => total + (category.record?.played ?? 0), 0);
@@ -1215,18 +1272,12 @@ function ClubCampaignsPage() {
           <CheckCircle2 size={22} />
           <span>Encerrada</span>
           <h2>Copa da Juventude Gold 2026</h2>
-          <strong>{youthLeagueCategories.length} categorias · {youthGames} jogos</strong>
-          <p>Resultados finais preservados no histórico do portal.</p>
+          <strong>3 títulos · 3 vice-campeonatos</strong>
+          <p>{youthLeagueCategories.length} categorias, {youthGames} jogos e presença no pódio em todas as finais.</p>
           <a href={youthLeagueCategories[0]?.url} target="_blank" rel="noreferrer">Consultar fonte oficial <ExternalLink size={16} /></a>
         </article>
       </div>
-      <div className="club-editorial-note">
-        <Trophy size={20} />
-        <div>
-          <strong>Registro responsável</strong>
-          <p>Nenhum título é atribuído por estimativa. Esta página reúne as campanhas existentes e será ampliada quando documentos oficiais de conquistas forem cadastrados.</p>
-        </div>
-      </div>
+      <YouthAchievementsShowcase />
       <div className="club-campaign-grid">
         {fpfsCategories.map((category) => {
           const standing = suzanoStanding(category);
@@ -1384,6 +1435,9 @@ function ClubNewsPage() {
 }
 
 function ClubOfficialChampionshipsPage() {
+  const youthChampions = youthLeagueCategories.filter((category) => category.achievement?.status === 'champion');
+  const youthRunnersUp = youthLeagueCategories.filter((category) => category.achievement?.status === 'runner-up');
+
   return (
     <div className="club-page">
       <ClubIntroCard eyebrow="Campeonatos" title="Competições oficiais de 2026" subtitle="Paulista A2 em andamento e Copa da Juventude encerrada, com campanhas separadas por categoria." />
@@ -1395,18 +1449,37 @@ function ClubOfficialChampionshipsPage() {
         </article>
         <article className="club-data-summary-card is-finished">
           <CheckCircle2 size={22} /><span>Encerrada</span><h2>Copa da Juventude Gold</h2>
-          <strong>{youthLeagueCategories.length} categorias</strong><p>Sub-7 ao Sub-14, com histórico final preservado.</p>
+          <strong>{youthChampions.length} títulos · {youthRunnersUp.length} vice-campeonatos</strong><p>Sub-7 ao Sub-14: seis finais e seis presenças no pódio.</p>
           <a href={youthLeagueCategories[0]?.url} target="_blank" rel="noreferrer">Fonte Liga da Juventude <ExternalLink size={15} /></a>
         </article>
       </div>
+      <YouthAchievementsShowcase compact />
       <div className="club-competition-category-grid">
         {fpfsCategories.map((category) => {
           const youth = youthLeagueCategories.find((item) => item.category === category.category);
+          const paulistaStanding = suzanoStanding(category);
+          const achievement = youth?.achievement;
           return (
-            <article className="club-competition-category" key={category.category}>
-              <strong>{category.category}</strong>
-              <div><span>Paulista A2</span><b>{category.record.points} pts · {category.record.played} jogos</b></div>
-              <div><span>Copa da Juventude</span><b>{youth ? `${youth.record.points} pts · ${youth.record.played} jogos` : 'Não disputada na base disponível'}</b></div>
+            <article className={`club-competition-category ${achievement ? `is-${achievement.status}` : ''}`} key={category.category}>
+              <header>
+                <strong>{category.category}</strong>
+                {achievement && <span className="club-category-medal"><Medal size={15} /> {youthAchievementText(youth)}</span>}
+              </header>
+              <div>
+                <span>Paulista A2</span>
+                <b>{category.record.points} pontos <i>|</i> {positionText(paulistaStanding)}</b>
+                <small>{category.record.played} jogos na classificação atual</small>
+              </div>
+              <div>
+                <span>Copa da Juventude</span>
+                {youth ? (
+                  <>
+                    <b>{youth.record.points} pontos <i>|</i> {youthAchievementText(youth)}</b>
+                    <small>{youthDecisionText(youth)}</small>
+                    <a href={achievement?.sourceUrl || youth.url} target="_blank" rel="noreferrer">Ver fase final oficial <ExternalLink size={13} /></a>
+                  </>
+                ) : <b>Não disputada</b>}
+              </div>
             </article>
           );
         })}
@@ -1482,10 +1555,10 @@ function ClubOfficialRankingPage() {
       <ClubSection eyebrow="Competição encerrada" title="Copa da Juventude Gold 2026">
         <div className="club-campaign-grid">
           {youthRanking.map(({ category, standing }) => (
-            <article className="club-campaign-card" key={category.category}>
-              <div><span>Copa da Juventude</span><strong>{category.category}</strong></div><b>{standing?.positionLabel ?? '—'}</b>
-              <p>{category.record.points} pontos · {category.record.played} jogos · saldo {category.record.goalDifference > 0 ? '+' : ''}{category.record.goalDifference}</p>
-              <a href={category.url} target="_blank" rel="noreferrer">Classificação final <ExternalLink size={14} /></a>
+            <article className={`club-campaign-card is-${category.achievement?.status}`} key={category.category}>
+              <div><span>Copa da Juventude</span><strong>{category.category}</strong></div><b>{youthAchievementText(category)}</b>
+              <p>{category.record.points} pontos · {category.record.played} jogos · {positionText(standing)} na primeira fase</p>
+              <a href={category.achievement?.sourceUrl || category.url} target="_blank" rel="noreferrer">Fase final oficial <ExternalLink size={14} /></a>
             </article>
           ))}
         </div>

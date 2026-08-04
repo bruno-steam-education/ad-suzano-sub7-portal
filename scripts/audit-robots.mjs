@@ -90,6 +90,23 @@ for (const category of youthLeagueCategories) {
       problems.push(`Copa da Juventude ${category.category}: primeira fase diverge da classificação em ${field}.`);
     }
   }
+  const achievement = category.achievement;
+  if (!achievement || !['champion', 'runner-up'].includes(achievement.status)) {
+    problems.push(`Copa da Juventude ${category.category}: conquista da fase final não auditada.`);
+  } else {
+    const expectedStatus = achievement.goalsFor > achievement.goalsAgainst ? 'champion' : 'runner-up';
+    if (achievement.status !== expectedStatus) {
+      problems.push(`Copa da Juventude ${category.category}: resultado da decisão diverge da conquista publicada.`);
+    }
+    if (!achievement.sourceUrl?.includes('/classificacao/fase/')) {
+      problems.push(`Copa da Juventude ${category.category}: fase final sem link oficial.`);
+    }
+  }
+}
+const youthChampions = youthLeagueCategories.filter((category) => category.achievement?.status === 'champion');
+const youthRunnersUp = youthLeagueCategories.filter((category) => category.achievement?.status === 'runner-up');
+if (youthChampions.length !== 3 || youthRunnersUp.length !== 3) {
+  problems.push(`Copa da Juventude: esperado 3 títulos e 3 vice-campeonatos, recebido ${youthChampions.length} e ${youthRunnersUp.length}.`);
 }
 const points = fpfsCategories.reduce((sum, category) => sum + category.record.points, 0);
 const played = fpfsCategories.reduce((sum, category) => sum + category.record.played, 0);

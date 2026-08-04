@@ -7,7 +7,7 @@ export const youthLeagueCompetition = {
   "status": "encerrada",
   "url": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336",
   "teamUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/equipe/ad-suzano/42329",
-  "checkedAt": "2026-08-04T14:05:19.964Z"
+  "checkedAt": "2026-08-04T14:36:01.473Z"
 };
 
 export const youthLeagueCategories = [
@@ -39,6 +39,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 11,
       "points": 13,
       "goalDifference": 6
+    },
+    "achievement": {
+      "status": "runner-up",
+      "label": "Vice-campeão",
+      "series": "BRONZE",
+      "finalLabel": "Final BRONZE",
+      "played": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 4,
+      "goalsAgainst": 5,
+      "scoreLabel": "4 x 5",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-07-masculino/19823/classificacao/fase/55204"
     },
     "standings": [
       {
@@ -413,7 +427,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   },
   {
     "category": "Sub-8",
@@ -443,6 +457,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 26,
       "points": 3,
       "goalDifference": -10
+    },
+    "achievement": {
+      "status": "champion",
+      "label": "Campeão",
+      "series": null,
+      "finalLabel": "Final",
+      "played": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 6,
+      "goalsAgainst": 2,
+      "scoreLabel": "6 x 2",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-08-masculino/19824/classificacao/fase/55016"
     },
     "standings": [
       {
@@ -803,7 +831,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   },
   {
     "category": "Sub-9",
@@ -833,6 +861,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 14,
       "points": 5,
       "goalDifference": -6
+    },
+    "achievement": {
+      "status": "runner-up",
+      "label": "Vice-campeão",
+      "series": "OURO",
+      "finalLabel": "Final OURO",
+      "played": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 2,
+      "goalsAgainst": 3,
+      "scoreLabel": "2 x 3",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-09-masculino/19825/classificacao/fase/55017"
     },
     "standings": [
       {
@@ -1193,7 +1235,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   },
   {
     "category": "Sub-10",
@@ -1223,6 +1265,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 16,
       "points": 8,
       "goalDifference": -6
+    },
+    "achievement": {
+      "status": "champion",
+      "label": "Campeão",
+      "series": "Ouro",
+      "finalLabel": "Final Ouro",
+      "played": 1,
+      "wins": 1,
+      "draws": 0,
+      "losses": 0,
+      "goalsFor": 4,
+      "goalsAgainst": 2,
+      "scoreLabel": "4 x 2",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-10-masculino/19826/classificacao/fase/55213"
     },
     "standings": [
       {
@@ -1583,7 +1639,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   },
   {
     "category": "Sub-12",
@@ -1613,6 +1669,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 12,
       "points": 21,
       "goalDifference": 28
+    },
+    "achievement": {
+      "status": "champion",
+      "label": "Campeão",
+      "series": "OURO",
+      "finalLabel": "Final OURO",
+      "played": 2,
+      "wins": 1,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 9,
+      "goalsAgainst": 4,
+      "scoreLabel": "9 x 4",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-12-masculino/19827/classificacao/fase/55018"
     },
     "standings": [
       {
@@ -2032,7 +2102,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   },
   {
     "category": "Sub-14",
@@ -2062,6 +2132,20 @@ export const youthLeagueCategories = [
       "goalsAgainst": 28,
       "points": 6,
       "goalDifference": -12
+    },
+    "achievement": {
+      "status": "runner-up",
+      "label": "Vice-campeão",
+      "series": "OURO",
+      "finalLabel": "Final OURO",
+      "played": 1,
+      "wins": 0,
+      "draws": 0,
+      "losses": 1,
+      "goalsFor": 3,
+      "goalsAgainst": 4,
+      "scoreLabel": "3 x 4",
+      "sourceUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/categoria/sub-14-masculino/19828/classificacao/fase/55019"
     },
     "standings": [
       {
@@ -2466,6 +2550,6 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-04T14:05:19.964Z"
+    "checkedAt": "2026-08-04T14:36:01.473Z"
   }
 ];
