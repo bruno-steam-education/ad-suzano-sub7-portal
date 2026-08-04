@@ -12,6 +12,9 @@ import {
   Clock3,
   ExternalLink,
   Image as ImageIcon,
+  LockKeyhole,
+  LogIn,
+  LogOut,
   Mail,
   MapPin,
   Medal,
@@ -28,6 +31,10 @@ import {
   Trophy,
   Users,
   Menu,
+  Pencil,
+  Save,
+  Trash2,
+  Upload,
   X,
   Volume2,
   VolumeX,
@@ -41,6 +48,7 @@ import { newsItems } from './data/news';
 import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
 import { athleteSeasonStats } from './data/athleteSeasonStats';
 import { athleteRoster } from './data/athleteRoster';
+import { AthleteAdminProvider, useAthleteAdmin } from './components/AthleteAdminContext';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -132,8 +140,20 @@ function flattenPlayers() {
 }
 
 export function ClubSiteExperience({ path = 'home' }) {
+  return (
+    <AthleteAdminProvider>
+      <ClubSiteContent path={path} />
+    </AthleteAdminProvider>
+  );
+}
+
+function ClubSiteContent({ path = 'home' }) {
   const route = pageFromPath(path);
-  const allPlayers = flattenPlayers();
+  const { isAdmin, profilesById } = useAthleteAdmin();
+  const allPlayers = flattenPlayers().filter((player) => {
+    const profile = profilesById.get(athleteIdFromUrl(player.url));
+    return isAdmin || profile?.is_active !== false;
+  });
   const activePlayer = route.page === 'atletas' && route.slug
     ? allPlayers.find((player) => athleteIdFromUrl(player.url) === route.slug)
     : null;
@@ -1065,6 +1085,65 @@ function seasonStatsFor(player) {
   return athleteSeasonStats.athletes[athleteIdFromUrl(player.url)] ?? {};
 }
 
+function athleteProfileFor(player, profilesById) {
+  return profilesById.get(athleteIdFromUrl(player.url)) ?? null;
+}
+
+function athleteDisplayData(player, profile) {
+  const detail = player.detail ?? {};
+  return {
+    athleteId: athleteIdFromUrl(player.url),
+    fullName: profile?.full_name || detail.name || player.name,
+    age: profile?.age ?? detail.age ?? null,
+    height: profile?.height_cm ?? null,
+    weight: profile?.weight_kg ?? null,
+    coach: profile?.coach ?? null,
+    photoUrl: profile?.photo_url ?? null,
+    role: profile?.role ?? null,
+    speed: profile?.speed ?? null,
+    shot: profile?.shot ?? null,
+    ballControl: profile?.ball_control ?? null,
+    defense: profile?.defense ?? null,
+  };
+}
+
+function combinedSeasonStats(player, profile, events = []) {
+  const official = seasonStatsFor(player);
+  const additions = events.reduce((totals, event) => ({
+    appearances: totals.appearances + (event.games ?? 0),
+    goals: totals.goals + (event.goals ?? 0),
+    assists: totals.assists + (event.assists ?? 0),
+    steals: totals.steals + (event.steals ?? 0),
+    yellowCards: totals.yellowCards + (event.yellow_cards ?? 0),
+    redCards: totals.redCards + (event.red_cards ?? 0),
+    goalsConceded: totals.goalsConceded + (event.goals_conceded ?? 0),
+    saves: totals.saves + (event.saves ?? 0),
+  }), {
+    appearances: 0, goals: 0, assists: 0, steals: 0,
+    yellowCards: 0, redCards: 0, goalsConceded: 0, saves: 0,
+  });
+
+  const total = (key) => {
+    const base = official[key];
+    const added = additions[key];
+    return base == null && added === 0 ? null : (Number(base) || 0) + added;
+  };
+
+  return {
+    ...official,
+    role: profile?.role ?? official.role ?? 'player',
+    appearances: total('appearances'),
+    goals: total('goals'),
+    assists: total('assists'),
+    steals: total('steals'),
+    yellowCards: total('yellowCards'),
+    redCards: total('redCards'),
+    goalsConceded: total('goalsConceded'),
+    saves: total('saves'),
+    manualUpdateCount: events.length,
+  };
+}
+
 function AthleteCardStats({ stats }) {
   const goalkeeper = stats.role === 'goalkeeper';
   const metrics = goalkeeper
@@ -1094,12 +1173,16 @@ function AthleteCardStats({ stats }) {
   );
 }
 
-function AthleteCollectibleCard({ player, category, detailed = false }) {
-  const detail = player.detail ?? {};
-  const fullName = detail.name || player.name;
+function AthleteCollectibleCard({ player, category, detailed = false, onEdit, onArchive }) {
+  const { isAdmin, profilesById, eventsByAthleteId } = useAthleteAdmin();
+  const athleteId = athleteIdFromUrl(player.url);
+  const profile = athleteProfileFor(player, profilesById);
+  const display = athleteDisplayData(player, profile);
+  const fullName = display.fullName;
   const normalizedCategory = normalizeAthleteCategory(category);
   const staff = technicalStaffByCategory[normalizedCategory];
-  const stats = seasonStatsFor(player);
+  const stats = combinedSeasonStats(player, profile, eventsByAthleteId.get(athleteId) ?? []);
+  const attributeValues = [display.speed, display.shot, display.ballControl, display.defense];
   const content = (
     <motion.article
       className={`athlete-collectible-card ${detailed ? 'is-detailed' : ''}`}
@@ -1115,10 +1198,16 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
         <img src={suzanoLogo} alt="" />
       </header>
 
-      <div className="athlete-photo-placeholder" aria-label={`Espaço reservado para a foto de ${fullName}`}>
-        <Users size={detailed ? 68 : 50} />
-        <span>Foto do atleta</span>
-        <small>Aguardando envio</small>
+      <div className={`athlete-photo-placeholder ${display.photoUrl ? 'has-photo' : ''}`} aria-label={`Foto de ${fullName}`}>
+        {display.photoUrl ? (
+          <img src={display.photoUrl} alt={fullName} />
+        ) : (
+          <>
+            <Users size={detailed ? 68 : 50} />
+            <span>Foto do atleta</span>
+            <small>Aguardando envio</small>
+          </>
+        )}
       </div>
 
       <div className="athlete-card-identity">
@@ -1127,23 +1216,23 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
       </div>
 
       <div className="athlete-card-bio">
-        <div><span>Idade</span><strong>{detail.age || 'Aguardando'}</strong></div>
-        <div><span>Altura</span><strong>Aguardando</strong></div>
-        <div><span>Peso</span><strong>Aguardando</strong></div>
+        <div><span>Idade</span><strong>{display.age ?? 'Aguardando'}</strong></div>
+        <div><span>Altura</span><strong>{display.height ? `${display.height} cm` : 'Aguardando'}</strong></div>
+        <div><span>Peso</span><strong>{display.weight ? `${display.weight} kg` : 'Aguardando'}</strong></div>
       </div>
 
       <div className="athlete-card-coach">
         <span>Treinador</span>
-        <strong title={staff?.coachFullName}>{staff?.coach ?? 'A confirmar'}</strong>
+        <strong title={display.coach || staff?.coachFullName}>{display.coach || staff?.coach || 'A confirmar'}</strong>
         {staff && <small>{staff.department}: {staff.coordinator}</small>}
       </div>
 
       <AthleteCardStats stats={stats} />
 
       <div className="athlete-card-attributes" aria-label="Atributos técnicos aguardando dados">
-        {ATHLETE_ATTRIBUTES.map((attribute) => (
+        {ATHLETE_ATTRIBUTES.map((attribute, index) => (
           <div key={attribute.short} title={attribute.label}>
-            <strong>--</strong>
+            <strong>{attributeValues[index] ?? '--'}</strong>
             <span>{attribute.short}</span>
           </div>
         ))}
@@ -1156,21 +1245,259 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
     </motion.article>
   );
 
-  if (detailed) return content;
+  const adminControls = isAdmin ? (
+    <div className="athlete-admin-card-controls" aria-label={`Administrar ${fullName}`}>
+      <button type="button" onClick={() => onEdit?.(player)} title="Editar atleta">
+        <Pencil size={16} /> <span>Editar</span>
+      </button>
+      <button className="is-danger" type="button" onClick={() => onArchive?.(player)} title="Arquivar atleta">
+        <Trash2 size={16} /> <span>Arquivar</span>
+      </button>
+    </div>
+  ) : null;
+
+  if (detailed) return <div className="athlete-card-shell is-detailed">{adminControls}{content}</div>;
   return (
-    <a className="athlete-card-link" href={pageUrl(`atletas/${athleteIdFromUrl(player.url)}`)} aria-label={`Abrir perfil de ${fullName}`}>
-      {content}
-    </a>
+    <div className="athlete-card-shell">
+      {adminControls}
+      <a className="athlete-card-link" href={pageUrl(`atletas/${athleteId}`)} aria-label={`Abrir perfil de ${fullName}`}>
+        {content}
+      </a>
+    </div>
+  );
+}
+
+function StaffLoginModal({ open, onClose }) {
+  const { login } = useAthleteAdmin();
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setPassword('');
+      setError('');
+    }
+  }, [open]);
+
+  if (!open) return null;
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError('');
+    try {
+      await login(password);
+      onClose();
+    } catch (loginError) {
+      setError(loginError.message === 'Invalid login credentials'
+        ? 'Senha incorreta. Confira e tente novamente.'
+        : 'Não foi possível entrar agora. Tente novamente.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="athlete-admin-modal-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <motion.section className="athlete-admin-login" role="dialog" aria-modal="true" aria-labelledby="staff-login-title" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
+        <button className="athlete-admin-modal-close" type="button" onClick={onClose} aria-label="Fechar"><X size={20} /></button>
+        <span className="athlete-admin-modal-icon"><LockKeyhole size={25} /></span>
+        <small>ÁREA RESTRITA</small>
+        <h2 id="staff-login-title">Comissão Técnica</h2>
+        <p>Entre para editar os cards, registrar acréscimos estatísticos e enviar fotos.</p>
+        <form onSubmit={submit}>
+          <label htmlFor="staff-password">Senha de acesso</label>
+          <input id="staff-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} autoFocus required />
+          {error ? <div className="athlete-admin-form-error" role="alert">{error}</div> : null}
+          <button className="athlete-admin-primary-btn" type="submit" disabled={submitting || !password}>
+            <LogIn size={17} /> {submitting ? 'Entrando...' : 'Entrar no modo de edição'}
+          </button>
+        </form>
+      </motion.section>
+    </div>
+  );
+}
+
+const EMPTY_STAT_ADDITIONS = {
+  games: '', goals: '', assists: '', steals: '', yellow_cards: '', red_cards: '',
+  goals_conceded: '', saves: '', source: 'manual', note: '',
+};
+
+function optionalNumber(value) {
+  if (value === '' || value == null) return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function AthleteEditModal({ player, category, onClose }) {
+  const { profilesById, saveAthlete } = useAthleteAdmin();
+  const profile = player ? athleteProfileFor(player, profilesById) : null;
+  const display = player ? athleteDisplayData(player, profile) : null;
+  const normalizedCategory = normalizeAthleteCategory(category || 'Sub-7');
+  const staff = technicalStaffByCategory[normalizedCategory];
+  const [form, setForm] = useState(null);
+  const [stats, setStats] = useState(EMPTY_STAT_ADDITIONS);
+  const [photo, setPhoto] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!player || !display) return;
+    setForm({
+      full_name: display.fullName,
+      category: normalizedCategory,
+      role: display.role || 'player',
+      age: display.age ?? '',
+      height_cm: display.height ?? '',
+      weight_kg: display.weight ?? '',
+      coach: display.coach || staff?.coach || '',
+      speed: display.speed ?? '',
+      shot: display.shot ?? '',
+      ball_control: display.ballControl ?? '',
+      defense: display.defense ?? '',
+    });
+    setStats(EMPTY_STAT_ADDITIONS);
+    setPhoto(null);
+    setError('');
+  }, [display?.athleteId, player, profile?.updated_at, normalizedCategory, staff?.coach]);
+
+  if (!player || !form) return null;
+
+  const updateForm = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  const updateStats = (event) => setStats((current) => ({ ...current, [event.target.name]: event.target.value }));
+  const statFields = form.role === 'goalkeeper'
+    ? [['games', 'Jogos'], ['goals_conceded', 'Gols sofridos'], ['saves', 'Defesas'], ['yellow_cards', 'Cartões amarelos'], ['red_cards', 'Cartões vermelhos']]
+    : [['games', 'Jogos'], ['goals', 'Gols'], ['assists', 'Assistências'], ['steals', 'Roubadas de bola'], ['yellow_cards', 'Cartões amarelos'], ['red_cards', 'Cartões vermelhos']];
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError('');
+    try {
+      await saveAthlete({
+        profile: {
+          athlete_id: display.athleteId,
+          full_name: form.full_name.trim(),
+          category: form.category,
+          role: form.role,
+          age: optionalNumber(form.age),
+          height_cm: optionalNumber(form.height_cm),
+          weight_kg: optionalNumber(form.weight_kg),
+          coach: form.coach.trim() || null,
+          speed: optionalNumber(form.speed),
+          shot: optionalNumber(form.shot),
+          ball_control: optionalNumber(form.ball_control),
+          defense: optionalNumber(form.defense),
+          photo_path: profile?.photo_path ?? null,
+          photo_url: profile?.photo_url ?? null,
+        },
+        stats: { ...stats, athlete_id: display.athleteId },
+        photo,
+      });
+      onClose();
+    } catch (saveError) {
+      setError(saveError.message || 'Não foi possível salvar as alterações.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="athlete-admin-modal-overlay" role="presentation">
+      <motion.section className="athlete-editor-modal" role="dialog" aria-modal="true" aria-labelledby="athlete-editor-title" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}>
+        <header>
+          <div><small>COMISSÃO TÉCNICA</small><h2 id="athlete-editor-title">Editar atleta</h2><p>{display.fullName}</p></div>
+          <button className="athlete-admin-modal-close" type="button" onClick={onClose} aria-label="Fechar"><X size={20} /></button>
+        </header>
+        <form onSubmit={submit}>
+          <section className="athlete-editor-section">
+            <div className="athlete-editor-section-title"><Pencil size={18} /><div><strong>Dados do card</strong><span>Esses campos substituem as informações visíveis do perfil.</span></div></div>
+            <div className="athlete-editor-grid">
+              <label className="is-wide">Nome completo<input name="full_name" value={form.full_name} onChange={updateForm} required /></label>
+              <label>Categoria<select name="category" value={form.category} onChange={updateForm}>{ATHLETE_CATEGORY_ORDER.map((item) => <option value={item} key={item}>{item}</option>)}</select></label>
+              <label>Posição<select name="role" value={form.role} onChange={updateForm}><option value="player">Jogador</option><option value="goalkeeper">Goleiro</option></select></label>
+              <label>Idade<input name="age" type="number" min="1" max="100" value={form.age} onChange={updateForm} /></label>
+              <label>Altura (cm)<input name="height_cm" type="number" min="50" max="250" step="0.1" value={form.height_cm} onChange={updateForm} /></label>
+              <label>Peso (kg)<input name="weight_kg" type="number" min="5" max="200" step="0.1" value={form.weight_kg} onChange={updateForm} /></label>
+              <label className="is-wide">Treinador<input name="coach" value={form.coach} onChange={updateForm} /></label>
+              <label>Velocidade<input name="speed" type="number" min="0" max="99" value={form.speed} onChange={updateForm} /></label>
+              <label>Chute<input name="shot" type="number" min="0" max="99" value={form.shot} onChange={updateForm} /></label>
+              <label>Condução<input name="ball_control" type="number" min="0" max="99" value={form.ball_control} onChange={updateForm} /></label>
+              <label>Defesa<input name="defense" type="number" min="0" max="99" value={form.defense} onChange={updateForm} /></label>
+            </div>
+          </section>
+
+          <section className="athlete-editor-section">
+            <div className="athlete-editor-section-title"><Upload size={18} /><div><strong>Foto do atleta</strong><span>JPG, PNG ou WebP com até 5 MB.</span></div></div>
+            <label className="athlete-photo-upload"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => setPhoto(event.target.files?.[0] ?? null)} /><Upload size={19} /><span>{photo?.name || (profile?.photo_url ? 'Trocar foto atual' : 'Escolher foto')}</span></label>
+          </section>
+
+          <section className="athlete-editor-section is-additive">
+            <div className="athlete-editor-section-title"><BarChart3 size={18} /><div><strong>Adicionar à temporada</strong><span>Os valores abaixo são somados ao histórico. Totais anteriores nunca são substituídos.</span></div></div>
+            <div className="athlete-stat-add-grid">
+              {statFields.map(([name, label]) => <label key={name}>{label}<input name={name} type="number" min="0" step="1" value={stats[name]} onChange={updateStats} placeholder="+0" /></label>)}
+            </div>
+            <div className="athlete-editor-grid">
+              <label>Origem<select name="source" value={stats.source} onChange={updateStats}><option value="manual">Lançamento manual</option><option value="sumula">Súmula oficial</option><option value="avaliacao">Avaliação técnica</option></select></label>
+              <label className="is-wide">Observação<input name="note" value={stats.note} onChange={updateStats} placeholder="Ex.: jogo contra adversário, rodada ou motivo do ajuste" /></label>
+            </div>
+          </section>
+
+          {error ? <div className="athlete-admin-form-error" role="alert">{error}</div> : null}
+          <footer className="athlete-editor-actions">
+            <button type="button" onClick={onClose}>Cancelar</button>
+            <button className="athlete-admin-primary-btn" type="submit" disabled={submitting}><Save size={17} />{submitting ? 'Salvando...' : 'Salvar alterações'}</button>
+          </footer>
+        </form>
+      </motion.section>
+    </div>
   );
 }
 
 function ClubAthletesPage({ categories }) {
-  const orderedCategories = [...categories].sort((a, b) => (
+  const { isAdmin, logout, archiveAthlete, profilesById, loading, error } = useAthleteAdmin();
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [editingPlayer, setEditingPlayer] = useState(null);
+  const [feedback, setFeedback] = useState('');
+  const visibleCategories = categories.map((category) => ({
+    ...category,
+    players: category.players.filter((player) => isAdmin || athleteProfileFor(player, profilesById)?.is_active !== false),
+  }));
+  const orderedCategories = [...visibleCategories].sort((a, b) => (
     ATHLETE_CATEGORY_ORDER.indexOf(normalizeAthleteCategory(a.label)) - ATHLETE_CATEGORY_ORDER.indexOf(normalizeAthleteCategory(b.label))
   ));
   const [activeCategory, setActiveCategory] = useState(normalizeAthleteCategory(orderedCategories[0]?.label));
   const selectedCategory = orderedCategories.find((category) => normalizeAthleteCategory(category.label) === activeCategory) ?? orderedCategories[0];
-  const athleteCount = categories.reduce((total, category) => total + category.players.length, 0);
+  const athleteCount = visibleCategories.reduce((total, category) => total + category.players.length, 0);
+
+  const handleArchive = async (player) => {
+    const athleteId = athleteIdFromUrl(player.url);
+    const profile = athleteProfileFor(player, profilesById);
+    const display = athleteDisplayData(player, profile);
+    if (!window.confirm(`Arquivar o card de ${display.fullName}? Ele sairá do site público, mas o histórico será preservado.`)) return;
+    try {
+      await archiveAthlete({
+        athlete_id: athleteId,
+        full_name: display.fullName,
+        category: normalizeAthleteCategory(selectedCategory?.label),
+        role: display.role || 'player',
+        age: display.age,
+        height_cm: display.height,
+        weight_kg: display.weight,
+        coach: display.coach,
+        photo_path: profile?.photo_path ?? null,
+        photo_url: profile?.photo_url ?? null,
+        speed: display.speed,
+        shot: display.shot,
+        ball_control: display.ballControl,
+        defense: display.defense,
+      });
+      setFeedback(`${display.fullName} foi arquivado. O histórico continua preservado.`);
+    } catch (archiveError) {
+      setFeedback(archiveError.message || 'Não foi possível arquivar o atleta.');
+    }
+  };
 
   return (
     <div className="club-page athlete-gallery-page">
@@ -1179,12 +1506,26 @@ function ClubAthletesPage({ categories }) {
           <span>ELENCO AD SUZANO · TEMPORADA 2026</span>
           <h1>Galeria de Atletas</h1>
           <p>{athleteCount} perfis organizados por categoria. Fotos, medidas e atributos técnicos serão incorporados conforme a comissão enviar os dados.</p>
+          <div className="athlete-admin-entry">
+            {isAdmin ? (
+              <>
+                <span><LockKeyhole size={16} /> Modo Comissão Técnica ativo</span>
+                <button type="button" onClick={logout}><LogOut size={16} /> Sair</button>
+              </>
+            ) : (
+              <button type="button" onClick={() => setLoginOpen(true)}><LogIn size={16} /> Comissão Técnica</button>
+            )}
+          </div>
         </div>
         <div className="athlete-gallery-hero-mark">
           <strong>{selectedCategory?.players.length ?? 0}</strong>
           <span>atletas no {activeCategory}</span>
         </div>
       </section>
+
+      {loading ? <div className="athlete-admin-feedback">Conectando ao banco de atletas...</div> : null}
+      {error ? <div className="athlete-admin-feedback is-error">{error}</div> : null}
+      {feedback ? <div className="athlete-admin-feedback" role="status">{feedback}<button type="button" onClick={() => setFeedback('')} aria-label="Fechar aviso"><X size={15} /></button></div> : null}
 
       <nav className="athlete-category-tabs" aria-label="Categorias de atletas" role="tablist">
         {orderedCategories.map((category) => {
@@ -1214,18 +1555,25 @@ function ClubAthletesPage({ categories }) {
         <div className="athlete-collectible-grid">
           {selectedCategory?.players.map((player, index) => (
             <motion.div key={player.url} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.025, 0.3) }}>
-              <AthleteCollectibleCard player={player} category={selectedCategory.label} />
+              <AthleteCollectibleCard player={player} category={selectedCategory.label} onEdit={setEditingPlayer} onArchive={handleArchive} />
             </motion.div>
           ))}
         </div>
       </section>
+      <StaffLoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <AthleteEditModal player={editingPlayer} category={selectedCategory?.label} onClose={() => setEditingPlayer(null)} />
     </div>
   );
 }
 
 function ClubAthleteDetailPage({ player }) {
-  const fullName = player.detail?.name || player.name;
-  const stats = seasonStatsFor(player);
+  const { profilesById, eventsByAthleteId, archiveAthlete } = useAthleteAdmin();
+  const [editing, setEditing] = useState(false);
+  const athleteId = athleteIdFromUrl(player.url);
+  const profile = athleteProfileFor(player, profilesById);
+  const display = athleteDisplayData(player, profile);
+  const fullName = display.fullName;
+  const stats = combinedSeasonStats(player, profile, eventsByAthleteId.get(athleteId) ?? []);
   const goalkeeper = stats.role === 'goalkeeper';
   const detailMetrics = goalkeeper
     ? [
@@ -1244,13 +1592,33 @@ function ClubAthleteDetailPage({ player }) {
         ['Cartões vermelhos', stats.redCards, '🟥'],
       ];
   const latestSource = stats.latestSourceUrl;
+  const archiveFromDetail = async () => {
+    if (!window.confirm(`Arquivar o card de ${fullName}? O histórico será preservado.`)) return;
+    await archiveAthlete({
+      athlete_id: athleteId,
+      full_name: fullName,
+      category: normalizeAthleteCategory(player.category),
+      role: display.role || stats.role || 'player',
+      age: display.age,
+      height_cm: display.height,
+      weight_kg: display.weight,
+      coach: display.coach,
+      photo_path: profile?.photo_path ?? null,
+      photo_url: profile?.photo_url ?? null,
+      speed: display.speed,
+      shot: display.shot,
+      ball_control: display.ballControl,
+      defense: display.defense,
+    });
+    window.location.hash = '#/portal/atletas';
+  };
   return (
     <div className="club-page athlete-profile-page">
       <div className="club-breadcrumb-inline">
         <a href={pageUrl('atletas')}><ArrowLeft size={16} />Voltar para a galeria</a>
       </div>
       <section className="athlete-profile-layout">
-        <AthleteCollectibleCard player={player} category={player.category} detailed />
+        <AthleteCollectibleCard player={player} category={player.category} detailed onEdit={() => setEditing(true)} onArchive={archiveFromDetail} />
         <article className="athlete-profile-notes">
           <span>FICHA INDIVIDUAL</span>
           <h1>{fullName}</h1>
@@ -1281,10 +1649,11 @@ function ClubAthleteDetailPage({ player }) {
           </div>
           <div className="athlete-profile-status">
             <strong>Dados auditáveis · temporada 2026</strong>
-            <span>Atualização semanal automática, toda segunda-feira às 9h. Métricas técnicas só serão exibidas depois da confirmação da comissão.</span>
+            <span>Atualização semanal automática, toda segunda-feira às 9h. {stats.manualUpdateCount ? `${stats.manualUpdateCount} lançamento(s) manual(is) preservado(s) no histórico.` : 'Nenhum lançamento manual registrado.'}</span>
           </div>
         </article>
       </section>
+      <AthleteEditModal player={editing ? player : null} category={player.category} onClose={() => setEditing(false)} />
     </div>
   );
 }
