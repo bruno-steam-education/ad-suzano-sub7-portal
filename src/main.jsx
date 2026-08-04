@@ -22,7 +22,7 @@ import {
 import { motion } from 'motion/react';
 import packageInfo from '../package.json';
 import suzanoLogo from './assets/ad-suzano-logo.png';
-import { ClubSiteExperience } from './clubSite';
+import { ClubSiteExperience, SupporterRadio } from './clubSite';
 import { categories } from './data/categories';
 import { federationScheduleSource, initiationA2BaseSchedule } from './data/federationSchedule';
 import { fpfsCategories } from './data/fpfsCategories';
@@ -231,11 +231,18 @@ function App() {
   }, []);
 
   if (appRoute.mode === 'portal') {
-    return <ClubSiteExperience path={appRoute.path} />;
+    return (
+      <>
+        <SupporterRadio />
+        <ClubSiteExperience path={appRoute.path} />
+      </>
+    );
   }
 
   return (
-    <main className="app-shell">
+    <>
+      <SupporterRadio />
+      <main className="app-shell">
       <StaffAccessBar
         isAuthenticated={isAuthenticated}
         onOpenModal={openAccessModal}
@@ -330,8 +337,9 @@ function App() {
           onOpenModal={openAccessModal}
         />
       )}
-      <AppFooter />
-    </main>
+        <AppFooter />
+      </main>
+    </>
   );
 }
 

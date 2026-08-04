@@ -18,6 +18,9 @@ import {
   Radio,
   Search,
   Shield,
+  SkipBack,
+  SkipForward,
+  Square,
   Star,
   Trophy,
   Users,
@@ -343,8 +346,6 @@ function ClubHomePage() {
         </motion.div>
       </motion.section>
 
-      <SupporterRadio />
-
       <section className="club-stats-strip">
         <div className="club-stat-box">
           <strong>8 Categorias</strong>
@@ -481,39 +482,68 @@ function ClubHomePage() {
   );
 }
 
-function SupporterRadio() {
+export function SupporterRadio() {
   const frameRef = useRef(null);
-  const [enabled, setEnabled] = useState(true);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [stopped, setStopped] = useState(false);
+  const [trackTitle, setTrackTitle] = useState('Grito da Torcida AD Suzano');
 
   const playerUrl = useMemo(() => {
     const params = new URLSearchParams({
       list: SUPPORTER_PLAYLIST_ID,
       autoplay: '1',
       loop: '1',
-      controls: '1',
+      controls: '0',
       enablejsapi: '1',
       playsinline: '1',
       rel: '0',
+      origin: window.location.origin,
     });
     return `https://www.youtube-nocookie.com/embed/videoseries?${params.toString()}`;
   }, []);
 
-  const sendPlayerCommand = useCallback((command) => {
+  const sendPlayerCommand = useCallback((command, args = []) => {
     frameRef.current?.contentWindow?.postMessage(JSON.stringify({
       event: 'command',
       func: command,
-      args: [],
+      args,
     }), '*');
   }, []);
 
   useEffect(() => {
-    if (!enabled || !playing) return undefined;
+    const receivePlayerUpdate = (event) => {
+      if (!String(event.origin).includes('youtube')) return;
+      let payload;
+      try {
+        payload = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      } catch {
+        return;
+      }
+
+      const info = payload?.info;
+      const title = info?.videoData?.title;
+      if (title) setTrackTitle(title);
+      if (info?.playerState === 1) {
+        setPlaying(true);
+        setStopped(false);
+      } else if (info?.playerState === 2) {
+        setPlaying(false);
+      }
+    };
+
+    window.addEventListener('message', receivePlayerUpdate);
+    return () => window.removeEventListener('message', receivePlayerUpdate);
+  }, []);
+
+  useEffect(() => {
+    if (!playing) return undefined;
 
     const startPlayback = () => {
       sendPlayerCommand('unMute');
       sendPlayerCommand('playVideo');
+      setMuted(false);
+      setStopped(false);
       window.removeEventListener('pointerdown', startPlayback, true);
       window.removeEventListener('keydown', startPlayback, true);
     };
@@ -526,18 +556,17 @@ function SupporterRadio() {
       window.removeEventListener('pointerdown', startPlayback, true);
       window.removeEventListener('keydown', startPlayback, true);
     };
-  }, [enabled, playing, sendPlayerCommand]);
+  }, [playing, sendPlayerCommand]);
 
   const togglePlayback = () => {
-    if (!enabled) {
-      setEnabled(true);
+    if (stopped || !playing) {
       setPlaying(true);
-      setMuted(false);
+      setStopped(false);
+      sendPlayerCommand('playVideo');
       return;
     }
-    const nextPlaying = !playing;
-    setPlaying(nextPlaying);
-    sendPlayerCommand(nextPlaying ? 'playVideo' : 'pauseVideo');
+    setPlaying(false);
+    sendPlayerCommand('pauseVideo');
   };
 
   const toggleMute = () => {
@@ -546,79 +575,67 @@ function SupporterRadio() {
     sendPlayerCommand(nextMuted ? 'mute' : 'unMute');
   };
 
-  const turnOff = () => {
+  const stopPlayback = () => {
     sendPlayerCommand('stopVideo');
-    setEnabled(false);
     setPlaying(false);
-    setMuted(false);
+    setStopped(true);
+  };
+
+  const changeTrack = (command) => {
+    sendPlayerCommand(command);
+    setPlaying(true);
+    setStopped(false);
+    window.setTimeout(() => sendPlayerCommand('playVideo'), 120);
   };
 
   return (
-    <motion.section
-      className={`supporter-radio ${enabled && playing ? 'is-live' : ''}`}
+    <motion.div
+      className={`supporter-radio ${playing ? 'is-live' : ''}`}
       aria-label="Rádio Grito da Torcida AD Suzano"
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.32, duration: 0.45 }}
+      transition={{ duration: 0.35 }}
     >
-      <div className="supporter-radio-copy">
-        <div className="supporter-radio-station">
-          <span className="supporter-radio-icon"><Radio size={23} /></span>
-          <div>
-            <span className="supporter-radio-kicker"><i /> Rádio oficial da torcida</span>
-            <h2>Grito da Torcida AD Suzano</h2>
-          </div>
+      <div className="supporter-radio-station">
+        <span className="supporter-radio-icon"><Radio size={16} /></span>
+        <div className="supporter-radio-now">
+          <span className="supporter-radio-kicker"><i /> Rádio da torcida</span>
+          <strong title={trackTitle}>{stopped ? 'Rádio parada' : trackTitle}</strong>
         </div>
-        <p>
-          {enabled && playing
-            ? 'No ar agora · reprodução contínua da arquibancada azul, branca e vermelha.'
-            : enabled
-              ? 'Rádio pausada. Retome quando quiser.'
-              : 'Rádio desligada. Clique em ligar para voltar ao ar.'}
-        </p>
-        <div className="supporter-radio-controls">
-          <button type="button" className="supporter-radio-primary" onClick={togglePlayback}>
-            {enabled && playing ? <Pause size={17} /> : <PlayCircle size={17} />}
-            {enabled && playing ? 'Pausar' : 'Ligar rádio'}
-          </button>
-          {enabled ? (
-            <>
-              <button type="button" onClick={toggleMute} aria-label={muted ? 'Ativar som' : 'Silenciar rádio'}>
-                {muted ? <VolumeX size={17} /> : <Volume2 size={17} />}
-                {muted ? 'Ativar som' : 'Silenciar'}
-              </button>
-              <button type="button" className="supporter-radio-off" onClick={turnOff}>
-                <X size={17} /> Desligar
-              </button>
-            </>
-          ) : null}
-          <a href={SUPPORTER_PLAYLIST_URL} target="_blank" rel="noreferrer">
-            <PlayCircle size={17} /> Abrir playlist
-          </a>
-        </div>
-        <small>Se o navegador bloquear som automático, a rádio começa na primeira interação com a página.</small>
       </div>
-      <div className={`supporter-radio-player ${enabled ? '' : 'is-off'}`}>
-        {enabled ? (
-          <iframe
-            ref={frameRef}
-            src={playerUrl}
-            title="Grito da Torcida AD Suzano"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            referrerPolicy="strict-origin-when-cross-origin"
-            onLoad={() => {
-              if (playing) sendPlayerCommand('playVideo');
-            }}
-          />
-        ) : (
-          <div className="supporter-radio-offline">
-            <Radio size={30} />
-            <strong>Fora do ar</strong>
-            <span>Aperte “Ligar rádio” para reconectar.</span>
-          </div>
-        )}
+      <div className="supporter-radio-controls">
+        <button type="button" onClick={() => changeTrack('previousVideo')} aria-label="Música anterior" title="Música anterior">
+          <SkipBack size={15} />
+        </button>
+        <button type="button" className="supporter-radio-primary" onClick={togglePlayback} aria-label={playing ? 'Pausar rádio' : 'Tocar rádio'} title={playing ? 'Pausar' : 'Tocar'}>
+          {playing ? <Pause size={16} /> : <PlayCircle size={16} />}
+        </button>
+        <button type="button" onClick={stopPlayback} aria-label="Parar rádio" title="Stop">
+          <Square size={13} />
+        </button>
+        <button type="button" onClick={() => changeTrack('nextVideo')} aria-label="Próxima música" title="Próxima música">
+          <SkipForward size={15} />
+        </button>
+        <button type="button" onClick={toggleMute} aria-label={muted ? 'Ativar som' : 'Silenciar rádio'} title={muted ? 'Ativar som' : 'Silenciar'}>
+          {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        </button>
       </div>
-    </motion.section>
+      <a className="supporter-radio-playlist-link" href={SUPPORTER_PLAYLIST_URL} target="_blank" rel="noreferrer" aria-label="Abrir playlist completa no YouTube" title="Abrir playlist no YouTube">
+        Playlist
+      </a>
+      <iframe
+        className="supporter-radio-player"
+        ref={frameRef}
+        src={playerUrl}
+        title="Player do Grito da Torcida AD Suzano"
+        allow="autoplay; encrypted-media"
+        referrerPolicy="strict-origin-when-cross-origin"
+        onLoad={() => {
+          frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'listening', id: 'supporter-radio' }), '*');
+          if (playing) sendPlayerCommand('playVideo');
+        }}
+      />
+    </motion.div>
   );
 }
 

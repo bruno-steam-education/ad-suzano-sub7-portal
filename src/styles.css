@@ -5280,93 +5280,180 @@ input {
   .robot-pulse { animation: none; }
 }
 .supporter-radio {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 410px);
-  gap: 24px;
-  width: min(1240px, calc(100% - 44px));
-  margin: 18px auto 22px;
-  padding: 22px;
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(360px, calc(100vw - 830px));
+  min-width: 330px;
+  height: 33px;
+  padding: 3px 6px 3px 5px;
   color: #e8f0ff;
-  background: #071b3f;
-  border: 1px solid #1f3d70;
-  border-left: 4px solid #e52334;
-  border-radius: 8px;
-  box-shadow: 0 18px 42px rgba(8, 25, 58, 0.16);
+  background: #102b59;
+  border: 1px solid #2b4b7d;
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(2, 11, 29, 0.28);
+  margin-left: -180px;
 }
 
-.supporter-radio.is-live { box-shadow: 0 18px 44px rgba(8, 25, 58, 0.2), 0 0 0 1px rgba(229, 35, 52, 0.08); }
-.supporter-radio-copy { align-self: center; }
-.supporter-radio-station { display: flex; align-items: center; gap: 12px; }
+.supporter-radio.is-live {
+  border-color: rgba(255, 92, 104, 0.58);
+}
+
+.supporter-radio-station {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 7px;
+}
+
 .supporter-radio-icon {
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 24px;
+  height: 24px;
   flex: 0 0 auto;
   place-items: center;
   color: #fff;
   background: #e52334;
-  border-radius: 6px;
+  border-radius: 3px;
 }
-.supporter-radio-kicker { display: flex; align-items: center; gap: 7px; color: #ff747f; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
-.supporter-radio-kicker i { width: 7px; height: 7px; background: #ff4050; border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 64, 80, 0.12); animation: supporter-live 1.8s ease-in-out infinite; }
-.supporter-radio h2 { margin: 5px 0 0; color: #fff; font-size: clamp(1.15rem, 2vw, 1.55rem); letter-spacing: -0.02em; }
-.supporter-radio-copy > p { margin: 14px 0; color: #aabbd7; font-size: 0.85rem; line-height: 1.5; }
-.supporter-radio-copy > small { display: block; margin-top: 10px; color: #8196b7; font-size: 0.67rem; line-height: 1.45; }
 
-.supporter-radio-controls { display: flex; flex-wrap: wrap; gap: 7px; }
-.supporter-radio-controls button,
-.supporter-radio-controls a {
+.supporter-radio-now {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.supporter-radio-kicker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ff9aa2;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.supporter-radio-kicker i {
+  width: 5px;
+  height: 5px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.11);
+  animation: supporter-live 1.8s ease-in-out infinite;
+}
+
+.supporter-radio-now strong {
+  overflow: hidden;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.supporter-radio-controls {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.supporter-radio-controls button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-height: 40px;
-  padding: 0 13px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
   color: #d8e5fa;
-  background: #102b59;
-  border: 1px solid #29497d;
-  border-radius: 5px;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
   font: inherit;
-  font-size: 0.73rem;
-  font-weight: 850;
-  text-decoration: none;
   cursor: pointer;
-  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+  transition: background 150ms ease, color 150ms ease;
 }
+
 .supporter-radio-controls button:hover,
-.supporter-radio-controls a:hover { transform: translateY(-2px); background: #17386f; border-color: #466ca8; }
-.supporter-radio-controls .supporter-radio-primary { color: #fff; background: #e52334; border-color: #e52334; }
-.supporter-radio-controls .supporter-radio-primary:hover { background: #c91828; border-color: #c91828; }
-.supporter-radio-controls .supporter-radio-off { color: #ff9ca4; }
+.supporter-radio-controls button:focus-visible {
+  color: #fff;
+  background: #23457d;
+}
+
+.supporter-radio-controls .supporter-radio-primary {
+  color: #fff;
+  background: #e52334;
+}
+
+.supporter-radio-controls .supporter-radio-primary:hover {
+  background: #c91828;
+}
 
 .supporter-radio-player {
-  position: relative;
-  min-height: 188px;
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  background: #020b1d;
-  border: 1px solid #29497d;
-  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
 }
-.supporter-radio-player iframe { display: block; width: 100%; height: 100%; min-height: 230px; border: 0; }
-.supporter-radio-player.is-off { display: grid; place-items: center; }
-.supporter-radio-offline { display: grid; justify-items: center; gap: 6px; color: #7990b4; text-align: center; }
-.supporter-radio-offline strong { color: #dbe7fa; }
-.supporter-radio-offline span { font-size: 0.7rem; }
+
+.supporter-radio-playlist-link {
+  color: #9fb3d4;
+  font-size: 9px;
+  font-weight: 850;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.supporter-radio-playlist-link:hover {
+  color: #fff;
+}
 
 @keyframes supporter-live {
   50% { opacity: 0.45; transform: scale(0.82); }
 }
 
-@media (max-width: 820px) {
-  .supporter-radio { grid-template-columns: 1fr; width: calc(100% - 20px); padding: 17px; }
-  .supporter-radio-player iframe { min-height: 210px; }
+@media (max-width: 1180px) {
+  .supporter-radio {
+    width: 330px;
+    min-width: 0;
+    margin-left: -165px;
+  }
+
+  .supporter-radio-playlist-link {
+    display: none;
+  }
 }
 
-@media (max-width: 520px) {
-  .supporter-radio-controls { display: grid; grid-template-columns: 1fr 1fr; }
-  .supporter-radio-controls > * { width: 100%; }
-  .supporter-radio-controls .supporter-radio-primary { grid-column: span 2; }
-  .supporter-radio-player iframe { min-height: 185px; }
+@media (max-width: 760px) {
+  .supporter-radio {
+    position: relative;
+    top: auto;
+    left: auto;
+    z-index: 121;
+    width: 100%;
+    height: 40px;
+    padding-inline: 10px;
+    border: 0;
+    border-bottom: 1px solid #2b4b7d;
+    border-radius: 0;
+    margin-left: 0;
+  }
+
+  .supporter-radio-now strong {
+    max-width: 155px;
+  }
+
+  .supporter-radio-controls {
+    margin-left: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
