@@ -17,6 +17,7 @@ import pdfplumber
 ROOT = Path(__file__).resolve().parents[1]
 FPFS_DATA = ROOT / 'src' / 'data' / 'fpfsCategories.js'
 CLUB_DATA = ROOT / 'src' / 'data' / 'clubSite.js'
+ROSTER_DATA = ROOT / 'src' / 'data' / 'athleteRoster.js'
 OUTPUT = ROOT / 'src' / 'data' / 'athleteSeasonStats.js'
 USER_AGENT = 'AD-Suzano-Athlete-Stats-Bot/1.0'
 
@@ -196,7 +197,7 @@ def best_official_match(name, candidates):
 
 
 fpfs_categories = load_exported_json(FPFS_DATA, 'fpfsCategories')
-club_site = load_exported_json(CLUB_DATA, 'clubSiteData')
+athlete_roster = load_exported_json(ROSTER_DATA, 'athleteRoster')
 tasks = []
 for category in fpfs_categories:
     for game in category.get('playedGames', []):
@@ -260,7 +261,7 @@ for category in fpfs_categories:
 
 athletes = {}
 matched = 0
-for category in club_site['athletes']['categories']:
+for category in athlete_roster['categories']:
     category_name = re.sub(r'Sub-0?(\d+)', r'Sub-\1', category['label'], flags=re.I)
     candidates = official_by_category.get(category_name, {})
     for player in category['players']:

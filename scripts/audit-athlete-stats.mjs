@@ -1,9 +1,9 @@
-import { clubSiteData } from '../src/data/clubSite.js';
+import { athleteRoster } from '../src/data/athleteRoster.js';
 import { fpfsCategories } from '../src/data/fpfsCategories.js';
 import { athleteSeasonStats } from '../src/data/athleteSeasonStats.js';
 
 const errors = [];
-const portalPlayers = clubSiteData.athletes.categories.flatMap((category) => category.players);
+const portalPlayers = athleteRoster.categories.flatMap((category) => category.players);
 const expectedGames = fpfsCategories.reduce((total, category) => total + category.playedGames.length, 0);
 
 if (athleteSeasonStats.summary.officialGamesRead !== expectedGames) {

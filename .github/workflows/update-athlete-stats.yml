@@ -27,6 +27,8 @@ jobs:
           python-version: '3.12'
       - run: pip install pdfplumber==0.11.7
       - run: npm ci
+      - name: Sincronizar elenco e treinadores da planilha online
+        run: node scripts/update-athlete-roster.mjs
       - name: Ler e consolidar todas as súmulas oficiais
         run: python scripts/update-athlete-stats.py
       - name: Auditar cobertura e conciliação de gols

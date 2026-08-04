@@ -40,6 +40,7 @@ import { youthLeagueCategories } from './data/youthLeagueCategories';
 import { newsItems } from './data/news';
 import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
 import { athleteSeasonStats } from './data/athleteSeasonStats';
+import { athleteRoster } from './data/athleteRoster';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -122,7 +123,7 @@ function groupPlayersByInitial(players = []) {
 }
 
 function flattenPlayers() {
-  return clubSiteData.athletes.categories.flatMap((category) =>
+  return athleteRoster.categories.flatMap((category) =>
     category.players.map((player) => ({
       ...player,
       category: category.label,
@@ -183,7 +184,7 @@ export function ClubSiteExperience({ path = 'home' }) {
         {route.page === 'cookies' && <ClubEmptyPage icon={FileText} title="Política de Cookies" text="Este portal utiliza apenas armazenamento necessário para preferências locais e acesso ao painel técnico." />}
         {route.page === 'privacidade' && <ClubEmptyPage icon={Shield} title="Política de Privacidade" text="Os dados informados no contato são usados somente para iniciar a conversa solicitada com a AD Suzano." />}
         {route.page === 'termos-uso' && <ClubEmptyPage icon={FileText} title="Termos de Uso" text="Conteúdo institucional e esportivo da AD Suzano. As fontes oficiais permanecem indicadas em cada área." />}
-        {route.page === 'atletas' && !activePlayer && <ClubAthletesPage categories={clubSiteData.athletes.categories} />}
+        {route.page === 'atletas' && !activePlayer && <ClubAthletesPage categories={athleteRoster.categories} />}
         {route.page === 'atletas' && activePlayer && <ClubAthleteDetailPage player={activePlayer} />}
       </section>
       <ClubFooter />
