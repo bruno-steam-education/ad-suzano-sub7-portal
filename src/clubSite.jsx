@@ -485,7 +485,8 @@ function ClubHomePage() {
 export function SupporterRadio() {
   const frameRef = useRef(null);
   const [playing, setPlaying] = useState(true);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [awaitingSound, setAwaitingSound] = useState(true);
   const [stopped, setStopped] = useState(false);
   const [trackTitle, setTrackTitle] = useState('Grito da Torcida AD Suzano');
 
@@ -493,6 +494,7 @@ export function SupporterRadio() {
     const params = new URLSearchParams({
       list: SUPPORTER_PLAYLIST_ID,
       autoplay: '1',
+      mute: '1',
       loop: '1',
       controls: '0',
       enablejsapi: '1',
@@ -527,36 +529,41 @@ export function SupporterRadio() {
       if (info?.playerState === 1) {
         setPlaying(true);
         setStopped(false);
-      } else if (info?.playerState === 2) {
+      } else if (info?.playerState === 2 && !awaitingSound) {
         setPlaying(false);
       }
     };
 
     window.addEventListener('message', receivePlayerUpdate);
     return () => window.removeEventListener('message', receivePlayerUpdate);
-  }, []);
+  }, [awaitingSound]);
 
   useEffect(() => {
-    if (!playing) return undefined;
+    if (!awaitingSound) return undefined;
 
-    const startPlayback = () => {
+    const unlockSound = () => {
       sendPlayerCommand('unMute');
       sendPlayerCommand('playVideo');
       setMuted(false);
+      setAwaitingSound(false);
+      setPlaying(true);
       setStopped(false);
-      window.removeEventListener('pointerdown', startPlayback, true);
-      window.removeEventListener('keydown', startPlayback, true);
+      window.removeEventListener('pointerdown', unlockSound, true);
+      window.removeEventListener('keydown', unlockSound, true);
     };
 
-    const timer = window.setTimeout(() => sendPlayerCommand('playVideo'), 700);
-    window.addEventListener('pointerdown', startPlayback, true);
-    window.addEventListener('keydown', startPlayback, true);
+    const timer = window.setTimeout(() => {
+      sendPlayerCommand('mute');
+      sendPlayerCommand('playVideo');
+    }, 450);
+    window.addEventListener('pointerdown', unlockSound, true);
+    window.addEventListener('keydown', unlockSound, true);
     return () => {
       window.clearTimeout(timer);
-      window.removeEventListener('pointerdown', startPlayback, true);
-      window.removeEventListener('keydown', startPlayback, true);
+      window.removeEventListener('pointerdown', unlockSound, true);
+      window.removeEventListener('keydown', unlockSound, true);
     };
-  }, [playing, sendPlayerCommand]);
+  }, [awaitingSound, sendPlayerCommand]);
 
   const togglePlayback = () => {
     if (stopped || !playing) {
@@ -599,8 +606,8 @@ export function SupporterRadio() {
       <div className="supporter-radio-station">
         <span className="supporter-radio-icon"><Radio size={16} /></span>
         <div className="supporter-radio-now">
-          <span className="supporter-radio-kicker"><i /> Rádio da torcida</span>
-          <strong title={trackTitle}>{stopped ? 'Rádio parada' : trackTitle}</strong>
+          <span className={`supporter-radio-kicker ${awaitingSound ? 'is-awaiting' : ''}`}><i /> {awaitingSound ? 'Toque na página para liberar o som' : 'Rádio da torcida'}</span>
+          <strong title={trackTitle}>{stopped ? 'Rádio parada' : awaitingSound ? 'Reprodução iniciada sem som' : trackTitle}</strong>
         </div>
       </div>
       <div className="supporter-radio-controls">
@@ -632,6 +639,7 @@ export function SupporterRadio() {
         referrerPolicy="strict-origin-when-cross-origin"
         onLoad={() => {
           frameRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'listening', id: 'supporter-radio' }), '*');
+          sendPlayerCommand('mute');
           if (playing) sendPlayerCommand('playVideo');
         }}
       />

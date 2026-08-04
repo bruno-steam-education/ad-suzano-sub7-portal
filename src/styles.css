@@ -5332,12 +5332,15 @@ input {
   display: flex;
   align-items: center;
   gap: 5px;
+  overflow: hidden;
   color: #ff9aa2;
   font-size: 8px;
   font-weight: 900;
   letter-spacing: 0.08em;
   line-height: 1;
+  text-overflow: ellipsis;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .supporter-radio-kicker i {
@@ -5347,6 +5350,15 @@ input {
   border-radius: 50%;
   box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.11);
   animation: supporter-live 1.8s ease-in-out infinite;
+}
+
+.supporter-radio-kicker.is-awaiting {
+  color: #fde68a;
+}
+
+.supporter-radio-kicker.is-awaiting i {
+  background: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.13);
 }
 
 .supporter-radio-now strong {
