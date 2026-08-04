@@ -3,6 +3,7 @@ import {
   addAthleteStatEvent,
   archiveAthleteProfile,
   getAthleteAdminSnapshot,
+  getStaffIdentity,
   getStaffSession,
   onStaffAuthChange,
   saveAthleteProfile,
@@ -33,6 +34,7 @@ function groupEventsByAthleteId(items) {
 
 export function AthleteAdminProvider({ children }) {
   const [session, setSession] = useState(null);
+  const [staff, setStaff] = useState(null);
   const [snapshot, setSnapshot] = useState(EMPTY_SNAPSHOT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -65,7 +67,6 @@ export function AthleteAdminProvider({ children }) {
     const unsubscribe = onStaffAuthChange((nextSession) => {
       if (!active) return;
       setSession(nextSession);
-      refresh();
     });
     return () => {
       active = false;
@@ -73,15 +74,31 @@ export function AthleteAdminProvider({ children }) {
     };
   }, [refresh]);
 
-  const login = useCallback(async (password) => {
-    const nextSession = await signInStaff(password);
+  useEffect(() => {
+    let active = true;
+    if (!session?.user?.id) {
+      setStaff(null);
+      return () => { active = false; };
+    }
+    Promise.all([getStaffIdentity(), refresh()])
+      .then(([identity]) => {
+        if (active) setStaff(identity);
+      })
+      .catch((identityError) => {
+        if (active) setError(identityError.message || 'Não foi possível validar o perfil de acesso.');
+      });
+    return () => { active = false; };
+  }, [refresh, session?.user?.id]);
+
+  const login = useCallback(async (account, password) => {
+    const nextSession = await signInStaff(account, password);
     setSession(nextSession);
-    await refresh();
-  }, [refresh]);
+  }, []);
 
   const logout = useCallback(async () => {
     await signOutStaff();
     setSession(null);
+    setStaff(null);
     await refresh();
   }, [refresh]);
 
@@ -116,7 +133,9 @@ export function AthleteAdminProvider({ children }) {
 
   const value = useMemo(() => ({
     session,
-    isAdmin: Boolean(session),
+    staff,
+    isAdmin: Boolean(session && staff),
+    isCoordinator: staff?.role === 'coordinator',
     loading,
     error,
     profilesById: mapByAthleteId(snapshot.profiles),
@@ -126,7 +145,7 @@ export function AthleteAdminProvider({ children }) {
     saveAthlete,
     archiveAthlete,
     refresh,
-  }), [archiveAthlete, error, loading, login, logout, refresh, saveAthlete, session, snapshot.events, snapshot.profiles]);
+  }), [archiveAthlete, error, loading, login, logout, refresh, saveAthlete, session, snapshot.events, snapshot.profiles, staff]);
 
   return <AthleteAdminContext.Provider value={value}>{children}</AthleteAdminContext.Provider>;
 }

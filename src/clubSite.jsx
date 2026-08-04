@@ -49,6 +49,7 @@ import { technicalStaffByCategory, technicalStaffDirectory } from './data/techni
 import { athleteSeasonStats } from './data/athleteSeasonStats';
 import { athleteRoster } from './data/athleteRoster';
 import { AthleteAdminProvider, useAthleteAdmin } from './components/AthleteAdminContext';
+import StaffOperationsPanel from './components/StaffOperationsPanel';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -1269,12 +1270,14 @@ function AthleteCollectibleCard({ player, category, detailed = false, onEdit, on
 
 function StaffLoginModal({ open, onClose }) {
   const { login } = useAthleteAdmin();
+  const [account, setAccount] = useState('technical');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (open) {
+      setAccount('technical');
       setPassword('');
       setError('');
     }
@@ -1287,7 +1290,7 @@ function StaffLoginModal({ open, onClose }) {
     setSubmitting(true);
     setError('');
     try {
-      await login(password);
+      await login(account, password);
       onClose();
     } catch (loginError) {
       setError(loginError.message === 'Invalid login credentials'
@@ -1304,9 +1307,17 @@ function StaffLoginModal({ open, onClose }) {
         <button className="athlete-admin-modal-close" type="button" onClick={onClose} aria-label="Fechar"><X size={20} /></button>
         <span className="athlete-admin-modal-icon"><LockKeyhole size={25} /></span>
         <small>ÁREA RESTRITA</small>
-        <h2 id="staff-login-title">Comissão Técnica</h2>
-        <p>Entre para editar os cards, registrar acréscimos estatísticos e enviar fotos.</p>
+        <h2 id="staff-login-title">Equipe AD Suzano</h2>
+        <p>Escolha seu perfil. A Coordenação também acessa o controle financeiro.</p>
         <form onSubmit={submit}>
+          <div className="staff-account-choice" role="radiogroup" aria-label="Perfil de acesso">
+            <button type="button" role="radio" aria-checked={account === 'technical'} className={account === 'technical' ? 'is-active' : ''} onClick={() => setAccount('technical')}>
+              <Users size={18} /><span><strong>Comissão Técnica</strong><small>Atletas e frequência</small></span>
+            </button>
+            <button type="button" role="radio" aria-checked={account === 'coordinator'} className={account === 'coordinator' ? 'is-active' : ''} onClick={() => setAccount('coordinator')}>
+              <Shield size={18} /><span><strong>Coordenação</strong><small>Comissão e financeiro</small></span>
+            </button>
+          </div>
           <label htmlFor="staff-password">Senha de acesso</label>
           <input id="staff-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} autoFocus required />
           {error ? <div className="athlete-admin-form-error" role="alert">{error}</div> : null}
@@ -1456,7 +1467,7 @@ function AthleteEditModal({ player, category, onClose }) {
 }
 
 function ClubAthletesPage({ categories }) {
-  const { isAdmin, logout, archiveAthlete, profilesById, loading, error } = useAthleteAdmin();
+  const { isAdmin, isCoordinator, logout, archiveAthlete, profilesById, loading, error } = useAthleteAdmin();
   const [loginOpen, setLoginOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [feedback, setFeedback] = useState('');
@@ -1470,6 +1481,13 @@ function ClubAthletesPage({ categories }) {
   const [activeCategory, setActiveCategory] = useState(normalizeAthleteCategory(orderedCategories[0]?.label));
   const selectedCategory = orderedCategories.find((category) => normalizeAthleteCategory(category.label) === activeCategory) ?? orderedCategories[0];
   const athleteCount = visibleCategories.reduce((total, category) => total + category.players.length, 0);
+  const operationsCategories = orderedCategories.map((category) => ({
+    label: normalizeAthleteCategory(category.label),
+    athletes: category.players.map((player) => ({
+      id: athleteIdFromUrl(player.url),
+      name: athleteDisplayData(player, athleteProfileFor(player, profilesById)).fullName,
+    })),
+  }));
 
   const handleArchive = async (player) => {
     const athleteId = athleteIdFromUrl(player.url);
@@ -1509,7 +1527,7 @@ function ClubAthletesPage({ categories }) {
           <div className="athlete-admin-entry">
             {isAdmin ? (
               <>
-                <span><LockKeyhole size={16} /> Modo Comissão Técnica ativo</span>
+                <span><LockKeyhole size={16} /> {isCoordinator ? 'Modo Coordenação ativo' : 'Modo Comissão Técnica ativo'}</span>
                 <button type="button" onClick={logout}><LogOut size={16} /> Sair</button>
               </>
             ) : (
@@ -1526,6 +1544,8 @@ function ClubAthletesPage({ categories }) {
       {loading ? <div className="athlete-admin-feedback">Conectando ao banco de atletas...</div> : null}
       {error ? <div className="athlete-admin-feedback is-error">{error}</div> : null}
       {feedback ? <div className="athlete-admin-feedback" role="status">{feedback}<button type="button" onClick={() => setFeedback('')} aria-label="Fechar aviso"><X size={15} /></button></div> : null}
+
+      {isAdmin ? <StaffOperationsPanel categories={operationsCategories} /> : null}
 
       <nav className="athlete-category-tabs" aria-label="Categorias de atletas" role="tablist">
         {orderedCategories.map((category) => {

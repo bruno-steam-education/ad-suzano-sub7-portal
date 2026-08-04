@@ -43,10 +43,27 @@ export function onStaffAuthChange(callback) {
   return () => data.subscription.unsubscribe();
 }
 
-export async function signInStaff(password) {
+const STAFF_ACCOUNTS = {
+  technical: 'comissao@adsuzano.com.br',
+  coordinator: 'coordenacao@adsuzano.com.br',
+};
+
+export async function getStaffIdentity() {
   const client = requireSupabase();
+  const { data, error } = await client
+    .from('staff_admins')
+    .select('user_id,email,role,display_name')
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function signInStaff(account, password) {
+  const client = requireSupabase();
+  const email = STAFF_ACCOUNTS[account];
+  if (!email) throw new Error('Perfil de acesso inválido.');
   const { data, error } = await client.auth.signInWithPassword({
-    email: 'comissao@adsuzano.com.br',
+    email,
     password,
   });
   if (error) throw error;
