@@ -3,3 +3,7 @@ dist
 .vite
 .env
 *.local
+
+.vercel
+.env*
+vite-*.log

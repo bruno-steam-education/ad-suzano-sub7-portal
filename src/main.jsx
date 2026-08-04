@@ -41,6 +41,7 @@ import {
 import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader';
 import { AccessModal } from './components/AccessModal';
 import { ProtectedSection } from './components/ProtectedSection';
+import { GraphicalAnalysis } from './components/GraphicalAnalysis';
 import './styles.css';
 
 registerServiceWorker();
@@ -258,6 +259,14 @@ function App() {
         activeCategoryId={activeCategoryId}
         onSelect={setActiveCategoryId}
       />
+      <ProtectedSection
+        isAuthenticated={isAuthenticated}
+        onOpenModal={openAccessModal}
+        title="Análise Gráfica Automatizada"
+        description="Campanha completa, evolução rodada a rodada e auditoria das fórmulas reservadas à Comissão Técnica da AD Suzano."
+      >
+        <GraphicalAnalysis categories={fpfsCategories} activeCategoryLabel={activeCategory.label} />
+      </ProtectedSection>
       {hasFullSub7View ? (
         <>
           <ProtectedSection

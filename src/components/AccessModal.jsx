@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Lock, KeyRound, X, AlertCircle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export const DEFAULT_STAFF_PASSWORD = 'suzano2026';
+export const DEFAULT_STAFF_PASSWORD = 'Ad001';
 
 export function AccessModal({ isOpen, onClose, onSuccess }) {
   const [inputPassword, setInputPassword] = useState('');

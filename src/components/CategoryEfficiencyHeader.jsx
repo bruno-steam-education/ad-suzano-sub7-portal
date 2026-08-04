@@ -217,6 +217,8 @@ export function CategoryEfficiencyHeader({ category }) {
         <button
           type="button"
           className="efficiency-accordion-trigger"
+          aria-expanded={showDetails}
+          aria-controls="efficiency-rules-details"
           onClick={() => setShowDetails(!showDetails)}
         >
           <Info size={16} />
@@ -225,7 +227,7 @@ export function CategoryEfficiencyHeader({ category }) {
         </button>
 
         {showDetails && (
-          <div className="efficiency-accordion-content">
+          <div className="efficiency-accordion-content" id="efficiency-rules-details">
             <p>
               <strong>Artigo 135º do Regulamento Geral de Competições FPFS 2026:</strong> Nas categorias de
               Iniciação (Sub-7 ao Sub-10) e Base (Sub-12 ao Sub-18), o acesso e descenso entre as séries A1,

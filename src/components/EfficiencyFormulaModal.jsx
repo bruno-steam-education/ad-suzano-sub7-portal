@@ -157,7 +157,7 @@ Perfeito = MIN(${data.categoryRemainingPoints}, ${data.clubShortfallToTitle} × 
 
         <div className="formula-modal-footer">
           <button type="button" className="formula-download-btn" onClick={() => downloadFormulaPdf(data)}>
-            <Download size={16} /> Baixar PDF
+            <Download size={16} /> Imprimir / salvar em PDF
           </button>
         </div>
       </div>

@@ -220,6 +220,7 @@ for (const event of events) {
     record: { ...record, goalDifference },
     standings,
     upcomingGames,
+    playedGames,
     recentGames: playedGames.slice(-5),
     allRecentGames: allGames.filter((game) => Number.isFinite(game.homeGoals)).slice(-40),
     youtubeSearchUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(`AD Suzano ${event.category} futsal 2026`)}`,

@@ -10,7 +10,7 @@
 O **AD Suzano Sub-7 & Base Portal** (`ad-suzano-sub7-portal`) é uma aplicação web construída com **React 19**, **Vite 7** e **Vanilla CSS**, criada para servir ao mesmo tempo como:
 1. **Site Institucional Oficial do Clube AD Suzano**: Página de entrada (`/`) aberta para a torcida e imprensa, com história, diretoria, elencos do Sub-7 ao Sub-18, escolinha de futsal, fotos/vídeos e patrocinadores.
 2. **Ambiente de Análises Táticas (`/#/analise`)**: Portal de inteligência competitiva com tabelas espelho da FPFS, cruzamento indireto contra adversários em comum e robôs de estimativa de vitória.
-3. **Área Restrita da Comissão Técnica (Senha `suzano2026`)**: Ambiente protegido por senha que oculta do público externo (e de adversários) as projeções de risco de queda, cotas de eficiência por categoria do Art. 135 do RGC e teto matemático.
+3. **Área Restrita da Comissão Técnica (Senha `Ad001`)**: Ambiente protegido por senha que oculta do público externo (e de adversários) as projeções de risco de queda, cotas de eficiência por categoria do Art. 135 do RGC e teto matemático.
 
 ---
 
@@ -45,7 +45,7 @@ c:\Programas\AD Suzano/
 ├── src/
 │   ├── assets/                # Logos e imagens tratadas
 │   ├── components/
-│   │   ├── AccessModal.jsx            # Modal de autenticação por senha (suzano2026)
+│   │   ├── AccessModal.jsx            # Modal de autenticação por senha (Ad001)
 │   │   ├── ProtectedSection.jsx       # Wrapper que bloqueia conteúdo tático no modo público
 │   │   ├── CategoryEfficiencyHeader.jsx # Painel de metas de pontos e cotas Art. 135 RGC
 │   │   └── EfficiencyFormulaModal.jsx # Modal explicativo do cálculo da cota
@@ -79,7 +79,7 @@ c:\Programas\AD Suzano/
 - **Rota `/#/analise`**: Renderiza a `App` no modo de análise tática (Painel de Categorias, FPFS, Tabelas e Robô).
 
 ### B. Sistema de Proteção da Comissão Técnica (`sessionStorage`)
-- **Senha Padrão**: `suzano2026` (definida em `src/components/AccessModal.jsx`).
+- **Senha Padrão**: `Ad001` (definida em `src/components/AccessModal.jsx`).
 - **Estado de Autenticação**:
   - Salvo em `sessionStorage.getItem('ad-suzano-staff-auth') === 'true'`.
   - No topo do modo de análise, o componente `StaffAccessBar` exibe o status de acesso e botões para login/logout ou retorno ao site oficial.
@@ -170,7 +170,7 @@ Quando for solicitar ou realizar alterações de interface:
 - [ ] Executar `npm install` ao clonar o repositório.
 - [ ] Executar `npm run dev` para iniciar o servidor local do Vite em `http://localhost:5173`.
 - [ ] Testar a rota do site do clube (`http://localhost:5173/#/portal/home`) e a rota de análises (`http://localhost:5173/#/analise`).
-- [ ] Testar a senha `suzano2026` para desbloqueio da comissão técnica.
+- [ ] Testar a senha `Ad001` para desbloqueio da comissão técnica.
 - [ ] Rodar `npm run audit:robots` e `npm run build` antes de qualquer commit.
 - [ ] Fazer `git pull --rebase origin main` antes de dar `git push`.
 

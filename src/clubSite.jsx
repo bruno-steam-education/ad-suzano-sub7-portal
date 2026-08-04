@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-  Activity,
+  BarChart3,
   ArrowLeft,
   ArrowRight,
   BadgeInfo,
@@ -19,7 +19,10 @@ import {
   Star,
   Trophy,
   Users,
+  Menu,
+  X,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { clubSiteData } from './data/clubSite';
 
@@ -42,6 +45,11 @@ const PAGE_LABELS = {
   campos: 'Campos',
   pesquisar: 'Pesquisar',
   operacao: 'Operacao',
+  enquetes: 'Enquetes',
+  acessibilidade: 'Acessibilidade',
+  cookies: 'Política de Cookies',
+  privacidade: 'Política de Privacidade',
+  'termos-uso': 'Termos de Uso',
 };
 
 function pageFromPath(path = 'home') {
@@ -60,6 +68,22 @@ function athleteIdFromUrl(url = '') {
 
 function pageUrl(path) {
   return `#/portal/${path}`;
+}
+
+function internalizeClubUrl(url = '') {
+  if (!url) return pageUrl('home');
+  const parsed = new URL(url, 'https://adsuzano.com.br');
+  if (parsed.hostname === 'adsuzano.com.br' || parsed.hostname === 'www.adsuzano.com.br') {
+    const path = parsed.pathname.replace(/^\/+|\/+$/g, '');
+    if (!path) return pageUrl('home');
+    if (path === 'pre/matricula') return pageUrl('matricula');
+    return pageUrl(path);
+  }
+  return url;
+}
+
+function externalLinkProps(href = '') {
+  return href.startsWith('#') ? {} : { target: '_blank', rel: 'noreferrer' };
 }
 
 function pageKeyFromUrl(url = '') {
@@ -110,7 +134,7 @@ export function ClubSiteExperience({ path = 'home' }) {
       <section className="club-frame">
         <div className="club-breadcrumb">
           <a href="#/analise">
-            <Activity size={16} />
+            <BarChart3 size={16} />
             Acessar Ambiente de Análises Táticas
           </a>
           <span>{activeLabel}</span>
@@ -120,18 +144,27 @@ export function ClubSiteExperience({ path = 'home' }) {
         {route.page === 'diretoria' && <ClubBoardPage />}
         {route.page === 'patrocinadores' && <ClubSponsorsPage />}
         {route.page === 'trofeus' && <ClubEmptyPage icon={Trophy} title="Trófeus" text={clubSiteData.trophies.emptyText} />}
+        {route.page === 'enquetes' && <ClubEmptyPage icon={CircleHelp} title="Enquetes" text="Nenhuma enquete ativa no momento." />}
         {route.page === 'campos' && <ClubFieldsPage />}
         {route.page === 'transparencia' && <ClubEmptyPage icon={FileText} title="Transparência" text={clubSiteData.transparency.emptyText} />}
         {route.page === 'noticias' && <ClubEmptyPage icon={BadgeInfo} title="Notícias" text={clubSiteData.news.emptyText} />}
-        {route.page === 'videos' && <ClubMediaPage title="Vídeos" icon={PlayCircle} items={clubSiteData.videos.items} />}
-        {route.page === 'fotos' && <ClubMediaPage title="Fotos" icon={Camera} items={clubSiteData.photos.items} />}
+        {route.page === 'videos' && !route.slug && <ClubMediaPage title="Vídeos" icon={PlayCircle} items={clubSiteData.videos.items} />}
+        {route.page === 'videos' && route.slug && <ClubContentDetailPage title="Vídeo" icon={PlayCircle} item={clubSiteData.videos.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="videos" />}
+        {route.page === 'fotos' && !route.slug && <ClubMediaPage title="Fotos" icon={Camera} items={clubSiteData.photos.items} />}
+        {route.page === 'fotos' && route.slug && <ClubContentDetailPage title="Foto" icon={Camera} item={clubSiteData.photos.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="fotos" />}
         {route.page === 'contato' && <ClubContactPage />}
         {route.page === 'pesquisar' && <ClubSearchPage />}
         {route.page === 'matricula' && <ClubRegistrationPage />}
-        {route.page === 'campeonatos' && <ClubChampionshipsPage />}
-        {route.page === 'jogos' && <ClubGamesPage />}
+        {route.page === 'campeonatos' && !route.slug && <ClubChampionshipsPage />}
+        {route.page === 'campeonatos' && route.slug && <ClubListDetailPage title="Campeonato" item={clubSiteData.championships.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="campeonatos" />}
+        {route.page === 'jogos' && !route.slug && <ClubGamesPage />}
+        {route.page === 'jogos' && route.slug && <ClubListDetailPage title="Jogo" item={clubSiteData.games.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="jogos" />}
         {route.page === 'ranking' && <ClubRankingPage />}
         {route.page === 'operacao' && <ClubOperationsPage />}
+        {route.page === 'acessibilidade' && <ClubEmptyPage icon={BadgeInfo} title="Acessibilidade" text="O portal utiliza navegação por teclado, foco visível e textos alternativos nos elementos essenciais." />}
+        {route.page === 'cookies' && <ClubEmptyPage icon={FileText} title="Política de Cookies" text="Este portal utiliza apenas armazenamento necessário para preferências locais e acesso ao painel técnico." />}
+        {route.page === 'privacidade' && <ClubEmptyPage icon={Shield} title="Política de Privacidade" text="Os dados informados no contato são usados somente para iniciar a conversa solicitada com a AD Suzano." />}
+        {route.page === 'termos-uso' && <ClubEmptyPage icon={FileText} title="Termos de Uso" text="Conteúdo institucional e esportivo da AD Suzano. As fontes oficiais permanecem indicadas em cada área." />}
         {route.page === 'atletas' && !activePlayer && <ClubAthletesPage categories={clubSiteData.athletes.categories} />}
         {route.page === 'atletas' && activePlayer && <ClubAthleteDetailPage player={activePlayer} />}
       </section>
@@ -148,9 +181,8 @@ function ClubUtilityBar() {
           {clubSiteData.topLinks.map((link) => (
             <a
               key={link.label}
-              href={PAGE_LABELS[pageKeyFromUrl(link.url)] ? pageUrl(pageKeyFromUrl(link.url)) : link.url}
-              rel={PAGE_LABELS[pageKeyFromUrl(link.url)] ? undefined : 'noreferrer'}
-              target={PAGE_LABELS[pageKeyFromUrl(link.url)] ? undefined : '_blank'}
+              href={internalizeClubUrl(link.url)}
+              {...externalLinkProps(internalizeClubUrl(link.url))}
             >
               {link.label}
             </a>
@@ -158,10 +190,9 @@ function ClubUtilityBar() {
         </nav>
         <div className="club-utility-actions">
           <a className="club-utility-analysis" href="#/analise">
-            <Activity size={14} />
             <span>Ambiente de Análises</span>
           </a>
-          <a href={clubSiteData.registration.url} target="_blank" rel="noreferrer">Matrícula Escolinha</a>
+          <a href={pageUrl('matricula')}>Matrícula Escolinha</a>
         </div>
       </div>
     </div>
@@ -169,37 +200,87 @@ function ClubUtilityBar() {
 }
 
 function ClubHeader({ activePage, links }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const primaryPages = new Set(['home', 'atletas', 'jogos', 'campeonatos', 'ranking']);
+  const primaryLinks = links.filter((link) => primaryPages.has(link.page));
+  const moreLinks = links.filter((link) => !primaryPages.has(link.page));
+
   return (
     <header className="club-header">
       <div className="club-header-inner">
-        <a className="club-brand" href={pageUrl('home')}>
+        <motion.a className="club-brand" href={pageUrl('home')} whileTap={{ scale: 0.98 }}>
           <img src={suzanoLogo} alt="AD Suzano" />
           <div>
             <strong>AD Suzano</strong>
             <span>Site Oficial • Futsal</span>
           </div>
-        </a>
-        <nav className="club-main-nav">
-          {links.map((link) => (
-            <a
+        </motion.a>
+        <button
+          className="club-menu-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="club-main-navigation"
+          aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+          onClick={() => {
+            setMenuOpen((open) => !open);
+            setMoreOpen(false);
+          }}
+        >
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          <span>Menu</span>
+        </button>
+        <nav id="club-main-navigation" className={`club-main-nav ${menuOpen ? 'is-open' : ''}`}>
+          {primaryLinks.map((link) => (
+            <motion.a
               className={activePage === link.page ? 'active' : ''}
-              href={link.page === 'matricula' ? link.url : pageUrl(link.page)}
+              href={pageUrl(link.page)}
               key={link.label}
-              rel={link.page === 'matricula' ? 'noreferrer' : undefined}
-              target={link.page === 'matricula' ? '_blank' : undefined}
+              onClick={() => {
+                setMenuOpen(false);
+                setMoreOpen(false);
+              }}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.96 }}
             >
               {link.label}
-            </a>
+            </motion.a>
           ))}
+          <div className="club-overflow-menu">
+            <button
+              className="club-overflow-toggle"
+              type="button"
+              aria-expanded={moreOpen}
+              aria-controls="club-overflow-navigation"
+              onClick={() => setMoreOpen((open) => !open)}
+            >
+              <Menu size={18} />
+              <span>Mais</span>
+            </button>
+            <div id="club-overflow-navigation" className={`club-more-menu-panel ${moreOpen || menuOpen ? 'is-open' : ''}`}>
+              {moreLinks.map((link) => (
+                <a
+                  className={activePage === link.page ? 'active' : ''}
+                  href={pageUrl(link.page)}
+                  key={link.label}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setMoreOpen(false);
+                  }}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </nav>
         <div className="club-header-actions">
-          <a className="club-nav-analysis-cta" href="#/analise">
-            <Activity size={16} />
+          <motion.a className="club-nav-analysis-cta" href="#/analise" whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}>
             <span>Ambiente de Análises</span>
-          </a>
-          <a className="club-search-link" href={pageUrl('pesquisar')}>
+          </motion.a>
+          <motion.a className="club-search-link" href={pageUrl('pesquisar')} aria-label="Pesquisar no site" whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }}>
             <Search size={18} />
-          </a>
+          </motion.a>
         </div>
       </div>
     </header>
@@ -209,8 +290,13 @@ function ClubHeader({ activePage, links }) {
 function ClubHomePage() {
   return (
     <div className="club-page">
-      <section className="club-home-hero">
-        <div className="club-hero-left">
+      <motion.section
+        className="club-home-hero"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+      >
+        <motion.div className="club-hero-left" initial={{ opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.5 }}>
           <div className="club-hero-badge">
             <Shield size={16} />
             <span>Associação Desportiva Suzano • Futsal Paulista A2</span>
@@ -221,21 +307,21 @@ function ClubHomePage() {
             conheça nossa comissão técnica, elencos de base e escolinha oficial de futsal.
           </p>
           <div className="club-home-actions">
-            <a className="club-analysis-hero-btn" href="#/analise">
-              <Activity size={20} />
+            <motion.a className="club-analysis-hero-btn" href="#/analise" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
+              <BarChart3 size={19} />
               <span>Ambiente de Análises Táticas</span>
-            </a>
-            <a className="club-primary-cta" href={pageUrl('atletas')}>
+            </motion.a>
+            <motion.a className="club-primary-cta" href={pageUrl('atletas')} whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
               <Users size={18} />
               <span>Ver Elencos</span>
-            </a>
-            <a className="club-secondary-cta" href={clubSiteData.registration.url} target="_blank" rel="noreferrer">
+            </motion.a>
+            <motion.a className="club-secondary-cta" href={pageUrl('matricula')} whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
               <Medal size={18} />
               <span>Escolinha de Futsal</span>
-            </a>
+            </motion.a>
           </div>
-        </div>
-        <div className="club-highlight-card">
+        </motion.div>
+        <motion.div className="club-highlight-card" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
           <div className="club-crest-showcase">
             <img src={suzanoLogo} alt="AD Suzano Futsal Crest" />
           </div>
@@ -243,12 +329,12 @@ function ClubHomePage() {
           <p>
             Representando o município de Suzano com excelência, ética esportiva e compromisso com o desenvolvimento de atletas desde a Iniciação até a Base.
           </p>
-          <a className="club-analysis-link-card" href="#/analise">
+          <motion.a className="club-analysis-link-card" href="#/analise" whileHover={{ x: 4 }}>
             <span>Acessar Painel de Jogos e Tabelas FPFS</span>
             <ArrowRight size={16} />
-          </a>
-        </div>
-      </section>
+          </motion.a>
+        </motion.div>
+      </motion.section>
 
       <section className="club-stats-strip">
         <div className="club-stat-box">
@@ -348,7 +434,7 @@ function ClubHomePage() {
       >
         <div className="club-card-grid">
           {clubSiteData.home.videos.map((item) => (
-            <a className="club-media-card" href={item.url} key={item.url} target="_blank" rel="noreferrer">
+            <a className="club-media-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
               <PlayCircle size={18} />
               <strong>{item.title}</strong>
             </a>
@@ -364,7 +450,7 @@ function ClubHomePage() {
       >
         <div className="club-card-grid">
           {clubSiteData.home.photos.map((item) => (
-            <a className="club-media-card" href={item.url} key={item.url} target="_blank" rel="noreferrer">
+            <a className="club-media-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
               <ImageIcon size={18} />
               <strong>{item.title}</strong>
             </a>
@@ -483,7 +569,7 @@ function ClubMediaPage({ title, icon: Icon, items }) {
       <ClubIntroCard eyebrow={title} title={title} subtitle="Conteúdo espelhado do site institucional atual." />
       <div className="club-card-grid">
         {items.map((item) => (
-          <a className="club-media-card" href={item.url} key={item.url} target="_blank" rel="noreferrer">
+          <a className="club-media-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
             <Icon size={18} />
             <strong>{item.title}</strong>
           </a>
@@ -493,17 +579,85 @@ function ClubMediaPage({ title, icon: Icon, items }) {
   );
 }
 
+function ClubContentDetailPage({ title, icon: Icon, item, backPath }) {
+  if (!item) {
+    return <ClubEmptyPage icon={Icon} title={`${title} não encontrado`} text="Este conteúdo não está disponível na base sincronizada." />;
+  }
+
+  const youtubeSearch = `https://www.youtube.com/results?search_query=${encodeURIComponent(`AD Suzano ${item.title}`)}`;
+  return (
+    <div className="club-page">
+      <div className="club-breadcrumb-inline">
+        <a href={pageUrl(backPath)}><ArrowLeft size={16} />Voltar para {backPath}</a>
+      </div>
+      <article className="club-surface club-content-detail">
+        <Icon size={24} />
+        <span>{title}</span>
+        <h1>{item.title}</h1>
+        {title === 'Vídeo' ? (
+          <a className="club-primary-cta" href={youtubeSearch} target="_blank" rel="noreferrer"><PlayCircle size={18} />Procurar vídeo no YouTube</a>
+        ) : (
+          <p>Registro sincronizado da galeria institucional da AD Suzano.</p>
+        )}
+      </article>
+    </div>
+  );
+}
+
+function ClubListDetailPage({ title, item, backPath }) {
+  if (!item) {
+    return <ClubEmptyPage icon={CalendarDays} title={`${title} não encontrado`} text="Este registro não está disponível na base sincronizada." />;
+  }
+
+  return (
+    <div className="club-page">
+      <div className="club-breadcrumb-inline">
+        <a href={pageUrl(backPath)}><ArrowLeft size={16} />Voltar para {backPath}</a>
+      </div>
+      <article className="club-surface club-content-detail">
+        <CalendarDays size={24} />
+        <span>{item.status || item.tag || title}</span>
+        <h1>{item.raw || item.title || title}</h1>
+        <a className="club-primary-cta" href="#/analise"><BarChart3 size={18} />Ver dados no ambiente de análises</a>
+      </article>
+    </div>
+  );
+}
+
 function ClubContactPage() {
+  const [feedback, setFeedback] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const fields = clubSiteData.contact.fields;
+    const missingField = fields.find((field) => !String(formData.get(field) ?? '').trim());
+    if (missingField) {
+      setFeedback(`Preencha o campo “${missingField}” para continuar.`);
+      return;
+    }
+
+    const message = [
+      `Olá, AD Suzano! Meu nome é ${formData.get('Nome Completo')}.`,
+      `E-mail: ${formData.get('E-mail')}`,
+      `WhatsApp: ${formData.get('WhatsApp')}`,
+      `Mensagem: ${formData.get('Sua Mensagem')}`,
+    ].join('\n');
+    setFeedback('Mensagem preparada. O WhatsApp oficial será aberto em uma nova aba.');
+    window.open(`https://wa.me/5511982070735?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="club-page">
       <ClubIntroCard eyebrow="Contato" title="Envie uma mensagem" subtitle="Estrutura visual pronta para integração com formulário real." />
-      <form className="club-contact-form" onSubmit={(event) => event.preventDefault()}>
+      <form className="club-contact-form" onSubmit={handleSubmit}>
         {clubSiteData.contact.fields.map((field) => (
           <label key={field}>
             <span>{field} *</span>
-            {field === 'Sua Mensagem' ? <textarea rows={6} placeholder="Mensagem..." /> : <input placeholder={field} />}
+            {field === 'Sua Mensagem' ? <textarea name={field} rows={6} placeholder="Mensagem..." /> : <input name={field} placeholder={field} type={field === 'E-mail' ? 'email' : 'text'} />}
           </label>
         ))}
+        {feedback && <p className="club-form-feedback" role="status">{feedback}</p>}
         <button type="submit">
           <Mail size={18} />
           {clubSiteData.contact.buttonLabel}
@@ -514,16 +668,35 @@ function ClubContactPage() {
 }
 
 function ClubSearchPage() {
+  const [query, setQuery] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
+  const searchableItems = useMemo(() => [
+    ...Object.entries(PAGE_LABELS).map(([page, label]) => ({ label, href: pageUrl(page), type: 'Página' })),
+    ...clubSiteData.home.videos.map((item) => ({ label: item.title, href: internalizeClubUrl(item.url), type: 'Vídeo' })),
+    ...clubSiteData.home.photos.map((item) => ({ label: item.title, href: internalizeClubUrl(item.url), type: 'Foto' })),
+  ], []);
+  const results = searchableItems.filter((item) => item.label.toLowerCase().includes(query.trim().toLowerCase()));
+
   return (
     <div className="club-page">
       <ClubIntroCard eyebrow="Pesquisar" title="Busca institucional" subtitle="Página espelhada com campo pronto para futura indexação." />
-      <div className="club-search-panel">
-        <input placeholder={clubSiteData.search.placeholder} />
-        <button type="button">
+      <form className="club-search-panel" onSubmit={(event) => { event.preventDefault(); setHasSearched(true); }}>
+        <input aria-label="Termo de busca" placeholder={clubSiteData.search.placeholder} value={query} onChange={(event) => { setQuery(event.target.value); setHasSearched(false); }} />
+        <button type="submit">
           <Search size={18} />
           Buscar
         </button>
-      </div>
+        {hasSearched && (
+          <div className="club-search-results" aria-live="polite">
+            {results.length ? results.map((item) => (
+              <a href={item.href} key={`${item.type}-${item.label}`} target={item.href.startsWith('#') ? undefined : '_blank'} rel={item.href.startsWith('#') ? undefined : 'noreferrer'}>
+                <span>{item.type}</span>
+                <strong>{item.label}</strong>
+              </a>
+            )) : <p>Nenhum resultado encontrado para “{query}”.</p>}
+          </div>
+        )}
+      </form>
     </div>
   );
 }
@@ -531,14 +704,13 @@ function ClubSearchPage() {
 function ClubRegistrationPage() {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Matrícula" title="Pré-matrícula" subtitle="Fluxo externo mantido como no site atual." />
+      <ClubIntroCard eyebrow="Matrícula" title="Pré-matrícula" subtitle="Fale diretamente com a equipe responsável pela Escolinha AD Suzano." />
       <div className="club-surface club-cta-block">
         <p>
-          O site institucional atual envia a matrícula para um fluxo externo.
-          Mantivemos esse comportamento e deixamos o ponto pronto para futura internalização.
+          Solicite informações sobre turmas, horários, categorias e documentação pelo WhatsApp oficial do clube.
         </p>
-        <a className="club-primary-cta" href={clubSiteData.registration.url} target="_blank" rel="noreferrer">
-          Abrir matrícula
+        <a className="club-primary-cta" href="https://wa.me/5511982070735?text=Ol%C3%A1%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20a%20matr%C3%ADcula%20na%20Escolinha%20AD%20Suzano." target="_blank" rel="noreferrer">
+          Solicitar matrícula pelo WhatsApp
         </a>
       </div>
     </div>
@@ -551,7 +723,7 @@ function ClubChampionshipsPage() {
       <ClubIntroCard eyebrow="Campeonatos" title="Competições cadastradas" subtitle="Espelho textual do catálogo atual do site." />
       <div className="club-card-grid">
         {clubSiteData.championships.items.map((item) => (
-          <a className="club-surface club-list-card" href={item.url} key={item.url} target="_blank" rel="noreferrer">
+          <a className="club-surface club-list-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
             <span>{item.status}</span>
             <strong>{item.raw}</strong>
           </a>
@@ -567,7 +739,7 @@ function ClubGamesPage() {
       <ClubIntroCard eyebrow="Jogos" title="Agenda esportiva" subtitle="Lista sincronizada a partir do espelho institucional atual." />
       <div className="club-card-grid">
         {clubSiteData.games.items.map((item) => (
-          <a className="club-surface club-list-card" href={item.url} key={item.url} target="_blank" rel="noreferrer">
+          <a className="club-surface club-list-card" href={internalizeClubUrl(item.url)} key={item.url} {...externalLinkProps(internalizeClubUrl(item.url))}>
             <span>{item.tag}</span>
             <strong>{item.raw}</strong>
           </a>
@@ -748,7 +920,7 @@ function ClubFooter() {
       </div>
       <div className="club-footer-links">
         {clubSiteData.footerLinks.map((link) => (
-          <a href={link.url} key={link.label} target="_blank" rel="noreferrer">{link.label}</a>
+          <a href={internalizeClubUrl(link.url)} key={link.label} {...externalLinkProps(internalizeClubUrl(link.url))}>{link.label}</a>
         ))}
       </div>
       <div className="club-footer-social">

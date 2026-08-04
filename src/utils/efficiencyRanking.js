@@ -1,4 +1,4 @@
-import { fpfsCategories } from '../data/fpfsCategories';
+import { fpfsCategories } from '../data/fpfsCategories.js';
 
 /**
  * FPFS Ranking de Eficiência Anual (Art. 135º do Regulamento)
@@ -13,17 +13,6 @@ const ALL_LABELS = [...INITIATION_LABELS, ...BASE_LABELS];
 
 const CLUB_TEAM_NAME = 'A.D. SUZANO';
 
-const SEASON_LENGTH_BY_CATEGORY = {
-  'Sub-7': 19,
-  'Sub-8': 19,
-  'Sub-9': 19,
-  'Sub-10': 19,
-  'Sub-12': 19,
-  'Sub-14': 19,
-  'Sub-16': 19,
-  'Sub-18': 19,
-};
-
 function getRealCategoryData(label) {
   const fc = fpfsCategories.find((item) => item.category === label);
   if (!fc) return null;
@@ -33,7 +22,12 @@ function getRealCategoryData(label) {
   const ownStanding = standings.find((s) => s.team === CLUB_TEAM_NAME) || null;
   const leader = standings[0] || null;
 
-  const totalGames = SEASON_LENGTH_BY_CATEGORY[label] || record.played || 0;
+  // Chave única em turno simples: cada equipe enfrenta as demais uma vez.
+  // A quantidade muda por competição (24 equipes na Iniciação e 20 na Base),
+  // portanto não pode ser um número fixo compartilhado entre categorias.
+  const totalGames = standings.length > 1
+    ? standings.length - 1
+    : Math.max(record.played ?? 0, (record.played ?? 0) + (fc.upcomingGames?.length ?? 0));
   const played = record.played ?? 0;
   const points = record.points ?? 0;
   const goalDifference = record.goalDifference ?? 0;
@@ -154,17 +148,14 @@ function computeClubStatus(allCategoriesData, allBenchmarks) {
   };
 }
 
-// Justificativas técnicas e específicas para cada categoria
-const CATEGORY_REASONINGS = {
-  'Sub-7': 'Como o Sub-7 é a categoria com maior aproveitamento do clube (30 pts, 62.5% de eficiência), sua cota no Ranking de Eficiência é elevada para +6 pts para puxar a pontuação coletiva do AD Suzano.',
-  'Sub-8': 'O Sub-8 soma 15 pts. Para não ficar no risco do ritmo mínimo, a cota segura é de +5 pts nos jogos restantes (ex: 1 vitória e 2 empates).',
-  'Sub-9': 'O Sub-9 tem 21 pts e saldo positivo. Sua cota é de +5 pts para ajudar a construir a margem de segurança do clube.',
-  'Sub-10': 'O Sub-10 tem 18 pts em 16 jg. A cota foi fixada em +5 pts para garantir um aproveitamento mínimo de 55% nas rodadas finais.',
-  'Sub-12': 'Com 18 pts e saldo +7, o Sub-12 é um dos pilares da Base. Sua meta competitiva é de +7 pts nas partidas restantes para impulsionar o ranking.',
-  'Sub-14': 'O Sub-14 soma 14 pts. Buscar apenas +3 pts seria extremamente arriscado (apenas 1 vitória em 3 jogos). A meta foi elevada para +5 pts (ex: 1 vitória e 2 empates) para criar um colchão real de segurança contra o rebaixamento.',
-  'Sub-16': 'O Sub-16 soma 12 pts em 12 jg. A meta foi ajustada para +5 pts nos jogos finais para elevar o aproveitamento e retirar o time da margem de perigo.',
-  'Sub-18': 'O Sub-18 é uma das categorias mais consolidadas da Base (16 pts). Exigir apenas +3 ou +4 pts seria perigosamente baixo. A meta mínima foi elevada para +6 pts (2 vitórias em 3 jogos) para compensar oscilações de outras categorias e blindar o AD Suzano.',
-};
+function buildCategoryReasoning(cat, categoryMinimo) {
+  const efficiency = cat.played ? Math.round((cat.points / (cat.played * 3)) * 1000) / 10 : 0;
+  const balance = cat.goalDifference > 0 ? `+${cat.goalDifference}` : cat.goalDifference;
+  if (!cat.remainingGames) {
+    return `O ${cat.label} encerrou os ${cat.played} jogos mapeados com ${cat.points} pontos, ${efficiency}% de aproveitamento e saldo ${balance}. A cota futura é zero porque não há partidas restantes na base.`;
+  }
+  return `O ${cat.label} soma ${cat.points} pontos em ${cat.played} jogos (${efficiency}% de aproveitamento), saldo ${balance} e ainda tem ${cat.remainingGames} partida(s). A cota automática de +${categoryMinimo} pontos respeita o teto de ${cat.remainingPoints} pontos disponíveis e o piso competitivo da categoria.`;
+}
 
 export function calculateCategoryEfficiency(categoryObj) {
   const label = categoryObj?.label || 'Sub-7';
@@ -216,7 +207,7 @@ export function calculateCategoryEfficiency(categoryObj) {
   const categoryPerfeito = Math.min(cat.remainingPoints, Math.max(categoryIdeal + 1, categoryPerfeitoRaw));
 
   const winsNeededMinimo = categoryMinimo > 0 ? Math.ceil(categoryMinimo / 3) : 0;
-  const categoryReasoning = CATEGORY_REASONINGS[label] || `O ${label} soma ${cat.points} pts. A meta mínima foi calculada em +${categoryMinimo} pts para garantir margem de segurança no Ranking de Eficiência.`;
+  const categoryReasoning = buildCategoryReasoning(cat, categoryMinimo);
 
   return {
     categoryLabel: label,
