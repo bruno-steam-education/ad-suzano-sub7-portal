@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 
-const SHEET_CSV_URL = process.env.GOOGLE_SHEET_CSV_URL
-  || 'https://docs.google.com/spreadsheets/d/1UsT9l_YFngpHIdxBgtpRb5GzT6-xJAx8oB5Augw2v4Q/export?format=csv&gid=2124879471';
+const SHEET_CSV_URL = process.env.GOOGLE_SHEET_CSV_URL;
 const OUTPUT = new URL('../src/data/athleteRoster.js', import.meta.url);
 const ORDER = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 
@@ -39,10 +38,15 @@ const existingText = await fs.readFile(OUTPUT, 'utf8');
 const existing = JSON.parse(existingText.split('export const athleteRoster = ', 2)[1].replace(/;\s*$/, ''));
 const idsByName = new Map(existing.categories.flatMap((category) => category.players).map((player) => [normalize(player.name), player.url.split('/').pop()]));
 const categories = new Map(ORDER.map((label) => [label, []]));
+if (!SHEET_CSV_URL) throw new Error('Configure GOOGLE_SHEET_CSV_URL com uma aba pública sanitizada contendo somente nome, categoria e treinador.');
+const header = rows[0].map((value) => normalize(value));
+const nameColumn = header.findIndex((value) => value.includes('NOME COMPLETO DO ATLETA') || value === 'NOME');
+const categoryColumn = header.findIndex((value) => value.includes('CATEGORIA') || value === 'CATEGORIA');
+if (nameColumn < 0 || categoryColumn < 0) throw new Error('CSV da planilha precisa conter colunas Nome e Categoria.');
 let active = true;
 for (const row of rows.slice(1)) {
-  const name = String(row[1] || '').trim();
-  const rawCategory = String(row[3] || '').trim();
+  const name = String(row[nameColumn] || '').trim();
+  const rawCategory = String(row[categoryColumn] || '').trim();
   if (rawCategory.toUpperCase() === 'DESISTENTES') { active = false; continue; }
   if (!active || !name || !rawCategory) continue;
   const categoryMatch = rawCategory.match(/Sub\s*0?(\d+)/i);
