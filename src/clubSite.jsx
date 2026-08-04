@@ -1026,73 +1026,165 @@ function ClubRankingPage() {
   );
 }
 
-function ClubAthletesPage({ categories }) {
+const ATHLETE_CATEGORY_ORDER = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
+
+function normalizeAthleteCategory(label = '') {
+  return String(label).replace(/Sub-0?(\d+)/i, 'Sub-$1');
+}
+
+const ATHLETE_ATTRIBUTES = [
+  { label: 'Velocidade', short: 'VEL' },
+  { label: 'Chute', short: 'CHU' },
+  { label: 'Condução', short: 'CON' },
+  { label: 'Defesa', short: 'DEF' },
+];
+
+function AthleteCollectibleCard({ player, category, detailed = false }) {
+  const detail = player.detail ?? {};
+  const fullName = detail.name || player.name;
+  const content = (
+    <motion.article
+      className={`athlete-collectible-card ${detailed ? 'is-detailed' : ''}`}
+      whileHover={detailed ? undefined : { y: -8, rotateX: 1.5, rotateY: -1.5 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+    >
+      <div className="athlete-card-shine" aria-hidden="true" />
+      <header className="athlete-card-topline">
+        <div>
+          <span>ELENCO 2026</span>
+          <strong>{normalizeAthleteCategory(category)}</strong>
+        </div>
+        <img src={suzanoLogo} alt="" />
+      </header>
+
+      <div className="athlete-photo-placeholder" aria-label={`Espaço reservado para a foto de ${fullName}`}>
+        <Users size={detailed ? 68 : 50} />
+        <span>Foto do atleta</span>
+        <small>Aguardando envio</small>
+      </div>
+
+      <div className="athlete-card-identity">
+        <small>Nome completo</small>
+        <h2>{fullName}</h2>
+      </div>
+
+      <div className="athlete-card-bio">
+        <div><span>Idade</span><strong>{detail.age || 'Aguardando'}</strong></div>
+        <div><span>Altura</span><strong>Aguardando</strong></div>
+        <div><span>Peso</span><strong>Aguardando</strong></div>
+      </div>
+
+      <div className="athlete-card-coach">
+        <span>Treinador</span>
+        <strong>A confirmar por categoria</strong>
+      </div>
+
+      <div className="athlete-card-attributes" aria-label="Atributos técnicos aguardando dados">
+        {ATHLETE_ATTRIBUTES.map((attribute) => (
+          <div key={attribute.short} title={attribute.label}>
+            <strong>--</strong>
+            <span>{attribute.short}</span>
+          </div>
+        ))}
+      </div>
+
+      <footer>
+        <span>Perfil preparado para avaliação</span>
+        {!detailed && <ArrowRight size={16} />}
+      </footer>
+    </motion.article>
+  );
+
+  if (detailed) return content;
   return (
-    <div className="club-page">
-      <ClubIntroCard eyebrow="Atletas" title="Elenco por categoria" subtitle={`${categories.reduce((total, category) => total + category.players.length, 0)} atletas distribuídos nas categorias de iniciação e base.`} />
-      {categories.map((category) => {
-        const groups = groupPlayersByInitial(category.players);
-        return (
-          <section className="club-athlete-category" key={category.label}>
-            <div className="club-athlete-category-head">
-              <h2>{category.label}</h2>
+    <a className="athlete-card-link" href={pageUrl(`atletas/${athleteIdFromUrl(player.url)}`)} aria-label={`Abrir perfil de ${fullName}`}>
+      {content}
+    </a>
+  );
+}
+
+function ClubAthletesPage({ categories }) {
+  const orderedCategories = [...categories].sort((a, b) => (
+    ATHLETE_CATEGORY_ORDER.indexOf(normalizeAthleteCategory(a.label)) - ATHLETE_CATEGORY_ORDER.indexOf(normalizeAthleteCategory(b.label))
+  ));
+  const [activeCategory, setActiveCategory] = useState(normalizeAthleteCategory(orderedCategories[0]?.label));
+  const selectedCategory = orderedCategories.find((category) => normalizeAthleteCategory(category.label) === activeCategory) ?? orderedCategories[0];
+  const athleteCount = categories.reduce((total, category) => total + category.players.length, 0);
+
+  return (
+    <div className="club-page athlete-gallery-page">
+      <section className="athlete-gallery-hero">
+        <div>
+          <span>ELENCO AD SUZANO · TEMPORADA 2026</span>
+          <h1>Galeria de Atletas</h1>
+          <p>{athleteCount} perfis organizados por categoria. Fotos, medidas e atributos técnicos serão incorporados conforme a comissão enviar os dados.</p>
+        </div>
+        <div className="athlete-gallery-hero-mark">
+          <strong>{selectedCategory?.players.length ?? 0}</strong>
+          <span>atletas no {activeCategory}</span>
+        </div>
+      </section>
+
+      <nav className="athlete-category-tabs" aria-label="Categorias de atletas" role="tablist">
+        {orderedCategories.map((category) => {
+          const label = normalizeAthleteCategory(category.label);
+          const selected = activeCategory === label;
+          return (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              className={selected ? 'is-active' : ''}
+              onClick={() => setActiveCategory(label)}
+              key={category.label}
+            >
+              <strong>{label}</strong>
               <span>{category.players.length} atletas</span>
-            </div>
-            <div className="club-athlete-alpha">
-              {Object.entries(groups).map(([letter, players]) => (
-                <article className="club-surface club-alpha-group" key={letter}>
-                  <strong>{letter}</strong>
-                  <div className="club-chip-wrap">
-                    {players.map((player) => (
-                      <a href={pageUrl(`atletas/${athleteIdFromUrl(player.url)}`)} key={player.url}>
-                        {player.name}
-                      </a>
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+            </button>
+          );
+        })}
+      </nav>
+
+      <section className="athlete-card-section" role="tabpanel" aria-label={`Atletas ${activeCategory}`}>
+        <div className="athlete-card-section-head">
+          <div><span>Categoria selecionada</span><h2>{activeCategory}</h2></div>
+          <p>Selecione um card para abrir a ficha individual.</p>
+        </div>
+        <div className="athlete-collectible-grid">
+          {selectedCategory?.players.map((player, index) => (
+            <motion.div key={player.url} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.025, 0.3) }}>
+              <AthleteCollectibleCard player={player} category={selectedCategory.label} />
+            </motion.div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
 
 function ClubAthleteDetailPage({ player }) {
-  const detail = player.detail;
-
+  const fullName = player.detail?.name || player.name;
   return (
-    <div className="club-page">
+    <div className="club-page athlete-profile-page">
       <div className="club-breadcrumb-inline">
-        <a href={pageUrl('atletas')}>
-          <ArrowLeft size={16} />
-          Voltar para atletas
-        </a>
+        <a href={pageUrl('atletas')}><ArrowLeft size={16} />Voltar para a galeria</a>
       </div>
-      <section className="club-athlete-detail">
-        <article className="club-surface club-athlete-hero">
-          <div>
-            <span>{player.category}</span>
-            <h1>{player.name}</h1>
-            <p>{detail?.age ? `Idade: ${detail.age}` : 'Perfil individual espelhado do site institucional.'}</p>
+      <section className="athlete-profile-layout">
+        <AthleteCollectibleCard player={player} category={player.category} detailed />
+        <article className="athlete-profile-notes">
+          <span>FICHA INDIVIDUAL</span>
+          <h1>{fullName}</h1>
+          <p>O perfil já está estruturado para receber a fotografia oficial, idade, altura, peso, treinador e avaliações técnicas.</p>
+          <div className="athlete-profile-checklist">
+            <div><CheckCircle2 size={18} /><span>Nome completo e categoria cadastrados</span></div>
+            <div><Clock3 size={18} /><span>Foto oficial aguardando envio</span></div>
+            <div><Clock3 size={18} /><span>Dados físicos aguardando envio</span></div>
+            <div><Clock3 size={18} /><span>Velocidade, chute, condução e defesa aguardando avaliação</span></div>
           </div>
-          {detail?.image ? <img src={detail.image} alt={player.name} /> : <img src={suzanoLogo} alt="AD Suzano" />}
-        </article>
-        <article className="club-surface">
-          <h2>Estatísticas</h2>
-          {detail?.stats?.length ? (
-            <div className="club-stat-grid">
-              {detail.stats.map((stat) => (
-                <div key={stat.label}>
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="club-empty-text">Nenhuma estatística disponível no espelho atual.</p>
-          )}
+          <div className="athlete-profile-status">
+            <strong>Perfil em preparação</strong>
+            <span>Nenhum valor técnico será publicado antes da confirmação da comissão.</span>
+          </div>
         </article>
       </section>
     </div>
