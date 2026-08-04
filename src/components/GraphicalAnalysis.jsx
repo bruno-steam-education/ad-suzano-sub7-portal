@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Activity, Bot, CheckCircle2, Database, Info, TrendingUp } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { buildAnalyticsSnapshot } from '../utils/analyticsRobots';
+import { YouthDevelopmentAgent } from './YouthDevelopmentAgent';
 
 const formatDate = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' });
 const formatSync = new Intl.DateTimeFormat('pt-BR', {
@@ -251,6 +252,7 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
         <CheckCircle2 size={16} />
         <span><strong>Fórmula conferida:</strong> pontos = 3×vitórias + empates; aproveitamento = pontos ÷ (jogos × 3). O total geral usa os jogos como peso.</span>
       </footer>
+      <YouthDevelopmentAgent analytics={selectedAnalytics} reduceMotion={reduceMotion} />
     </motion.section>
   );
 }

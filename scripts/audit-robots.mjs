@@ -1,5 +1,5 @@
 import { fpfsCategories } from '../src/data/fpfsCategories.js';
-import { buildAnalyticsSnapshot, deriveRecordFromGames } from '../src/utils/analyticsRobots.js';
+import { buildAnalyticsSnapshot, buildYouthDevelopmentAgent, deriveRecordFromGames } from '../src/utils/analyticsRobots.js';
 
 const requiredCategories = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 const fields = ['played', 'wins', 'draws', 'losses', 'goalsFor', 'goalsAgainst', 'points', 'goalDifference'];
@@ -55,6 +55,13 @@ for (const categoryName of requiredCategories) {
 }
 
 const snapshot = buildAnalyticsSnapshot(fpfsCategories);
+for (const category of snapshot.categories) {
+  const agent = buildYouthDevelopmentAgent(category);
+  const countedGames = agent.form.wins + agent.form.draws + agent.form.losses;
+  if (countedGames !== agent.sampleSize) problems.push(`${category.category}: agente contou ${countedGames} resultados em amostra de ${agent.sampleSize}.`);
+  if (agent.lowerRankedLosses > agent.form.losses) problems.push(`${category.category}: derrotas para inferiores excedem o total de derrotas.`);
+  if (agent.attentionCards.length !== 3) problems.push(`${category.category}: agente deve entregar três dimensões de atenção.`);
+}
 const points = fpfsCategories.reduce((sum, category) => sum + category.record.points, 0);
 const played = fpfsCategories.reduce((sum, category) => sum + category.record.played, 0);
 const expectedEfficiency = played ? Math.round((points / (played * 3)) * 1000) / 10 : 0;

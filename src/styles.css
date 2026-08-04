@@ -4848,8 +4848,115 @@ input {
 .analysis-method-note svg { flex: 0 0 auto; margin-top: 2px; color: #45d99a; }
 .analysis-method-note strong { color: #fff; }
 
+.youth-agent {
+  margin-top: 26px;
+  padding: 24px;
+  color: #dce7fa;
+  background: #0b2551;
+  border: 1px solid rgba(128, 165, 225, 0.24);
+  border-radius: 10px;
+}
+
+.youth-agent-header,
+.youth-agent-title-group,
+.youth-agent-kicker,
+.agent-evidence-title,
+.agent-safety-note,
+.agent-card-label,
+.agent-attention-card li,
+.agent-evidence-box li {
+  display: flex;
+  align-items: flex-start;
+}
+
+.youth-agent-header { justify-content: space-between; gap: 22px; }
+.youth-agent-title-group { gap: 13px; }
+.youth-agent-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff;
+  background: #e52334;
+  border-radius: 8px;
+  box-shadow: 0 9px 24px rgba(229, 35, 52, 0.24);
+}
+.youth-agent-kicker { gap: 6px; color: #ff7a85; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+.youth-agent-header h3 { margin: 6px 0 3px; color: #fff; font-size: clamp(1.2rem, 2.1vw, 1.65rem); }
+.youth-agent-header p { margin: 0; color: #9fb3d4; font-size: 0.82rem; line-height: 1.5; }
+
+.agent-confidence {
+  min-width: 176px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+}
+.agent-confidence span, .agent-confidence strong, .agent-confidence small { display: block; }
+.agent-confidence span { color: #91a7ca; font-size: 0.64rem; font-weight: 800; text-transform: uppercase; }
+.agent-confidence strong { margin: 4px 0 2px; color: #64e0ac; font-size: 1rem; text-transform: capitalize; }
+.agent-confidence small { color: #9fb3d4; font-size: 0.7rem; }
+
+.agent-form-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px 0;
+}
+.agent-form-badge { padding: 12px; background: #081e46; border: 1px solid rgba(139, 170, 220, 0.18); border-radius: 7px; }
+.agent-form-badge strong, .agent-form-badge span { display: block; }
+.agent-form-badge strong { color: #fff; font-size: 1.1rem; }
+.agent-form-badge span { margin-top: 3px; color: #91a7ca; font-size: 0.64rem; font-weight: 800; text-transform: uppercase; }
+.agent-form-badge.win { box-shadow: inset 3px 0 #55c79a; }
+.agent-form-badge.draw { box-shadow: inset 3px 0 #92a5c4; }
+.agent-form-badge.loss { box-shadow: inset 3px 0 #ef5360; }
+.agent-form-badge.points, .agent-form-badge.goals { box-shadow: inset 3px 0 #4d80dc; }
+
+.agent-evidence-box {
+  padding: 18px;
+  color: #c8d5e9;
+  background: #071b3f;
+  border-left: 3px solid #4d80dc;
+  border-radius: 6px;
+}
+.agent-evidence-title { gap: 8px; color: #fff; }
+.agent-evidence-title svg { color: #6f9bea; }
+.agent-evidence-box p { margin: 10px 0; line-height: 1.55; }
+.agent-evidence-box ul, .agent-attention-card ul { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.agent-evidence-box li { gap: 6px; color: #9fb3d4; font-size: 0.76rem; line-height: 1.45; }
+.agent-evidence-box li svg { flex: 0 0 auto; margin-top: 2px; color: #ef5360; }
+
+.agent-attention-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.agent-attention-card { padding: 18px; background: #f7f9fd; border-top: 3px solid #5477b2; border-radius: 7px; color: #31445f; }
+.agent-attention-card.attention { border-top-color: #e52334; }
+.agent-card-label { gap: 6px; color: #d52232; font-size: 0.66rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.agent-attention-card.develop .agent-card-label, .agent-attention-card.context .agent-card-label, .agent-attention-card.stable .agent-card-label { color: #285b9f; }
+.agent-attention-card h4 { margin: 9px 0 7px; color: #0a285a; font-size: 1rem; line-height: 1.25; }
+.agent-attention-card p { min-height: 92px; margin: 0 0 14px; color: #536783; font-size: 0.77rem; line-height: 1.55; }
+.agent-actions-title { display: block; margin-bottom: 8px; color: #203959; font-size: 0.68rem; text-transform: uppercase; }
+.agent-attention-card li { gap: 7px; color: #4d617c; font-size: 0.72rem; line-height: 1.45; }
+.agent-attention-card li svg { flex: 0 0 auto; margin-top: 2px; color: #2d8f69; }
+
+.agent-safety-note { gap: 10px; margin-top: 12px; padding: 14px 16px; background: rgba(57, 194, 143, 0.08); border: 1px solid rgba(77, 207, 158, 0.19); border-radius: 7px; }
+.agent-safety-note svg { flex: 0 0 auto; color: #54d69f; }
+.agent-safety-note strong { color: #fff; font-size: 0.78rem; }
+.agent-safety-note p { margin: 3px 0 0; color: #a9bcda; font-size: 0.73rem; line-height: 1.5; }
+
+.agent-research { margin-top: 12px; border-top: 1px solid rgba(148, 175, 216, 0.16); }
+.agent-research summary { padding: 15px 2px 4px; color: #dbe7fa; font-size: 0.75rem; font-weight: 850; cursor: pointer; }
+.agent-research-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 10px; }
+.agent-research-grid a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; color: #dbe7fa; background: #071b3f; border: 1px solid rgba(148, 175, 216, 0.15); border-radius: 6px; text-decoration: none; }
+.agent-research-grid a:hover { border-color: #6c98e4; }
+.agent-research-grid strong, .agent-research-grid small { display: block; }
+.agent-research-grid strong { font-size: 0.73rem; }
+.agent-research-grid small { margin-top: 3px; color: #8ea5c9; font-size: 0.66rem; line-height: 1.35; }
+.agent-research-grid svg { flex: 0 0 auto; color: #ff6c78; }
+
 @media (max-width: 980px) {
   .analytics-robot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .agent-attention-grid { grid-template-columns: 1fr; }
+  .agent-attention-card p { min-height: 0; }
 }
 
 @media (max-width: 680px) {
@@ -4867,6 +4974,12 @@ input {
   .chart-summary { margin-top: 14px; text-align: left; }
   .campaign-chart { width: auto; }
   .chart-legend { display: grid; }
+  .youth-agent { padding: 18px 13px; }
+  .youth-agent-header { display: block; }
+  .agent-confidence { width: 100%; margin-top: 14px; }
+  .agent-form-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .agent-form-badge:last-child { grid-column: span 2; }
+  .agent-research-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
