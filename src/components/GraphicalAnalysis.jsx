@@ -12,6 +12,7 @@ const formatSync = new Intl.DateTimeFormat('pt-BR', {
   minute: '2-digit',
   timeZone: 'America/Sao_Paulo',
 });
+const RECORD_FIELDS = ['played', 'wins', 'draws', 'losses', 'goalsFor', 'goalsAgainst', 'points'];
 
 function signed(value) {
   return Number(value) > 0 ? `+${value}` : String(value ?? 0);
@@ -19,6 +20,33 @@ function signed(value) {
 
 function percent(value) {
   return `${String(value ?? 0).replace('.', ',')}%`;
+}
+
+function mergeCompetitionCategories(primary = [], secondary = []) {
+  const labels = [...new Set([...primary, ...secondary].map((category) => category.category))];
+  return labels.map((label) => {
+    const sources = [primary.find((category) => category.category === label), secondary.find((category) => category.category === label)].filter(Boolean);
+    const record = Object.fromEntries(RECORD_FIELDS.map((field) => [
+      field,
+      sources.reduce((sum, category) => sum + Number(category.record?.[field] ?? 0), 0),
+    ]));
+    record.goalDifference = record.goalsFor - record.goalsAgainst;
+    const playedGames = sources
+      .flatMap((category) => category.playedGames ?? [])
+      .sort((a, b) => `${a.date} ${a.time ?? ''}`.localeCompare(`${b.date} ${b.time ?? ''}`));
+    const checkedAt = sources.map((category) => category.checkedAt).filter(Boolean).sort().at(-1) ?? null;
+    return {
+      category: label,
+      competition: 'Consolidado 2026',
+      record,
+      playedGames,
+      recentGames: playedGames.slice(-5),
+      upcomingGames: sources.flatMap((category) => category.upcomingGames ?? []),
+      standings: [],
+      source: 'FPFS + Liga da Juventude',
+      checkedAt,
+    };
+  });
 }
 
 function CampaignChart({ analytics, reduceMotion }) {
@@ -111,7 +139,7 @@ function CampaignChart({ analytics, reduceMotion }) {
             viewport={{ once: true }}
             transition={{ delay: Math.min(0.35 + index * 0.025, 0.7) }}
           >
-            <title>{`Rodada ${round.round}: ${round.points} ponto(s), ${round.goalsFor} x ${round.goalsAgainst} contra ${round.opponent}`}</title>
+            <title>{`Rodada ${round.round}: ${round.points} ponto(s), ${round.scoreLabel ?? `${round.goalsFor} x ${round.goalsAgainst}`} contra ${round.opponent}`}</title>
           </motion.circle>
         ))}
         <text x={width / 2} y="314" textAnchor="middle" className="chart-axis-title chart-x-axis-title">
@@ -122,14 +150,47 @@ function CampaignChart({ analytics, reduceMotion }) {
   );
 }
 
-export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
-  const snapshot = useMemo(() => buildAnalyticsSnapshot(categories), [categories]);
+export function GraphicalAnalysis({ categories, youthCategories = [], youthCompetition, activeCategoryLabel }) {
+  const competitionSets = useMemo(() => ([
+    {
+      id: 'combined',
+      label: 'Consolidado 2026',
+      shortLabel: 'Consolidado',
+      source: 'FPFS + Liga da Juventude',
+      categories: mergeCompetitionCategories(categories, youthCategories),
+    },
+    {
+      id: 'paulista',
+      label: 'Campeonato Paulista A2',
+      shortLabel: 'Paulista A2',
+      source: 'FPFS Súmula Online',
+      categories,
+    },
+    {
+      id: 'youth',
+      label: 'Copa da Juventude Gold 2026',
+      shortLabel: 'Copa da Juventude',
+      source: 'Liga da Juventude Oficial',
+      categories: youthCategories,
+      status: youthCompetition?.status,
+      url: youthCompetition?.url,
+    },
+  ]), [categories, youthCategories, youthCompetition]);
+  const [competitionId, setCompetitionId] = useState('combined');
+  const competition = competitionSets.find((item) => item.id === competitionId) ?? competitionSets[0];
+  const snapshot = useMemo(() => buildAnalyticsSnapshot(competition.categories), [competition.categories]);
   const [selected, setSelected] = useState(activeCategoryLabel ?? snapshot.categories[0]?.category);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (activeCategoryLabel) setSelected(activeCategoryLabel);
   }, [activeCategoryLabel]);
+
+  useEffect(() => {
+    if (!snapshot.categories.some((category) => category.category === selected)) {
+      setSelected(snapshot.categories[0]?.category);
+    }
+  }, [selected, snapshot.categories]);
 
   const selectedAnalytics = snapshot.categories.find((category) => category.category === selected)
     ?? snapshot.categories[0];
@@ -151,7 +212,7 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
         <div>
           <span className="analysis-kicker"><Activity size={15} /> Análise gráfica</span>
           <h2>Campanha calculada jogo a jogo</h2>
-          <p>Tabela exata, evolução por rodada e conferência automática da base FPFS.</p>
+          <p>Paulista e Copa da Juventude separados, com visão consolidada e conferência automática das fontes oficiais.</p>
         </div>
         <div className={`robot-status ${snapshot.audit.status}`}>
           <span className="robot-pulse" />
@@ -162,10 +223,29 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
         </div>
       </header>
 
+      <div className="competition-switcher" role="tablist" aria-label="Selecionar competição da análise">
+        {competitionSets.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={item.id === competitionId}
+            className={item.id === competitionId ? 'active' : ''}
+            onClick={() => setCompetitionId(item.id)}
+          >
+            <span>{item.shortLabel}</span>
+            <small>{item.id === 'youth' && item.status ? item.status : item.source}</small>
+          </button>
+        ))}
+        {competition.url ? (
+          <a href={competition.url} target="_blank" rel="noreferrer">Abrir fonte oficial</a>
+        ) : null}
+      </div>
+
       <div className="analytics-robot-grid">
         <motion.article whileHover={reduceMotion ? undefined : { y: -3 }} className="robot-card">
           <Bot size={21} />
-          <div><span>Robô de campanha</span><strong>{snapshot.totals.points} pontos</strong><small>{snapshot.totals.played} jogos processados</small></div>
+          <div><span>Robô de campanha</span><strong>{snapshot.totals.points} pontos</strong><small>{snapshot.totals.played} jogos · {competition.shortLabel}</small></div>
         </motion.article>
         <motion.article whileHover={reduceMotion ? undefined : { y: -3 }} className="robot-card">
           <TrendingUp size={21} />
@@ -177,16 +257,16 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
         </motion.article>
         <motion.article whileHover={reduceMotion ? undefined : { y: -3 }} className="robot-card verified">
           <CheckCircle2 size={21} />
-          <div><span>Última sincronização</span><strong>{syncLabel}</strong><small>fonte FPFS</small></div>
+          <div><span>Última sincronização</span><strong>{syncLabel}</strong><small>{competition.source}</small></div>
         </motion.article>
       </div>
 
       <div className="campaign-table-wrap">
         <table className="campaign-table">
-          <caption>Desempenho oficial por categoria</caption>
+          <caption>Desempenho oficial por categoria · {competition.label}</caption>
           <thead>
             <tr>
-              <th>Categoria</th><th>PTS</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>Pos.</th><th>Aprov.</th>
+              <th>Categoria</th><th>PTS</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>Pos. 1ª fase</th><th>Aprov.</th>
             </tr>
           </thead>
           <tbody>
@@ -216,7 +296,7 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
       <div className="chart-panel">
         <div className="chart-panel-head">
           <div>
-            <span>Evolução rodada a rodada</span>
+            <span>Evolução jogo a jogo · {competition.shortLabel}</span>
             <h3>{selectedAnalytics.category} · pontos obtidos por partida</h3>
             <p className="chart-explainer">Cada coluna é uma partida: 3 pontos = vitória, 1 = empate e 0 = derrota.</p>
           </div>
@@ -250,7 +330,7 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
 
       <footer className="analysis-method-note">
         <CheckCircle2 size={16} />
-        <span><strong>Fórmula conferida:</strong> pontos = 3×vitórias + empates; aproveitamento = pontos ÷ (jogos × 3). O total geral usa os jogos como peso.</span>
+        <span><strong>Fórmula conferida:</strong> pontos = 3×vitórias + empates; aproveitamento = pontos ÷ (jogos × 3). O consolidado soma jogos, pontos e gols das duas competições. Na Copa, a posição exibida é a da primeira fase; W.O. conta como jogo, vitória e pontos, sem inventar gols.</span>
       </footer>
       <YouthDevelopmentAgent analytics={selectedAnalytics} reduceMotion={reduceMotion} />
     </motion.section>

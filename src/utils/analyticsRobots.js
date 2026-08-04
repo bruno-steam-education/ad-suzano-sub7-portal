@@ -35,10 +35,20 @@ export function efficiencyPercent(points, played, precision = 1) {
 
 export function deriveRecordFromGames(games = []) {
   const record = games.reduce((total, game) => {
-    if (!isFiniteNumber(game.homeGoals) || !isFiniteNumber(game.awayGoals)) return total;
     const home = isSuzano(game.home);
     const away = isSuzano(game.away);
     if (!home && !away) return total;
+
+    if (!isFiniteNumber(game.homeGoals) || !isFiniteNumber(game.awayGoals)) {
+      if (!isFiniteNumber(game.suzanoPoints)) return total;
+      const points = Number(game.suzanoPoints);
+      total.played += 1;
+      total.wins += points === 3 ? 1 : 0;
+      total.draws += points === 1 ? 1 : 0;
+      total.losses += points === 0 ? 1 : 0;
+      total.points += points;
+      return total;
+    }
 
     const goalsFor = Number(home ? game.homeGoals : game.awayGoals);
     const goalsAgainst = Number(home ? game.awayGoals : game.homeGoals);
@@ -86,7 +96,10 @@ function compareRecords(source = {}, derived = {}) {
 
 export function buildCategoryAnalytics(category = {}) {
   const games = campaignGames(category)
-    .filter((game) => isFiniteNumber(game.homeGoals) && isFiniteNumber(game.awayGoals))
+    .filter((game) => (
+      (isFiniteNumber(game.homeGoals) && isFiniteNumber(game.awayGoals))
+      || isFiniteNumber(game.suzanoPoints)
+    ))
     .sort((a, b) => `${a.date} ${a.time ?? ''}`.localeCompare(`${b.date} ${b.time ?? ''}`));
   const derived = deriveRecordFromGames(games);
   const source = category.record ?? {};
@@ -104,9 +117,12 @@ export function buildCategoryAnalytics(category = {}) {
     const home = isSuzano(game.home);
     const opponent = home ? game.away : game.home;
     const opponentStanding = standingsByTeam.get(teamKey(opponent));
-    const goalsFor = Number(home ? game.homeGoals : game.awayGoals);
-    const goalsAgainst = Number(home ? game.awayGoals : game.homeGoals);
-    const points = pointsFromResult(goalsFor, goalsAgainst);
+    const hasScore = isFiniteNumber(game.homeGoals) && isFiniteNumber(game.awayGoals);
+    const goalsFor = hasScore ? Number(home ? game.homeGoals : game.awayGoals) : null;
+    const goalsAgainst = hasScore ? Number(home ? game.awayGoals : game.homeGoals) : null;
+    const points = isFiniteNumber(game.suzanoPoints)
+      ? Number(game.suzanoPoints)
+      : pointsFromResult(goalsFor, goalsAgainst);
     cumulativePoints += points;
     return {
       round: index + 1,
@@ -119,6 +135,7 @@ export function buildCategoryAnalytics(category = {}) {
       venue: home ? 'Casa' : 'Fora',
       goalsFor,
       goalsAgainst,
+      scoreLabel: game.scoreLabel ?? null,
       points,
       cumulativePoints,
       cumulativeEfficiency: efficiencyPercent(cumulativePoints, index + 1),

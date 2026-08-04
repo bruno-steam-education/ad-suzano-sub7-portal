@@ -27,6 +27,7 @@ import { categories } from './data/categories';
 import { federationScheduleSource, initiationA2BaseSchedule } from './data/federationSchedule';
 import { fpfsCategories } from './data/fpfsCategories';
 import { newsItems, newsWeek } from './data/news';
+import { youthLeagueCategories, youthLeagueCompetition } from './data/youthLeagueCategories';
 import { weeklyNotice, weeklySchedule, weeklyScheduleWeek } from './data/schedule';
 import { contextualResults, sourceLinks, teamName, venueAddresses, weeklyNotes } from './data/season';
 import { isMobileDevice, isStandaloneApp, registerServiceWorker } from './services/pwa';
@@ -273,7 +274,12 @@ function App() {
         title="Análise Gráfica Automatizada"
         description="Campanha completa, evolução rodada a rodada e auditoria das fórmulas reservadas à Comissão Técnica da AD Suzano."
       >
-        <GraphicalAnalysis categories={fpfsCategories} activeCategoryLabel={activeCategory.label} />
+        <GraphicalAnalysis
+          categories={fpfsCategories}
+          youthCategories={youthLeagueCategories}
+          youthCompetition={youthLeagueCompetition}
+          activeCategoryLabel={activeCategory.label}
+        />
       </ProtectedSection>
       {hasFullSub7View ? (
         <>

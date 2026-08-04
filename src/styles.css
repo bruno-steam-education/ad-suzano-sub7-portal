@@ -5151,6 +5151,68 @@ input {
   border-radius: 10px;
 }
 
+.competition-switcher {
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+  margin-top: 22px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.competition-switcher button {
+  min-width: 190px;
+  display: grid;
+  gap: 3px;
+  padding: 11px 14px;
+  color: #aebedb;
+  background: #0a234f;
+  border: 1px solid rgba(133, 164, 220, 0.2);
+  border-radius: 6px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.competition-switcher button span,
+.competition-switcher button small {
+  display: block;
+}
+
+.competition-switcher button span {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.competition-switcher button small {
+  color: #89a0c5;
+  font-size: 0.65rem;
+  text-transform: capitalize;
+}
+
+.competition-switcher button:hover,
+.competition-switcher button.active {
+  background: #17386f;
+  border-color: #ff5260;
+  box-shadow: inset 3px 0 #e52334;
+}
+
+.competition-switcher > a {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  color: #dbe7fa;
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.competition-switcher > a:hover {
+  color: #ff7b84;
+}
+
 .youth-agent-header,
 .youth-agent-title-group,
 .youth-agent-kicker,

@@ -1,4 +1,4 @@
-name: Update FPFS Efficiency & Standings (Subagent)
+name: Update FPFS and Copa da Juventude
 
 on:
   schedule:
@@ -25,17 +25,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fetch and update FPFS data & efficiency ranking
-        run: node scripts/update-fpfs.mjs
+      - name: Fetch and audit both official competitions
+        run: |
+          npm run update:fpfs
+          npm run update:youth-league
+          npm run audit:robots
 
       - name: Commit and push if updated
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/fpfsCategories.js
+          git add src/data/fpfsCategories.js src/data/youthLeagueCategories.js
           if ! git diff --staged --quiet; then
-            git commit -m "chore(data): atualizar súmulas FPFS e Ranking de Eficiência [skip ci]"
+            git commit -m "chore(data): atualizar Paulista e Copa da Juventude"
             git push
           else
-            echo "Nenhuma alteração detectada nas súmulas FPFS."
+            echo "Nenhuma alteração detectada nas competições."
           fi

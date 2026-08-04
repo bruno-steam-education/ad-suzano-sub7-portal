@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0",
     "update:news": "node scripts/update-news.mjs",
     "update:fpfs": "node scripts/update-fpfs.mjs",
+    "update:youth-league": "node scripts/update-youth-league.mjs",
     "audit:robots": "node scripts/audit-robots.mjs",
     "sync:club-site": "node scripts/sync-club-site.mjs"
   },

@@ -1,9 +1,26 @@
 import { fpfsCategories } from '../src/data/fpfsCategories.js';
+import { youthLeagueCategories } from '../src/data/youthLeagueCategories.js';
 import { buildAnalyticsSnapshot, buildYouthDevelopmentAgent, deriveRecordFromGames } from '../src/utils/analyticsRobots.js';
 
 const requiredCategories = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
 const fields = ['played', 'wins', 'draws', 'losses', 'goalsFor', 'goalsAgainst', 'points', 'goalDifference'];
 const problems = [];
+
+function validateRecord(category, sourceLabel) {
+  const games = category.playedGames ?? [];
+  const derived = deriveRecordFromGames(games);
+  if (games.length !== Number(category.record?.played ?? 0)) {
+    problems.push(`${sourceLabel} ${category.category}: ${games.length} jogos armazenados, registro informa ${category.record?.played ?? 0}.`);
+  }
+  for (const field of fields) {
+    if (Number(derived[field]) !== Number(category.record?.[field])) {
+      problems.push(`${sourceLabel} ${category.category}: divergência em ${field} (jogos=${derived[field]}, registro=${category.record?.[field]}).`);
+    }
+  }
+  if (Number(category.record?.points) !== Number(category.record?.wins) * 3 + Number(category.record?.draws)) {
+    problems.push(`${sourceLabel} ${category.category}: pontos não correspondem a 3×V + E.`);
+  }
+}
 
 for (const categoryName of requiredCategories) {
   const category = fpfsCategories.find((item) => item.category === categoryName);
@@ -62,8 +79,20 @@ for (const category of snapshot.categories) {
   if (agent.lowerRankedLosses > agent.form.losses) problems.push(`${category.category}: derrotas para inferiores excedem o total de derrotas.`);
   if (agent.attentionCards.length !== 3) problems.push(`${category.category}: agente deve entregar três dimensões de atenção.`);
 }
+
+for (const category of youthLeagueCategories) {
+  validateRecord(category, 'Copa da Juventude');
+  const standing = category.standings?.find((item) => item.team === 'AD Suzano');
+  if (!standing) problems.push(`Copa da Juventude ${category.category}: AD Suzano ausente na classificação da primeira fase.`);
+  for (const field of fields) {
+    if (standing && Number(standing[field]) !== Number(category.stageRecord?.[field])) {
+      problems.push(`Copa da Juventude ${category.category}: primeira fase diverge da classificação em ${field}.`);
+    }
+  }
+}
 const points = fpfsCategories.reduce((sum, category) => sum + category.record.points, 0);
 const played = fpfsCategories.reduce((sum, category) => sum + category.record.played, 0);
+const youthPlayed = youthLeagueCategories.reduce((sum, category) => sum + category.record.played, 0);
 const expectedEfficiency = played ? Math.round((points / (played * 3)) * 1000) / 10 : 0;
 if (snapshot.totals.efficiency !== expectedEfficiency) {
   problems.push(`Aproveitamento geral incorreto (${snapshot.totals.efficiency}% vs. ${expectedEfficiency}% ponderado).`);
@@ -75,4 +104,4 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`Auditoria OK: ${requiredCategories.length} categorias, ${played} jogos e ${snapshot.totals.efficiency}% de aproveitamento ponderado.`);
+console.log(`Auditoria OK: Paulista ${played} jogos, Copa da Juventude ${youthPlayed} jogos, consolidado ${played + youthPlayed} jogos.`);
