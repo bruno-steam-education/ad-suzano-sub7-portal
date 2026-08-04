@@ -12,6 +12,7 @@
     "update:youth-league": "node scripts/update-youth-league.mjs",
     "audit:robots": "node scripts/audit-robots.mjs",
     "audit:claims": "node scripts/audit-public-claims.mjs",
+    "audit:athletes": "node scripts/audit-athlete-stats.mjs",
     "sync:club-site": "node scripts/sync-club-site.mjs"
   },
   "dependencies": {

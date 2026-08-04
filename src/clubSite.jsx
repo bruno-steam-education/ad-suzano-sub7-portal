@@ -39,6 +39,7 @@ import { fpfsCategories } from './data/fpfsCategories';
 import { youthLeagueCategories } from './data/youthLeagueCategories';
 import { newsItems } from './data/news';
 import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
+import { athleteSeasonStats } from './data/athleteSeasonStats';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -1059,11 +1060,45 @@ const ATHLETE_ATTRIBUTES = [
   { label: 'Defesa', short: 'DEF' },
 ];
 
+function seasonStatsFor(player) {
+  return athleteSeasonStats.athletes[athleteIdFromUrl(player.url)] ?? {};
+}
+
+function AthleteCardStats({ stats }) {
+  const goalkeeper = stats.role === 'goalkeeper';
+  const metrics = goalkeeper
+    ? [
+        { emoji: '🥅', label: 'Gols sofridos', value: stats.goalsConceded, title: 'Gols sofridos na temporada. A súmula não individualiza esse dado quando há mais de um goleiro.' },
+        { emoji: '🧤', label: 'Defesas', value: stats.saves, title: 'Defesas realizadas na temporada. Este dado não consta na súmula oficial.' },
+        { emoji: '🟨', label: 'Amarelos', value: stats.yellowCards, title: 'Cartões amarelos registrados nas súmulas oficiais.' },
+        { emoji: '🟥', label: 'Vermelhos', value: stats.redCards, title: 'Cartões vermelhos registrados nas súmulas oficiais.' },
+      ]
+    : [
+        { emoji: '⚽', label: 'Gols', value: stats.goals, title: 'Gols registrados nas súmulas oficiais da temporada.' },
+        { emoji: '🅰️', label: 'Assistências', value: stats.assists, title: 'Assistências na temporada. Este dado não consta na súmula oficial.' },
+        { emoji: '🟨', label: 'Amarelos', value: stats.yellowCards, title: 'Cartões amarelos registrados nas súmulas oficiais.' },
+        { emoji: '🟥', label: 'Vermelhos', value: stats.redCards, title: 'Cartões vermelhos registrados nas súmulas oficiais.' },
+      ];
+
+  return (
+    <div className="athlete-card-season-stats" aria-label="Indicadores oficiais da temporada">
+      {metrics.map((metric) => (
+        <div key={metric.label} title={metric.title} tabIndex="0">
+          <span aria-hidden="true">{metric.emoji}</span>
+          <strong>{metric.value ?? '—'}</strong>
+          <small>{metric.label}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function AthleteCollectibleCard({ player, category, detailed = false }) {
   const detail = player.detail ?? {};
   const fullName = detail.name || player.name;
   const normalizedCategory = normalizeAthleteCategory(category);
   const staff = technicalStaffByCategory[normalizedCategory];
+  const stats = seasonStatsFor(player);
   const content = (
     <motion.article
       className={`athlete-collectible-card ${detailed ? 'is-detailed' : ''}`}
@@ -1101,6 +1136,8 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
         <strong title={staff?.coachFullName}>{staff?.coach ?? 'A confirmar'}</strong>
         {staff && <small>{staff.department}: {staff.coordinator}</small>}
       </div>
+
+      <AthleteCardStats stats={stats} />
 
       <div className="athlete-card-attributes" aria-label="Atributos técnicos aguardando dados">
         {ATHLETE_ATTRIBUTES.map((attribute) => (
@@ -1187,6 +1224,25 @@ function ClubAthletesPage({ categories }) {
 
 function ClubAthleteDetailPage({ player }) {
   const fullName = player.detail?.name || player.name;
+  const stats = seasonStatsFor(player);
+  const goalkeeper = stats.role === 'goalkeeper';
+  const detailMetrics = goalkeeper
+    ? [
+        ['Jogos disputados', stats.appearances, '🎽'],
+        ['Gols sofridos', stats.goalsConceded, '🥅'],
+        ['Defesas realizadas', stats.saves, '🧤'],
+        ['Cartões amarelos', stats.yellowCards, '🟨'],
+        ['Cartões vermelhos', stats.redCards, '🟥'],
+      ]
+    : [
+        ['Jogos disputados', stats.appearances, '🎽'],
+        ['Gols', stats.goals, '⚽'],
+        ['Assistências', stats.assists, '🅰️'],
+        ['Roubadas de bola', stats.steals, '🛡️'],
+        ['Cartões amarelos', stats.yellowCards, '🟨'],
+        ['Cartões vermelhos', stats.redCards, '🟥'],
+      ];
+  const latestSource = stats.latestSourceUrl;
   return (
     <div className="club-page athlete-profile-page">
       <div className="club-breadcrumb-inline">
@@ -1197,17 +1253,34 @@ function ClubAthleteDetailPage({ player }) {
         <article className="athlete-profile-notes">
           <span>FICHA INDIVIDUAL</span>
           <h1>{fullName}</h1>
-          <p>O perfil já está estruturado para receber a fotografia oficial, idade, altura, peso, treinador e avaliações técnicas.</p>
+          <p>{goalkeeper ? 'Indicadores oficiais do goleiro' : 'Indicadores oficiais do atleta'} na temporada 2026, consolidados a partir das súmulas do Campeonato Paulista A2.</p>
+          <div className="athlete-profile-stat-grid">
+            {detailMetrics.map(([label, value, emoji]) => (
+              <div key={label} title={`${label} na temporada 2026`}>
+                <span aria-hidden="true">{emoji}</span>
+                <strong>{value ?? '—'}</strong>
+                <small>{label}</small>
+              </div>
+            ))}
+          </div>
+          <div className="athlete-profile-source">
+            <BadgeInfo size={19} />
+            <div>
+              <strong>{stats.officialName ? `Vínculo oficial confirmado · ${stats.sourceGameCount} súmula(s)` : 'Atleta ainda não vinculado à súmula'}</strong>
+              <span>Jogos, gols e cartões vêm da súmula oficial. “—” indica dado não publicado pela fonte ou ainda não confirmado.</span>
+              {latestSource && <a href={latestSource} target="_blank" rel="noreferrer">Abrir súmula oficial de referência <ExternalLink size={13} /></a>}
+            </div>
+          </div>
           <div className="athlete-profile-checklist">
-            <div><CheckCircle2 size={18} /><span>Nome completo e categoria cadastrados</span></div>
+            <div><CheckCircle2 size={18} /><span>{stats.appearances ?? 0} participação(ões) localizada(s) nas súmulas</span></div>
             <div><Clock3 size={18} /><span>Foto oficial aguardando envio</span></div>
             <div><CheckCircle2 size={18} /><span>Treinador e coordenação cadastrados por categoria</span></div>
             <div><Clock3 size={18} /><span>Dados físicos aguardando envio</span></div>
             <div><Clock3 size={18} /><span>Velocidade, chute, condução e defesa aguardando avaliação</span></div>
           </div>
           <div className="athlete-profile-status">
-            <strong>Perfil em preparação</strong>
-            <span>Nenhum valor técnico será publicado antes da confirmação da comissão.</span>
+            <strong>Dados auditáveis · temporada 2026</strong>
+            <span>Atualização semanal automática, toda segunda-feira às 9h. Métricas técnicas só serão exibidas depois da confirmação da comissão.</span>
           </div>
         </article>
       </section>
