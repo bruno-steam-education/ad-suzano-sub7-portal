@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  CalendarCheck, Check, CircleDollarSign, Download, FilePlus2, LoaderCircle,
+  BarChart3, CalendarCheck, Check, CircleDollarSign, Download, FilePlus2, LoaderCircle,
   Plus, Trash2, UserCheck, UserRoundX, Users, X,
 } from 'lucide-react';
 import { useAthleteAdmin } from './AthleteAdminContext';
@@ -58,7 +58,7 @@ function downloadCsv(filename, rows) {
 export default function StaffOperationsPanel({ categories }) {
   const { isAdmin, isCoordinator, staff } = useAthleteAdmin();
   const [data, setData] = useState(EMPTY_DATA);
-  const [activeModule, setActiveModule] = useState('attendance');
+  const [activeModule, setActiveModule] = useState('dashboard');
   const [category, setCategory] = useState(categories[0]?.label ?? 'Sub-7');
   const [month, setMonth] = useState(monthInput());
   const [selectedSessionId, setSelectedSessionId] = useState('');
@@ -103,6 +103,41 @@ export default function StaffOperationsPanel({ categories }) {
 
   const attendanceMap = useMemo(() => new Map(data.attendance.map((record) => [`${record.session_id}:${record.athlete_id}`, record])), [data.attendance]);
   const paymentMap = useMemo(() => new Map(data.payments.map((payment) => [`${payment.event_id}:${payment.athlete_id}`, payment])), [data.payments]);
+
+  const dashboard = useMemo(() => {
+    const athleteRows = athletes.map((athlete) => {
+      const statuses = monthSessions.map((session) => attendanceMap.get(`${session.id}:${athlete.id}`)?.status ?? 'unmarked');
+      const present = statuses.filter((status) => status === 'present').length;
+      const absent = statuses.filter((status) => status === 'absent').length;
+      const justified = statuses.filter((status) => status === 'justified').length;
+      const unmarked = statuses.filter((status) => status === 'unmarked').length;
+      const marked = present + absent + justified;
+      return { ...athlete, present, absent, justified, unmarked, marked, rate: marked ? Math.round((present / marked) * 100) : null };
+    }).sort((a, b) => (b.rate ?? -1) - (a.rate ?? -1) || a.name.localeCompare(b.name, 'pt-BR'));
+    const totals = athleteRows.reduce((sum, athlete) => ({
+      present: sum.present + athlete.present,
+      absent: sum.absent + athlete.absent,
+      justified: sum.justified + athlete.justified,
+      unmarked: sum.unmarked + athlete.unmarked,
+    }), { present: 0, absent: 0, justified: 0, unmarked: 0 });
+    const marked = totals.present + totals.absent + totals.justified;
+    const payments = monthEvents.flatMap((event) => athletes.map((athlete) => ({
+      event,
+      status: paymentMap.get(`${event.id}:${athlete.id}`)?.status ?? 'pending',
+    })));
+    const receivedCents = payments.reduce((sum, item) => sum + (item.status === 'paid' ? item.event.amount_cents : 0), 0);
+    const pendingCents = payments.reduce((sum, item) => sum + (item.status === 'pending' ? item.event.amount_cents : 0), 0);
+    return {
+      athleteRows,
+      ...totals,
+      marked,
+      rate: marked ? Math.round((totals.present / marked) * 100) : null,
+      receivedCents,
+      pendingCents,
+      paidCount: payments.filter((item) => item.status === 'paid').length,
+      pendingCount: payments.filter((item) => item.status === 'pending').length,
+    };
+  }, [athletes, attendanceMap, monthEvents, monthSessions, paymentMap]);
 
   if (!isAdmin) return null;
 
@@ -264,7 +299,8 @@ export default function StaffOperationsPanel({ categories }) {
       </header>
 
       <div className="staff-operations-toolbar">
-        <div className="staff-module-tabs" role="tablist" aria-label="Módulos administrativos">
+        <div className={`staff-module-tabs${isCoordinator ? ' has-finance' : ''}`} role="tablist" aria-label="Módulos administrativos">
+          <button type="button" className={activeModule === 'dashboard' ? 'is-active' : ''} onClick={() => setActiveModule('dashboard')}><BarChart3 size={18} /> Dashboard</button>
           <button type="button" className={activeModule === 'attendance' ? 'is-active' : ''} onClick={() => setActiveModule('attendance')}><CalendarCheck size={18} /> Frequência</button>
           {isCoordinator ? <button type="button" className={activeModule === 'finance' ? 'is-active' : ''} onClick={() => setActiveModule('finance')}><CircleDollarSign size={18} /> Financeiro</button> : null}
         </div>
@@ -275,7 +311,53 @@ export default function StaffOperationsPanel({ categories }) {
       {error ? <div className="staff-operations-error" role="alert">{error}<button type="button" onClick={() => setError('')} aria-label="Fechar"><X size={15} /></button></div> : null}
       {loading ? <div className="staff-operations-loading"><LoaderCircle size={20} /> Atualizando dados...</div> : null}
 
-      {activeModule === 'attendance' ? (
+      {activeModule === 'dashboard' ? (
+        <div className="staff-module-panel staff-dashboard">
+          <div className="staff-dashboard-title">
+            <div><strong>Visão mensal do {category}</strong><span>Indicadores calculados com os registros de {month}</span></div>
+            <div className="staff-dashboard-exports">
+              <button type="button" className="staff-secondary-action" onClick={exportAttendance} disabled={!monthSessions.length}><Download size={17} /> Frequência CSV</button>
+              {isCoordinator ? <button type="button" className="staff-secondary-action" onClick={exportFinance} disabled={!monthEvents.length}><Download size={17} /> Financeiro CSV</button> : null}
+            </div>
+          </div>
+
+          <div className="staff-dashboard-kpis">
+            <article><span>Frequência geral</span><strong>{dashboard.rate === null ? '—' : `${dashboard.rate}%`}</strong><small>{dashboard.present} presenças em {dashboard.marked} marcações</small></article>
+            <article><span>Chamadas no mês</span><strong>{monthSessions.length}</strong><small>{athletes.length} atletas no {category}</small></article>
+            <article><span>Faltas</span><strong>{dashboard.absent}</strong><small>{dashboard.justified} justificadas</small></article>
+            <article className={dashboard.unmarked ? 'has-warning' : ''}><span>Sem marcação</span><strong>{dashboard.unmarked}</strong><small>{!monthSessions.length ? 'Nenhuma chamada no mês' : dashboard.unmarked ? 'Requer conferência' : 'Tudo conferido'}</small></article>
+            {isCoordinator ? <article><span>Recebido no mês</span><strong>{formatMoney(dashboard.receivedCents)}</strong><small>{dashboard.paidCount} pagamento(s)</small></article> : null}
+            {isCoordinator ? <article className={dashboard.pendingCents ? 'has-warning' : ''}><span>Pendente</span><strong>{formatMoney(dashboard.pendingCents)}</strong><small>{dashboard.pendingCount} cobrança(s)</small></article> : null}
+          </div>
+
+          <div className="staff-dashboard-grid">
+            <section className="staff-dashboard-breakdown" aria-labelledby="attendance-breakdown-title">
+              <div className="staff-dashboard-section-head"><strong id="attendance-breakdown-title">Distribuição da frequência</strong><span>{dashboard.marked} registros conferidos</span></div>
+              {[
+                ['Presenças', dashboard.present, 'is-present'],
+                ['Faltas', dashboard.absent, 'is-absent'],
+                ['Justificadas', dashboard.justified, 'is-justified'],
+                ['Sem marcação', dashboard.unmarked, 'is-unmarked'],
+              ].map(([label, value, className]) => {
+                const total = dashboard.marked + dashboard.unmarked;
+                const percent = total ? Math.round((value / total) * 100) : 0;
+                return <div className="staff-dashboard-bar" key={label}><div><span>{label}</span><strong>{value} · {percent}%</strong></div><div className="staff-dashboard-track"><i className={className} style={{ width: `${percent}%` }} /></div></div>;
+              })}
+            </section>
+
+            <section className="staff-dashboard-ranking" aria-labelledby="attendance-ranking-title">
+              <div className="staff-dashboard-section-head"><strong id="attendance-ranking-title">Frequência por atleta</strong><span>Ordenado pelo aproveitamento mensal</span></div>
+              <div className="staff-dashboard-table-wrap">
+                <table>
+                  <thead><tr><th>Atleta</th><th>Presenças</th><th>Faltas</th><th>Just.</th><th>Frequência</th></tr></thead>
+                  <tbody>{dashboard.athleteRows.map((athlete) => <tr key={athlete.id}><th>{athlete.name}</th><td>{athlete.present}</td><td>{athlete.absent}</td><td>{athlete.justified}</td><td><strong>{athlete.rate === null ? '—' : `${athlete.rate}%`}</strong>{athlete.unmarked ? <small>{athlete.unmarked} pendente(s)</small> : null}</td></tr>)}</tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+          <p className="staff-dashboard-note">Frequência = presenças ÷ registros marcados. Chamadas ainda não preenchidas são mostradas separadamente e não alteram o percentual.</p>
+        </div>
+      ) : activeModule === 'attendance' ? (
         <div className="staff-module-panel">
           <div className="staff-module-actions">
             <div><strong>Chamadas de {month}</strong><span>{monthSessions.length} registro(s) no mês</span></div>

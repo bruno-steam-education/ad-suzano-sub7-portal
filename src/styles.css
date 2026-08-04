@@ -5646,6 +5646,44 @@ input {
 .staff-empty-state { display: grid; justify-items: center; gap: 5px; padding: 38px 18px; border: 1px dashed #afbdd0; background: #f6f9fc; color: #64748b; text-align: center; }
 .staff-empty-state strong { color: #071b46; font-size: 1rem; }
 
+.staff-dashboard { background: #f7f9fc; }
+.staff-dashboard-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.staff-dashboard-title > div:first-child { display: grid; }
+.staff-dashboard-title > div:first-child strong { color: #071b46; font-size: 1.12rem; }
+.staff-dashboard-title > div:first-child span { margin-top: 2px; color: #687891; font-size: 0.76rem; }
+.staff-dashboard-exports { display: flex; gap: 8px; }
+.staff-dashboard-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin-bottom: 12px; }
+.staff-dashboard-kpis article { display: grid; min-width: 0; padding: 14px; border: 1px solid #cfdae7; border-top: 3px solid #123b7a; background: #fff; }
+.staff-dashboard-kpis article.has-warning { border-top-color: #d59113; background: #fffaf0; }
+.staff-dashboard-kpis span { color: #586983; font-size: 0.69rem; font-weight: 850; letter-spacing: 0.035em; text-transform: uppercase; }
+.staff-dashboard-kpis strong { margin: 5px 0 2px; overflow-wrap: anywhere; color: #071b46; font-size: clamp(1.45rem, 2.5vw, 2rem); line-height: 1; }
+.staff-dashboard-kpis small { color: #718097; font-size: 0.68rem; }
+.staff-dashboard-grid { display: grid; grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.6fr); gap: 10px; }
+.staff-dashboard-breakdown,
+.staff-dashboard-ranking { min-width: 0; border: 1px solid #cfdae7; background: #fff; }
+.staff-dashboard-section-head { display: grid; padding: 13px 14px; border-bottom: 1px solid #dde5ef; }
+.staff-dashboard-section-head strong { color: #071b46; }
+.staff-dashboard-section-head span { margin-top: 2px; color: #718097; font-size: 0.68rem; }
+.staff-dashboard-breakdown { padding-bottom: 12px; }
+.staff-dashboard-bar { display: grid; gap: 5px; padding: 10px 14px 0; }
+.staff-dashboard-bar > div:first-child { display: flex; justify-content: space-between; gap: 12px; color: #52627a; font-size: 0.72rem; }
+.staff-dashboard-bar > div:first-child strong { color: #071b46; }
+.staff-dashboard-track { height: 8px; overflow: hidden; background: #e7edf4; }
+.staff-dashboard-track i { display: block; min-width: 0; height: 100%; background: #123b7a; transition: width 350ms ease; }
+.staff-dashboard-track i.is-present { background: #15966a; }
+.staff-dashboard-track i.is-absent { background: #df263b; }
+.staff-dashboard-track i.is-justified { background: #d5961b; }
+.staff-dashboard-track i.is-unmarked { background: #8493a8; }
+.staff-dashboard-table-wrap { max-height: 320px; overflow: auto; }
+.staff-dashboard-ranking table { width: 100%; border-collapse: collapse; }
+.staff-dashboard-ranking th,
+.staff-dashboard-ranking td { padding: 9px 10px; border-bottom: 1px solid #e1e7ef; color: #40516c; font-size: 0.72rem; text-align: center; }
+.staff-dashboard-ranking thead th { position: sticky; top: 0; z-index: 1; background: #071b46; color: #fff; font-size: 0.65rem; text-transform: uppercase; }
+.staff-dashboard-ranking tbody th { color: #071b46; text-align: left; }
+.staff-dashboard-ranking td strong { display: block; color: #123b7a; }
+.staff-dashboard-ranking td small { display: block; color: #ba2636; font-size: 0.6rem; }
+.staff-dashboard-note { margin: 10px 0 0; color: #687891; font-size: 0.67rem; }
+
 .finance-matrix-wrap { margin-top: 10px; overflow: auto; border: 1px solid #ccd6e4; }
 .finance-matrix { width: 100%; min-width: 760px; border-collapse: collapse; background: #fff; }
 .finance-matrix th,
@@ -5670,6 +5708,8 @@ input {
   .finance-event-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .staff-inline-form .is-wide { grid-column: 1 / -1; }
   .staff-inline-form .staff-primary-action { grid-column: 1 / -1; }
+  .staff-dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .staff-dashboard-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -5679,6 +5719,7 @@ input {
   .staff-operations-role { display: none; }
   .staff-operations-toolbar { grid-template-columns: 1fr 1fr; padding: 12px; }
   .staff-module-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .staff-module-tabs.has-finance { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .staff-module-tabs button { justify-content: center; padding-inline: 8px; }
   .staff-module-panel { padding: 12px; }
   .staff-module-actions { display: grid; grid-template-columns: 1fr 1fr; }
@@ -5695,6 +5736,14 @@ input {
   .attendance-actions button { min-width: 0; padding: 9px 5px; }
   .attendance-actions button span { font-size: 0.64rem; }
   .finance-matrix-wrap { margin-inline: -12px; border-right: 0; border-left: 0; }
+  .staff-dashboard-title { align-items: stretch; flex-direction: column; }
+  .staff-dashboard-exports { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .staff-dashboard-exports .staff-secondary-action { padding-inline: 6px; }
+  .staff-dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .staff-dashboard-kpis article { padding: 12px; }
+  .staff-dashboard-ranking { margin-inline: -12px; border-right: 0; border-left: 0; }
+  .staff-dashboard-ranking th,
+  .staff-dashboard-ranking td { padding: 8px 7px; }
 }
 
 /* Portal data pages: campaigns, fixtures, venues and official rankings. */
