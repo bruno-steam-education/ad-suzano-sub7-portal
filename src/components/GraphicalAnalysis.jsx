@@ -23,14 +23,15 @@ function percent(value) {
 function CampaignChart({ analytics, reduceMotion }) {
   const rounds = analytics.rounds;
   const width = Math.max(820, rounds.length * 54);
-  const height = 292;
-  const top = 24;
-  const baseline = 214;
+  const height = 330;
+  const top = 32;
+  const baseline = 228;
   const chartHeight = baseline - top;
-  const step = rounds.length > 1 ? (width - 84) / (rounds.length - 1) : 0;
-  const xAt = (index) => 42 + index * step;
+  const step = rounds.length > 1 ? (width - 110) / (rounds.length - 1) : 0;
+  const xAt = (index) => 72 + index * step;
   const yAt = (points) => baseline - (points / 3) * chartHeight;
   const line = rounds.map((round, index) => `${index === 0 ? 'M' : 'L'} ${xAt(index)} ${yAt(round.points)}`).join(' ');
+  const resultLabel = (points) => points === 3 ? 'V' : points === 1 ? 'E' : 'D';
 
   if (!rounds.length) {
     return <div className="graph-empty">A campanha completa ainda não está disponível para esta categoria.</div>;
@@ -47,10 +48,19 @@ function CampaignChart({ analytics, reduceMotion }) {
       >
         {[0, 1, 2, 3].map((tick) => (
           <g key={tick}>
-            <line x1="24" x2={width - 20} y1={yAt(tick)} y2={yAt(tick)} className="chart-grid-line" />
-            <text x="12" y={yAt(tick) + 4} className="chart-axis-label">{tick}</text>
+            <line x1="58" x2={width - 20} y1={yAt(tick)} y2={yAt(tick)} className="chart-grid-line" />
+            <text x="50" y={yAt(tick) + 4} textAnchor="end" className="chart-axis-label">{tick}</text>
           </g>
         ))}
+        <text
+          x="15"
+          y={(top + baseline) / 2}
+          textAnchor="middle"
+          className="chart-axis-title"
+          transform={`rotate(-90 15 ${(top + baseline) / 2})`}
+        >
+          Pontos conquistados
+        </text>
         {rounds.map((round, index) => {
           const barWidth = 24;
           const barHeight = Math.max(3, (round.points / 3) * chartHeight);
@@ -67,7 +77,15 @@ function CampaignChart({ analytics, reduceMotion }) {
                 transition={{ duration: 0.45, delay: Math.min(index * 0.025, 0.35) }}
               />
               <text x={xAt(index)} y="238" textAnchor="middle" className="chart-round-label">R{round.round}</text>
-              <text x={xAt(index)} y="255" textAnchor="middle" className="chart-date-label">{formatDate.format(new Date(`${round.date}T12:00:00`))}</text>
+              <text x={xAt(index)} y="271" textAnchor="middle" className="chart-date-label">{formatDate.format(new Date(`${round.date}T12:00:00`))}</text>
+              <text
+                x={xAt(index)}
+                y={Math.max(20, yAt(round.points) - 13)}
+                textAnchor="middle"
+                className={`chart-result-label result-${resultLabel(round.points).toLowerCase()}`}
+              >
+                {resultLabel(round.points)}
+              </text>
             </g>
           );
         })}
@@ -95,6 +113,9 @@ function CampaignChart({ analytics, reduceMotion }) {
             <title>{`Rodada ${round.round}: ${round.points} ponto(s), ${round.goalsFor} x ${round.goalsAgainst} contra ${round.opponent}`}</title>
           </motion.circle>
         ))}
+        <text x={width / 2} y="314" textAnchor="middle" className="chart-axis-title chart-x-axis-title">
+          Rodadas da campanha · ordem cronológica
+        </text>
       </svg>
     </div>
   );
@@ -196,6 +217,7 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
           <div>
             <span>Evolução rodada a rodada</span>
             <h3>{selectedAnalytics.category} · pontos obtidos por partida</h3>
+            <p className="chart-explainer">Cada coluna é uma partida: 3 pontos = vitória, 1 = empate e 0 = derrota.</p>
           </div>
           <div className="chart-summary">
             <strong>{percent(selectedAnalytics.efficiency)}</strong>
@@ -218,8 +240,9 @@ export function GraphicalAnalysis({ categories, activeCategoryLabel }) {
         </div>
         <CampaignChart analytics={selectedAnalytics} reduceMotion={reduceMotion} />
         <div className="chart-legend">
-          <span><i className="legend-bar" /> Pontos na rodada (0, 1 ou 3)</span>
-          <span><i className="legend-line" /> Sequência de resultados</span>
+          <span><i className="legend-bar" /> Pontos conquistados na rodada</span>
+          <span><i className="legend-line" /> Evolução cronológica da campanha</span>
+          <span className="result-key"><b>V</b> vitória <b>E</b> empate <b>D</b> derrota</span>
           <span><Info size={14} /> Passe o cursor nos pontos para ver o placar</span>
         </div>
       </div>
