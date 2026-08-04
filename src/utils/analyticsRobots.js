@@ -144,6 +144,18 @@ export function buildCategoryAnalytics(category = {}) {
 
   const recent = rounds.slice(-5);
   const recentPoints = recent.reduce((sum, round) => sum + round.points, 0);
+  const nextGameRaw = [...(category.upcomingGames ?? [])]
+    .sort((a, b) => `${a.date} ${a.time ?? ''}`.localeCompare(`${b.date} ${b.time ?? ''}`))[0] ?? null;
+  const nextGame = nextGameRaw ? {
+    date: nextGameRaw.date,
+    time: nextGameRaw.time,
+    venue: nextGameRaw.venue,
+    location: isSuzano(nextGameRaw.home) ? 'Casa' : 'Fora',
+    opponent: isSuzano(nextGameRaw.home) ? nextGameRaw.away : nextGameRaw.home,
+    opponentPosition: nextGameRaw.opponentStanding?.position ?? null,
+    opponentPoints: nextGameRaw.opponentStanding?.points ?? null,
+    opponentPlayed: nextGameRaw.opponentStanding?.played ?? null,
+  } : null;
 
   return {
     category: category.category,
@@ -156,6 +168,7 @@ export function buildCategoryAnalytics(category = {}) {
     defenseRate: record.played ? record.goalsAgainst / record.played : 0,
     checkedAt: category.checkedAt ?? null,
     source: category.source ?? 'FPFS Súmula Online',
+    nextGame,
     audit: {
       status: mismatches.length === 0 ? 'verified' : 'review',
       completeCampaign: hasCompleteCampaign,
@@ -181,7 +194,7 @@ function countLabel(value, singular, plural) {
   return `${value} ${value === 1 ? singular : plural}`;
 }
 
-export function buildYouthDevelopmentAgent(analytics) {
+function buildYouthDevelopmentAgentLegacy(analytics) {
   const recent = analytics?.rounds?.slice(-5) ?? [];
   const form = resultCounts(recent);
   const recentPoints = recent.reduce((sum, round) => sum + round.points, 0);
@@ -260,6 +273,151 @@ export function buildYouthDevelopmentAgent(analytics) {
     attentionCards,
     confidence: recent.length === 5 && losses.every((round) => Number.isFinite(round.opponentPosition)) ? 'moderada' : 'limitada',
     caveat: 'O agente detecta padrões de resultados e gera hipóteses para a comissão. Ele não avalia individualmente crianças, não diagnostica saúde mental e não substitui observação técnica, conversa com responsáveis ou profissionais qualificados.',
+  };
+}
+
+function resultLetter(round) {
+  return round.points === 3 ? 'V' : round.points === 1 ? 'E' : 'D';
+}
+
+function scoreText(round) {
+  return `${round.goalsFor} x ${round.goalsAgainst}`;
+}
+
+function shortDate(value = '') {
+  if (!value) return 'data não informada';
+  const [year, month, day] = value.split('-');
+  return `${day}/${month}/${year}`;
+}
+
+function roundedRate(value) {
+  return Number(value ?? 0).toFixed(1).replace('.', ',');
+}
+
+function currentResultStreak(rounds = []) {
+  if (!rounds.length) return { result: '', count: 0 };
+  const result = resultLetter(rounds.at(-1));
+  let count = 0;
+  for (let index = rounds.length - 1; index >= 0; index -= 1) {
+    if (resultLetter(rounds[index]) !== result) break;
+    count += 1;
+  }
+  return { result, count };
+}
+
+export function buildYouthDevelopmentAgent(analytics) {
+  const recent = analytics?.rounds?.slice(-5) ?? [];
+  const form = resultCounts(recent);
+  const recentPoints = recent.reduce((sum, round) => sum + round.points, 0);
+  const recentGoalsFor = recent.reduce((sum, round) => sum + Number(round.goalsFor ?? 0), 0);
+  const recentGoalsAgainst = recent.reduce((sum, round) => sum + Number(round.goalsAgainst ?? 0), 0);
+  const recentAttackRate = recent.length ? recentGoalsFor / recent.length : 0;
+  const recentDefenseRate = recent.length ? recentGoalsAgainst / recent.length : 0;
+  const campaignAttackRate = Number(analytics?.attackRate ?? 0);
+  const campaignDefenseRate = Number(analytics?.defenseRate ?? 0);
+  const attackDelta = campaignAttackRate ? ((recentAttackRate - campaignAttackRate) / campaignAttackRate) * 100 : 0;
+  const defenseDelta = campaignDefenseRate ? ((recentDefenseRate - campaignDefenseRate) / campaignDefenseRate) * 100 : 0;
+  const losses = recent.filter((round) => round.points === 0);
+  const wins = recent.filter((round) => round.points === 3);
+  const lowerRankedLosses = losses.filter((round) => round.opponentRankRelation === 'lower');
+  const higherRankedLosses = losses.filter((round) => round.opponentRankRelation === 'higher');
+  const awayGames = recent.filter((round) => round.venue === 'Fora');
+  const awayPoints = awayGames.reduce((sum, round) => sum + round.points, 0);
+  const margins = recent.map((round) => ({ ...round, margin: Number(round.goalsFor) - Number(round.goalsAgainst) }));
+  const heaviestLoss = [...margins.filter((round) => round.margin < 0)].sort((a, b) => a.margin - b.margin)[0] ?? null;
+  const bestWin = [...margins.filter((round) => round.margin > 0)].sort((a, b) => b.margin - a.margin)[0] ?? null;
+  const closeLosses = margins.filter((round) => round.margin < 0 && Math.abs(round.margin) <= 2);
+  const streak = currentResultStreak(recent);
+  const isInitiation = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10'].includes(analytics?.category);
+  const sequence = recent.map((round) => resultLetter(round)).join('–') || 'sem jogos';
+  const exactGames = recent.map((round) => `${resultLetter(round)} ${scoreText(round)} x ${round.opponent}`).join(' · ');
+  const next = analytics?.nextGame;
+
+  let headline = `${form.wins}V, ${form.draws}E e ${form.losses}D no recorte`;
+  if (form.losses >= 4) headline = `${form.losses} derrotas no recorte; saldo ${recentGoalsFor - recentGoalsAgainst > 0 ? '+' : ''}${recentGoalsFor - recentGoalsAgainst}`;
+  else if (form.wins >= 4) headline = `${form.wins} vitórias no recorte; saldo +${Math.max(0, recentGoalsFor - recentGoalsAgainst)}`;
+  else if (defenseDelta >= 20) headline = `Gols sofridos subiram ${Math.round(defenseDelta)}% no recorte`;
+  else if (attackDelta <= -20) headline = `Produção ofensiva caiu ${Math.round(Math.abs(attackDelta))}% no recorte`;
+  else if (streak.count >= 2) headline = `${streak.count} ${streak.result === 'V' ? 'vitórias' : streak.result === 'E' ? 'empates' : 'derrotas'} consecutivas`;
+
+  const mainFinding = recent.length
+    ? `Sequência ${sequence}: ${recentPoints}/${recent.length * 3} pontos, ${recentGoalsFor} gols feitos e ${recentGoalsAgainst} sofridos. ${exactGames}.`
+    : 'A categoria ainda não tem partidas suficientes para uma leitura recente.';
+
+  const rankingContext = lowerRankedLosses.length
+    ? `${lowerRankedLosses.length} derrota${lowerRankedLosses.length > 1 ? 's' : ''} foi${lowerRankedLosses.length > 1 ? 'ram' : ''} contra equipe${lowerRankedLosses.length > 1 ? 's' : ''} hoje abaixo do ${analytics.category}: ${lowerRankedLosses.map((round) => `${round.opponent} (${round.opponentPosition}º, ${scoreText(round)})`).join('; ')}.`
+    : higherRankedLosses.length
+      ? `${higherRankedLosses.length} derrota${higherRankedLosses.length > 1 ? 's' : ''} ocorreu${higherRankedLosses.length > 1 ? 'ram' : ''} contra equipe${higherRankedLosses.length > 1 ? 's' : ''} hoje acima na tabela: ${higherRankedLosses.map((round) => `${round.opponent} (${round.opponentPosition}º)`).join('; ')}.`
+      : `O consolidado não oferece posição comparável para todos os adversários. No recorte, o saldo foi ${recentGoalsFor - recentGoalsAgainst > 0 ? '+' : ''}${recentGoalsFor - recentGoalsAgainst}; ${heaviestLoss ? `o maior revés foi ${scoreText(heaviestLoss)} contra ${heaviestLoss.opponent}` : bestWin ? `a maior vitória foi ${scoreText(bestWin)} contra ${bestWin.opponent}` : 'não houve vitória nem derrota'}.`;
+
+  const rateContext = `Ataque recente: ${roundedRate(recentAttackRate)} por jogo contra ${roundedRate(campaignAttackRate)} na campanha (${attackDelta >= 0 ? '+' : ''}${Math.round(attackDelta)}%). Defesa recente: ${roundedRate(recentDefenseRate)} contra ${roundedRate(campaignDefenseRate)} (${defenseDelta >= 0 ? '+' : ''}${Math.round(defenseDelta)}%).`;
+  const venueContext = awayGames.length
+    ? `Fora de casa no recorte: ${awayPoints}/${awayGames.length * 3} pontos em ${awayGames.length} jogos.`
+    : 'Os cinco jogos do recorte foram como mandante.';
+
+  const needsDefensiveWork = defenseDelta >= 15 || recentDefenseRate >= 3.5;
+  const needsAttackWork = attackDelta <= -15 || recentAttackRate <= 1.5;
+  let trainingTitle = 'Conservar o que funciona e elevar a tomada de decisão';
+  let trainingFinding = `O ataque e a defesa recentes estão próximos do padrão da campanha. O treino deve preservar intensidade e aumentar a qualidade da decisão sob oposição.`;
+  let trainingActions = isInitiation
+    ? ['3 séries de 4 minutos de 3x3, com troca rápida de equipes.', 'Encerrar cada série com 2 minutos de jogo livre.', 'Registrar apenas participação, decisões e cooperação — não rotular atletas.']
+    : ['4 séries de 4 minutos de 4x4 com transição imediata.', 'Alternar vantagem e desvantagem numérica a cada repetição.', 'Fechar com jogo aplicado de 12 minutos e revisão objetiva em vídeo.'];
+
+  if (needsDefensiveWork) {
+    trainingTitle = `Reduzir a média recente de ${roundedRate(recentDefenseRate)} gols sofridos`;
+    trainingFinding = `A equipe sofreu ${recentGoalsAgainst} gols em ${recent.length} jogos. A média recente de ${roundedRate(recentDefenseRate)} variou ${defenseDelta >= 0 ? '+' : ''}${Math.round(defenseDelta)}% contra a campanha.${heaviestLoss ? ` O maior desequilíbrio foi ${scoreText(heaviestLoss)} contra ${heaviestLoss.opponent}.` : ''}`;
+    trainingActions = isInitiation
+      ? ['4 blocos de 3 minutos de 2x2 + goleiro, começando após perda da bola.', 'Ponto extra para a dupla que recuperar e proteger o centro antes de atacar.', 'Repetir o placar de maior desequilíbrio em jogo reduzido, trocando funções a cada bloco.']
+      : ['4 blocos de 4 minutos de 3x3 + goleiro com recomposição em até 5 segundos.', 'Treinar cobertura do centro e segundo pau antes de liberar a finalização.', 'Medir por bloco: ataques cedidos após perda e recuperações em zona central.'];
+  } else if (needsAttackWork) {
+    trainingTitle = `Elevar a média recente de ${roundedRate(recentAttackRate)} gols marcados`;
+    trainingFinding = `Foram ${recentGoalsFor} gols em ${recent.length} jogos. A média recente de ${roundedRate(recentAttackRate)} variou ${attackDelta >= 0 ? '+' : ''}${Math.round(attackDelta)}% contra a campanha.${bestWin ? ` A referência positiva foi ${scoreText(bestWin)} contra ${bestWin.opponent}.` : ''}`;
+    trainingActions = isInitiation
+      ? ['4 blocos de 3 minutos de 2x1, alternando quem conduz e quem finaliza.', 'Gol vale dois após passe ou condução que elimine um defensor.', 'Terminar com jogo livre e contar quantas crianças diferentes finalizaram.']
+      : ['Séries de 3x2 com finalização em até 8 segundos após recuperação.', 'Criar repetição de passe no pivô, diagonal e ataque ao segundo pau.', 'Medir finalizações limpas e entradas na área por bloco, não apenas gols.'];
+  } else if (form.losses >= 4 && closeLosses.length >= 3) {
+    trainingTitle = `Fechar jogos equilibrados: ${closeLosses.length} derrotas por até 2 gols`;
+    trainingFinding = `${closeLosses.map((round) => `${scoreText(round)} contra ${round.opponent}`).join('; ')}. O padrão pede treino de decisão nos minutos finais, sem atribuir a sequência a uma causa única.`;
+    trainingActions = [
+      'Jogar 4 blocos de 4 minutos começando empatado, com cronômetro e reposição lateral alternada.',
+      'No último minuto, alternar cenário de empate e desvantagem de um gol.',
+      'Registrar por bloco: posse desperdiçada, finalização cedida e decisão tomada após o aviso de um minuto.',
+    ];
+  }
+
+  const emotionalTrigger = form.losses >= 3 || lowerRankedLosses.length > 0;
+  const patternActions = emotionalTrigger
+    ? [`Antes do treino do ${analytics.category}, escala de 1 a 5 para energia e confiança, registrada sem exposição individual.`, `Usar o jogo contra ${heaviestLoss?.opponent ?? 'o adversário do maior revés'} como cenário: após cada erro, reinício em até 8 segundos e uma orientação curta.`, 'Comparar comportamento após sofrer o primeiro gol no próximo jogo; placar isolado não define causa emocional.']
+    : ['Manter a comunicação curta após acertos e erros.', `Usar a sequência ${sequence} como referência, sem transformar resultado em rótulo individual.`, 'Registrar quem inicia a pressão e quem oferece linha de passe após perda.'];
+
+  const nextTitle = next ? `${next.location}: ${next.opponent}` : 'Agenda oficial ainda sem próximo jogo';
+  const nextFinding = next
+    ? `${shortDate(next.date)}, ${next.time || 'horário não informado'}, no ${next.venue}.${Number.isFinite(next.opponentPosition) ? ` Adversário em ${next.opponentPosition}º, com ${next.opponentPoints} pontos em ${next.opponentPlayed} jogos.` : ' A fonte não traz posição confiável do adversário neste recorte.'}`
+    : 'Nenhuma partida futura foi confirmada na fonte oficial para esta categoria.';
+  const nextActions = next
+    ? [
+        `Preparar a sessão final reproduzindo o cenário de ${next.location.toLowerCase()} contra ${next.opponent}.`,
+        needsDefensiveWork ? 'Prioridade: reação à perda, proteção central e segundo pau.' : needsAttackWork ? 'Prioridade: primeira ação vertical e ocupação da área.' : 'Prioridade: manter equilíbrio entre ataque, reação à perda e controle emocional.',
+        `Atualizar a leitura após a súmula de ${shortDate(next.date)}; não antecipar conclusão pelo resultado isolado.`,
+      ]
+    : ['Manter microciclo de desenvolvimento sem simular adversário ainda não confirmado.', 'Consultar a agenda oficial antes de definir carga e plano pré-jogo.', 'Atualizar esta análise assim que a FPFS publicar o próximo compromisso.'];
+
+  return {
+    category: analytics?.category,
+    sampleSize: recent.length,
+    form,
+    recentPoints,
+    recentGoalsFor,
+    recentGoalsAgainst,
+    formSummary: mainFinding,
+    evidenceLines: [rankingContext, rateContext, venueContext],
+    attentionCards: [
+      { id: 'pattern', tone: emotionalTrigger ? 'attention' : 'stable', label: 'Diagnóstico do recorte', title: headline, finding: heaviestLoss ? `Maior revés: ${scoreText(heaviestLoss)} contra ${heaviestLoss.opponent}, em ${shortDate(heaviestLoss.date)}. ${bestWin ? `Melhor vitória: ${scoreText(bestWin)} contra ${bestWin.opponent}.` : 'Não houve vitória nos cinco jogos.'}` : `Não houve derrota no recorte. ${bestWin ? `Maior vitória: ${scoreText(bestWin)} contra ${bestWin.opponent}.` : ''}`, actions: patternActions },
+      { id: 'training', tone: needsDefensiveWork || needsAttackWork ? 'attention' : 'develop', label: 'Plano de treino', title: trainingTitle, finding: trainingFinding, actions: trainingActions },
+      { id: 'next', tone: next ? 'context' : 'attention', label: 'Próximo jogo', title: nextTitle, finding: nextFinding, actions: nextActions },
+    ],
+    confidence: recent.length === 5 ? (recent.every((round) => Number.isFinite(round.goalsFor) && Number.isFinite(round.goalsAgainst)) ? 'moderada' : 'limitada') : 'limitada',
+    caveat: 'Fatos: placares, datas, mando, classificação atual e médias. Inferências: prioridades de treino e pontos de observação. O agente não diagnostica comportamento ou saúde emocional e não substitui o registro da comissão técnica.',
   };
 }
 

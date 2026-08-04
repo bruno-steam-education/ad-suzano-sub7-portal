@@ -68,7 +68,7 @@ export function YouthDevelopmentAgent({ analytics, reduceMotion }) {
           <div>
             <span className="youth-agent-kicker"><Sparkles size={14} /> Agente IA de desenvolvimento</span>
             <h3 id="youth-agent-title">Leitura formativa do {report.category}</h3>
-            <p>Análise explicável dos últimos cinco jogos, atualizada quando a base FPFS muda.</p>
+            <p>Diagnóstico específico do recorte recente, com placares, adversários, variação de gols e próximo compromisso oficial.</p>
           </div>
         </div>
         <div className="agent-confidence">
@@ -90,9 +90,7 @@ export function YouthDevelopmentAgent({ analytics, reduceMotion }) {
         <div className="agent-evidence-title"><ClipboardCheck size={18} /><strong>O que os dados realmente mostram</strong></div>
         <p>{report.formSummary}</p>
         <ul>
-          <li><ChevronRight size={14} />{report.rankingContext}</li>
-          <li><ChevronRight size={14} />{report.strongerContext}</li>
-          <li><ChevronRight size={14} />A comparação usa a classificação atual dos adversários, não a posição que ocupavam no dia de cada partida.</li>
+          {report.evidenceLines.map((line) => <li key={line}><ChevronRight size={14} />{line}</li>)}
         </ul>
       </div>
 
@@ -107,7 +105,7 @@ export function YouthDevelopmentAgent({ analytics, reduceMotion }) {
             transition={{ delay: Math.min(index * 0.08, 0.16) }}
           >
             <span className="agent-card-label">
-              {card.id === 'emotional' ? <HeartHandshake size={15} /> : card.id === 'training' ? <ClipboardCheck size={15} /> : <CircleAlert size={15} />}
+              {card.id === 'pattern' ? <HeartHandshake size={15} /> : card.id === 'training' ? <ClipboardCheck size={15} /> : <CircleAlert size={15} />}
               {card.label}
             </span>
             <h4>{card.title}</h4>
@@ -139,4 +137,3 @@ export function YouthDevelopmentAgent({ analytics, reduceMotion }) {
     </motion.section>
   );
 }
-
