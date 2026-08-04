@@ -1,5 +1,6 @@
 import { fpfsCategories } from '../src/data/fpfsCategories.js';
 import { youthLeagueCategories } from '../src/data/youthLeagueCategories.js';
+import { technicalStaffByCategory } from '../src/data/technicalStaff.js';
 import { buildAnalyticsSnapshot, buildYouthDevelopmentAgent, deriveRecordFromGames } from '../src/utils/analyticsRobots.js';
 
 const requiredCategories = ['Sub-7', 'Sub-8', 'Sub-9', 'Sub-10', 'Sub-12', 'Sub-14', 'Sub-16', 'Sub-18'];
@@ -25,6 +26,10 @@ function validateRecord(category, sourceLabel) {
 }
 
 for (const categoryName of requiredCategories) {
+  const staff = technicalStaffByCategory[categoryName];
+  if (!staff?.coach || !staff?.coordinator || !staff?.department) {
+    problems.push(`${categoryName}: professor ou coordenação ausente no cadastro técnico.`);
+  }
   const category = fpfsCategories.find((item) => item.category === categoryName);
   if (!category) {
     problems.push(`${categoryName}: categoria ausente.`);

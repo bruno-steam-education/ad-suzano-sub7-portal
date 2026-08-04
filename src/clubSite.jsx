@@ -38,6 +38,7 @@ import { clubSiteData } from './data/clubSite';
 import { fpfsCategories } from './data/fpfsCategories';
 import { youthLeagueCategories } from './data/youthLeagueCategories';
 import { newsItems } from './data/news';
+import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -760,13 +761,14 @@ function ClubAboutPage() {
 function ClubBoardPage() {
   return (
     <div className="club-page">
-      <ClubIntroCard eyebrow="Diretoria" title="Equipe técnica e coordenação" subtitle={`${clubSiteData.board.members.length} profissionais cadastrados na estrutura do clube.`} />
+      <ClubIntroCard eyebrow="Diretoria" title="Equipe técnica e coordenação" subtitle={`${technicalStaffDirectory.length} profissionais organizados entre Iniciação e Base.`} />
       <div className="club-card-grid">
-        {clubSiteData.board.members.map((member) => (
-          <article className="club-person-card" key={`${member.name}-${member.role}`}>
+        {technicalStaffDirectory.map((member) => (
+          <article className="club-person-card" key={`${member.name}-${member.role}`} title={member.fullName}>
             <Users size={18} />
             <strong>{member.name}</strong>
             <span>{member.role}</span>
+            <small>{member.categories}</small>
           </article>
         ))}
       </div>
@@ -1060,6 +1062,8 @@ const ATHLETE_ATTRIBUTES = [
 function AthleteCollectibleCard({ player, category, detailed = false }) {
   const detail = player.detail ?? {};
   const fullName = detail.name || player.name;
+  const normalizedCategory = normalizeAthleteCategory(category);
+  const staff = technicalStaffByCategory[normalizedCategory];
   const content = (
     <motion.article
       className={`athlete-collectible-card ${detailed ? 'is-detailed' : ''}`}
@@ -1070,7 +1074,7 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
       <header className="athlete-card-topline">
         <div>
           <span>ELENCO 2026</span>
-          <strong>{normalizeAthleteCategory(category)}</strong>
+          <strong>{normalizedCategory}</strong>
         </div>
         <img src={suzanoLogo} alt="" />
       </header>
@@ -1094,7 +1098,8 @@ function AthleteCollectibleCard({ player, category, detailed = false }) {
 
       <div className="athlete-card-coach">
         <span>Treinador</span>
-        <strong>A confirmar por categoria</strong>
+        <strong title={staff?.coachFullName}>{staff?.coach ?? 'A confirmar'}</strong>
+        {staff && <small>{staff.department}: {staff.coordinator}</small>}
       </div>
 
       <div className="athlete-card-attributes" aria-label="Atributos técnicos aguardando dados">
@@ -1196,6 +1201,7 @@ function ClubAthleteDetailPage({ player }) {
           <div className="athlete-profile-checklist">
             <div><CheckCircle2 size={18} /><span>Nome completo e categoria cadastrados</span></div>
             <div><Clock3 size={18} /><span>Foto oficial aguardando envio</span></div>
+            <div><CheckCircle2 size={18} /><span>Treinador e coordenação cadastrados por categoria</span></div>
             <div><Clock3 size={18} /><span>Dados físicos aguardando envio</span></div>
             <div><Clock3 size={18} /><span>Velocidade, chute, condução e defesa aguardando avaliação</span></div>
           </div>
