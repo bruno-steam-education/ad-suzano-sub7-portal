@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   BarChart3,
   ArrowLeft,
@@ -14,6 +14,8 @@ import {
   Medal,
   Phone,
   PlayCircle,
+  Pause,
+  Radio,
   Search,
   Shield,
   Star,
@@ -21,10 +23,15 @@ import {
   Users,
   Menu,
   X,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import suzanoLogo from './assets/ad-suzano-logo.png';
 import { clubSiteData } from './data/clubSite';
+
+const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
+const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
 
 const PAGE_LABELS = {
   home: 'Home',
@@ -336,6 +343,8 @@ function ClubHomePage() {
         </motion.div>
       </motion.section>
 
+      <SupporterRadio />
+
       <section className="club-stats-strip">
         <div className="club-stat-box">
           <strong>8 Categorias</strong>
@@ -469,6 +478,147 @@ function ClubHomePage() {
         </div>
       </ClubSection>
     </div>
+  );
+}
+
+function SupporterRadio() {
+  const frameRef = useRef(null);
+  const [enabled, setEnabled] = useState(true);
+  const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(false);
+
+  const playerUrl = useMemo(() => {
+    const params = new URLSearchParams({
+      list: SUPPORTER_PLAYLIST_ID,
+      autoplay: '1',
+      loop: '1',
+      controls: '1',
+      enablejsapi: '1',
+      playsinline: '1',
+      rel: '0',
+    });
+    return `https://www.youtube-nocookie.com/embed/videoseries?${params.toString()}`;
+  }, []);
+
+  const sendPlayerCommand = useCallback((command) => {
+    frameRef.current?.contentWindow?.postMessage(JSON.stringify({
+      event: 'command',
+      func: command,
+      args: [],
+    }), '*');
+  }, []);
+
+  useEffect(() => {
+    if (!enabled || !playing) return undefined;
+
+    const startPlayback = () => {
+      sendPlayerCommand('unMute');
+      sendPlayerCommand('playVideo');
+      window.removeEventListener('pointerdown', startPlayback, true);
+      window.removeEventListener('keydown', startPlayback, true);
+    };
+
+    const timer = window.setTimeout(() => sendPlayerCommand('playVideo'), 700);
+    window.addEventListener('pointerdown', startPlayback, true);
+    window.addEventListener('keydown', startPlayback, true);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('pointerdown', startPlayback, true);
+      window.removeEventListener('keydown', startPlayback, true);
+    };
+  }, [enabled, playing, sendPlayerCommand]);
+
+  const togglePlayback = () => {
+    if (!enabled) {
+      setEnabled(true);
+      setPlaying(true);
+      setMuted(false);
+      return;
+    }
+    const nextPlaying = !playing;
+    setPlaying(nextPlaying);
+    sendPlayerCommand(nextPlaying ? 'playVideo' : 'pauseVideo');
+  };
+
+  const toggleMute = () => {
+    const nextMuted = !muted;
+    setMuted(nextMuted);
+    sendPlayerCommand(nextMuted ? 'mute' : 'unMute');
+  };
+
+  const turnOff = () => {
+    sendPlayerCommand('stopVideo');
+    setEnabled(false);
+    setPlaying(false);
+    setMuted(false);
+  };
+
+  return (
+    <motion.section
+      className={`supporter-radio ${enabled && playing ? 'is-live' : ''}`}
+      aria-label="Rádio Grito da Torcida AD Suzano"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.32, duration: 0.45 }}
+    >
+      <div className="supporter-radio-copy">
+        <div className="supporter-radio-station">
+          <span className="supporter-radio-icon"><Radio size={23} /></span>
+          <div>
+            <span className="supporter-radio-kicker"><i /> Rádio oficial da torcida</span>
+            <h2>Grito da Torcida AD Suzano</h2>
+          </div>
+        </div>
+        <p>
+          {enabled && playing
+            ? 'No ar agora · reprodução contínua da arquibancada azul, branca e vermelha.'
+            : enabled
+              ? 'Rádio pausada. Retome quando quiser.'
+              : 'Rádio desligada. Clique em ligar para voltar ao ar.'}
+        </p>
+        <div className="supporter-radio-controls">
+          <button type="button" className="supporter-radio-primary" onClick={togglePlayback}>
+            {enabled && playing ? <Pause size={17} /> : <PlayCircle size={17} />}
+            {enabled && playing ? 'Pausar' : 'Ligar rádio'}
+          </button>
+          {enabled ? (
+            <>
+              <button type="button" onClick={toggleMute} aria-label={muted ? 'Ativar som' : 'Silenciar rádio'}>
+                {muted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+                {muted ? 'Ativar som' : 'Silenciar'}
+              </button>
+              <button type="button" className="supporter-radio-off" onClick={turnOff}>
+                <X size={17} /> Desligar
+              </button>
+            </>
+          ) : null}
+          <a href={SUPPORTER_PLAYLIST_URL} target="_blank" rel="noreferrer">
+            <PlayCircle size={17} /> Abrir playlist
+          </a>
+        </div>
+        <small>Se o navegador bloquear som automático, a rádio começa na primeira interação com a página.</small>
+      </div>
+      <div className={`supporter-radio-player ${enabled ? '' : 'is-off'}`}>
+        {enabled ? (
+          <iframe
+            ref={frameRef}
+            src={playerUrl}
+            title="Grito da Torcida AD Suzano"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            onLoad={() => {
+              if (playing) sendPlayerCommand('playVideo');
+            }}
+          />
+        ) : (
+          <div className="supporter-radio-offline">
+            <Radio size={30} />
+            <strong>Fora do ar</strong>
+            <span>Aperte “Ligar rádio” para reconectar.</span>
+          </div>
+        )}
+      </div>
+    </motion.section>
   );
 }
 
