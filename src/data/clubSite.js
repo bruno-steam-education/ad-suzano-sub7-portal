@@ -112,8 +112,8 @@ export const clubSiteData = {
     }
   ],
   "creator": {
-    "label": "jfut.club",
-    "url": "https://jfut.club"
+    "label": "Bruno STEAM",
+    "url": "https://adsuzano.com.br"
   },
   "home": {
     "heading": "AD Suzano TV",

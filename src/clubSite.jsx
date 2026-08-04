@@ -1709,7 +1709,7 @@ function ClubFooter() {
         <img src={suzanoLogo} alt="AD Suzano" />
         <div>
           <strong>AD Suzano 2026</strong>
-          <span>Criado por {clubSiteData.creator.label}</span>
+          <span>Criado por Bruno STEAM</span>
         </div>
       </div>
       <div className="club-footer-links">

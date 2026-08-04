@@ -261,7 +261,7 @@ const clubSiteData = {
   mainLinks: extractNamedLinks(home, MAIN_LABELS),
   footerLinks: extractNamedLinks(home, FOOTER_LABELS),
   socialLinks: extractSocialLinks(home),
-  creator: { label: 'jfut.club', url: 'https://jfut.club' },
+  creator: { label: 'Bruno STEAM', url: 'https://adsuzano.com.br' },
   home: {
     heading: 'AD Suzano TV',
     intro: 'Confira os lances das partidas, entrevistas exclusivas, tudo o que rola nos bastidores e muito mais.',
