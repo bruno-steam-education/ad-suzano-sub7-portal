@@ -34,6 +34,7 @@ import { CategoryEfficiencyHeader } from './components/CategoryEfficiencyHeader'
 import { AccessModal } from './components/AccessModal';
 import { ProtectedSection } from './components/ProtectedSection';
 import { GraphicalAnalysis } from './components/GraphicalAnalysis';
+import FamilyPaymentPage from './components/FamilyPaymentPage';
 import './styles.css';
 
 registerServiceWorker();
@@ -190,6 +191,10 @@ function App() {
   };
 
   const openAccessModal = () => setIsAccessModalOpen(true);
+
+  if (window.location.pathname.replace(/\/+$/, '') === '/pagamento') {
+    return <FamilyPaymentPage />;
+  }
 
   React.useEffect(() => {
     let active = true;
