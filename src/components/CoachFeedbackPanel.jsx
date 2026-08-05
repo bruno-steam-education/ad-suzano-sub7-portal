@@ -26,16 +26,43 @@ export default function CoachFeedbackPanel() {
   const complete = QUESTIONS.every(({ key }) => rubric[key] || notes[key].trim());
 
   const generate = async (event) => {
-    event.preventDefault(); setBusy(true); setStatus('');
-    try { setText(await generateCoachFeedback({ athleteName: athlete.name, category: athlete.category, rubric: { selections: rubric, personalized: notes } })); setStatus('Rascunho pronto. Revise antes de publicar.'); }
-    catch (error) { setStatus(error.message); } finally { setBusy(false); }
+    event.preventDefault();
+    setBusy(true);
+    setStatus('');
+    try {
+      setText(await generateCoachFeedback({ athleteName: athlete.name, category: athlete.category, rubric: { selections: rubric, personalized: notes } }));
+      setStatus('Rascunho pronto. Leia, ajuste se quiser e aprove antes de publicar.');
+    } catch (error) {
+      setStatus(error.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const approve = async () => {
-    setBusy(true); setStatus('');
-    try { await saveCoachFeedback({ athleteId: athlete.id, text, rubric: { selections: rubric, personalized: notes } }); setStatus('Feedback aprovado e salvo para o atleta.'); setText(''); setRubric(EMPTY_RUBRIC); setNotes(EMPTY_NOTES); }
-    catch (error) { setStatus(error.message); } finally { setBusy(false); }
+    setBusy(true);
+    setStatus('');
+    try {
+      await saveCoachFeedback({ athleteId: athlete.id, text, rubric: { selections: rubric, personalized: notes } });
+      setStatus('Feedback aprovado e salvo para o atleta.');
+      setText('');
+      setRubric({ ...EMPTY_RUBRIC });
+      setNotes({ ...EMPTY_NOTES });
+    } catch (error) {
+      setStatus(error.message);
+    } finally {
+      setBusy(false);
+    }
   };
 
-  return <div className="coach-feedback-panel"><div className="coach-feedback-intro"><div><span>ASSISTENTE DA COMISSÃO</span><h3>Feedback individual com rubrica</h3><p>Escolha uma alternativa ou escreva uma observação própria em cada bloco. O texto só é publicado depois da revisão do treinador.</p></div><ClipboardCheck size={30} /></div><form onSubmit={generate}><label className="coach-feedback-athlete">Atleta<select value={athleteId} onChange={(event) => { setAthleteId(event.target.value); setText(''); }}>{athletes.map((item) => <option key={item.id} value={item.id}>{item.name} · {item.category}</option>)}</select></label><div className="coach-feedback-rubric">{QUESTIONS.map((question, index) => <fieldset key={question.key}><legend>{index + 1}. {question.title}</legend><small>{question.help}</small><div className="coach-feedback-options">{question.options.map((option) => <button type="button" key={option} className={rubric[question.key] === option ? 'is-selected' : ''} onClick={() => setRubric({ ...rubric, [question.key]: option })}>{option}</button>)}</div><textarea value={notes[question.key]} onChange={(event) => setNotes({ ...notes, [question.key]: event.target.value })} placeholder="Ou escreva uma observação personalizada…" /></fieldset>)}</div><button className="staff-primary-action coach-feedback-generate" type="submit" disabled={busy || !complete}>{busy ? <><LoaderCircle size={17} className="is-spinning" /> Preparando…</> : <><FilePenLine size={17} /> Redigir feedback</>}</button></form>{text ? <section className="coach-feedback-preview"><div><span>RASCUNHO PARA APROVAÇÃO</span><strong>{athlete.name}</strong></div><textarea value={text} onChange={(event) => setText(event.target.value)} /><button className="staff-primary-action" type="button" onClick={approve} disabled={busy}><Check size={17} /> Aprovar e publicar</button></section> : null}{status ? <div className="coach-feedback-status" role="status"><ClipboardCheck size={16} />{status}</div> : null}</div>;
+  return <div className="coach-feedback-panel">
+    <div className="coach-feedback-intro"><div><span>ASSISTENTE DA COMISSÃO</span><h3>Feedback na voz do treinador</h3><p>Marque uma alternativa ou escreva sua observação em cada bloco. A IA organiza o rascunho, mas a publicação só acontece depois da sua aprovação.</p></div><ClipboardCheck size={30} /></div>
+    <form onSubmit={generate}>
+      <label className="coach-feedback-athlete">Atleta<select value={athleteId} onChange={(event) => { setAthleteId(event.target.value); setText(''); }}>{athletes.map((item) => <option key={item.id} value={item.id}>{item.name} · {item.category}</option>)}</select></label>
+      <div className="coach-feedback-rubric">{QUESTIONS.map((question, index) => <fieldset key={question.key}><legend>{index + 1}. {question.title}</legend><small>{question.help}</small><div className="coach-feedback-options">{question.options.map((option) => <button type="button" key={option} className={rubric[question.key] === option ? 'is-selected' : ''} onClick={() => setRubric({ ...rubric, [question.key]: option })}>{option}</button>)}</div><textarea value={notes[question.key]} onChange={(event) => setNotes({ ...notes, [question.key]: event.target.value })} placeholder="Ou escreva uma observação personalizada…" /></fieldset>)}</div>
+      <button className="staff-primary-action coach-feedback-generate" type="submit" disabled={busy || !complete}>{busy ? <><LoaderCircle size={17} className="is-spinning" /> Preparando…</> : <><FilePenLine size={17} /> Redigir feedback</>}</button>
+    </form>
+    {text ? <section className="coach-feedback-preview"><div><span>RASCUNHO PARA APROVAÇÃO</span><strong>{athlete.name}</strong></div><textarea value={text} onChange={(event) => setText(event.target.value)} /><button className="staff-primary-action" type="button" onClick={approve} disabled={busy}><Check size={17} /> Aprovar e publicar</button></section> : null}
+    {status ? <div className="coach-feedback-status" role="status"><ClipboardCheck size={16} />{status}</div> : null}
+  </div>;
 }
