@@ -49,6 +49,7 @@ import { youthLeagueCategories } from './data/youthLeagueCategories';
 import { newsItems } from './data/news';
 import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
 import { communityNews } from './data/communityNews';
+import { mediaHighlights } from './data/mediaHighlights';
 import { athleteSeasonStats } from './data/athleteSeasonStats';
 import { athleteRoster } from './data/athleteRoster';
 import { AthleteAdminProvider, useAthleteAdmin } from './components/AthleteAdminContext';
@@ -415,6 +416,7 @@ function ClubHomePage() {
       </section>
 
       <ClubNewsRadar />
+      <ClubMediaHighlights />
 
       <ClubSection
         eyebrow="Quem Somos"
@@ -2123,6 +2125,25 @@ function ClubNewsRadar() {
         </div>
       </div>
       <div className="club-news-source-note"><Shield size={14} /> Conteúdo selecionado de fontes oficiais. A equipe pode adicionar novas pautas sem alterar o histórico.</div>
+    </section>
+  );
+}
+
+function ClubMediaHighlights() {
+  return (
+    <section className="club-media-highlights" aria-labelledby="club-media-highlights-title">
+      <div className="club-media-highlights-head">
+        <div><span className="club-section-eyebrow"><Camera size={16} /> IMAGENS E JOGOS</span><h2 id="club-media-highlights-title">A AD Suzano também se vê em quadra</h2><p>Fotos, vídeos e escudos visuais para reconhecer cada jogo, cada categoria e cada adversário.</p></div>
+        <a href={pageUrl('fotos')} className="club-news-radar-link">Abrir galeria <ArrowRight size={16} /></a>
+      </div>
+      <div className="club-media-highlights-grid">
+        {mediaHighlights.map((item, index) => (
+          <a className="club-media-highlight-card" href={item.href} target="_blank" rel="noreferrer" key={item.href}>
+            <div className="club-media-highlight-image"><img src={item.image} alt="Registro visual de futsal" loading={index === 0 ? 'eager' : 'lazy'} /><span className="club-media-highlight-badge">{item.category}</span><div className="club-media-highlight-crest"><img src={suzanoLogo} alt="AD Suzano" /><span>×</span><strong>{item.opponent}</strong></div></div>
+            <div className="club-media-highlight-copy"><h3>{item.title}</h3><p>{item.caption}</p><span>Ver registro <ArrowRight size={15} /></span></div>
+          </a>
+        ))}
+      </div>
     </section>
   );
 }

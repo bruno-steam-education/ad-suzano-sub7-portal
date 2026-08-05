@@ -4809,6 +4809,32 @@ input {
   .club-news-featured { min-height: 300px; }
 }
 
+.club-media-highlights { display: grid; gap: 22px; padding: 4px 0; }
+.club-media-highlights-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; }
+.club-media-highlights-head h2 { margin: 8px 0 6px; color: #092654; font-size: clamp(1.65rem, 3vw, 2.35rem); }
+.club-media-highlights-head p { margin: 0; color: #647896; }
+.club-media-highlights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.club-media-highlight-card { overflow: hidden; display: flex; flex-direction: column; color: #092654; background: #fff; border: 1px solid #d6e0ed; border-radius: 12px; text-decoration: none; box-shadow: 0 10px 24px rgba(8,30,70,.08); transition: transform .2s ease, box-shadow .2s ease; }
+.club-media-highlight-card:hover { transform: translateY(-4px); box-shadow: 0 16px 30px rgba(8,30,70,.15); }
+.club-media-highlight-image { position: relative; height: 190px; overflow: hidden; background: linear-gradient(135deg, #0c2e67, #c91d39); }
+.club-media-highlight-image > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.85) contrast(1.05); }
+.club-media-highlight-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,20,49,.08), rgba(4,20,49,.64)); pointer-events: none; }
+.club-media-highlight-badge { position: absolute; top: 12px; left: 12px; z-index: 1; padding: 6px 8px; color: #092654; background: #f4ca4c; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.club-media-highlight-crest { position: absolute; right: 12px; bottom: 12px; z-index: 1; display: flex; align-items: center; gap: 7px; color: #fff; font-weight: 900; }
+.club-media-highlight-crest img { width: 35px; height: 35px; object-fit: contain; }
+.club-media-highlight-crest span { color: #f4ca4c; }
+.club-media-highlight-crest strong { display: grid; place-items: center; width: 35px; height: 35px; color: #092654; background: #fff; border-radius: 50%; font-size: 10px; }
+.club-media-highlight-copy { display: grid; gap: 7px; padding: 18px; }
+.club-media-highlight-copy h3 { margin: 0; font-size: 1.15rem; }
+.club-media-highlight-copy p { margin: 0; color: #647896; font-size: .9rem; line-height: 1.4; }
+.club-media-highlight-copy span { display: inline-flex; align-items: center; gap: 6px; color: #d51d36; font-size: .85rem; font-weight: 900; }
+
+@media (max-width: 760px) {
+  .club-media-highlights-head { align-items: flex-start; flex-direction: column; }
+  .club-media-highlights-grid { grid-template-columns: 1fr; }
+  .club-media-highlight-image { height: 210px; }
+}
+
 .club-athlete-portal-showcase {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
