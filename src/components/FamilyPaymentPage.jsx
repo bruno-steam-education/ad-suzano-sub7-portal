@@ -4,7 +4,7 @@ import { ArrowRight, CalendarDays, CheckCircle2, CreditCard, LockKeyhole, Search
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const date = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const statusLabel = { present: 'Presente', absent: 'Falta', justified: 'Justificada', unmarked: 'Pendente' };
-const PHOTO_ASSISTANT_URL = 'https://chatgpt.com/';
+const PHOTO_ASSISTANT_URL = 'https://chatgpt.com/g/g-6a734c3ea4548191b0cac84021ba8aeb-ad-suzano-melhorar-foto-do-atleta';
 
 export default function FamilyPaymentPage() {
   const [form, setForm] = useState({ firstName: '', lastName: '', code: '' });
