@@ -29,6 +29,10 @@ function meta(html, key) {
   return '';
 }
 
+function markdownField(markdown, pattern) {
+  return markdown.match(pattern)?.[1]?.trim() || '';
+}
+
 function firstImage(html, baseUrl) {
   const candidate = meta(html, 'og:image') || meta(html, 'twitter:image') || html.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] || '';
   if (!candidate) return '';
@@ -38,13 +42,15 @@ function firstImage(html, baseUrl) {
 function clean(value = '') { return value.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(); }
 
 async function readSource(source) {
-  const response = await fetch(source.url, { headers: { 'user-agent': 'AD-Suzano-News-Radar/1.0' } });
+  const readerUrl = `https://r.jina.ai/http://${source.url.replace(/^https?:\/\//, '')}`;
+  const response = await fetch(readerUrl, { headers: { 'user-agent': 'AD-Suzano-News-Radar/1.0' } });
   if (!response.ok) throw new Error(`Fonte retornou ${response.status}`);
-  const html = await response.text();
-  const title = clean(meta(html, 'og:title'));
-  const summary = clean(meta(html, 'og:description') || meta(html, 'description'));
-  const image = firstImage(html, source.url);
-  const date = clean(meta(html, 'article:published_time')).slice(0, 10) || new Date().toISOString().slice(0, 10);
+  const markdown = await response.text();
+  const title = clean(markdownField(markdown, /^Title:\s*(.+)$/m));
+  const summary = clean(markdownField(markdown, /^_(.+)_$/m));
+  const image = markdownField(markdown, /!\[[^\]]*\]\((https?:\/\/[^)]+)\)/);
+  const dateParts = markdown.match(/^(\d{2}\/\d{2}\/\d{4})$/m)?.[1]?.split('/');
+  const date = dateParts ? `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}` : new Date().toISOString().slice(0, 10);
   return { ...source, title, summary, image, sourceImage: Boolean(image), date };
 }
 
