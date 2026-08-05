@@ -229,6 +229,10 @@ function ClubUtilityBar() {
           ))}
         </nav>
         <div className="club-utility-actions">
+          <a className="club-utility-athlete-portal" href="/pagamento">
+            <Users size={14} />
+            <span>Portal do Atleta</span>
+          </a>
           <a className="club-utility-analysis" href="#/analise">
             <span>Ambiente de Análises</span>
           </a>
@@ -359,6 +363,10 @@ function ClubHomePage() {
               <Medal size={18} />
               <span>Escolinha de Futsal</span>
             </motion.a>
+            <motion.a className="club-athlete-portal-cta" href="/pagamento" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
+              <Users size={18} />
+              <span>Portal do Atleta</span>
+            </motion.a>
           </div>
         </motion.div>
         <motion.div className="club-highlight-card" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
@@ -393,6 +401,21 @@ function ClubHomePage() {
           <strong>Escolinha Oficial</strong>
           <span>Formação Cidadã e Atletas do Futuro</span>
         </div>
+      </section>
+
+      <section className="club-athlete-portal-showcase" aria-labelledby="athlete-portal-title">
+        <div className="club-athlete-portal-copy">
+          <span className="club-section-eyebrow">PORTAL DO ATLETA · AD SUZANO</span>
+          <h2 id="athlete-portal-title">Tudo o que o atleta precisa, em um só lugar.</h2>
+          <p>Um espaço feito para acompanhar a rotina, reconhecer a evolução e aproximar atleta, comissão técnica e família.</p>
+          <a className="club-athlete-portal-link" href="/pagamento">Entrar no Portal do Atleta <ArrowRight size={17} /></a>
+        </div>
+        <motion.div className="club-athlete-dashboard-mockup" initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.45 }}>
+          <div className="club-mockup-topbar"><span><span className="club-mockup-dot" /> Portal do Atleta</span><small>AD SUZANO · SUB-7</small></div>
+          <div className="club-mockup-profile"><div className="club-mockup-avatar"><Users size={28} /></div><div><small>ATLETA EM FOCO</small><strong>Bruno Domênico</strong><span>Perfil preparado para evolução</span></div><div className="club-mockup-rating"><strong>92%</strong><small>presença</small></div></div>
+          <div className="club-mockup-metrics"><div><CalendarDays size={16} /><strong>18</strong><span>treinos</span></div><div><Trophy size={16} /><strong>07</strong><span>jogos</span></div><div><BarChart3 size={16} /><strong>+12%</strong><span>evolução</span></div></div>
+          <div className="club-mockup-lower"><div><small>PRÓXIMO COMPROMISSO</small><strong>Treino da categoria</strong><span>Quarta-feira · 18h30</span></div><div className="club-mockup-feedback"><CheckCircle2 size={16} /><span>Feedback do treinador disponível</span></div></div>
+        </motion.div>
       </section>
 
       <ClubSection
