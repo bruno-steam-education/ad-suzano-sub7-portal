@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Portal da Família AD Suzano">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#071a3d"/><stop offset="1" stop-color="#184889"/></linearGradient></defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M256 58 414 116v119c0 104-62 171-158 218-96-47-158-114-158-218V116L256 58Z" fill="#0d2e66" stroke="#f2c94c" stroke-width="10"/>
+  <circle cx="256" cy="204" r="54" fill="#e32135" stroke="#fff" stroke-width="8"/><circle cx="174" cy="225" r="33" fill="#fff"/><circle cx="338" cy="225" r="33" fill="#fff"/>
+  <path d="M112 342c8-51 37-76 62-76s54 25 62 76M276 342c8-51 37-76 62-76s54 25 62 76" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="256" cy="120" r="25" fill="#f2c94c"/><text x="256" y="424" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="800" letter-spacing="4">FAMÍLIA</text>
+</svg>

@@ -1,25 +1,15 @@
 {
-  "name": "AD Suzano Sub-7",
-  "short_name": "AD Sub-7",
-  "description": "Portal de inteligência de jogo do AD Suzano Sub-7.",
-  "start_url": "./",
-  "scope": "./",
+  "name": "AD Suzano · Portal da Família",
+  "short_name": "Portal da Família",
+  "id": "/portal-do-atleta",
+  "description": "Acompanhe frequência, feedbacks, agenda e pagamentos do atleta.",
+  "start_url": "/portal-do-atleta",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f3f7fb",
   "theme_color": "#071a3d",
   "icons": [
-    {
-      "src": "./ad-suzano-logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./ad-suzano-logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "/portal-familia-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }
