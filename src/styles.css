@@ -19,11 +19,19 @@ body {
   margin: 0;
   background: var(--ice);
   color: var(--ink);
+  min-width: 320px;
+  overflow-x: hidden;
 }
 
 button,
 input {
   font: inherit;
+}
+
+@media (orientation: landscape) and (max-height: 620px) {
+  .app-shell { min-height: 100dvh; }
+  .club-site-shell { min-height: 100dvh; }
+  .family-payment-page { min-height: 100dvh; }
 }
 
 .app-shell {

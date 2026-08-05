@@ -179,6 +179,21 @@ function App() {
   });
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false);
 
+  React.useEffect(() => {
+    const syncDeviceOrientation = () => {
+      const landscape = window.matchMedia?.('(orientation: landscape)').matches ?? window.innerWidth > window.innerHeight;
+      document.documentElement.dataset.deviceOrientation = landscape ? 'landscape' : 'portrait';
+    };
+    syncDeviceOrientation();
+    window.addEventListener('resize', syncDeviceOrientation, { passive: true });
+    window.addEventListener('orientationchange', syncDeviceOrientation, { passive: true });
+    try { window.screen?.orientation?.unlock?.(); } catch { /* browser may not expose orientation unlock */ }
+    return () => {
+      window.removeEventListener('resize', syncDeviceOrientation);
+      window.removeEventListener('orientationchange', syncDeviceOrientation);
+    };
+  }, []);
+
   const activeCategory = categories.find((category) => category.id === activeCategoryId) ?? categories[0];
   const activeFpfs = fpfsCategories.find((category) => category.category === activeCategory.label);
   const hasFpfsCategoryData = Boolean(activeFpfs?.recentGames?.length || activeFpfs?.upcomingGames?.length);
