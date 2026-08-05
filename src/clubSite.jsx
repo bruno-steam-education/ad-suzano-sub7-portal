@@ -229,7 +229,7 @@ function ClubUtilityBar() {
           ))}
         </nav>
         <div className="club-utility-actions">
-          <a className="club-utility-athlete-portal" href="/pagamento">
+          <a className="club-utility-athlete-portal" href="/portal-do-atleta">
             <Users size={14} />
             <span>Portal do Atleta</span>
           </a>
@@ -363,7 +363,7 @@ function ClubHomePage() {
               <Medal size={18} />
               <span>Escolinha de Futsal</span>
             </motion.a>
-            <motion.a className="club-athlete-portal-cta" href="/pagamento" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
+            <motion.a className="club-athlete-portal-cta" href="/portal-do-atleta" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
               <Users size={18} />
               <span>Portal do Atleta</span>
             </motion.a>
@@ -408,7 +408,7 @@ function ClubHomePage() {
           <span className="club-section-eyebrow">PORTAL DO ATLETA · AD SUZANO</span>
           <h2 id="athlete-portal-title">Tudo o que o atleta precisa, em um só lugar.</h2>
           <p>Um espaço feito para acompanhar a rotina, reconhecer a evolução e aproximar atleta, comissão técnica e família.</p>
-          <a className="club-athlete-portal-link" href="/pagamento">Entrar no Portal do Atleta <ArrowRight size={17} /></a>
+          <a className="club-athlete-portal-link" href="/portal-do-atleta">Entrar no Portal do Atleta <ArrowRight size={17} /></a>
         </div>
         <motion.div className="club-athlete-dashboard-mockup" initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.45 }}>
           <div className="club-mockup-topbar"><span><span className="club-mockup-dot" /> Portal do Atleta</span><small>AD SUZANO · SUB-7</small></div>

@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         handle,
         order_nsu: orderNsu,
         customer: { name: profile.responsible_name, email: profile.responsible_email, phone_number: profile.responsible_phone },
-        redirect_url: `${baseUrl}/pagamento?status=concluido`,
+      redirect_url: `${baseUrl}/portal-do-atleta?status=concluido`,
         webhook_url: `${baseUrl}/api/payments/infinitepay-webhook`,
         items: [{ quantity: 1, price: event.amount_cents, description: `Taxa esportiva · ${event.title} · ${athlete.category}`.slice(0, 120) }],
       }),

@@ -39,6 +39,11 @@ import './styles.css';
 
 registerServiceWorker();
 
+function LegacyAthletePortalRedirect() {
+  React.useEffect(() => { window.location.replace('/portal-do-atleta'); }, []);
+  return null;
+}
+
 const fmtDate = new Intl.DateTimeFormat('pt-BR', {
   weekday: 'short',
   day: '2-digit',
@@ -192,7 +197,11 @@ function App() {
 
   const openAccessModal = () => setIsAccessModalOpen(true);
 
-  if (window.location.pathname.replace(/\/+$/, '') === '/pagamento') {
+  const pathname = window.location.pathname.replace(/\/+$/, '');
+  if (pathname === '/pagamento') {
+    return <LegacyAthletePortalRedirect />;
+  }
+  if (pathname === '/portal-do-atleta') {
     return <FamilyPaymentPage />;
   }
 

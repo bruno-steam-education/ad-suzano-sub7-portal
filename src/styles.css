@@ -4665,10 +4665,10 @@ input {
 .club-home-hero .club-athlete-portal-cta {
   min-height: 46px;
   padding: 11px 15px;
-  border: 1px solid #d3a92f;
+  border: 1px solid #b8c9e2;
   border-radius: 4px;
-  background: #fff8df;
-  color: #7b5a00;
+  background: #fff;
+  color: #0d2e66;
   font-size: 12px;
   font-weight: 850;
   letter-spacing: .035em;
@@ -4676,16 +4676,26 @@ input {
 }
 
 .club-home-hero .club-athlete-portal-cta:hover {
-  background: #fff1b9;
-  box-shadow: 0 9px 20px rgba(190, 145, 22, .16);
+  border-color: #d92332;
+  background: #fff4f5;
+  color: #c7192d;
+  box-shadow: 0 9px 20px rgba(217, 35, 50, .14);
 }
 
 .club-utility-athlete-portal {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: #ffda69;
+  padding: 7px 11px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 4px;
+  background: linear-gradient(135deg, #d92332, #b7192c);
+  box-shadow: 0 5px 14px rgba(0,0,0,.18);
+  color: #fff;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
 }
+
+.club-utility-athlete-portal:hover { background: linear-gradient(135deg, #ed3042, #c7192d); box-shadow: 0 8px 18px rgba(217,35,50,.28); transform: translateY(-1px); }
 
 .club-athlete-portal-showcase {
   display: grid;
