@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, CalendarDays, CheckCircle2, CreditCard, LockKeyhole, Search, ShieldCheck, Trophy, WandSparkles } from 'lucide-react';
 
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -16,6 +16,7 @@ export default function FamilyPaymentPage() {
   const [paying, setPaying] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [crop, setCrop] = useState(null);
+  const [cropNotice, setCropNotice] = useState('');
   const cropImageRef = useRef(null);
   const cropDraftRef = useRef(null);
 
@@ -55,9 +56,41 @@ export default function FamilyPaymentPage() {
     const file = event.target.files?.[0]; event.target.value = '';
     if (!file || !file.type.startsWith('image/')) return;
     setCrop({ file, url: URL.createObjectURL(file), zoom: 1, x: 0, y: 0 });
+    setCropNotice('');
   };
 
-  const closeCropper = () => { if (crop?.url) URL.revokeObjectURL(crop.url); setCrop(null); cropDraftRef.current = null; };
+  const closeCropper = () => { if (crop?.url) URL.revokeObjectURL(crop.url); setCrop(null); cropDraftRef.current = null; setCropNotice(''); };
+
+  const autoCenterFace = async () => {
+    if (!crop) return;
+    const image = new Image();
+    image.src = crop.url;
+    await image.decode();
+    const detectorAvailable = typeof window !== 'undefined' && 'FaceDetector' in window;
+    let face = null;
+    if (detectorAvailable) {
+      try {
+        const detector = new window.FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
+        const detected = await detector.detect(image);
+        face = detected[0]?.boundingBox || null;
+      } catch { face = null; }
+    }
+    const cover = Math.max(340 / image.naturalWidth, 340 / image.naturalHeight) * crop.zoom;
+    const nextX = face ? -(face.x + face.width / 2 - image.naturalWidth / 2) * cover : 0;
+    const targetFaceY = image.naturalHeight * 0.34;
+    const nextY = face ? -(face.y + face.height / 2 - targetFaceY) * cover : Math.min(0, -(image.naturalHeight - image.naturalWidth) * cover * 0.08);
+    setCrop({ ...crop, x: nextX, y: nextY });
+    setCropNotice(face ? 'Rosto identificado e enquadrado automaticamente.' : 'Enquadramento automático aplicado. Ajuste fino se necessário.');
+  };
+
+  useEffect(() => {
+    if (!crop?.url || !cropImageRef.current) return undefined;
+    const image = cropImageRef.current;
+    const handleLoad = () => { autoCenterFace(); };
+    if (image.complete) handleLoad();
+    else image.addEventListener('load', handleLoad, { once: true });
+    return () => image.removeEventListener('load', handleLoad);
+  }, [crop?.url]);
 
   const startCropDrag = (event) => {
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -118,6 +151,6 @@ export default function FamilyPaymentPage() {
     </section>
     <footer className="family-payment-footer"><LockKeyhole size={16} /> O pagamento é processado pela InfinitePay. A AD Suzano não armazena dados do cartão.</footer>
     {result ? <div className="family-photo-upload-strip"><span>FOTO DO ATLETA · ENVIE UMA FOTO COM UNIFORME</span><div className="family-photo-actions"><a className="family-photo-enhance" href={PHOTO_ASSISTANT_URL} target="_blank" rel="noreferrer"><WandSparkles size={16} /> Melhorar sua foto</a><label>{uploadingPhoto ? 'Enviando foto…' : 'Escolher foto'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={openCropper} disabled={uploadingPhoto} /></label></div></div> : null}
-    {crop ? <div className="family-crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-title"><div className="family-crop-dialog"><div className="family-crop-heading"><div><span>AJUSTE DA FOTO</span><h2 id="crop-title">Enquadre o atleta</h2><p>Arraste a imagem e ajuste o zoom antes de salvar.</p></div><button type="button" className="family-crop-close" onClick={closeCropper} aria-label="Fechar editor">×</button></div><div className="family-crop-viewport" onPointerDown={startCropDrag} onPointerMove={moveCropDrag} onPointerUp={endCropDrag} onPointerCancel={endCropDrag}><img ref={cropImageRef} src={crop.url} alt="Prévia da foto do atleta" style={{ transform: `translate3d(${crop.x}px, ${crop.y}px, 0) scale(${crop.zoom})` }} /><span className="family-crop-guide" /></div><label className="family-crop-zoom">Zoom <input type="range" min="1" max="2.5" step="0.01" value={crop.zoom} onChange={(event) => setCrop({ ...crop, zoom: Number(event.target.value) })} /><strong>{Math.round(crop.zoom * 100)}%</strong></label><div className="family-crop-actions"><button type="button" className="family-crop-secondary" onClick={closeCropper}>Cancelar</button><button type="button" className="family-primary-action" onClick={applyCrop} disabled={uploadingPhoto}>{uploadingPhoto ? 'Enviando…' : 'Recortar e salvar'}</button></div></div></div> : null}
+    {crop ? <div className="family-crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-title"><div className="family-crop-dialog"><div className="family-crop-heading"><div><span>AJUSTE DA FOTO</span><h2 id="crop-title">Enquadre o atleta</h2><p>Arraste a imagem e ajuste o zoom antes de salvar.</p></div><button type="button" className="family-crop-close" onClick={closeCropper} aria-label="Fechar editor">×</button></div><div className="family-crop-viewport" onPointerDown={startCropDrag} onPointerMove={moveCropDrag} onPointerUp={endCropDrag} onPointerCancel={endCropDrag}><img ref={cropImageRef} src={crop.url} alt="Prévia da foto do atleta" style={{ transform: `translate3d(${crop.x}px, ${crop.y}px, 0) scale(${crop.zoom})` }} /><span className="family-crop-guide" /></div><div className="family-crop-tools"><button type="button" className="family-crop-auto" onClick={autoCenterFace}>◎ Centralizar rosto</button>{cropNotice ? <span>{cropNotice}</span> : <small>O rosto ficará na área ideal do card.</small>}</div><label className="family-crop-zoom">Zoom <input type="range" min="1" max="2.5" step="0.01" value={crop.zoom} onChange={(event) => setCrop({ ...crop, zoom: Number(event.target.value) })} /><strong>{Math.round(crop.zoom * 100)}%</strong></label><div className="family-crop-actions"><button type="button" className="family-crop-secondary" onClick={closeCropper}>Cancelar</button><button type="button" className="family-primary-action" onClick={applyCrop} disabled={uploadingPhoto}>{uploadingPhoto ? 'Enviando…' : 'Recortar e salvar'}</button></div></div></div> : null}
   </main>;
 }

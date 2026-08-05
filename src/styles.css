@@ -5728,6 +5728,10 @@ input {
 .family-crop-zoom { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 17px 0; color: #dce7f7; font-size: .78rem; font-weight: 800; }
 .family-crop-zoom input { accent-color: #e32135; }
 .family-crop-zoom strong { min-width: 42px; color: #ffcf54; text-align: right; }
+.family-crop-tools { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-top: 14px; color: #a9bfdc; font-size: .7rem; }
+.family-crop-auto { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid rgba(255,207,84,.65); border-radius: 4px; background: rgba(255,207,84,.08); color: #ffcf54; cursor: pointer; font-size: .72rem; font-weight: 850; }
+.family-crop-auto:hover { background: rgba(255,207,84,.18); }
+.family-crop-tools span { color: #73dfa8; font-weight: 750; }
 .family-crop-actions { display: flex; justify-content: flex-end; gap: 9px; }
 .family-crop-secondary { padding: 11px 15px; border: 1px solid rgba(255,255,255,.3); border-radius: 4px; background: transparent; color: #fff; cursor: pointer; font-weight: 800; }
 .family-crop-actions .family-primary-action { width: auto; margin: 0; }
