@@ -19,6 +19,7 @@ import {
   Mail,
   MapPin,
   Medal,
+  Newspaper,
   Phone,
   PlayCircle,
   Pause,
@@ -47,6 +48,7 @@ import { fpfsCategories } from './data/fpfsCategories';
 import { youthLeagueCategories } from './data/youthLeagueCategories';
 import { newsItems } from './data/news';
 import { technicalStaffByCategory, technicalStaffDirectory } from './data/technicalStaff';
+import { communityNews } from './data/communityNews';
 import { athleteSeasonStats } from './data/athleteSeasonStats';
 import { athleteRoster } from './data/athleteRoster';
 import { AthleteAdminProvider, useAthleteAdmin } from './components/AthleteAdminContext';
@@ -412,20 +414,7 @@ function ClubHomePage() {
         </div>
       </section>
 
-      <section className="club-athlete-portal-showcase" aria-labelledby="athlete-portal-title">
-        <div className="club-athlete-portal-copy">
-          <span className="club-section-eyebrow">PORTAL DO ATLETA · AD SUZANO</span>
-          <h2 id="athlete-portal-title">Tudo o que o atleta precisa, em um só lugar.</h2>
-          <p>Um espaço feito para acompanhar a rotina, reconhecer a evolução e aproximar atleta, comissão técnica e família.</p>
-          <a className="club-athlete-portal-link" href="/portal-do-atleta">Entrar no Portal do Atleta <ArrowRight size={17} /></a>
-        </div>
-        <motion.div className="club-athlete-dashboard-mockup" initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.45 }}>
-          <div className="club-mockup-topbar"><span><span className="club-mockup-dot" /> Portal do Atleta</span><small>AD SUZANO · SUB-7</small></div>
-          <div className="club-mockup-profile"><div className="club-mockup-avatar"><Users size={28} /></div><div><small>ATLETA EM FOCO</small><strong>Bruno Domênico</strong><span>Perfil preparado para evolução</span></div><div className="club-mockup-rating"><strong>92%</strong><small>presença</small></div></div>
-          <div className="club-mockup-metrics"><div><CalendarDays size={16} /><strong>18</strong><span>treinos</span></div><div><Trophy size={16} /><strong>07</strong><span>jogos</span></div><div><BarChart3 size={16} /><strong>+12%</strong><span>evolução</span></div></div>
-          <div className="club-mockup-lower"><div><small>PRÓXIMO COMPROMISSO</small><strong>Treino da categoria</strong><span>Quarta-feira · 18h30</span></div><div className="club-mockup-feedback"><CheckCircle2 size={16} /><span>Feedback do treinador disponível</span></div></div>
-        </motion.div>
-      </section>
+      <ClubNewsRadar />
 
       <ClubSection
         eyebrow="Quem Somos"
@@ -2098,6 +2087,43 @@ function ClubEmptyPage({ icon: Icon, title, text }) {
         <p>{text || 'Sem conteúdo publicado nesta página por enquanto.'}</p>
       </div>
     </div>
+  );
+}
+
+function ClubNewsRadar() {
+  const featured = communityNews[0];
+  const secondary = communityNews.slice(1);
+  return (
+    <section className="club-news-radar" aria-labelledby="club-news-radar-title">
+      <div className="club-news-radar-head">
+        <div>
+          <span className="club-section-eyebrow"><Newspaper size={16} /> RADAR AD SUZANO</span>
+          <h2 id="club-news-radar-title">Notícias que movimentam nossa quadra</h2>
+          <p>Informação oficial sobre a AD Suzano, os espaços esportivos e o futsal de base em Suzano.</p>
+        </div>
+        <a href={pageUrl('noticias')} className="club-news-radar-link">Ver todas <ArrowRight size={16} /></a>
+      </div>
+      <div className="club-news-radar-grid">
+        <a className="club-news-featured" href={featured.url} target="_blank" rel="noreferrer">
+          <span className="club-news-tag">{featured.tag}</span>
+          <div className="club-news-featured-icon"><Newspaper size={34} /></div>
+          <div className="club-news-meta"><span>{featured.source}</span><time>{featured.date}</time></div>
+          <h3>{featured.title}</h3>
+          <p>{featured.summary}</p>
+          <span className="club-news-read">Ler notícia <ArrowRight size={16} /></span>
+        </a>
+        <div className="club-news-secondary-list">
+          {secondary.map((item) => (
+            <a className="club-news-secondary" href={item.url} target="_blank" rel="noreferrer" key={item.url}>
+              <div className="club-news-secondary-icon"><Newspaper size={20} /></div>
+              <div><div className="club-news-meta"><span>{item.source}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.summary}</p></div>
+              <ArrowRight size={17} />
+            </a>
+          ))}
+        </div>
+      </div>
+      <div className="club-news-source-note"><Shield size={14} /> Conteúdo selecionado de fontes oficiais. A equipe pode adicionar novas pautas sem alterar o histórico.</div>
+    </section>
   );
 }
 

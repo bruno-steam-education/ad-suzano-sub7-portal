@@ -4775,6 +4775,40 @@ input {
   .teacher-family-banner { align-items: flex-start; padding: 17px; }
 }
 
+/* Official news radar */
+.club-news-radar { display: grid; gap: 24px; padding: 30px; color: #fff; background: #092654; border-radius: 18px; box-shadow: 0 16px 36px rgba(8,30,70,.16); }
+.club-news-radar-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+.club-news-radar .club-section-eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #f4ca4c; }
+.club-news-radar h2 { margin: 8px 0; font-size: clamp(1.65rem, 3vw, 2.4rem); }
+.club-news-radar-head p { max-width: 680px; margin: 0; color: #cad8eb; }
+.club-news-radar-link, .club-news-read { display: inline-flex; align-items: center; gap: 7px; color: #f4ca4c; font-weight: 800; text-decoration: none; white-space: nowrap; }
+.club-news-radar-link:hover, .club-news-read:hover { color: #fff; }
+.club-news-radar-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 16px; }
+.club-news-featured { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 330px; padding: 24px; color: #fff; background: linear-gradient(135deg, #173f83, #7b213e); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; text-decoration: none; }
+.club-news-featured::after { content: ''; position: absolute; width: 230px; height: 230px; right: -60px; bottom: -80px; border: 1px solid rgba(244,202,76,.38); border-radius: 50%; box-shadow: 0 0 0 22px rgba(244,202,76,.06), 0 0 0 44px rgba(244,202,76,.04); }
+.club-news-tag { align-self: flex-start; padding: 7px 10px; color: #092654; background: #f4ca4c; border-radius: 4px; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.club-news-featured-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 23px 0 15px; color: #f4ca4c; border: 1px solid rgba(244,202,76,.55); border-radius: 50%; }
+.club-news-meta { display: flex; gap: 10px; color: #bed0e6; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.club-news-meta time { color: #f4ca4c; }
+.club-news-featured h3 { max-width: 620px; margin: 9px 0 8px; font-size: clamp(1.45rem, 3vw, 2.25rem); line-height: 1.08; }
+.club-news-featured p { max-width: 600px; margin: 0 0 18px; color: #dbe6f5; line-height: 1.5; }
+.club-news-featured .club-news-read { margin-top: auto; }
+.club-news-secondary-list { display: grid; gap: 12px; }
+.club-news-secondary { display: grid; grid-template-columns: 44px 1fr 17px; gap: 13px; align-items: center; padding: 18px; color: #fff; background: #10346e; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+.club-news-secondary:hover { transform: translateX(4px); background: #174783; }
+.club-news-secondary-icon { display: grid; place-items: center; width: 44px; height: 44px; color: #e11e35; background: #fff; border-radius: 8px; }
+.club-news-secondary h3 { margin: 6px 0 4px; font-size: 1.05rem; line-height: 1.2; }
+.club-news-secondary p { margin: 0; color: #c3d3e8; font-size: .88rem; line-height: 1.35; }
+.club-news-secondary > svg { color: #f4ca4c; }
+.club-news-source-note { display: flex; align-items: center; gap: 7px; padding-top: 14px; color: #b9cbe3; border-top: 1px solid rgba(255,255,255,.15); font-size: .8rem; }
+
+@media (max-width: 760px) {
+  .club-news-radar { padding: 22px 16px; }
+  .club-news-radar-head { align-items: flex-start; flex-direction: column; }
+  .club-news-radar-grid { grid-template-columns: 1fr; }
+  .club-news-featured { min-height: 300px; }
+}
+
 .club-athlete-portal-showcase {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
