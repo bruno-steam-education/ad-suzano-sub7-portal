@@ -15,6 +15,9 @@ export default async function handler(req, res) {
     const body = await parseJsonBody(req);
     const athleteName = clean(body.athleteName, 120);
     const category = clean(body.category, 40);
+    const match = body.match && typeof body.match === 'object' ? body.match : {};
+    const athleteProfile = body.athleteProfile && typeof body.athleteProfile === 'object' ? body.athleteProfile : {};
+    const variation = clean(body.variation, 80);
     const rubric = body.rubric && typeof body.rubric === 'object' ? body.rubric : {};
     const selections = rubric.selections && typeof rubric.selections === 'object' ? rubric.selections : {};
     const personalized = rubric.personalized && typeof rubric.personalized === 'object' ? rubric.personalized : {};
@@ -31,6 +34,18 @@ export default async function handler(req, res) {
     const prompt = `
 Você é um treinador de futsal de base, escrevendo para a família de ${athleteName}, categoria ${category}.
 Sua tarefa é transformar as observações abaixo em uma mensagem que um professor brasileiro realmente enviaria.
+
+CONTEXTO DA PARTIDA:
+- Jogo: ${clean(match.title, 180) || 'partida da categoria'}
+- Data: ${clean(match.date, 30) || 'não informada'}
+- Local ou competição: ${clean(match.competition, 100) || 'não informado'}
+
+PERFIL DISPONÍVEL DO ATLETA:
+${JSON.stringify(athleteProfile)}
+
+VARIAÇÃO DE REDAÇÃO:
+${variation || 'use uma abertura natural e diferente das anteriores'}
+Não copie frases prontas de outros atletas. Personalize a abertura, a metáfora, o reconhecimento e o próximo foco com base no nome, perfil e observações deste atleta. Não force informações que não estejam disponíveis.
 
 VOZ:
 - Linguagem falada, brasileira, calorosa e respeitosa.

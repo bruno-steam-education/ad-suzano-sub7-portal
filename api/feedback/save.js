@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const { data, error } = await context.admin.from('athlete_stat_events').insert({
       athlete_id: athleteId,
       source: 'coach_feedback',
-      note: JSON.stringify({ text, rubric: body.rubric || {}, approved_by: context.staff.display_name || context.user.email, approved_at: new Date().toISOString() }),
+      note: JSON.stringify({ text, rubric: body.rubric || {}, match: body.match || {}, athleteProfile: body.athleteProfile || {}, approved_by: context.staff.display_name || context.user.email, approved_at: new Date().toISOString() }),
       games: 0, goals: 0, assists: 0, steals: 0, yellow_cards: 0, red_cards: 0, goals_conceded: 0, saves: 0,
       created_by: context.user.id,
     }).select('id,athlete_id,source,note,created_at').single();
