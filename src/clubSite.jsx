@@ -240,10 +240,6 @@ function ClubUtilityBar() {
             <Users size={14} />
             <span>Portal do Atleta</span>
           </a>
-          <a className="club-utility-teacher-portal" href="#/portal/professores">
-            <ClipboardCheck size={14} />
-            <span>Painel dos Professores</span>
-          </a>
           <a className="club-utility-analysis" href="#/analise">
             <span>Ambiente de Análises</span>
           </a>
