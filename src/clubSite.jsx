@@ -9,7 +9,6 @@ import {
   CircleHelp,
   FileText,
   CheckCircle2,
-  ClipboardCheck,
   Clock3,
   ExternalLink,
   Image as ImageIcon,
