@@ -4846,7 +4846,7 @@ input {
 .club-game-teams strong { font-size: .98rem; }
 .club-game-teams b { color: #e11e35; }
 .club-team-logo { width: 34px; height: 34px; object-fit: contain; flex: 0 0 34px; }
-.club-team-logo-fallback { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; color: #fff; background: linear-gradient(135deg, #0c3376, #d51d36); border-radius: 50%; font-size: 9px; font-weight: 900; }
+.club-team-logo-fallback { display: inline-grid; place-items: center; width: 34px; height: 37px; flex: 0 0 34px; color: #fff; background: linear-gradient(155deg, #174b98 0%, #0b2e69 58%, #d51d36 59%, #a91632 100%); clip-path: polygon(50% 0, 91% 12%, 86% 72%, 50% 100%, 14% 72%, 9% 12%); font-size: 8px; line-height: 1; font-weight: 900; letter-spacing: -.2px; text-shadow: 0 1px 1px rgba(0,0,0,.35); }
 .club-result-teams { display: inline-flex; align-items: center; gap: 7px; }
 .club-result-teams .club-team-logo, .club-result-teams .club-team-logo-fallback { width: 25px; height: 25px; flex-basis: 25px; }
 

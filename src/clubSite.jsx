@@ -2068,10 +2068,16 @@ function normalizeTeamName(value = '') {
 }
 
 function TeamLogo({ name = '', logos = {} }) {
+  const [failed, setFailed] = useState(false);
   const isSuzano = normalizeTeamName(name).includes('suzano');
   const source = isSuzano ? suzanoLogo : logos[normalizeTeamName(name)];
   const proxy = source && !isSuzano ? `/api/teams/logos?url=${encodeURIComponent(source)}` : source;
-  return proxy ? <img className="club-team-logo" src={proxy} alt={`Escudo ${name}`} loading="lazy" /> : <span className="club-team-logo-fallback" aria-label={`Escudo de ${name}`}>{name.trim().slice(0, 3).toUpperCase()}</span>;
+  useEffect(() => setFailed(false), [proxy]);
+  const initials = name.trim().split(/\s+/).filter(Boolean).slice(0, 3).map((part) => part[0]).join('').toUpperCase() || 'AD';
+  if (proxy && !failed) {
+    return <img className="club-team-logo" src={proxy} alt={`Escudo ${name}`} loading="lazy" onError={() => setFailed(true)} />;
+  }
+  return <span className="club-team-logo-fallback" aria-label={`Escudo de ${name}`} title={`Escudo de ${name}`}>{initials}</span>;
 }
 
 function ClubOfficialRankingPage() {
