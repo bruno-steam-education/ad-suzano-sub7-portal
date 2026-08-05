@@ -100,7 +100,7 @@ function CampaignChart({ analytics, reduceMotion }) {
                 width={barWidth}
                 rx="3"
                 className={`chart-bar chart-bar-${round.points}`}
-                initial={reduceMotion ? false : { y: baseline, height: 0, opacity: 0 }}
+                initial={false}
                 whileInView={{ y: baseline - barHeight, height: barHeight, opacity: 1 }}
                 viewport={{ once: true, amount: 0.35 }}
                 transition={{ duration: 0.45, delay: Math.min(index * 0.025, 0.35) }}
@@ -122,7 +122,7 @@ function CampaignChart({ analytics, reduceMotion }) {
           d={line}
           className="chart-points-line"
           fill="none"
-          initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+          initial={false}
           whileInView={{ pathLength: 1, opacity: 1 }}
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 1.1, ease: 'easeOut' }}
@@ -134,7 +134,7 @@ function CampaignChart({ analytics, reduceMotion }) {
             cy={yAt(round.points)}
             r="5"
             className="chart-point"
-            initial={reduceMotion ? false : { scale: 0 }}
+            initial={false}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: Math.min(0.35 + index * 0.025, 0.7) }}
@@ -203,7 +203,7 @@ export function GraphicalAnalysis({ categories, youthCategories = [], youthCompe
   return (
     <motion.section
       className="graphical-analysis"
-      initial={reduceMotion ? false : { opacity: 0, y: 22 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.12 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
