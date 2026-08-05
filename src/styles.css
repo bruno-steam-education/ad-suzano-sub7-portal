@@ -5709,6 +5709,9 @@ input {
 .family-muted { margin: 0; color: #6a7b91; font-size: .75rem; }
 .family-finance-section { display: grid; gap: 12px; }
 .family-photo-upload-strip { display: flex; max-width: 1040px; align-items: center; justify-content: space-between; gap: 12px; margin: 14px auto 0; padding: 12px 15px; border: 1px solid #c7d6e8; background: #fff; color: #123b7a; font-size: .7rem; font-weight: 900; }
+.family-photo-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.family-photo-enhance { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border: 1px solid #d92332; border-radius: 4px; background: #fff3f4; color: #c7192d; font-size: .7rem; font-weight: 900; text-decoration: none; }
+.family-photo-enhance:hover { background: #d92332; color: #fff; transform: translateY(-1px); }
 .family-photo-upload-strip label { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border: 1px solid #123b7a; border-radius: 4px; background: #eef5ff; color: #123b7a; cursor: pointer; }
 .family-photo-upload-strip input { display: none; }
 .family-crop-modal { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(3, 16, 41, .74); backdrop-filter: blur(8px); }
