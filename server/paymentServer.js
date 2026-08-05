@@ -58,6 +58,8 @@ export async function parseJsonBody(req) {
 }
 
 export function safeError(error) {
-  const message = error instanceof Error ? error.message : String(error || 'Erro desconhecido.');
+  const message = error instanceof Error
+    ? error.message
+    : error?.message || error?.details || error?.hint || String(error || 'Erro desconhecido.');
   return message.replace(/sb_(?:secret|publishable)_[A-Za-z0-9_-]+/g, '[credencial protegida]');
 }
