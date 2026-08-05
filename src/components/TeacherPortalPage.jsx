@@ -19,12 +19,12 @@ import { useAthleteAdmin } from './AthleteAdminContext';
 const ACCESS_KEY = 'ad-suzano-teacher-portal-session';
 
 const teacherPasswords = {
-  'Prof. Alex': 'AlexXXXXbr',
-  'Prof. Jonathan': 'JonathanXXXXbr',
-  'Prof. Henrique': 'HenriqueXXXXbr',
-  'Prof. Danny': 'DannyXXXXbr',
-  Lucimar: 'LucimarXXXXbr',
-  Giba: 'GibaXXXXbr',
+  'Prof. Alex': 'Alex4827br',
+  'Prof. Jonathan': 'Jonathan7314br',
+  'Prof. Henrique': 'Henrique1968br',
+  'Prof. Danny': 'Danny8542br',
+  Lucimar: 'Lucimar4073br',
+  Giba: 'Giba6291br',
 };
 
 function firstName(name = '') {
