@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  BarChart3, CalendarCheck, Check, CircleDollarSign, Download, FilePlus2, LoaderCircle,
+  BarChart3, CalendarCheck, Check, CircleDollarSign, Copy, Download, ExternalLink, FilePlus2, Link2, LoaderCircle,
   Plus, Trash2, UserCheck, UserRoundX, Users, X,
 } from 'lucide-react';
 import { useAthleteAdmin } from './AthleteAdminContext';
 import {
   archiveFinancialEvent,
+  createOnlinePaymentLink,
   createAttendanceSession,
   createFinancialEvent,
   deleteAttendanceSession,
   getStaffOperationsSnapshot,
   saveAttendanceStatus,
   savePaymentStatus,
+  saveInfinitePaySettings,
+  subscribeToPaymentUpdates,
 } from '../services/staffOperations';
 
-const EMPTY_DATA = { sessions: [], attendance: [], financialEvents: [], payments: [] };
+const EMPTY_DATA = { sessions: [], attendance: [], financialEvents: [], payments: [], paymentSettings: [] };
 const ATTENDANCE_OPTIONS = [
   { value: 'present', label: 'Veio', short: 'P', icon: UserCheck },
   { value: 'absent', label: 'Faltou', short: 'F', icon: UserRoundX },
@@ -72,6 +75,8 @@ export default function StaffOperationsPanel({ categories }) {
   const [loading, setLoading] = useState(false);
   const [savingKey, setSavingKey] = useState('');
   const [error, setError] = useState('');
+  const [paymentNotice, setPaymentNotice] = useState('');
+  const [providerHandle, setProviderHandle] = useState('');
 
   const load = useCallback(async () => {
     if (!isAdmin) return;
@@ -87,6 +92,20 @@ export default function StaffOperationsPanel({ categories }) {
   }, [isAdmin]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    const setting = data.paymentSettings.find((item) => item.provider === 'infinitepay');
+    setProviderHandle(setting?.handle ?? '');
+  }, [data.paymentSettings]);
+  useEffect(() => {
+    if (!isAdmin || !canAccessFinance) return undefined;
+    return subscribeToPaymentUpdates((payment) => {
+      setData((current) => ({
+        ...current,
+        payments: [...current.payments.filter((item) => !(item.event_id === payment.event_id && item.athlete_id === payment.athlete_id)), payment],
+      }));
+      if (payment.status === 'paid' && payment.provider_status === 'paid') setPaymentNotice('Pagamento confirmado automaticamente pela InfinitePay.');
+    });
+  }, [canAccessFinance, isAdmin]);
   useEffect(() => {
     if (!canAccessFinance && activeModule === 'finance') setActiveModule('attendance');
   }, [activeModule, canAccessFinance]);
@@ -294,6 +313,41 @@ export default function StaffOperationsPanel({ categories }) {
     }
   };
 
+  const copyPaymentLink = async (event, athlete) => {
+    const key = `link:${event.id}:${athlete.id}`;
+    setSavingKey(key);
+    setPaymentNotice('');
+    setError('');
+    try {
+      const currentPayment = paymentMap.get(`${event.id}:${athlete.id}`);
+      const result = currentPayment?.provider_checkout_url
+        ? { url: currentPayment.provider_checkout_url, reused: true }
+        : await createOnlinePaymentLink(event.id, athlete.id);
+      await navigator.clipboard.writeText(result.url);
+      setPaymentNotice(`Link de ${athlete.name} copiado. Envie somente à família responsável.`);
+      if (!currentPayment?.provider_checkout_url) await load();
+    } catch (linkError) {
+      setError(linkError.message || 'Não foi possível criar ou copiar o link.');
+    } finally {
+      setSavingKey('');
+    }
+  };
+
+  const saveProviderSettings = async (event) => {
+    event.preventDefault();
+    setSavingKey('provider-settings');
+    setError('');
+    try {
+      await saveInfinitePaySettings(providerHandle);
+      setPaymentNotice('InfinitePay configurada. Os links de cobrança já podem ser gerados.');
+      await load();
+    } catch (settingsError) {
+      setError(settingsError.message || 'Não foi possível salvar a configuração da InfinitePay.');
+    } finally {
+      setSavingKey('');
+    }
+  };
+
   const removeFinancialEvent = async () => {
     if (!selectedEvent || !window.confirm(`Arquivar a cobrança “${selectedEvent.title}”? O histórico será preservado.`)) return;
     try {
@@ -364,6 +418,7 @@ export default function StaffOperationsPanel({ categories }) {
       </div>
 
       {error ? <div className="staff-operations-error" role="alert">{error}<button type="button" onClick={() => setError('')} aria-label="Fechar"><X size={15} /></button></div> : null}
+      {paymentNotice ? <div className="staff-payment-notice" role="status"><Check size={17} />{paymentNotice}<button type="button" onClick={() => setPaymentNotice('')} aria-label="Fechar"><X size={15} /></button></div> : null}
       {loading ? <div className="staff-operations-loading"><LoaderCircle size={20} /> Atualizando dados...</div> : null}
 
       {activeModule === 'dashboard' ? (
@@ -509,13 +564,17 @@ export default function StaffOperationsPanel({ categories }) {
                 <span><strong>{formatMoney((eventCounts?.paid ?? 0) * (selectedEvent?.amount_cents ?? 0))}</strong> recebido</span>
                 <button type="button" onClick={removeFinancialEvent} title="Arquivar evento"><Trash2 size={16} /> Arquivar</button>
               </div>
+              <div className="online-payment-guide"><Link2 size={19} /><div><strong>Cobrança online automática</strong><span>Use “Gerar link” ao lado do atleta e envie o endereço somente à família. Pix ou cartão são confirmados automaticamente aqui após a validação da InfinitePay.</span></div></div>
+              {isAdministrator ? <form className="payment-provider-settings" onSubmit={saveProviderSettings}><label>InfiniteTag da AD Suzano<span>Informe sem o símbolo $</span><input value={providerHandle} onChange={(event) => setProviderHandle(event.target.value.replace(/^\$/, ''))} placeholder="exemplo: adsuzano" autoComplete="off" required /></label><button type="submit" className="staff-secondary-action" disabled={savingKey === 'provider-settings'}>{savingKey === 'provider-settings' ? <LoaderCircle size={16} className="is-spinning" /> : <Check size={16} />} Salvar InfinitePay</button></form> : null}
               <div className="finance-matrix-wrap">
                 <table className="finance-matrix">
                   <thead><tr><th>Atleta</th>{monthEvents.map((event) => <th key={event.id}><span>{event.title}</span><small>{formatDate(event.event_date)}</small></th>)}</tr></thead>
                   <tbody>{athletes.map((athlete) => <tr key={athlete.id}><th>{athlete.name}</th>{monthEvents.map((event) => {
                     const key = `${event.id}:${athlete.id}`;
                     const status = paymentMap.get(key)?.status ?? 'pending';
-                    return <td key={event.id}><button type="button" className={`payment-status is-${status}`} onClick={() => updatePayment(event, athlete.id)} disabled={savingKey === key} title="Clique para alternar entre pendente, pago e isento">{status === 'paid' ? <Check size={16} /> : status === 'waived' ? '—' : '!' }<span>{PAYMENT_LABELS[status]}</span></button></td>;
+                    const payment = paymentMap.get(key);
+                    const linkKey = `link:${event.id}:${athlete.id}`;
+                    return <td key={event.id}><div className="payment-cell-actions"><button type="button" className={`payment-status is-${status}`} onClick={() => updatePayment(event, athlete.id)} disabled={savingKey === key} title="Ajuste manual: clique para alternar entre pendente, pago e isento">{status === 'paid' ? <Check size={16} /> : status === 'waived' ? '—' : '!' }<span>{PAYMENT_LABELS[status]}</span></button>{status === 'pending' ? <button type="button" className="payment-link-action" onClick={() => copyPaymentLink(event, athlete)} disabled={savingKey === linkKey} title={payment?.provider_checkout_url ? 'Copiar novamente o link individual' : 'Gerar e copiar link individual'}>{savingKey === linkKey ? <LoaderCircle size={15} className="is-spinning" /> : payment?.provider_checkout_url ? <Copy size={15} /> : <Link2 size={15} />}<span>{payment?.provider_checkout_url ? 'Copiar link' : 'Gerar link'}</span></button> : payment?.provider_receipt_url ? <a className="payment-receipt-link" href={payment.provider_receipt_url} target="_blank" rel="noreferrer" title="Abrir comprovante validado"><ExternalLink size={14} /> Comprovante</a> : null}{payment?.provider_status === 'paid' ? <small className="payment-auto-badge">Automático</small> : null}</div></td>;
                   })}</tr>)}</tbody>
                 </table>
               </div>
