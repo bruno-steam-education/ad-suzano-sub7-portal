@@ -12,11 +12,14 @@ export default async function handler(req, res) {
     if (!body.eventId) return res.status(400).json({ error: 'Evento de pagamento não informado.' });
 
     const admin = getAdminClient();
-    const [{ data: event, error: eventError }, { data: payment, error: paymentError }] = await Promise.all([
+    const [{ data: event, error: eventError }, { data: payment, error: paymentError }, { data: profileRows, error: profileError }] = await Promise.all([
       admin.from('financial_events').select('id,category,title,event_date,amount_cents,is_active').eq('id', body.eventId).eq('category', athlete.category).single(),
-      admin.from('financial_payments').select('event_id,athlete_id,status,provider_checkout_url,provider_order_nsu').eq('event_id', body.eventId).eq('athlete_id', athlete.id).single(),
+      admin.from('financial_payments').select('event_id,athlete_id,status,provider_checkout_url,provider_order_nsu,provider_payload').eq('event_id', body.eventId).eq('athlete_id', athlete.id).single(),
+      admin.from('financial_payments').select('provider_payload').eq('athlete_id', athlete.id).order('updated_at', { ascending: false }).limit(50),
     ]);
-    if (eventError || paymentError || !event || !payment) return res.status(404).json({ error: 'Cobrança não encontrada para este atleta.' });
+    if (eventError || paymentError || profileError || !event || !payment) return res.status(404).json({ error: 'Cobrança não encontrada para este atleta.' });
+    const profile = (profileRows || []).map((row) => row.provider_payload?.family_profile).find(Boolean) || null;
+    if (!profile) return res.status(409).json({ error: 'Cadastre os dados do responsável uma única vez antes de pagar.' });
     if (!event.is_active) return res.status(409).json({ error: 'Este evento não está mais disponível.' });
     if (event.amount_cents <= 0) return res.status(409).json({ error: 'Este evento ainda não possui valor definido.' });
     if (payment.status === 'paid') return res.status(409).json({ error: 'Este pagamento já está confirmado.' });
@@ -34,6 +37,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         handle,
         order_nsu: orderNsu,
+        customer: { name: profile.responsible_name, email: profile.responsible_email, phone_number: profile.responsible_phone },
         redirect_url: `${baseUrl}/pagamento?status=concluido`,
         webhook_url: `${baseUrl}/api/payments/infinitepay-webhook`,
         items: [{ quantity: 1, price: event.amount_cents, description: `Taxa esportiva · ${event.title} · ${athlete.category}`.slice(0, 120) }],

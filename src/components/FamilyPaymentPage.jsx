@@ -7,6 +7,8 @@ const date = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit'
 export default function FamilyPaymentPage() {
   const [form, setForm] = useState({ firstName: '', lastName: '', code: '' });
   const [result, setResult] = useState(null);
+  const [profile, setProfile] = useState({ responsibleName: '', responsibleEmail: '', responsiblePhone: '' });
+  const [profileSaved, setProfileSaved] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [paying, setPaying] = useState('');
@@ -19,7 +21,24 @@ export default function FamilyPaymentPage() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || 'Não foi possível localizar o cadastro.');
       setResult(payload);
+      if (payload.profile) {
+        setProfile({ responsibleName: payload.profile.responsible_name, responsibleEmail: payload.profile.responsible_email, responsiblePhone: payload.profile.responsible_phone });
+        setProfileSaved(true);
+      } else {
+        setProfile({ responsibleName: '', responsibleEmail: '', responsiblePhone: '' });
+        setProfileSaved(false);
+      }
     } catch (lookupError) { setError(lookupError.message); } finally { setBusy(false); }
+  };
+
+  const saveProfile = async (event) => {
+    event.preventDefault(); setBusy(true); setError('');
+    try {
+      const response = await fetch('/api/payments/family-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, athleteId: result.athlete.id, ...profile }) });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || 'Não foi possível salvar os dados.');
+      setProfileSaved(true); setResult({ ...result, profile: payload.profile });
+    } catch (profileError) { setError(profileError.message); } finally { setBusy(false); }
   };
 
   const startPayment = async (charge) => {
@@ -43,7 +62,7 @@ export default function FamilyPaymentPage() {
         <button className="family-primary-action" type="submit" disabled={busy}>{busy ? 'Consultando…' : <><Search size={18} /> Consultar cobranças</>}</button>
       </form>
       {error ? <div className="family-payment-error" role="alert">{error}</div> : null}
-      {result ? <div className="family-payment-result"><div className="family-athlete-found"><div><span>ATLETA LOCALIZADO</span><h2>{result.athlete.name}</h2><p>{result.athlete.category} · Código {result.athlete.code}</p></div><CheckCircle2 size={25} /></div><div className="family-charges">{result.charges.length ? result.charges.map((charge) => <article className="family-charge" key={charge.id}><div><span>{date.format(new Date(`${charge.event_date}T12:00:00`))}</span><h3>{charge.title}</h3><p>{money.format(charge.amount_cents / 100)}</p></div>{charge.payment?.status === 'paid' ? <strong className="family-paid"><CheckCircle2 size={17} /> Pago</strong> : <button type="button" className="family-pay-action" onClick={() => startPayment(charge)} disabled={paying === charge.id}>{paying === charge.id ? 'Abrindo…' : <>Pagar agora <ArrowRight size={17} /></>}</button>}</article>) : <div className="family-empty">Não há cobranças ativas para este atleta.</div>}</div></div> : null}
+      {result ? <div className="family-payment-result"><div className="family-athlete-found"><div><span>ATLETA LOCALIZADO</span><h2>{result.athlete.name}</h2><p>{result.athlete.category} · Código {result.athlete.code}</p></div><CheckCircle2 size={25} /></div>{!profileSaved ? <form className="family-responsible-form" onSubmit={saveProfile}><div><span className="family-section-label">PRIMEIRO ACESSO · DADOS DO RESPONSÁVEL</span><p>Preencha uma vez. Nos próximos pagamentos, a InfinitePay receberá esses dados automaticamente.</p></div><label>Nome completo<input value={profile.responsibleName} onChange={(event) => setProfile({ ...profile, responsibleName: event.target.value })} required /></label><label>E-mail<input type="email" value={profile.responsibleEmail} onChange={(event) => setProfile({ ...profile, responsibleEmail: event.target.value })} required /></label><label>WhatsApp<input value={profile.responsiblePhone} onChange={(event) => setProfile({ ...profile, responsiblePhone: event.target.value })} inputMode="tel" required /></label><button className="family-primary-action" type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Salvar e continuar'}</button></form> : <div className="family-profile-saved"><CheckCircle2 size={17} /> Dados do responsável salvos. Os próximos pagamentos serão mais rápidos.</div>}<div className="family-charges">{result.charges.length ? result.charges.map((charge) => <article className="family-charge" key={charge.id}><div><span>{date.format(new Date(`${charge.event_date}T12:00:00`))}</span><h3>{charge.title}</h3><p>{money.format(charge.amount_cents / 100)}</p></div>{charge.payment?.status === 'paid' ? <strong className="family-paid"><CheckCircle2 size={17} /> Pago</strong> : <button type="button" className="family-pay-action" onClick={() => startPayment(charge)} disabled={paying === charge.id || !profileSaved}>{paying === charge.id ? 'Abrindo…' : <>Pagar agora <ArrowRight size={17} /></>}</button>}</article>) : <div className="family-empty">Não há cobranças ativas para este atleta.</div>}</div></div> : null}
     </section>
     <footer className="family-payment-footer"><LockKeyhole size={16} /> O pagamento é processado pela InfinitePay. A AD Suzano não armazena dados do cartão.</footer>
   </main>;

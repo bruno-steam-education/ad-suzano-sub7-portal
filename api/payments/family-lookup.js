@@ -12,17 +12,18 @@ export default async function handler(req, res) {
     const admin = getAdminClient();
     const [{ data: events, error: eventsError }, { data: payments, error: paymentsError }] = await Promise.all([
       admin.from('financial_events').select('id,title,event_date,amount_cents,description').eq('category', athlete.category).eq('is_active', true).order('event_date', { ascending: false }),
-      admin.from('financial_payments').select('event_id,athlete_id,status,amount_paid_cents,provider_checkout_url,provider_receipt_url,confirmed_at').eq('athlete_id', athlete.id),
+      admin.from('financial_payments').select('event_id,athlete_id,status,amount_paid_cents,provider_checkout_url,provider_receipt_url,confirmed_at,provider_payload').eq('athlete_id', athlete.id),
     ]);
     if (eventsError) throw eventsError;
     if (paymentsError) throw paymentsError;
 
     const paymentByEvent = new Map((payments || []).map((payment) => [payment.event_id, payment]));
+    const profile = (payments || []).map((payment) => payment.provider_payload?.family_profile).find(Boolean) || null;
     const charges = (events || [])
       .map((event) => ({ ...event, payment: paymentByEvent.get(event.id) || null }))
       .filter((event) => event.payment);
 
-    return res.status(200).json({ athlete: { id: athlete.id, name: athlete.name, category: athlete.category, code: athlete.code }, charges });
+    return res.status(200).json({ athlete: { id: athlete.id, name: athlete.name, category: athlete.category, code: athlete.code }, profile: profile || null, charges });
   } catch (error) {
     return res.status(500).json({ error: safeError(error) });
   }
