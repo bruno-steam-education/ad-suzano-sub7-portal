@@ -2102,6 +2102,8 @@ function ClubNewsRadar() {
       </div>
       <div className="club-news-radar-grid">
         <a className="club-news-featured" href={featured.url} target="_blank" rel="noreferrer">
+          <img className="club-news-featured-image" src={featured.image} alt={featured.imageAlt} />
+          <span className="club-news-image-credit">Imagem ilustrativa · fonte da notícia no link</span>
           <span className="club-news-tag">{featured.tag}</span>
           <div className="club-news-featured-icon"><Newspaper size={34} /></div>
           <div className="club-news-meta"><span>{featured.source}</span><time>{featured.date}</time></div>
@@ -2112,6 +2114,7 @@ function ClubNewsRadar() {
         <div className="club-news-secondary-list">
           {secondary.map((item) => (
             <a className="club-news-secondary" href={item.url} target="_blank" rel="noreferrer" key={item.url}>
+              <img className="club-news-secondary-image" src={item.image} alt={item.imageAlt} loading="lazy" />
               <div className="club-news-secondary-icon"><Newspaper size={20} /></div>
               <div><div className="club-news-meta"><span>{item.source}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.summary}</p></div>
               <ArrowRight size={17} />

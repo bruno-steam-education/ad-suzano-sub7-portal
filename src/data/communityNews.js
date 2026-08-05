@@ -5,6 +5,8 @@ export const communityNews = [
     title: 'Ginásio Municipal Professor Roberto David passa por revitalização',
     summary: 'A quadra recebe melhorias, novas traves, redes, grades de proteção e pintura para fortalecer o uso esportivo em Suzano.',
     source: 'Prefeitura de Suzano',
+    image: 'https://images.unsplash.com/photo-1518600506278-4e8ef466b810?w=1200&q=82',
+    imageAlt: 'Quadra esportiva preparada para receber atletas',
     url: 'https://suzano.sp.gov.br/ginasio-municipal-de-esportes-professor-roberto-david-passa-por-revitalizacao/',
   },
   {
@@ -13,6 +15,8 @@ export const communityNews = [
     title: 'Prefeito recebe equipe da AD Suzano bicampeã da Copa Condemat+ de Futsal',
     summary: 'A conquista da equipe sub-18 foi reconhecida em agenda oficial do município.',
     source: 'Prefeitura de Suzano',
+    image: 'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=900&q=82',
+    imageAlt: 'Atletas reunidos antes de uma partida',
     url: 'https://suzano.sp.gov.br/prefeito-recebe-equipe-da-ad-suzano-bicampea-da-copa-condemat-de-futsal/',
   },
   {
@@ -21,6 +25,8 @@ export const communityNews = [
     title: 'Ginásio do Sesc recebe jogos de torneio de futsal',
     summary: 'A AD Suzano levou categorias de base para uma rodada com quatro partidas do Campeonato Metropolitano.',
     source: 'Prefeitura de Suzano',
+    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900&q=82',
+    imageAlt: 'Bola e quadra de futsal',
     url: 'https://suzano.sp.gov.br/ginasio-do-sesc-recebe-jogos-de-torneio-de-futsal/',
   },
 ];
