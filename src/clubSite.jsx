@@ -2089,8 +2089,17 @@ function ClubEmptyPage({ icon: Icon, title, text }) {
 }
 
 function ClubNewsRadar() {
-  const featured = communityNews[0];
-  const secondary = communityNews.slice(1);
+  const [items, setItems] = useState(communityNews);
+  useEffect(() => {
+    fetch('/api/news/sync')
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => {
+        if (payload?.items?.length) setItems((current) => payload.items.map((item, index) => ({ ...current[index], ...item })));
+      })
+      .catch(() => {});
+  }, []);
+  const featured = items[0];
+  const secondary = items.slice(1);
   return (
     <section className="club-news-radar" aria-labelledby="club-news-radar-title">
       <div className="club-news-radar-head">
@@ -2104,7 +2113,7 @@ function ClubNewsRadar() {
       <div className="club-news-radar-grid">
         <a className="club-news-featured" href={featured.url} target="_blank" rel="noreferrer">
           <img className="club-news-featured-image" src={featured.image} alt={featured.imageAlt} />
-          <span className="club-news-image-credit">Imagem ilustrativa · fonte da notícia no link</span>
+          <span className="club-news-image-credit">{featured.sourceImage ? 'Imagem da matéria' : 'Imagem ilustrativa'}</span>
           <span className="club-news-tag">{featured.tag}</span>
           <div className="club-news-featured-icon"><Newspaper size={34} /></div>
           <div className="club-news-meta"><span>{featured.source}</span><time>{featured.date}</time></div>
