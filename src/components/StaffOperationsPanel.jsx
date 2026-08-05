@@ -4,6 +4,7 @@ import {
   Plus, Trash2, UserCheck, UserRoundX, Users, X,
 } from 'lucide-react';
 import { useAthleteAdmin } from './AthleteAdminContext';
+import { paymentAthletes } from '../../server/paymentAthletes.js';
 import {
   archiveFinancialEvent,
   createOnlinePaymentLink,
@@ -25,6 +26,7 @@ const ATTENDANCE_OPTIONS = [
 ];
 const PAYMENT_LABELS = { pending: 'Pendente', paid: 'Pago', waived: 'Isento' };
 const PAYMENT_CYCLE = { pending: 'paid', paid: 'waived', waived: 'pending' };
+const PAYMENT_CODE_BY_ATHLETE_ID = new Map(paymentAthletes.map((athlete) => [athlete.id, athlete.code]));
 
 function todayInput() {
   return new Date().toISOString().slice(0, 10);
@@ -568,8 +570,8 @@ export default function StaffOperationsPanel({ categories }) {
               {isAdministrator ? <form className="payment-provider-settings" onSubmit={saveProviderSettings}><label>InfiniteTag da AD Suzano<span>Informe sem o símbolo $</span><input value={providerHandle} onChange={(event) => setProviderHandle(event.target.value.replace(/^\$/, ''))} placeholder="exemplo: adsuzano" autoComplete="off" required /></label><button type="submit" className="staff-secondary-action" disabled={savingKey === 'provider-settings'}>{savingKey === 'provider-settings' ? <LoaderCircle size={16} className="is-spinning" /> : <Check size={16} />} Salvar InfinitePay</button></form> : null}
               <div className="finance-matrix-wrap">
                 <table className="finance-matrix">
-                  <thead><tr><th>Atleta</th>{monthEvents.map((event) => <th key={event.id}><span>{event.title}</span><small>{formatDate(event.event_date)}</small></th>)}</tr></thead>
-                  <tbody>{athletes.map((athlete) => <tr key={athlete.id}><th>{athlete.name}</th>{monthEvents.map((event) => {
+                  <thead><tr><th>Atleta</th><th className="finance-code-heading">ID de cobrança</th>{monthEvents.map((event) => <th key={event.id}><span>{event.title}</span><small>{formatDate(event.event_date)}</small></th>)}</tr></thead>
+                  <tbody>{athletes.map((athlete) => <tr key={athlete.id}><th>{athlete.name}</th><td className="finance-athlete-code"><code>{PAYMENT_CODE_BY_ATHLETE_ID.get(athlete.id) || '—'}</code></td>{monthEvents.map((event) => {
                     const key = `${event.id}:${athlete.id}`;
                     const status = paymentMap.get(key)?.status ?? 'pending';
                     const payment = paymentMap.get(key);

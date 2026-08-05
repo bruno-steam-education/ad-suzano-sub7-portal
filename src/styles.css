@@ -5751,6 +5751,9 @@ input {
 .finance-matrix tbody th { position: sticky; left: 0; z-index: 1; min-width: 220px; text-align: left; }
 .finance-matrix thead th:first-child { z-index: 3; }
 .finance-matrix tbody th { background: #f4f7fb; color: #071b46; font-size: 0.78rem; }
+.finance-matrix .finance-code-heading { min-width: 112px; }
+.finance-matrix .finance-athlete-code { background: #fff; color: #123b7a; }
+.finance-athlete-code code { display: inline-block; min-width: 46px; padding: 5px 7px; border: 1px solid #b6c9df; border-radius: 4px; background: #eef5ff; font: 900 .78rem/1.1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
 .finance-matrix thead span,
 .finance-matrix thead small { display: block; }
 .finance-matrix thead small { margin-top: 3px; color: #aebed5; }
