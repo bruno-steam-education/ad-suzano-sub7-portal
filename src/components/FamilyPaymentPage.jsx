@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, CheckCircle2, Copy, CreditCard, LockKeyhole, Search, ShieldCheck } from 'lucide-react';
-import { paymentAthletes } from '../../server/paymentAthletes.js';
+import { ArrowRight, CheckCircle2, CreditCard, LockKeyhole, Search, ShieldCheck } from 'lucide-react';
 
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const date = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
