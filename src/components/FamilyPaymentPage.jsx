@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ArrowRight, CalendarDays, CheckCircle2, CreditCard, LockKeyhole, Search, ShieldCheck, Trophy, WandSparkles } from 'lucide-react';
 
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -16,7 +16,8 @@ export default function FamilyPaymentPage() {
   const [paying, setPaying] = useState('');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [crop, setCrop] = useState(null);
-  const [drag, setDrag] = useState(null);
+  const cropImageRef = useRef(null);
+  const cropDraftRef = useRef(null);
 
   const lookup = async (event) => {
     event.preventDefault(); setBusy(true); setError(''); setResult(null);
@@ -56,7 +57,28 @@ export default function FamilyPaymentPage() {
     setCrop({ file, url: URL.createObjectURL(file), zoom: 1, x: 0, y: 0 });
   };
 
-  const closeCropper = () => { if (crop?.url) URL.revokeObjectURL(crop.url); setCrop(null); setDrag(null); };
+  const closeCropper = () => { if (crop?.url) URL.revokeObjectURL(crop.url); setCrop(null); cropDraftRef.current = null; };
+
+  const startCropDrag = (event) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    cropDraftRef.current = { startX: event.clientX, startY: event.clientY, originX: crop.x, originY: crop.y };
+  };
+
+  const moveCropDrag = (event) => {
+    const draft = cropDraftRef.current;
+    if (!draft) return;
+    const x = draft.originX + event.clientX - draft.startX;
+    const y = draft.originY + event.clientY - draft.startY;
+    if (cropImageRef.current) cropImageRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${crop.zoom})`;
+    cropDraftRef.current = { ...draft, x, y };
+  };
+
+  const endCropDrag = () => {
+    const draft = cropDraftRef.current;
+    if (!draft) return;
+    setCrop((current) => ({ ...current, x: draft.x, y: draft.y }));
+    cropDraftRef.current = null;
+  };
 
   const uploadPhoto = async (data, fileName = 'foto-atleta.jpg') => {
     setUploadingPhoto(true); setError('');
@@ -96,6 +118,6 @@ export default function FamilyPaymentPage() {
     </section>
     <footer className="family-payment-footer"><LockKeyhole size={16} /> O pagamento é processado pela InfinitePay. A AD Suzano não armazena dados do cartão.</footer>
     {result ? <div className="family-photo-upload-strip"><span>FOTO DO ATLETA · ENVIE UMA FOTO COM UNIFORME</span><div className="family-photo-actions"><a className="family-photo-enhance" href={PHOTO_ASSISTANT_URL} target="_blank" rel="noreferrer"><WandSparkles size={16} /> Melhorar sua foto</a><label>{uploadingPhoto ? 'Enviando foto…' : 'Escolher foto'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={openCropper} disabled={uploadingPhoto} /></label></div></div> : null}
-    {crop ? <div className="family-crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-title"><div className="family-crop-dialog"><div className="family-crop-heading"><div><span>AJUSTE DA FOTO</span><h2 id="crop-title">Enquadre o atleta</h2><p>Arraste a imagem e ajuste o zoom antes de salvar.</p></div><button type="button" className="family-crop-close" onClick={closeCropper} aria-label="Fechar editor">×</button></div><div className="family-crop-viewport" onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setDrag({ startX: event.clientX, startY: event.clientY, originX: crop.x, originY: crop.y }); }} onPointerMove={(event) => { if (!drag) return; setCrop({ ...crop, x: drag.originX + event.clientX - drag.startX, y: drag.originY + event.clientY - drag.startY }); }} onPointerUp={() => setDrag(null)} onPointerCancel={() => setDrag(null)}><img src={crop.url} alt="Prévia da foto do atleta" style={{ transform: `translate(${crop.x}px, ${crop.y}px) scale(${crop.zoom})` }} /><span className="family-crop-guide" /></div><label className="family-crop-zoom">Zoom <input type="range" min="1" max="2.5" step="0.01" value={crop.zoom} onChange={(event) => setCrop({ ...crop, zoom: Number(event.target.value) })} /><strong>{Math.round(crop.zoom * 100)}%</strong></label><div className="family-crop-actions"><button type="button" className="family-crop-secondary" onClick={closeCropper}>Cancelar</button><button type="button" className="family-primary-action" onClick={applyCrop} disabled={uploadingPhoto}>{uploadingPhoto ? 'Enviando…' : 'Recortar e salvar'}</button></div></div></div> : null}
+    {crop ? <div className="family-crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-title"><div className="family-crop-dialog"><div className="family-crop-heading"><div><span>AJUSTE DA FOTO</span><h2 id="crop-title">Enquadre o atleta</h2><p>Arraste a imagem e ajuste o zoom antes de salvar.</p></div><button type="button" className="family-crop-close" onClick={closeCropper} aria-label="Fechar editor">×</button></div><div className="family-crop-viewport" onPointerDown={startCropDrag} onPointerMove={moveCropDrag} onPointerUp={endCropDrag} onPointerCancel={endCropDrag}><img ref={cropImageRef} src={crop.url} alt="Prévia da foto do atleta" style={{ transform: `translate3d(${crop.x}px, ${crop.y}px, 0) scale(${crop.zoom})` }} /><span className="family-crop-guide" /></div><label className="family-crop-zoom">Zoom <input type="range" min="1" max="2.5" step="0.01" value={crop.zoom} onChange={(event) => setCrop({ ...crop, zoom: Number(event.target.value) })} /><strong>{Math.round(crop.zoom * 100)}%</strong></label><div className="family-crop-actions"><button type="button" className="family-crop-secondary" onClick={closeCropper}>Cancelar</button><button type="button" className="family-primary-action" onClick={applyCrop} disabled={uploadingPhoto}>{uploadingPhoto ? 'Enviando…' : 'Recortar e salvar'}</button></div></div></div> : null}
   </main>;
 }
