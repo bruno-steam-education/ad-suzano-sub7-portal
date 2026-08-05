@@ -9,6 +9,7 @@ import {
   CircleHelp,
   FileText,
   CheckCircle2,
+  ClipboardCheck,
   Clock3,
   ExternalLink,
   Image as ImageIcon,
@@ -50,6 +51,7 @@ import { athleteSeasonStats } from './data/athleteSeasonStats';
 import { athleteRoster } from './data/athleteRoster';
 import { AthleteAdminProvider, useAthleteAdmin } from './components/AthleteAdminContext';
 import StaffOperationsPanel from './components/StaffOperationsPanel';
+import TeacherPortalPage from './components/TeacherPortalPage';
 
 const SUPPORTER_PLAYLIST_ID = 'PLgwEymErdv_CKVwcZ7xY7IZ7nnRnc1TqM';
 const SUPPORTER_PLAYLIST_URL = `https://www.youtube.com/playlist?list=${SUPPORTER_PLAYLIST_ID}`;
@@ -73,6 +75,7 @@ const PAGE_LABELS = {
   campos: 'Campos',
   pesquisar: 'Pesquisar',
   operacao: 'Operacao',
+  professores: 'Painel dos Professores',
   enquetes: 'Enquetes',
   acessibilidade: 'Acessibilidade',
   cookies: 'Política de Cookies',
@@ -201,6 +204,7 @@ function ClubSiteContent({ path = 'home' }) {
         {route.page === 'jogos' && route.slug && <ClubListDetailPage title="Jogo" item={clubSiteData.games.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="jogos" />}
         {route.page === 'ranking' && <ClubOfficialRankingPage />}
         {route.page === 'operacao' && <ClubOperationsPage />}
+        {route.page === 'professores' && <TeacherPortalPage categories={athleteRoster.categories} />}
         {route.page === 'acessibilidade' && <ClubEmptyPage icon={BadgeInfo} title="Acessibilidade" text="O portal utiliza navegação por teclado, foco visível e textos alternativos nos elementos essenciais." />}
         {route.page === 'cookies' && <ClubEmptyPage icon={FileText} title="Política de Cookies" text="Este portal utiliza apenas armazenamento necessário para preferências locais e acesso ao painel técnico." />}
         {route.page === 'privacidade' && <ClubEmptyPage icon={Shield} title="Política de Privacidade" text="Os dados informados no contato são usados somente para iniciar a conversa solicitada com a AD Suzano." />}
@@ -232,6 +236,10 @@ function ClubUtilityBar() {
           <a className="club-utility-athlete-portal" href="/portal-do-atleta">
             <Users size={14} />
             <span>Portal do Atleta</span>
+          </a>
+          <a className="club-utility-teacher-portal" href="#/portal/professores">
+            <ClipboardCheck size={14} />
+            <span>Painel dos Professores</span>
           </a>
           <a className="club-utility-analysis" href="#/analise">
             <span>Ambiente de Análises</span>
