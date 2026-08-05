@@ -12,6 +12,15 @@ async function readEvent(url) {
 }
 
 export default async function handler(_request, response) {
+  const source = _request.query?.url;
+  if (source) {
+    if (!/^https?:\/\/admfutsal\.com\.br\//i.test(source)) return response.status(400).send('Imagem não autorizada.');
+    const image = await fetch(source);
+    if (!image.ok) return response.status(image.status).send('Imagem indisponível.');
+    response.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+    response.setHeader('Content-Type', image.headers.get('content-type') || 'image/png');
+    return response.status(200).send(Buffer.from(await image.arrayBuffer()));
+  }
   const lists = await Promise.all(EVENT_URLS.map((url) => readEvent(url).catch(() => [])));
   const logos = new Map();
   lists.flat().forEach((item) => { if (!logos.has(item.key)) logos.set(item.key, item); });

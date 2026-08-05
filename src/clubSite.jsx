@@ -2070,7 +2070,7 @@ function normalizeTeamName(value = '') {
 function TeamLogo({ name = '', logos = {} }) {
   const isSuzano = normalizeTeamName(name).includes('suzano');
   const source = isSuzano ? suzanoLogo : logos[normalizeTeamName(name)];
-  const proxy = source && !isSuzano ? `/api/teams/logo-image?url=${encodeURIComponent(source)}` : source;
+  const proxy = source && !isSuzano ? `/api/teams/logos?url=${encodeURIComponent(source)}` : source;
   return proxy ? <img className="club-team-logo" src={proxy} alt={`Escudo ${name}`} loading="lazy" /> : <span className="club-team-logo-fallback" aria-label={`Escudo de ${name}`}>{name.trim().slice(0, 3).toUpperCase()}</span>;
 }
 
