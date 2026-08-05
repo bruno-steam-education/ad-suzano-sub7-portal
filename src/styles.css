@@ -5711,6 +5711,23 @@ input {
 .family-photo-upload-strip { display: flex; max-width: 1040px; align-items: center; justify-content: space-between; gap: 12px; margin: 14px auto 0; padding: 12px 15px; border: 1px solid #c7d6e8; background: #fff; color: #123b7a; font-size: .7rem; font-weight: 900; }
 .family-photo-upload-strip label { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border: 1px solid #123b7a; border-radius: 4px; background: #eef5ff; color: #123b7a; cursor: pointer; }
 .family-photo-upload-strip input { display: none; }
+.family-crop-modal { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(3, 16, 41, .74); backdrop-filter: blur(8px); }
+.family-crop-dialog { width: min(100%, 470px); padding: 22px; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; background: #071b46; color: #fff; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+.family-crop-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 16px; }
+.family-crop-heading span { color: #ffcf54; font-size: .67rem; font-weight: 900; letter-spacing: .1em; }
+.family-crop-heading h2 { margin: 5px 0 4px; color: #fff; font-size: 1.35rem; }
+.family-crop-heading p { margin: 0; color: #b8c9e2; font-size: .78rem; }
+.family-crop-close { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 4px; background: rgba(255,255,255,.08); color: #fff; cursor: pointer; font-size: 1.4rem; line-height: 1; }
+.family-crop-viewport { position: relative; width: min(100%, 340px); aspect-ratio: 1; margin: 0 auto; overflow: hidden; border: 2px solid #e32135; border-radius: 6px; background: #111; cursor: grab; touch-action: none; }
+.family-crop-viewport:active { cursor: grabbing; }
+.family-crop-viewport img { width: 100%; height: 100%; object-fit: cover; user-select: none; transform-origin: center; }
+.family-crop-guide { position: absolute; pointer-events: none; inset: 10px; border: 1px solid rgba(255,255,255,.85); border-radius: 4px; box-shadow: 0 0 0 999px rgba(0,0,0,.14); }
+.family-crop-zoom { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 17px 0; color: #dce7f7; font-size: .78rem; font-weight: 800; }
+.family-crop-zoom input { accent-color: #e32135; }
+.family-crop-zoom strong { min-width: 42px; color: #ffcf54; text-align: right; }
+.family-crop-actions { display: flex; justify-content: flex-end; gap: 9px; }
+.family-crop-secondary { padding: 11px 15px; border: 1px solid rgba(255,255,255,.3); border-radius: 4px; background: transparent; color: #fff; cursor: pointer; font-weight: 800; }
+.family-crop-actions .family-primary-action { width: auto; margin: 0; }
 @media (max-width: 760px) { .family-payment-page { padding-inline: 12px; } .family-payment-header { min-height: 68px; } .family-safe-badge { font-size: 0; } .family-payment-hero { margin-top: 12px; padding: 25px 22px; } .family-payment-icon { display: none; } .family-payment-card { padding: 17px; } .family-lookup-form { grid-template-columns: 1fr 1fr; } .family-code-field { grid-column: span 2; } .family-primary-action { grid-column: span 2; } .family-responsible-form { grid-template-columns: 1fr; } .family-responsible-form > div { grid-column: auto; } .family-responsible-form .family-primary-action { grid-column: auto; } .family-charge { align-items: flex-start; flex-direction: column; } .family-pay-action { width: 100%; } .family-payment-footer { text-align: center; } }
 .family-dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 760px) { .family-dashboard-grid { grid-template-columns: 1fr; } .family-athlete-summary { align-items: flex-start; } }
