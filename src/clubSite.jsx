@@ -364,8 +364,9 @@ function ClubHomePage() {
               <span>Escolinha de Futsal</span>
             </motion.a>
             <motion.a className="club-athlete-portal-cta" href="/portal-do-atleta" whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}>
-              <Users size={18} />
-              <span>Portal do Atleta</span>
+              <span className="club-athlete-portal-cta-icon"><Users size={18} /></span>
+              <span className="club-athlete-portal-cta-copy"><strong>Portal do Atleta</strong><small>Acesso da família</small></span>
+              <ArrowRight className="club-athlete-portal-cta-arrow" size={16} />
             </motion.a>
           </div>
         </motion.div>

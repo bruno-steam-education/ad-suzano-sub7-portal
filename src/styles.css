@@ -4663,24 +4663,31 @@ input {
 }
 
 .club-home-hero .club-athlete-portal-cta {
+  display: inline-flex;
   min-height: 46px;
-  padding: 11px 15px;
-  border: 1px solid #b8c9e2;
-  border-radius: 4px;
-  background: #fff;
-  color: #0d2e66;
-  font-size: 12px;
-  font-weight: 850;
-  letter-spacing: .035em;
-  text-transform: uppercase;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px 7px 8px;
+  border: 1px solid #0d2e66;
+  border-radius: 5px;
+  background: #0d2e66;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 7px 16px rgba(13, 46, 102, .16);
 }
 
 .club-home-hero .club-athlete-portal-cta:hover {
   border-color: #d92332;
-  background: #fff4f5;
-  color: #c7192d;
-  box-shadow: 0 9px 20px rgba(217, 35, 50, .14);
+  background: #123d81;
+  color: #fff;
+  box-shadow: 0 9px 20px rgba(13, 46, 102, .24);
 }
+
+.club-athlete-portal-cta-icon { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 4px; background: #e32135; color: #fff; }
+.club-athlete-portal-cta-copy { display: grid; gap: 1px; text-align: left; }
+.club-athlete-portal-cta-copy strong { color: inherit; font-size: 11px; font-weight: 950; letter-spacing: .04em; text-transform: uppercase; }
+.club-athlete-portal-cta-copy small { color: #bfd0e8; font-size: 9px; font-weight: 700; letter-spacing: .02em; }
+.club-athlete-portal-cta-arrow { margin-left: 3px; color: #ffcf54; }
 
 .club-utility-athlete-portal {
   display: inline-flex;
@@ -5738,6 +5745,33 @@ input {
 @media (max-width: 760px) { .family-payment-page { padding-inline: 12px; } .family-payment-header { min-height: 68px; } .family-safe-badge { font-size: 0; } .family-payment-hero { margin-top: 12px; padding: 25px 22px; } .family-payment-icon { display: none; } .family-payment-card { padding: 17px; } .family-lookup-form { grid-template-columns: 1fr 1fr; } .family-code-field { grid-column: span 2; } .family-primary-action { grid-column: span 2; } .family-responsible-form { grid-template-columns: 1fr; } .family-responsible-form > div { grid-column: auto; } .family-responsible-form .family-primary-action { grid-column: auto; } .family-charge { align-items: flex-start; flex-direction: column; } .family-pay-action { width: 100%; } .family-payment-footer { text-align: center; } }
 .family-dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 760px) { .family-dashboard-grid { grid-template-columns: 1fr; } .family-athlete-summary { align-items: flex-start; } }
+.family-lookup-form,
+.family-responsible-form,
+.family-lookup-form label,
+.family-responsible-form label,
+.family-lookup-form input,
+.family-responsible-form input,
+.family-primary-action { min-width: 0; max-width: 100%; box-sizing: border-box; }
+@media (max-width: 760px) {
+  .family-payment-page { overflow-x: hidden; }
+  .family-payment-header { gap: 12px; }
+  .family-payment-brand { min-width: 0; }
+  .family-payment-brand span { min-width: 0; }
+  .family-payment-brand strong, .family-payment-brand small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .family-payment-hero { align-items: flex-start; }
+  .family-payment-hero h1 { max-width: 100%; font-size: clamp(1.8rem, 9vw, 2.7rem); }
+  .family-lookup-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .family-lookup-form label, .family-lookup-form input { width: 100%; }
+}
+@media (max-width: 480px) {
+  .family-lookup-form { grid-template-columns: 1fr; }
+  .family-code-field, .family-lookup-form .family-primary-action { grid-column: auto; }
+  .family-payment-hero { padding: 23px 18px; }
+  .family-payment-card { padding: 14px; }
+  .family-photo-upload-strip { align-items: stretch; flex-direction: column; }
+  .family-photo-actions { justify-content: stretch; }
+  .family-photo-actions > * { flex: 1; justify-content: center; }
+}
 .staff-account-choice {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
