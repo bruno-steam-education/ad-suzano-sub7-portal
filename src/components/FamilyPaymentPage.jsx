@@ -75,12 +75,25 @@ export default function FamilyPaymentPage() {
         face = detected[0]?.boundingBox || null;
       } catch { face = null; }
     }
-    const cover = Math.max(340 / image.naturalWidth, 340 / image.naturalHeight) * crop.zoom;
+    const viewport = 340;
+    const cover = Math.max(viewport / image.naturalWidth, viewport / image.naturalHeight) * crop.zoom;
+    const renderedWidth = image.naturalWidth * cover;
+    const renderedHeight = image.naturalHeight * cover;
+    const baseX = (viewport - renderedWidth) / 2;
+    const baseY = (viewport - renderedHeight) / 2;
     const nextX = face ? -(face.x + face.width / 2 - image.naturalWidth / 2) * cover : 0;
-    const targetFaceY = image.naturalHeight * 0.34;
-    const nextY = face ? -(face.y + face.height / 2 - targetFaceY) * cover : Math.min(0, -(image.naturalHeight - image.naturalWidth) * cover * 0.08);
+    let nextY = 0;
+    if (face) {
+      const targetFaceY = viewport * 0.34;
+      const desiredY = -(face.y + face.height / 2 - image.naturalHeight / 2) * cover + (targetFaceY - viewport / 2);
+      const faceTopAtZero = baseY + face.y * cover;
+      const faceBottomAtZero = baseY + (face.y + face.height) * cover;
+      const minY = viewport * 0.12 - faceTopAtZero;
+      const maxY = viewport * 0.68 - faceBottomAtZero;
+      nextY = Math.min(Math.max(desiredY, minY), maxY);
+    }
     setCrop({ ...crop, x: nextX, y: nextY });
-    setCropNotice(face ? 'Rosto identificado e enquadrado automaticamente.' : 'Enquadramento automático aplicado. Ajuste fino se necessário.');
+    setCropNotice(face ? 'Rosto identificado e enquadrado automaticamente.' : 'Não foi possível detectar o rosto neste navegador. Mantive o enquadramento seguro para ajuste fino.');
   };
 
   useEffect(() => {
