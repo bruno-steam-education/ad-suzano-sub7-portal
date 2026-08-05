@@ -178,3 +178,25 @@ export async function saveInfinitePaySettings(handle) {
   if (error) throw error;
   return data;
 }
+
+async function staffToken() {
+  const client = requireSupabase();
+  const { data, error } = await client.auth.getSession();
+  if (error) throw error;
+  if (!data.session?.access_token) throw new Error('Sua sessão administrativa expirou.');
+  return data.session.access_token;
+}
+
+export async function generateCoachFeedback({ athleteName, category, rubric }) {
+  const response = await fetch('/api/feedback/generate', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await staffToken()}` }, body: JSON.stringify({ athleteName, category, rubric }) });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || 'Não foi possível gerar o feedback.');
+  return payload.text;
+}
+
+export async function saveCoachFeedback({ athleteId, text, rubric }) {
+  const response = await fetch('/api/feedback/save', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await staffToken()}` }, body: JSON.stringify({ athleteId, text, rubric }) });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || 'Não foi possível publicar o feedback.');
+  return payload.feedback;
+}

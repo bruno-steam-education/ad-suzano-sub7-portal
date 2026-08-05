@@ -1,5 +1,6 @@
 import { allowMethods, getAdminClient, parseJsonBody, safeError } from '../../server/paymentServer.js';
 import { findPaymentAthlete } from '../../server/paymentAthletes.js';
+import { fpfsCategories } from '../../src/data/fpfsCategories.js';
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['POST'])) return;
@@ -10,12 +11,20 @@ export default async function handler(req, res) {
     if (!athlete) return res.status(404).json({ error: 'Não encontramos um atleta com esses dados. Confira o primeiro nome, o último nome e o código.' });
 
     const admin = getAdminClient();
-    const [{ data: events, error: eventsError }, { data: payments, error: paymentsError }] = await Promise.all([
+    const [{ data: events, error: eventsError }, { data: payments, error: paymentsError }, { data: athleteProfile, error: athleteProfileError }, { data: statEvents, error: statEventsError }, { data: sessions, error: sessionsError }, { data: attendanceRecords, error: attendanceError }] = await Promise.all([
       admin.from('financial_events').select('id,title,event_date,amount_cents,description').eq('category', athlete.category).eq('is_active', true).order('event_date', { ascending: false }),
       admin.from('financial_payments').select('event_id,athlete_id,status,amount_paid_cents,provider_checkout_url,provider_receipt_url,confirmed_at,provider_payload').eq('athlete_id', athlete.id),
+      admin.from('athlete_profiles').select('full_name,category,age,height_cm,weight_kg,coach,photo_url,role,speed,shot,ball_control,defense').eq('athlete_id', athlete.id).maybeSingle(),
+      admin.from('athlete_stat_events').select('source,note,created_at').eq('athlete_id', athlete.id).order('created_at', { ascending: false }),
+      admin.from('attendance_sessions').select('id,session_date,title,notes').eq('category', athlete.category).order('session_date', { ascending: false }).limit(12),
+      admin.from('attendance_records').select('session_id,status,note').eq('athlete_id', athlete.id),
     ]);
     if (eventsError) throw eventsError;
     if (paymentsError) throw paymentsError;
+    if (athleteProfileError) throw athleteProfileError;
+    if (statEventsError) throw statEventsError;
+    if (sessionsError) throw sessionsError;
+    if (attendanceError) throw attendanceError;
 
     const paymentByEvent = new Map((payments || []).map((payment) => [payment.event_id, payment]));
     const profile = (payments || []).map((payment) => payment.provider_payload?.family_profile).find(Boolean) || null;
@@ -23,7 +32,13 @@ export default async function handler(req, res) {
       .map((event) => ({ ...event, payment: paymentByEvent.get(event.id) || null }))
       .filter((event) => event.payment);
 
-    return res.status(200).json({ athlete: { id: athlete.id, name: athlete.name, category: athlete.category, code: athlete.code }, profile: profile || null, charges });
+    const attendance = (sessions || []).map((session) => ({ ...session, status: attendanceRecords?.find((record) => record.session_id === session.id)?.status || 'unmarked' }));
+    const feedback = (statEvents || []).filter((event) => event.source === 'coach_feedback').map((event) => {
+      try { return { ...JSON.parse(event.note || '{}'), created_at: event.created_at }; } catch { return null; }
+    }).filter(Boolean).slice(0, 5);
+    const upcomingGames = fpfsCategories.find((item) => item.category === athlete.category)?.upcomingGames?.slice(0, 3) || [];
+
+    return res.status(200).json({ athlete: { id: athlete.id, name: athlete.name, category: athlete.category, code: athlete.code }, profile: profile || null, athleteProfile: athleteProfile || null, feedback, attendance, upcomingGames, charges });
   } catch (error) {
     return res.status(500).json({ error: safeError(error) });
   }

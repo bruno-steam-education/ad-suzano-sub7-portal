@@ -5556,7 +5556,32 @@ input {
 .family-paid { display: inline-flex; align-items: center; gap: 6px; color: #087352; font-size: .78rem; }
 .family-empty { padding: 23px; border: 1px dashed #b7c7da; color: #61718a; text-align: center; }
 .family-payment-footer { display: flex; max-width: 1040px; align-items: center; justify-content: center; gap: 7px; margin: 18px auto 0; color: #657792; font-size: .72rem; }
+.family-dashboard { display: grid; gap: 14px; }
+.family-dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.family-dashboard-card { padding: 17px; border: 1px solid #dce5ef; border-radius: 6px; background: #fff; }
+.family-athlete-summary { display: flex; align-items: center; gap: 15px; background: linear-gradient(135deg, #071b46, #123b7a); color: #fff; }
+.family-athlete-summary img, .family-photo-placeholder { width: 92px; height: 112px; flex: 0 0 auto; object-fit: cover; border: 1px solid rgba(255,255,255,.35); background: #dfe8f2; color: #667993; display: grid; place-items: center; font-size: .65rem; text-align: center; }
+.family-athlete-summary > div:last-child { display: grid; gap: 5px; }
+.family-athlete-summary span, .family-card-title span { color: #ffcf54; font-size: .65rem; font-weight: 950; letter-spacing: .1em; }
+.family-athlete-summary h3, .family-card-title h3 { margin: 0; font-size: 1.05rem; }
+.family-athlete-summary p { margin: 0; color: #cbd8ec; font-size: .72rem; line-height: 1.45; }
+.family-mini-stats { display: flex; gap: 18px; margin-top: 7px; }
+.family-mini-stats strong { display: grid; gap: 1px; font-size: 1.15rem; }
+.family-mini-stats small { color: #b7c8df; font-size: .61rem; font-weight: 650; }
+.family-card-title { display: flex; align-items: center; gap: 8px; margin-bottom: 11px; color: #123b7a; }
+.family-card-title svg { color: #d51b32; }
+.family-agenda-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #e8edf3; font-size: .75rem; }
+.family-agenda-row strong { min-width: 72px; color: #d51b32; font-size: .68rem; }
+.family-agenda-row span { color: #30486b; }
+.family-agenda-row em { display: inline-block; margin-left: 8px; padding: 3px 6px; border-radius: 3px; font-size: .62rem; font-style: normal; font-weight: 900; }
+.family-attendance-status.is-present { background: #e6f8f0; color: #087352; }.family-attendance-status.is-absent { background: #fff0f2; color: #a31329; }.family-attendance-status.is-justified { background: #fff8df; color: #79560e; }.family-attendance-status.is-unmarked { background: #edf2f7; color: #586a81; }
+.family-feedback { display: grid; gap: 7px; padding: 11px 0; border-top: 1px solid #e8edf3; color: #30486b; font-size: .75rem; line-height: 1.5; }
+.family-feedback small { color: #72839a; font-size: .65rem; }
+.family-muted { margin: 0; color: #6a7b91; font-size: .75rem; }
+.family-finance-section { display: grid; gap: 12px; }
 @media (max-width: 760px) { .family-payment-page { padding-inline: 12px; } .family-payment-header { min-height: 68px; } .family-safe-badge { font-size: 0; } .family-payment-hero { margin-top: 12px; padding: 25px 22px; } .family-payment-icon { display: none; } .family-payment-card { padding: 17px; } .family-lookup-form { grid-template-columns: 1fr 1fr; } .family-code-field { grid-column: span 2; } .family-primary-action { grid-column: span 2; } .family-responsible-form { grid-template-columns: 1fr; } .family-responsible-form > div { grid-column: auto; } .family-responsible-form .family-primary-action { grid-column: auto; } .family-charge { align-items: flex-start; flex-direction: column; } .family-pay-action { width: 100%; } .family-payment-footer { text-align: center; } }
+.family-dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 760px) { .family-dashboard-grid { grid-template-columns: 1fr; } .family-athlete-summary { align-items: flex-start; } }
 .staff-account-choice {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5754,6 +5779,27 @@ input {
 .finance-matrix .finance-code-heading { min-width: 112px; }
 .finance-matrix .finance-athlete-code { background: #fff; color: #123b7a; }
 .finance-athlete-code code { display: inline-block; min-width: 46px; padding: 5px 7px; border: 1px solid #b6c9df; border-radius: 4px; background: #eef5ff; font: 900 .78rem/1.1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
+.coach-feedback-panel { display: grid; gap: 18px; padding: 18px; background: #fff; }
+.coach-feedback-intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 18px; border: 1px solid #b9cde7; border-left: 4px solid #d92332; background: linear-gradient(120deg, #f1f6fd, #fff); color: #071b46; }
+.coach-feedback-intro > div { display: grid; gap: 5px; }
+.coach-feedback-intro span, .coach-feedback-preview span { color: #d92332; font-size: .67rem; font-weight: 950; letter-spacing: .1em; }
+.coach-feedback-intro h3 { margin: 0; font-size: 1.35rem; }
+.coach-feedback-intro p { max-width: 680px; margin: 0; color: #5e718c; font-size: .78rem; line-height: 1.5; }
+.coach-feedback-intro > svg { color: #d29b22; }
+.coach-feedback-panel form { display: grid; gap: 15px; }
+.coach-feedback-athlete { display: grid; max-width: 420px; gap: 6px; color: #314665; font-size: .7rem; font-weight: 900; text-transform: uppercase; }
+.coach-feedback-athlete select { min-height: 42px; padding: 0 10px; border: 1px solid #aebdd1; border-radius: 4px; background: #fff; color: #071b46; font: inherit; }
+.coach-feedback-rubric { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.coach-feedback-rubric label { display: grid; gap: 5px; padding: 13px; border: 1px solid #d7e0ec; background: #fbfcfe; }
+.coach-feedback-rubric label span { color: #071b46; font-size: .78rem; font-weight: 900; }
+.coach-feedback-rubric label small { color: #687a92; font-size: .7rem; line-height: 1.35; }
+.coach-feedback-rubric textarea { min-height: 75px; resize: vertical; padding: 9px; border: 1px solid #bdcadb; border-radius: 4px; color: #071b46; font: inherit; font-size: .78rem; }
+.coach-feedback-preview { display: grid; gap: 10px; padding: 17px; border: 1px solid #e0c16b; border-left: 4px solid #d29b22; background: #fffbec; }
+.coach-feedback-preview > div { display: grid; gap: 4px; }
+.coach-feedback-preview strong { color: #071b46; }
+.coach-feedback-preview textarea { min-height: 130px; resize: vertical; padding: 11px; border: 1px solid #c7b77e; border-radius: 4px; color: #071b46; font: inherit; line-height: 1.55; }
+.coach-feedback-status { display: flex; align-items: center; gap: 7px; padding: 11px 13px; border-left: 4px solid #138b68; background: #eaf8f2; color: #086143; font-size: .75rem; font-weight: 800; }
+@media (max-width: 760px) { .coach-feedback-rubric { grid-template-columns: 1fr; } }
 .finance-matrix thead span,
 .finance-matrix thead small { display: block; }
 .finance-matrix thead small { margin-top: 3px; color: #aebed5; }

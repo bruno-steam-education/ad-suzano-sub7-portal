@@ -36,6 +36,27 @@ export async function requireFinanceStaff(req, res) {
   return { admin, staff, user: authData.user };
 }
 
+export async function requireStaff(req, res) {
+  const authorization = req.headers.authorization || '';
+  const token = authorization.startsWith('Bearer ') ? authorization.slice(7) : '';
+  if (!token) {
+    res.status(401).json({ error: 'Sessão administrativa ausente.' });
+    return null;
+  }
+  const admin = getAdminClient();
+  const { data: authData, error: authError } = await admin.auth.getUser(token);
+  if (authError || !authData.user) {
+    res.status(401).json({ error: 'Sessão administrativa inválida ou expirada.' });
+    return null;
+  }
+  const { data: staff, error: staffError } = await admin.from('staff_admins').select('user_id,role,display_name').eq('user_id', authData.user.id).single();
+  if (staffError || !['technical', 'coordinator', 'administrator'].includes(staff?.role)) {
+    res.status(403).json({ error: 'Somente a equipe autorizada pode acessar este recurso.' });
+    return null;
+  }
+  return { admin, staff, user: authData.user };
+}
+
 export function siteUrl() {
   return (process.env.SITE_URL || 'https://adsuzano.com.br').replace(/\/$/, '');
 }

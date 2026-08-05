@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   BarChart3, CalendarCheck, Check, CircleDollarSign, Copy, Download, ExternalLink, FilePlus2, Link2, LoaderCircle,
-  Plus, Trash2, UserCheck, UserRoundX, Users, X,
+  Plus, Sparkles, Trash2, UserCheck, UserRoundX, Users, X,
 } from 'lucide-react';
 import { useAthleteAdmin } from './AthleteAdminContext';
 import { paymentAthletes } from '../../server/paymentAthletes.js';
+import CoachFeedbackPanel from './CoachFeedbackPanel';
 import {
   archiveFinancialEvent,
   createOnlinePaymentLink,
@@ -413,6 +414,7 @@ export default function StaffOperationsPanel({ categories }) {
         <div className={`staff-module-tabs${canAccessFinance ? ' has-finance' : ''}`} role="tablist" aria-label="Módulos administrativos">
           <button type="button" className={activeModule === 'dashboard' ? 'is-active' : ''} onClick={() => setActiveModule('dashboard')}><BarChart3 size={18} /> Dashboard</button>
           <button type="button" className={activeModule === 'attendance' ? 'is-active' : ''} onClick={() => setActiveModule('attendance')}><CalendarCheck size={18} /> Frequência</button>
+          <button type="button" className={activeModule === 'feedback' ? 'is-active' : ''} onClick={() => setActiveModule('feedback')}><Sparkles size={18} /> Feedback</button>
           {canAccessFinance ? <button type="button" className={activeModule === 'finance' ? 'is-active' : ''} onClick={() => setActiveModule('finance')}><CircleDollarSign size={18} /> Financeiro</button> : null}
         </div>
         <label>Categoria<select value={category} onChange={(event) => setCategory(event.target.value)}>{isAdministrator ? <option>Todas</option> : null}{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select></label>
@@ -423,7 +425,7 @@ export default function StaffOperationsPanel({ categories }) {
       {paymentNotice ? <div className="staff-payment-notice" role="status"><Check size={17} />{paymentNotice}<button type="button" onClick={() => setPaymentNotice('')} aria-label="Fechar"><X size={15} /></button></div> : null}
       {loading ? <div className="staff-operations-loading"><LoaderCircle size={20} /> Atualizando dados...</div> : null}
 
-      {activeModule === 'dashboard' ? (
+      {activeModule === 'feedback' ? <CoachFeedbackPanel /> : activeModule === 'dashboard' ? (
         <div className="staff-module-panel staff-dashboard">
           <div className="staff-dashboard-title">
             <div><strong>{category === 'Todas' ? 'Visão geral de todas as categorias' : `Visão mensal do ${category}`}</strong><span>Indicadores calculados com os registros de {month}</span></div>
