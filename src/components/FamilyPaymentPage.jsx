@@ -76,18 +76,18 @@ export default function FamilyPaymentPage() {
       } catch { face = null; }
     }
     const viewport = 340;
-    const cover = Math.max(viewport / image.naturalWidth, viewport / image.naturalHeight) * crop.zoom;
-    const renderedWidth = image.naturalWidth * cover;
-    const renderedHeight = image.naturalHeight * cover;
+    const fit = Math.min(viewport / image.naturalWidth, viewport / image.naturalHeight) * crop.zoom;
+    const renderedWidth = image.naturalWidth * fit;
+    const renderedHeight = image.naturalHeight * fit;
     const baseX = (viewport - renderedWidth) / 2;
     const baseY = (viewport - renderedHeight) / 2;
-    const nextX = face ? -(face.x + face.width / 2 - image.naturalWidth / 2) * cover : 0;
+    const nextX = face ? -(face.x + face.width / 2 - image.naturalWidth / 2) * fit : 0;
     let nextY = 0;
     if (face) {
       const targetFaceY = viewport * 0.34;
-      const desiredY = -(face.y + face.height / 2 - image.naturalHeight / 2) * cover + (targetFaceY - viewport / 2);
-      const faceTopAtZero = baseY + face.y * cover;
-      const faceBottomAtZero = baseY + (face.y + face.height) * cover;
+      const desiredY = -(face.y + face.height / 2 - image.naturalHeight / 2) * fit + (targetFaceY - viewport / 2);
+      const faceTopAtZero = baseY + face.y * fit;
+      const faceBottomAtZero = baseY + (face.y + face.height) * fit;
       const minY = viewport * 0.12 - faceTopAtZero;
       const maxY = viewport * 0.68 - faceBottomAtZero;
       nextY = Math.min(Math.max(desiredY, minY), maxY);
@@ -142,10 +142,13 @@ export default function FamilyPaymentPage() {
     const image = new Image();
     image.onload = () => {
       const outputSize = 900; const viewportSize = 340;
-      const cover = Math.max(outputSize / image.naturalWidth, outputSize / image.naturalHeight) * crop.zoom;
+      const fit = Math.min(outputSize / image.naturalWidth, outputSize / image.naturalHeight) * crop.zoom;
       const canvas = document.createElement('canvas'); canvas.width = outputSize; canvas.height = outputSize;
-      const context = canvas.getContext('2d'); context.fillStyle = '#ffffff'; context.fillRect(0, 0, outputSize, outputSize);
-      const width = image.naturalWidth * cover; const height = image.naturalHeight * cover;
+      const context = canvas.getContext('2d');
+      const background = context.createLinearGradient(0, 0, outputSize, outputSize);
+      background.addColorStop(0, '#08275a'); background.addColorStop(1, '#153f83');
+      context.fillStyle = background; context.fillRect(0, 0, outputSize, outputSize);
+      const width = image.naturalWidth * fit; const height = image.naturalHeight * fit;
       const offsetX = (outputSize - width) / 2 + (crop.x * outputSize / viewportSize);
       const offsetY = (outputSize - height) / 2 + (crop.y * outputSize / viewportSize);
       context.drawImage(image, offsetX, offsetY, width, height);
