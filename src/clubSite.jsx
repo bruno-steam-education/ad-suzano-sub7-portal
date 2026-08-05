@@ -2166,6 +2166,7 @@ function ClubNewsRadar() {
   }, []);
   const featured = items[0];
   const secondary = items.slice(1);
+  const imageSource = (item) => item.imageProxy || item.image;
   return (
     <section className="club-news-radar" aria-labelledby="club-news-radar-title">
       <div className="club-news-radar-head">
@@ -2178,7 +2179,7 @@ function ClubNewsRadar() {
       </div>
       <div className="club-news-radar-grid">
         <a className="club-news-featured" href={featured.url} target="_blank" rel="noreferrer">
-          <img className="club-news-featured-image" src={featured.image} alt={featured.imageAlt} />
+          <img className="club-news-featured-image" src={imageSource(featured)} alt={featured.imageAlt} />
           <span className="club-news-image-credit">{featured.sourceImage ? 'Imagem da matéria' : 'Imagem ilustrativa'}</span>
           <span className="club-news-tag">{featured.tag}</span>
           <div className="club-news-featured-icon"><Newspaper size={34} /></div>
@@ -2190,7 +2191,7 @@ function ClubNewsRadar() {
         <div className="club-news-secondary-list">
           {secondary.map((item) => (
             <a className="club-news-secondary" href={item.url} target="_blank" rel="noreferrer" key={item.url}>
-              <img className="club-news-secondary-image" src={item.image} alt={item.imageAlt} loading="lazy" />
+              <img className="club-news-secondary-image" src={imageSource(item)} alt={item.imageAlt} loading="lazy" />
               <div className="club-news-secondary-icon"><Newspaper size={20} /></div>
               <div><div className="club-news-meta"><span>{item.source}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.summary}</p></div>
               <ArrowRight size={17} />
