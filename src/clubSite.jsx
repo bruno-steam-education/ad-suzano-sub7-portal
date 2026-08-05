@@ -203,7 +203,7 @@ function ClubSiteContent({ path = 'home' }) {
         {route.page === 'matricula' && <ClubRegistrationPage />}
         {route.page === 'campeonatos' && !route.slug && <ClubOfficialChampionshipsPage />}
         {route.page === 'campeonatos' && route.slug && <ClubListDetailPage title="Campeonato" item={clubSiteData.championships.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="campeonatos" />}
-        {route.page === 'jogos' && !route.slug && <ClubOfficialGamesPage />}
+        {route.page === 'jogos' && !route.slug && <ClubOfficialGamesWithLogos />}
         {route.page === 'jogos' && route.slug && <ClubListDetailPage title="Jogo" item={clubSiteData.games.items.find((item) => athleteIdFromUrl(item.url) === route.slug)} backPath="jogos" />}
         {route.page === 'ranking' && <ClubOfficialRankingPage />}
         {route.page === 'operacao' && <ClubOperationsPage />}
@@ -1980,6 +1980,17 @@ function ClubOfficialChampionshipsPage() {
 }
 
 function ClubOfficialGamesPage() {
+  const [teamLogos, setTeamLogos] = useState({});
+  useEffect(() => {
+    fetch('/api/teams/logos')
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => {
+        const next = {};
+        (payload?.logos ?? []).forEach((item) => { next[normalizeTeamName(item.name)] = item.image; });
+        setTeamLogos(next);
+      })
+      .catch(() => {});
+  }, []);
   const upcoming = fpfsCategories.flatMap((category) => (category.upcomingGames ?? []).map((game) => ({ ...game, category: category.category, sourceUrl: category.gamesUrl })))
     .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
   const recent = fpfsCategories.flatMap((category) => [...(category.playedGames ?? [])]
@@ -2012,6 +2023,55 @@ function ClubOfficialGamesPage() {
       </ClubSection>
     </div>
   );
+}
+
+function ClubOfficialGamesWithLogos() {
+  const [teamLogos, setTeamLogos] = useState({});
+  useEffect(() => {
+    fetch('/api/teams/logos')
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => {
+        const next = {};
+        (payload?.logos ?? []).forEach((item) => { next[normalizeTeamName(item.name)] = item.image; });
+        setTeamLogos(next);
+      })
+      .catch(() => {});
+  }, []);
+  const upcoming = fpfsCategories.flatMap((category) => (category.upcomingGames ?? []).map((game) => ({ ...game, category: category.category, sourceUrl: category.gamesUrl })))
+    .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+  const recent = fpfsCategories.flatMap((category) => [...(category.playedGames ?? [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 2).map((game) => ({ ...game, category: category.category, sourceUrl: category.gamesUrl }))).sort((a, b) => b.date.localeCompare(a.date));
+  return (
+    <div className="club-page">
+      <ClubIntroCard eyebrow="Jogos" title="Central de partidas" subtitle={`${upcoming.length} jogos futuros confirmados e os dois resultados mais recentes de cada categoria.`} />
+      <ClubSection eyebrow="Agenda oficial" title="Próximos jogos">
+        <div className="club-games-grid">
+          {upcoming.map((game) => <article className="club-game-card" key={`${game.category}-${game.date}-${game.time}`}>
+            <div className="club-game-date"><strong>{formatPortalDate(game.date)}</strong><span>{game.time}</span></div>
+            <div><span>{game.category} · Paulista A2</span><h3 className="club-game-teams"><TeamLogo name={game.home} logos={teamLogos} /><strong>{game.home}</strong><b>x</b><strong>{game.away}</strong><TeamLogo name={game.away} logos={teamLogos} /></h3><p><MapPin size={14} /> {game.venue}</p></div>
+            <a href={game.sourceUrl} target="_blank" rel="noreferrer" aria-label={`Abrir agenda oficial ${game.category}`}><ExternalLink size={17} /></a>
+          </article>)}
+        </div>
+      </ClubSection>
+      <ClubSection eyebrow="Súmulas oficiais" title="Resultados recentes">
+        <div className="club-results-list">
+          {recent.map((game) => <a href={game.summaryUrl || game.sourceUrl} target="_blank" rel="noreferrer" key={`${game.category}-${game.date}-${game.home}-${game.away}`}>
+            <span>{game.category}</span><time>{formatPortalDate(game.date)}</time><strong className="club-result-teams"><TeamLogo name={game.home} logos={teamLogos} />{game.home} {game.homeGoals} x {game.awayGoals} {game.away}<TeamLogo name={game.away} logos={teamLogos} /></strong><em>{gameResultForSuzano(game)}</em>
+          </a>)}
+        </div>
+      </ClubSection>
+    </div>
+  );
+}
+
+function normalizeTeamName(value = '') {
+  return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+function TeamLogo({ name = '', logos = {} }) {
+  const isSuzano = normalizeTeamName(name).includes('suzano');
+  const source = isSuzano ? suzanoLogo : logos[normalizeTeamName(name)];
+  const proxy = source && !isSuzano ? `/api/teams/logo-image?url=${encodeURIComponent(source)}` : source;
+  return proxy ? <img className="club-team-logo" src={proxy} alt={`Escudo ${name}`} loading="lazy" /> : <span className="club-team-logo-fallback" aria-label={`Escudo de ${name}`}>{name.trim().slice(0, 3).toUpperCase()}</span>;
 }
 
 function ClubOfficialRankingPage() {

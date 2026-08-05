@@ -4842,6 +4842,14 @@ input {
   .club-media-highlight-image { height: 210px; }
 }
 
+.club-game-teams { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.club-game-teams strong { font-size: .98rem; }
+.club-game-teams b { color: #e11e35; }
+.club-team-logo { width: 34px; height: 34px; object-fit: contain; flex: 0 0 34px; }
+.club-team-logo-fallback { display: inline-grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; color: #fff; background: linear-gradient(135deg, #0c3376, #d51d36); border-radius: 50%; font-size: 9px; font-weight: 900; }
+.club-result-teams { display: inline-flex; align-items: center; gap: 7px; }
+.club-result-teams .club-team-logo, .club-result-teams .club-team-logo-fallback { width: 25px; height: 25px; flex-basis: 25px; }
+
 .club-athlete-portal-showcase {
   display: grid;
   grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
