@@ -9,6 +9,7 @@ import {
   CircleHelp,
   FileText,
   CheckCircle2,
+  ClipboardCheck,
   Clock3,
   ExternalLink,
   Image as ImageIcon,
@@ -239,10 +240,10 @@ function ClubUtilityBar() {
             <Users size={14} />
             <span>Portal do Atleta</span>
           </a>
-          <a className="club-utility-analysis" href="#/analise">
-            <span>Ambiente de Análises</span>
+          <a className="club-utility-teacher-portal" href="#/portal/professores">
+            <ClipboardCheck size={14} />
+            <span>Painel do Professor</span>
           </a>
-          <a href={pageUrl('matricula')}>Matrícula Escolinha</a>
         </div>
       </div>
     </div>

@@ -4703,6 +4703,8 @@ input {
 }
 
 .club-utility-athlete-portal:hover { background: linear-gradient(135deg, #ed3042, #c7192d); box-shadow: 0 8px 18px rgba(217,35,50,.28); transform: translateY(-1px); }
+.club-utility-teacher-portal { display: inline-flex; align-items: center; gap: 6px; color: #f4ca4c !important; }
+.club-utility-teacher-portal:hover { color: #fff !important; }
 
 /* Teacher portal */
 .teacher-portal-page { display: grid; gap: 24px; }
