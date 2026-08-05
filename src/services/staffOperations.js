@@ -109,6 +109,13 @@ export async function createFinancialEvent({ category, title, eventDate, amountC
     }));
     const { error: paymentsError } = await client.from('financial_payments').insert(rows);
     if (paymentsError) throw paymentsError;
+    try {
+      await fetch('/api/notifications/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await staffToken()}` },
+        body: JSON.stringify({ athleteIds, title: 'Nova taxa de jogo', body: `${event.title} já está disponível no Portal da Família.`, url: '/portal-do-atleta' }),
+      });
+    } catch { /* a falha no push não impede o lançamento financeiro */ }
   }
   return event;
 }

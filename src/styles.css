@@ -5692,6 +5692,13 @@ input {
 .family-paid { display: inline-flex; align-items: center; gap: 6px; color: #087352; font-size: .78rem; }
 .family-empty { padding: 23px; border: 1px dashed #b7c7da; color: #61718a; text-align: center; }
 .family-payment-footer { display: flex; max-width: 1040px; align-items: center; justify-content: center; gap: 7px; margin: 18px auto 0; color: #657792; font-size: .72rem; }
+.family-install-card, .family-notification-card { display: flex; max-width: 1040px; align-items: center; justify-content: space-between; gap: 14px; margin: 14px auto 0; padding: 14px 16px; border: 1px solid #c6d6ea; border-left: 4px solid #e32135; border-radius: 7px; background: #fff; color: #123b7a; box-shadow: 0 8px 22px rgba(13,38,79,.07); }
+.family-install-card strong, .family-notification-card strong { display: flex; align-items: center; gap: 7px; font-size: .82rem; }
+.family-install-card p, .family-notification-card p { margin: 4px 0 0; color: #61718a; font-size: .72rem; }
+.family-install-card button, .family-notification-card button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 0; border-radius: 5px; background: #e32135; color: #fff; cursor: pointer; font: inherit; font-size: .72rem; font-weight: 900; white-space: nowrap; }
+.family-install-card small, .family-notification-card small { color: #6a7b91; font-size: .68rem; font-weight: 750; }
+.family-notification-floating { display: flex; }
+.family-forget-device { display: inline-flex; align-items: center; gap: 6px; margin: 11px auto 0; border: 0; background: transparent; color: #637691; cursor: pointer; font: inherit; font-size: .68rem; font-weight: 800; }
 .family-dashboard { display: grid; gap: 14px; }
 .family-dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .family-dashboard-card { padding: 17px; border: 1px solid #dce5ef; border-radius: 6px; background: #fff; }
@@ -5771,6 +5778,8 @@ input {
   .family-photo-upload-strip { align-items: stretch; flex-direction: column; }
   .family-photo-actions { justify-content: stretch; }
   .family-photo-actions > * { flex: 1; justify-content: center; }
+  .family-install-card, .family-notification-card { align-items: stretch; flex-direction: column; }
+  .family-install-card button, .family-notification-card button { width: 100%; }
 }
 .staff-account-choice {
   display: grid;

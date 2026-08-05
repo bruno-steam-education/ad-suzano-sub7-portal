@@ -1,5 +1,5 @@
-const CACHE_NAME = 'ad-suzano-sub7-v1.0.12';
-const APP_SHELL = ['./', './manifest.webmanifest', './ad-suzano-logo.png'];
+const CACHE_NAME = 'ad-suzano-portal-familia-v1.0.13';
+const APP_SHELL = ['./', './manifest.webmanifest', './portal-familia-icon.svg', './ad-suzano-logo.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -52,8 +52,8 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(data.title || fallback.title, {
       body: data.body || fallback.body,
-      icon: './ad-suzano-logo.png',
-      badge: './ad-suzano-logo.png',
+      icon: './portal-familia-icon.svg',
+      badge: './portal-familia-icon.svg',
       data: { url: data.url || fallback.url },
     }),
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, CalendarDays, CheckCircle2, CreditCard, LockKeyhole, Search, ShieldCheck, Trophy, WandSparkles } from 'lucide-react';
+import { ArrowRight, Bell, BellRing, CalendarDays, CheckCircle2, CreditCard, Download, LockKeyhole, LogOut, Search, ShieldCheck, Smartphone, Trophy, WandSparkles } from 'lucide-react';
+import { isMobileDevice, isStandaloneApp } from '../services/pwa';
 
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const date = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -17,6 +18,9 @@ export default function FamilyPaymentPage() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [crop, setCrop] = useState(null);
   const [cropNotice, setCropNotice] = useState('');
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+  const [pushStatus, setPushStatus] = useState('idle');
   const cropImageRef = useRef(null);
   const cropDraftRef = useRef(null);
 
@@ -26,10 +30,74 @@ export default function FamilyPaymentPage() {
       const response = await fetch('/api/payments/family-lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || 'Não foi possível localizar o cadastro.');
+      window.localStorage.setItem('ad-suzano-family-session', JSON.stringify(form));
       setResult(payload);
       if (payload.profile) { setProfile({ responsibleName: payload.profile.responsible_name, responsibleEmail: payload.profile.responsible_email, responsiblePhone: payload.profile.responsible_phone }); setProfileSaved(true); }
       else { setProfile({ responsibleName: '', responsibleEmail: '', responsiblePhone: '' }); setProfileSaved(false); }
     } catch (lookupError) { setError(lookupError.message); } finally { setBusy(false); }
+  };
+
+  const lookupSavedAthlete = async (savedForm) => {
+    setBusy(true);
+    try {
+      const response = await fetch('/api/payments/family-lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(savedForm) });
+      const payload = await response.json();
+      if (!response.ok) throw new Error('Sessão expirada.');
+      setResult(payload);
+      if (payload.profile) { setProfile({ responsibleName: payload.profile.responsible_name, responsibleEmail: payload.profile.responsible_email, responsiblePhone: payload.profile.responsible_phone }); setProfileSaved(true); }
+    } catch { window.localStorage.removeItem('ad-suzano-family-session'); } finally { setBusy(false); }
+  };
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem('ad-suzano-family-session');
+    if (!saved) return;
+    try {
+      const savedForm = JSON.parse(saved);
+      if (savedForm.firstName && savedForm.lastName && savedForm.code) { setForm(savedForm); lookupSavedAthlete(savedForm); }
+    } catch { window.localStorage.removeItem('ad-suzano-family-session'); }
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileDevice() || isStandaloneApp()) return undefined;
+    const onBeforeInstallPrompt = (event) => { event.preventDefault(); setInstallPrompt(event); setShowInstall(true); };
+    const onInstalled = () => { window.localStorage.setItem('ad-suzano-pwa-installed', 'true'); setShowInstall(false); };
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    window.addEventListener('appinstalled', onInstalled);
+    setShowInstall(true);
+    return () => { window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt); window.removeEventListener('appinstalled', onInstalled); };
+  }, []);
+
+  const forgetDevice = () => {
+    window.localStorage.removeItem('ad-suzano-family-session');
+    setResult(null); setProfileSaved(false); setProfile({ responsibleName: '', responsibleEmail: '', responsiblePhone: '' }); setForm({ firstName: '', lastName: '', code: '' }); setPushStatus('idle');
+  };
+
+  const installPortal = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const choice = await installPrompt.userChoice;
+    if (choice.outcome === 'accepted') window.localStorage.setItem('ad-suzano-pwa-installed', 'true');
+    setInstallPrompt(null); setShowInstall(false);
+  };
+
+  const enablePush = async () => {
+    if (!result) return;
+    if (!('Notification' in window) || !('PushManager' in window)) { setPushStatus('unsupported'); return; }
+    const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+    if (!vapidKey) { setPushStatus('setup'); return; }
+    try {
+      setPushStatus('busy');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') { setPushStatus('denied'); return; }
+      const registration = await navigator.serviceWorker.ready;
+      const padding = '='.repeat((4 - vapidKey.length % 4) % 4);
+      const binary = window.atob((vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/'));
+      const applicationServerKey = Uint8Array.from([...binary].map((char) => char.charCodeAt(0)));
+      const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey });
+      const response = await fetch('/api/notifications/family-subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ athleteId: result.athlete.id, subscription: subscription.toJSON() }) });
+      if (!response.ok) throw new Error('Falha ao registrar notificações.');
+      setPushStatus('enabled');
+    } catch { setPushStatus('error'); }
   };
 
   const saveProfile = async (event) => {
@@ -165,6 +233,9 @@ export default function FamilyPaymentPage() {
       {error ? <div className="family-payment-error" role="alert">{error}</div> : null}
       {result ? <div className="family-dashboard"><div className="family-athlete-found"><div><span>PORTAL DO ATLETA · PERFIL LOCALIZADO</span><h2>{result.athleteProfile?.full_name || result.athlete.name}</h2><p>{result.athlete.category} · Código {result.athlete.code}{result.athleteProfile?.coach ? ` · Treinador: ${result.athleteProfile.coach}` : ''}</p></div><CheckCircle2 size={25} /></div><div className="family-dashboard-grid"><section className="family-dashboard-card family-athlete-summary">{result.athleteProfile?.photo_url ? <img src={result.athleteProfile.photo_url} alt={`Foto de ${result.athlete.name}`} /> : <div className="family-photo-placeholder">Foto do atleta</div>}<div><span>PERFIL DO ATLETA</span><h3>{result.athlete.name}</h3><p>Idade: {result.athleteProfile?.age || '—'} · Altura: {result.athleteProfile?.height_cm ? `${result.athleteProfile.height_cm} cm` : '—'} · Peso: {result.athleteProfile?.weight_kg ? `${result.athleteProfile.weight_kg} kg` : '—'}</p><div className="family-mini-stats"><strong>{result.attendance.filter((item) => item.status === 'present').length}<small>presenças recentes</small></strong><strong>{result.feedback.length}<small>feedbacks</small></strong></div></div></section><section className="family-dashboard-card"><div className="family-card-title"><CalendarDays size={18} /><h3>Agenda e próximos jogos</h3></div>{result.upcomingGames.length ? result.upcomingGames.map((game) => <div className="family-agenda-row" key={`${game.date}-${game.home}-${game.away}`}><strong>{date.format(new Date(`${game.date}T12:00:00`))}</strong><span>{game.home} x {game.away}{game.time ? ` · ${game.time}` : ''}</span></div>) : <p className="family-muted">Nenhum próximo jogo cadastrado.</p>}</section></div><div className="family-dashboard-grid"><section className="family-dashboard-card"><div className="family-card-title"><CheckCircle2 size={18} /><h3>Frequência recente</h3></div>{result.attendance.slice(0, 6).map((item) => <div className="family-agenda-row" key={item.id}><strong>{date.format(new Date(`${item.session_date}T12:00:00`))}</strong><span>{item.title}<em className={`family-attendance-status is-${item.status}`}>{statusLabel[item.status]}</em></span></div>)}</section><section className="family-dashboard-card"><div className="family-card-title"><Trophy size={18} /><h3>Feedback da comissão</h3></div>{result.feedback.length ? result.feedback.slice(0, 2).map((item) => <article className="family-feedback" key={item.created_at}><strong>{item.text}</strong><small>Publicado em {date.format(new Date(item.created_at))}</small></article>) : <p className="family-muted">O primeiro feedback aparecerá aqui após a aprovação do treinador.</p>}</section></div><section className="family-dashboard-card family-finance-section"><div className="family-card-title"><CreditCard size={18} /><h3>Financeiro</h3></div>{!profileSaved ? <form className="family-responsible-form" onSubmit={saveProfile}><div><span className="family-section-label">PRIMEIRO ACESSO · DADOS DO RESPONSÁVEL</span><p>Preencha uma vez. Nos próximos pagamentos, a InfinitePay receberá esses dados automaticamente.</p></div><label>Nome completo<input value={profile.responsibleName} onChange={(event) => setProfile({ ...profile, responsibleName: event.target.value })} required /></label><label>E-mail<input type="email" value={profile.responsibleEmail} onChange={(event) => setProfile({ ...profile, responsibleEmail: event.target.value })} required /></label><label>WhatsApp<input value={profile.responsiblePhone} onChange={(event) => setProfile({ ...profile, responsiblePhone: event.target.value })} inputMode="tel" required /></label><button className="family-primary-action" type="submit" disabled={busy}>{busy ? 'Salvando…' : 'Salvar e continuar'}</button></form> : <div className="family-profile-saved"><CheckCircle2 size={17} /> Dados do responsável salvos.</div>}<div className="family-charges">{result.charges.length ? result.charges.map((charge) => <article className="family-charge" key={charge.id}><div><span>{date.format(new Date(`${charge.event_date}T12:00:00`))}</span><h3>{charge.title}</h3><p>{money.format(charge.amount_cents / 100)}</p></div>{charge.payment?.status === 'paid' ? <strong className="family-paid"><CheckCircle2 size={17} /> Pago</strong> : <button type="button" className="family-pay-action" onClick={() => startPayment(charge)} disabled={paying === charge.id || !profileSaved}>{paying === charge.id ? 'Abrindo…' : <>Pagar agora <ArrowRight size={17} /> </>}</button>}</article>) : <div className="family-empty">Não há cobranças ativas para este atleta.</div>}</div></section></div> : null}
     </section>
+    {showInstall ? <aside className="family-install-card"><div><strong><Smartphone size={18} /> Portal da Família no celular</strong><p>Acesse frequência, feedbacks e pagamentos sem digitar o código novamente.</p></div>{installPrompt ? <button type="button" onClick={installPortal}><Download size={16} /> Instalar app</button> : <small>Use o menu do navegador e escolha “Adicionar à tela de início”.</small>}</aside> : null}
+    {result ? <aside className="family-notification-card family-notification-floating"><div><strong><BellRing size={18} /> Ative os avisos do Portal da Família</strong><p>Receba alertas quando houver feedback, frequência ou nova taxa.</p></div><button type="button" onClick={enablePush} disabled={pushStatus === 'busy'}>{pushStatus === 'busy' ? 'Ativando…' : pushStatus === 'enabled' ? 'Avisos ativados' : <><Bell size={16} /> Ativar avisos</>}</button></aside> : null}
+    {result ? <button className="family-forget-device" type="button" onClick={forgetDevice}><LogOut size={15} /> Sair deste aparelho</button> : null}
     <footer className="family-payment-footer"><LockKeyhole size={16} /> O pagamento é processado pela InfinitePay. A AD Suzano não armazena dados do cartão.</footer>
     {result ? <div className="family-photo-upload-strip"><span>FOTO DO ATLETA · ENVIE UMA FOTO COM UNIFORME</span><div className="family-photo-actions"><a className="family-photo-enhance" href={PHOTO_ASSISTANT_URL} target="_blank" rel="noreferrer"><WandSparkles size={16} /> Melhorar sua foto</a><label>{uploadingPhoto ? 'Enviando foto…' : 'Escolher foto'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={openCropper} disabled={uploadingPhoto} /></label></div></div> : null}
     {crop ? <div className="family-crop-modal" role="dialog" aria-modal="true" aria-labelledby="crop-title"><div className="family-crop-dialog"><div className="family-crop-heading"><div><span>AJUSTE DA FOTO</span><h2 id="crop-title">Enquadre o atleta</h2><p>Arraste a imagem e ajuste o zoom antes de salvar.</p></div><button type="button" className="family-crop-close" onClick={closeCropper} aria-label="Fechar editor">×</button></div><div className="family-crop-viewport" onPointerDown={startCropDrag} onPointerMove={moveCropDrag} onPointerUp={endCropDrag} onPointerCancel={endCropDrag}><img ref={cropImageRef} src={crop.url} alt="Prévia da foto do atleta" style={{ transform: `translate3d(${crop.x}px, ${crop.y}px, 0) scale(${crop.zoom})` }} /><span className="family-crop-guide" /></div><div className="family-crop-tools"><button type="button" className="family-crop-auto" onClick={autoCenterFace}>◎ Centralizar rosto</button>{cropNotice ? <span>{cropNotice}</span> : <small>O rosto ficará na área ideal do card.</small>}</div><label className="family-crop-zoom">Zoom <input type="range" min="1" max="2.5" step="0.01" value={crop.zoom} onChange={(event) => setCrop({ ...crop, zoom: Number(event.target.value) })} /><strong>{Math.round(crop.zoom * 100)}%</strong></label><div className="family-crop-actions"><button type="button" className="family-crop-secondary" onClick={closeCropper}>Cancelar</button><button type="button" className="family-primary-action" onClick={applyCrop} disabled={uploadingPhoto}>{uploadingPhoto ? 'Enviando…' : 'Recortar e salvar'}</button></div></div></div> : null}

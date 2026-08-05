@@ -1,4 +1,5 @@
 import { allowMethods, parseJsonBody, requireStaff, safeError } from '../../server/paymentServer.js';
+import { sendFamilyNotification } from '../../server/familyNotifications.js';
 
 export default async function handler(req, res) {
   if (!allowMethods(req, res, ['POST'])) return;
@@ -18,6 +19,7 @@ export default async function handler(req, res) {
       created_by: context.user.id,
     }).select('id,athlete_id,source,note,created_at').single();
     if (error) throw error;
+    await sendFamilyNotification(context.admin, { athleteIds: [athleteId], title: 'Novo feedback da comissão', body: 'A comissão técnica publicou um novo feedback no Portal da Família.', url: '/portal-do-atleta' });
     return res.status(201).json({ feedback: data });
   } catch (error) {
     return res.status(500).json({ error: safeError(error) });
