@@ -150,7 +150,7 @@ export async function archiveFinancialEvent(eventId) {
   if (error) throw error;
 }
 
-export async function createOnlinePaymentLink(eventId, athleteId) {
+export async function createOnlinePaymentLink(eventId, athleteId, forceNew = false) {
   const client = requireSupabase();
   const { data: sessionData, error: sessionError } = await client.auth.getSession();
   if (sessionError) throw sessionError;
@@ -159,7 +159,7 @@ export async function createOnlinePaymentLink(eventId, athleteId) {
   const response = await fetch('/api/payments/create-link', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ eventId, athleteId }),
+    body: JSON.stringify({ eventId, athleteId, forceNew }),
   });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(payload.error || 'Não foi possível gerar o link de pagamento.');

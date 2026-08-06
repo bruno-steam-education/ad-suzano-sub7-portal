@@ -23,10 +23,12 @@ export default async function handler(req, res) {
     if (!event.is_active) return res.status(409).json({ error: 'Este evento não está mais disponível.' });
     if (event.amount_cents <= 0) return res.status(409).json({ error: 'Este evento ainda não possui valor definido.' });
     if (payment.status === 'paid') return res.status(409).json({ error: 'Este pagamento já está confirmado.' });
-    if (payment.provider_checkout_url) return res.status(200).json({ url: payment.provider_checkout_url, reused: true });
+    if (payment.provider_checkout_url && !body.forceNew) return res.status(200).json({ url: payment.provider_checkout_url, reused: true });
 
     const handle = await infinitePayHandle(admin);
-    const orderNsu = payment.provider_order_nsu || `adsz_family_${crypto.randomUUID().replaceAll('-', '')}`;
+    const orderNsu = body.forceNew || !payment.provider_order_nsu
+      ? `adsz_family_${crypto.randomUUID().replaceAll('-', '')}`
+      : payment.provider_order_nsu;
     const { error: reserveError } = await admin.from('financial_payments').update({ provider: 'infinitepay', provider_status: 'creating', provider_order_nsu: orderNsu, updated_at: new Date().toISOString() }).eq('event_id', body.eventId).eq('athlete_id', athlete.id);
     if (reserveError) throw reserveError;
 

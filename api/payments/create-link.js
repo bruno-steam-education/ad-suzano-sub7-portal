@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const context = await requireFinanceStaff(req, res);
     if (!context) return;
     const { admin } = context;
-    const { eventId, athleteId } = await parseJsonBody(req);
+    const { eventId, athleteId, forceNew = false } = await parseJsonBody(req);
     if (!eventId || !athleteId) return res.status(400).json({ error: 'Evento e atleta são obrigatórios.' });
 
     const [eventResult, paymentResult] = await Promise.all([
@@ -21,10 +21,12 @@ export default async function handler(req, res) {
     if (!financialEvent.is_active) return res.status(409).json({ error: 'Este evento está arquivado.' });
     if (financialEvent.amount_cents <= 0) return res.status(409).json({ error: 'Defina um valor maior que zero para gerar o link.' });
     if (payment.status === 'paid') return res.status(409).json({ error: 'Este pagamento já está confirmado.' });
-    if (payment.provider_checkout_url) return res.status(200).json({ url: payment.provider_checkout_url, reused: true });
+    if (payment.provider_checkout_url && !forceNew) return res.status(200).json({ url: payment.provider_checkout_url, reused: true });
 
     const handle = await infinitePayHandle(admin);
-    const orderNsu = payment.provider_order_nsu || `adsz_${crypto.randomUUID().replaceAll('-', '')}`;
+    const orderNsu = forceNew || !payment.provider_order_nsu
+      ? `adsz_${crypto.randomUUID().replaceAll('-', '')}`
+      : payment.provider_order_nsu;
     const { error: reserveError } = await admin.from('financial_payments').update({
       provider: 'infinitepay', provider_status: 'creating', provider_order_nsu: orderNsu, updated_at: new Date().toISOString(),
     }).eq('event_id', eventId).eq('athlete_id', athleteId);

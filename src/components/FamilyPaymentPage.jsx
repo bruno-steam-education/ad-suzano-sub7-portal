@@ -113,7 +113,7 @@ export default function FamilyPaymentPage() {
   const startPayment = async (charge) => {
     setPaying(charge.id); setError('');
     try {
-      const response = await fetch('/api/payments/family-create-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, athleteId: result.athlete.id, eventId: charge.id }) });
+      const response = await fetch('/api/payments/family-create-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, athleteId: result.athlete.id, eventId: charge.id, forceNew: true }) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || 'Não foi possível iniciar o pagamento.');
       window.location.assign(payload.url);

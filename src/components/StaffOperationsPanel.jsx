@@ -323,12 +323,10 @@ export default function StaffOperationsPanel({ categories }) {
     setError('');
     try {
       const currentPayment = paymentMap.get(`${event.id}:${athlete.id}`);
-      const result = currentPayment?.provider_checkout_url
-        ? { url: currentPayment.provider_checkout_url, reused: true }
-        : await createOnlinePaymentLink(event.id, athlete.id);
+      const result = await createOnlinePaymentLink(event.id, athlete.id, Boolean(currentPayment?.provider_checkout_url));
       await navigator.clipboard.writeText(result.url);
       setPaymentNotice(`Link de ${athlete.name} copiado. Envie somente à família responsável.`);
-      if (!currentPayment?.provider_checkout_url) await load();
+      await load();
     } catch (linkError) {
       setError(linkError.message || 'Não foi possível criar ou copiar o link.');
     } finally {
