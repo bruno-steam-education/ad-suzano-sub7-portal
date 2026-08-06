@@ -4,18 +4,37 @@ function athleteId(player) {
   return String(player.url || '').split('/').pop();
 }
 
-// Códigos curtos e estáveis para o teste do Portal da Família.
-// A numeração começa em 1001 e acompanha a ordem do cadastro sincronizado.
-export const paymentAthletes = athleteRoster.categories.flatMap((category) =>
-  category.players.map((player, index) => ({
-    id: athleteId(player),
-    name: player.name,
-    category: category.label,
-    code: String(1001 + athleteRoster.categories
-      .slice(0, athleteRoster.categories.indexOf(category))
-      .reduce((total, item) => total + item.players.length, 0) + index),
-  })),
+// Códigos curtos, estáveis e não sequenciais para o Portal do Atleta.
+function codeSeed(value) {
+  let hash = 2166136261;
+  for (const character of `${value}:ADSUZANO-2026`) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function buildPaymentCodes(players) {
+  const used = new Set();
+  return players.map((player) => {
+    let codeNumber = 1000 + (codeSeed(athleteId(player)) % 9000);
+    while (used.has(codeNumber)) codeNumber = 1000 + ((codeNumber - 999) % 9000);
+    used.add(codeNumber);
+    return String(codeNumber);
+  });
+}
+
+const rosterPlayers = athleteRoster.categories.flatMap((category) =>
+  category.players.map((player) => ({ player, category: category.label })),
 );
+const paymentCodes = buildPaymentCodes(rosterPlayers.map(({ player }) => player));
+
+export const paymentAthletes = rosterPlayers.map(({ player, category }, index) => ({
+  id: athleteId(player),
+  name: player.name,
+  category,
+  code: paymentCodes[index],
+}));
 
 export function normalizeSearch(value = '') {
   return String(value)
