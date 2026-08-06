@@ -146,7 +146,7 @@ export const clubSiteData = {
       {
         "name": "Todai Global Advisory LLC",
         "label": "Patrocinador principal 2026",
-        "image": "/sponsors/todai-global-advisory.jpg",
+        "image": "/sponsors/todai-global-advisory.png",
         "featured": true
       },
       {
