@@ -40,12 +40,9 @@ export default function FamilyPaymentPage() {
   const lookupSavedAthlete = async (savedForm) => {
     setBusy(true);
     try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('status') === 'concluido' || params.get('status') === 'completed') {
-        await fetch('/api/payments/confirm-return', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(params.entries())) });
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      const response = await fetch('/api/payments/family-lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(savedForm) });
+      const returnParams = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      const response = await fetch('/api/payments/family-lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...savedForm, ...returnParams }) });
+      if (returnParams.status === 'concluido' || returnParams.status === 'completed') window.history.replaceState({}, document.title, window.location.pathname);
       const payload = await response.json();
       if (!response.ok) throw new Error('Sessão expirada.');
       setResult(payload);

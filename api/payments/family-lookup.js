@@ -1,4 +1,4 @@
-import { allowMethods, getAdminClient, parseJsonBody, safeError } from '../../server/paymentServer.js';
+import { allowMethods, getAdminClient, infinitePayHandle, parseJsonBody, safeError } from '../../server/paymentServer.js';
 import { findPaymentAthlete } from '../../server/paymentAthletes.js';
 import { fpfsCategories } from '../../src/data/fpfsCategories.js';
 
@@ -11,6 +11,32 @@ export default async function handler(req, res) {
     if (!athlete) return res.status(404).json({ error: 'Não encontramos um atleta com esses dados. Confira o primeiro nome, o último nome e o código.' });
 
     const admin = getAdminClient();
+    const orderNsu = body.order_nsu || body.order_id;
+    const transactionNsu = body.transaction_nsu || body.transaction_id;
+    const invoiceSlug = body.invoice_slug || body.slug;
+    if ((body.status === 'concluido' || body.status === 'completed') && orderNsu && transactionNsu && invoiceSlug) {
+      const { data: returnPayment } = await admin.from('financial_payments')
+        .select('event_id,athlete_id,status,financial_events!inner(amount_cents)')
+        .eq('provider', 'infinitepay').eq('provider_order_nsu', orderNsu).single();
+      if (returnPayment && returnPayment.status !== 'paid') {
+        const verificationResponse = await fetch('https://api.checkout.infinitepay.io/payment_check', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ handle: await infinitePayHandle(admin), order_nsu: orderNsu, transaction_nsu: transactionNsu, slug: invoiceSlug }),
+        });
+        const verification = await verificationResponse.json().catch(() => ({}));
+        const expectedAmount = returnPayment.financial_events.amount_cents;
+        if (verificationResponse.ok && verification.success === true && verification.paid === true && Number(verification.amount) === Number(expectedAmount)) {
+          const now = new Date().toISOString();
+          await admin.from('financial_payments').update({
+            status: 'paid', amount_paid_cents: expectedAmount, paid_at: now, provider_status: 'paid',
+            provider_transaction_nsu: transactionNsu, provider_invoice_slug: invoiceSlug,
+            provider_receipt_url: body.receipt_url || null,
+            provider_payload: { capture_method: verification.capture_method, installments: verification.installments, paid_amount: verification.paid_amount, confirmed_by: 'return' },
+            confirmed_at: now, updated_at: now,
+          }).eq('event_id', returnPayment.event_id).eq('athlete_id', returnPayment.athlete_id);
+        }
+      }
+    }
     const [{ data: events, error: eventsError }, { data: payments, error: paymentsError }, { data: athleteProfile, error: athleteProfileError }, { data: statEvents, error: statEventsError }, { data: sessions, error: sessionsError }, { data: attendanceRecords, error: attendanceError }] = await Promise.all([
       admin.from('financial_events').select('id,title,event_date,amount_cents,description').eq('category', athlete.category).eq('is_active', true).order('event_date', { ascending: false }),
       admin.from('financial_payments').select('event_id,athlete_id,status,amount_paid_cents,provider_checkout_url,provider_receipt_url,confirmed_at,provider_payload').eq('athlete_id', athlete.id),
