@@ -520,9 +520,9 @@ function ClubHomePage() {
       <ClubSection eyebrow="Patrocinadores" title="Parceiros Oficiais do Clube">
         <div className="club-sponsor-grid">
           {clubSiteData.home.sponsorImages.map((item) => (
-            <article className="club-sponsor-card" key={item.name}>
+            <article className={`club-sponsor-card${item.featured ? ' is-featured' : ''}`} key={item.name}>
               <img src={item.image} alt={item.name} />
-              <strong>{item.name}</strong>
+              <div><span>{item.label || 'Parceiro oficial'}</span><strong>{item.name}</strong></div>
             </article>
           ))}
         </div>
@@ -824,9 +824,9 @@ function ClubSponsorsPage() {
       <ClubIntroCard eyebrow="Patrocinadores" title="Parceiros e marcas" subtitle={`${clubSiteData.sponsors.items.length} parceiros cadastrados no portal institucional.`} />
       <div className="club-sponsor-grid">
         {clubSiteData.sponsors.items.map((item) => (
-          <article className="club-sponsor-card" key={item.name}>
+          <article className={`club-sponsor-card${item.featured ? ' is-featured' : ''}`} key={item.name}>
             <img src={item.image} alt={item.name} />
-            <strong>{item.name}</strong>
+            <div><span>{item.label || 'Parceiro oficial'}</span><strong>{item.name}</strong></div>
           </article>
         ))}
       </div>

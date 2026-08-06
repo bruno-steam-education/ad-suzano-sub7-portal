@@ -144,6 +144,12 @@ export const clubSiteData = {
     ],
     "sponsorImages": [
       {
+        "name": "Todai Global Advisory LLC",
+        "label": "Patrocinador principal 2026",
+        "image": "/sponsors/todai-global-advisory.jpg",
+        "featured": true
+      },
+      {
         "name": "Dom Lorenzo Performance Esportiva",
         "image": "https://jfut.nyc3.digitaloceanspaces.com/patrocinador/C7rIrwUuFDjzht8khVJkM7WdKj1AnD61EfzJNROV.png"
       },
@@ -217,6 +223,12 @@ export const clubSiteData = {
   },
   "sponsors": {
     "items": [
+      {
+        "name": "Todai Global Advisory LLC",
+        "label": "Patrocinador principal 2026",
+        "image": "/sponsors/todai-global-advisory.jpg",
+        "featured": true
+      },
       {
         "name": "Dom Lorenzo Performance Esportiva",
         "image": "https://jfut.nyc3.digitaloceanspaces.com/patrocinador/C7rIrwUuFDjzht8khVJkM7WdKj1AnD61EfzJNROV.png"
