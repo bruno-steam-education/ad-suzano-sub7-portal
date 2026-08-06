@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ad-suzano-portal-familia-v1.0.13';
+const CACHE_NAME = 'ad-suzano-portal-familia-v1.0.14';
 const APP_SHELL = ['./', './manifest.webmanifest', './portal-familia-icon.svg', './ad-suzano-logo.png'];
 
 self.addEventListener('install', (event) => {
