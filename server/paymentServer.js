@@ -67,7 +67,7 @@ export async function infinitePayHandle(admin) {
   const { data, error } = await admin.from('payment_provider_settings').select('handle').eq('provider', 'infinitepay').eq('is_active', true).maybeSingle();
   if (error) throw error;
   if (!data?.handle) throw new Error('InfiniteTag ainda não configurada. O administrador pode cadastrá-la no Financeiro.');
-  return data.handle;
+  return String(data.handle).trim().replace(/^\$/, '');
 }
 
 export async function parseJsonBody(req) {

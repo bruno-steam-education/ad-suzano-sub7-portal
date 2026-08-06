@@ -97,7 +97,7 @@ export default function StaffOperationsPanel({ categories }) {
   useEffect(() => { load(); }, [load]);
   useEffect(() => {
     const setting = data.paymentSettings.find((item) => item.provider === 'infinitepay');
-    setProviderHandle(setting?.handle ?? '');
+    setProviderHandle(setting?.handle ?? 'adsuzano');
   }, [data.paymentSettings]);
   useEffect(() => {
     if (!isAdmin || !canAccessFinance) return undefined;
