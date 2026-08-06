@@ -13,7 +13,9 @@ export default async function handler(req, res) {
   let webhookId = null;
   try {
     const payload = await parseJsonBody(req);
-    const { order_nsu: orderNsu, transaction_nsu: transactionNsu, invoice_slug: invoiceSlug } = payload;
+    const orderNsu = payload.order_nsu || payload.order_id;
+    const transactionNsu = payload.transaction_nsu || payload.transaction_id;
+    const invoiceSlug = payload.invoice_slug || payload.slug;
     if (!orderNsu || !transactionNsu || !invoiceSlug) return res.status(400).json({ error: 'Webhook sem identificadores obrigatórios.' });
 
     let { data: webhook, error: webhookError } = await admin.from('payment_webhook_events').insert({
