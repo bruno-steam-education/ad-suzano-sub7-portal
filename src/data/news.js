@@ -2,18 +2,18 @@ export const newsWeek = '2026-08-03';
 
 export const newsItems = [
   {
-    "id": "auto-2026-08-08-1",
-    "title": "AD Suzano Sub-7 perde para Inst. Bons De Bola por 3 x 7 e atualiza campanha no Paulista A2",
+    "id": "auto-2026-08-09-1",
+    "title": "AD Suzano Sub-7 perde para Associação ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM por 2 x 3 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
     "source": "FPFS Súmula Online",
-    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139414",
-    "summary": "O Sub-7 teve revés por 3 x 7 contra Inst. Bons De Bola, em partida registrada pela Súmula Online da FPFS no dia 02/08/2026.",
-    "impact": "Com o resultado, o AD Suzano aparece com 33 pontos em 19 jogos, 74 gols marcados e saldo +26.",
-    "date": "2026-08-08"
+    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140151",
+    "summary": "O Sub-7 teve revés por 2 x 3 contra Associação ESPORTIVA RIVER DO BELÉM | RIVER DO BELÉM, em partida registrada pela Súmula Online da FPFS no dia 08/08/2026.",
+    "impact": "Com o resultado, o AD Suzano aparece com 33 pontos em 20 jogos, 76 gols marcados e saldo +25.",
+    "date": "2026-08-09"
   },
   {
-    "id": "auto-2026-08-08-2",
+    "id": "auto-2026-08-09-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
