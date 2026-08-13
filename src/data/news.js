@@ -14,12 +14,12 @@ export const newsItems = [
   },
   {
     "id": "auto-2026-08-13-2",
-    "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
+    "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - noticiasdemogi.com.br",
     "category": "AD Suzano",
     "date": "2026-03-12",
-    "source": "Notícias de Mogi",
+    "source": "noticiasdemogi.com.br",
     "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNS2k5TjFaR3JCeVpkVW40TGZSNTdFWjBIMzVDT01VOVdTbGRDUi1BSFQ0TFpTUzFhRjdWd1dPcUtmWS1XZ1g4XzEyWU1UMHd6V201NnB3ek5GMW9OLVVhamFid1hZWEhDSWVSci1Ld01jRW9GejU2bHBjZ0VwS2VWMkZvMzlaemtzMEREX1lvWXZJNGhkcnNEbGx5ZFZDZnZkSS1MckU0QTlJeUpSTW1qRG05Zw?oc=5",
-    "summary": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo Notícias de Mogi",
+    "summary": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo noticiasdemogi.com.br",
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   }
 ];
