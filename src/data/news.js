@@ -14,12 +14,12 @@ export const newsItems = [
   },
   {
     "id": "auto-2026-08-18-2",
-    "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - abcdoabc.com.br",
+    "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - Portal ABC do ABC",
     "category": "AD Suzano",
     "date": "2026-03-11",
-    "source": "abcdoabc.com.br",
+    "source": "Portal ABC do ABC",
     "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5aS0lDQXh6eGsxUXpvaFgtT3RMVEktVHZWTUNMWGNXSW95TTBEWlYxYjczTTY5dXFwR3BnQ043Rnd2WEpZbUU1WnRrSlBZZktPMEg3bnNhY0hGbEM2TUd3aFo1Z3A0aFZOcUJhZFFrbGxwdW5RVmEyTVlSWmoxZw?oc=5",
-    "summary": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano abcdoabc.com.br",
+    "summary": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano Portal ABC do ABC",
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
