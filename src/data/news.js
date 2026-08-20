@@ -2,7 +2,7 @@ export const newsWeek = '2026-08-17';
 
 export const newsItems = [
   {
-    "id": "auto-2026-08-19-1",
+    "id": "auto-2026-08-20-1",
     "title": "AD Suzano Sub-7 vence Adef/cotia por 4 x 2 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
@@ -10,10 +10,10 @@ export const newsItems = [
     "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139386",
     "summary": "O Sub-7 teve vitória por 4 x 2 contra Adef/cotia, em partida registrada pela Súmula Online da FPFS no dia 15/08/2026.",
     "impact": "Com o resultado, o AD Suzano aparece com 36 pontos em 21 jogos, 80 gols marcados e saldo +27.",
-    "date": "2026-08-19"
+    "date": "2026-08-20"
   },
   {
-    "id": "auto-2026-08-19-2",
+    "id": "auto-2026-08-20-2",
     "title": "Itaquá Futsal estreia no Campeonato Paulista contra o AD Suzano - Portal ABC do ABC",
     "category": "AD Suzano",
     "date": "2026-03-11",
@@ -23,7 +23,7 @@ export const newsItems = [
     "impact": "Pode influenciar a narrativa da semana e o acompanhamento da base."
   },
   {
-    "id": "auto-2026-08-19-3",
+    "id": "auto-2026-08-20-3",
     "title": "Itaquá Futsal estreia no Campeonato Paulista 2026 contra a AD Suzano neste domingo - Notícias de Mogi",
     "category": "AD Suzano",
     "date": "2026-03-12",
