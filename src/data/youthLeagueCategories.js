@@ -7,7 +7,7 @@ export const youthLeagueCompetition = {
   "status": "encerrada",
   "url": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336",
   "teamUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/equipe/ad-suzano/42329",
-  "checkedAt": "2026-08-23T12:25:23.719Z"
+  "checkedAt": "2026-08-23T15:15:16.840Z"
 };
 
 export const youthLeagueCategories = [
@@ -427,7 +427,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   },
   {
     "category": "Sub-8",
@@ -831,7 +831,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   },
   {
     "category": "Sub-9",
@@ -1235,7 +1235,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   },
   {
     "category": "Sub-10",
@@ -1639,7 +1639,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   },
   {
     "category": "Sub-12",
@@ -2102,7 +2102,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   },
   {
     "category": "Sub-14",
@@ -2550,6 +2550,6 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-23T12:25:23.719Z"
+    "checkedAt": "2026-08-23T15:15:16.840Z"
   }
 ];
