@@ -7,7 +7,7 @@ export const youthLeagueCompetition = {
   "status": "encerrada",
   "url": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336",
   "teamUrl": "https://www.ligadajuventudeoficial.com.br/futsal/copa-da-juventude-gold-2026/11-edicao-ano-2026/5336/equipe/ad-suzano/42329",
-  "checkedAt": "2026-08-24T18:30:04.850Z"
+  "checkedAt": "2026-08-24T21:22:15.580Z"
 };
 
 export const youthLeagueCategories = [
@@ -179,7 +179,7 @@ export const youthLeagueCategories = [
         "goalsFor": 0,
         "goalsAgainst": 0,
         "goalDifference": 0,
-        "average": 0
+        "average": 99.99
       },
       {
         "position": 10,
@@ -427,7 +427,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   },
   {
     "category": "Sub-8",
@@ -597,7 +597,7 @@ export const youthLeagueCategories = [
         "goalsFor": 0,
         "goalsAgainst": 0,
         "goalDifference": 0,
-        "average": 0
+        "average": 99.99
       }
     ],
     "playedGames": [
@@ -831,7 +831,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   },
   {
     "category": "Sub-9",
@@ -1001,7 +1001,7 @@ export const youthLeagueCategories = [
         "goalsFor": 0,
         "goalsAgainst": 0,
         "goalDifference": 0,
-        "average": 0
+        "average": 99.99
       }
     ],
     "playedGames": [
@@ -1235,7 +1235,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   },
   {
     "category": "Sub-10",
@@ -1405,7 +1405,7 @@ export const youthLeagueCategories = [
         "goalsFor": 0,
         "goalsAgainst": 0,
         "goalDifference": 0,
-        "average": 0
+        "average": 99.99
       }
     ],
     "playedGames": [
@@ -1639,7 +1639,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   },
   {
     "category": "Sub-12",
@@ -2102,7 +2102,7 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   },
   {
     "category": "Sub-14",
@@ -2550,6 +2550,6 @@ export const youthLeagueCategories = [
     ],
     "upcomingGames": [],
     "source": "Liga da Juventude Oficial",
-    "checkedAt": "2026-08-24T18:30:04.850Z"
+    "checkedAt": "2026-08-24T21:22:15.580Z"
   }
 ];
