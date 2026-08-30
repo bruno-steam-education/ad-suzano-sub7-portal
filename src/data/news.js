@@ -3,13 +3,13 @@ export const newsWeek = '2026-08-24';
 export const newsItems = [
   {
     "id": "auto-2026-08-30-1",
-    "title": "AD Suzano Sub-7 vence Aa Wimpro Guarulhos por 3 x 1 e atualiza campanha no Paulista A2",
+    "title": "AD Suzano Sub-7 empata com G.d.r. 7 De Setembro por 3 x 3 e atualiza campanha no Paulista A2",
     "category": "Sub-7",
     "scope": "AD Suzano Sub-7",
     "source": "FPFS Súmula Online",
-    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=140129",
-    "summary": "O Sub-7 teve vitória por 3 x 1 contra Aa Wimpro Guarulhos, em partida registrada pela Súmula Online da FPFS no dia 22/08/2026.",
-    "impact": "Com o resultado, o AD Suzano aparece com 39 pontos em 22 jogos, 83 gols marcados e saldo +29.",
+    "url": "http://admfutsal.com.br/sumula_online/sumula_imprimir.php?id_jogo=139202",
+    "summary": "O Sub-7 teve empate por 3 x 3 contra G.d.r. 7 De Setembro, em partida registrada pela Súmula Online da FPFS no dia 30/08/2026.",
+    "impact": "Com o resultado, o AD Suzano aparece com 40 pontos em 23 jogos, 86 gols marcados e saldo +29.",
     "date": "2026-08-30"
   },
   {
